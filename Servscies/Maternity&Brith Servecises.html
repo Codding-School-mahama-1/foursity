@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hospital Programs Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="bg-gray-50">
+
+  <!-- Header -->
+  <header class="bg-teal-600 text-white p-4 text-center font-bold text-xl shadow">
+    Hospital Programs Dashboard
+  </header>
+
+  <!-- Main content -->
+  <main class="p-6 bg-blue-400">
+
+    <!-- Filters -->
+    <div class="mb-6 flex flex-wrap gap-4">
+      <div>
+        <label class="block font-semibold mb-1">Filter by Month:</label>
+        <select id="monthFilter" class="border rounded p-2 shadow-sm">
+          <option value="All">All</option>
+          <option value="Jan">January</option>
+          <option value="Feb">February</option>
+          <option value="Mar">March</option>
+          <option value="Apr">April</option>
+        </select>
+      </div>
+      <div>
+        <label class="block font-semibold mb-1">Filter by Program:</label>
+        <select id="programFilter" class="border rounded p-2 shadow-sm">
+          <option value="All">All Programs</option>
+          <option value="Vaccination">Vaccination</option>
+          <option value="Volunteers">Volunteers</option>
+          <option value="Internships">Internships</option>
+          <option value="NewBirths">New Births</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Charts -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6 mb-6">
+
+      <div class="bg-white shadow-md rounded-lg p-4">
+        <h2 class="font-semibold mb-2 text-gray-700">Vaccination Campaigns</h2>
+        <canvas id="vaccinationChart" class="h-40"></canvas>
+      </div>
+
+      <div class="bg-white shadow-md rounded-lg p-4">
+        <h2 class="font-semibold mb-2 text-gray-700">Volunteers</h2>
+        <canvas id="volunteerChart" class="h-40"></canvas>
+      </div>
+
+      <div class="bg-white shadow-md rounded-lg p-4">
+        <h2 class="font-semibold mb-2 text-gray-700">Internships</h2>
+        <canvas id="internshipChart" class="h-40"></canvas>
+      </div>
+
+      <div class="bg-white shadow-md rounded-lg p-4">
+        <h2 class="font-semibold mb-2 text-gray-700">New Births</h2>
+        <canvas id="birthChart" class="h-40"></canvas>
+      </div>
+
+    </div>
+
+    <!-- Tables -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+      <!-- Vaccination Table -->
+      <div class="bg-white shadow-md rounded-lg p-4 overflow-x-auto">
+        <h2 class="font-semibold mb-2 text-gray-700">Vaccination Details</h2>
+        <table class="w-full table-auto border border-gray-200">
+          <thead>
+            <tr class="bg-teal-100 text-gray-700">
+              <th class="border px-2 py-1">Month</th>
+              <th class="border px-2 py-1">Vaccine</th>
+              <th class="border px-2 py-1">Total</th>
+            </tr>
+          </thead>
+          <tbody id="vaccinationTable">
+            <tr><td>Jan</td><td>Polio</td><td>120</td></tr>
+            <tr><td>Feb</td><td>Measles</td><td>150</td></tr>
+            <tr><td>Mar</td><td>Hepatitis</td><td>180</td></tr>
+            <tr><td>Apr</td><td>COVID-19</td><td>200</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Volunteers Table -->
+      <div class="bg-white shadow-md rounded-lg p-4 overflow-x-auto">
+        <h2 class="font-semibold mb-2 text-gray-700">Volunteers Details</h2>
+        <table class="w-full table-auto border border-gray-200">
+          <thead>
+            <tr class="bg-teal-100 text-gray-700">
+              <th class="border px-2 py-1">Month</th>
+              <th class="border px-2 py-1">Volunteer Name</th>
+              <th class="border px-2 py-1">Hours</th>
+            </tr>
+          </thead>
+          <tbody id="volunteerTable">
+            <tr><td>Jan</td><td>John Doe</td><td>10</td></tr>
+            <tr><td>Feb</td><td>Jane Smith</td><td>15</td></tr>
+            <tr><td>Mar</td><td>Mark Lee</td><td>20</td></tr>
+            <tr><td>Apr</td><td>Anna Kim</td><td>25</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- Charts JS -->
+  <script>
+    const vaccinationChart = new Chart(document.getElementById('vaccinationChart'), {
+      type: 'bar',
+      data: {
+        labels: ['Jan', 'Feb', 'Mar', 'Apr'],
+        datasets: [{
+          label: 'Vaccinations',
+          data: [120, 150, 180, 200],
+          backgroundColor: 'rgba(14, 116, 144, 0.7)'
+        }]
+      },
+      options: { responsive: true }
+    });
+
+    const volunteerChart = new Chart(document.getElementById('volunteerChart'), {
+      type: 'line',
+      data: {
+        labels: ['Jan', 'Feb', 'Mar', 'Apr'],
+        datasets: [{
+          label: 'Volunteers',
+          data: [10, 15, 20, 25],
+          borderColor: 'rgba(5, 150, 105, 0.8)',
+          fill: false
+        }]
+      },
+      options: { responsive: true }
+    });
+
+    const internshipChart = new Chart(document.getElementById('internshipChart'), {
+      type: 'pie',
+      data: {
+        labels: ['Completed', 'Ongoing', 'Pending'],
+        datasets: [{
+          label: 'Internships',
+          data: [8, 12, 5],
+          backgroundColor: ['#f472b6', '#60a5fa', '#facc15']
+        }]
+      },
+      options: { responsive: true }
+    });
+
+    const birthChart = new Chart(document.getElementById('birthChart'), {
+      type: 'bar',
+      data: {
+        labels: ['Male', 'Female'],
+        datasets: [{
+          label: 'New Births',
+          data: [25, 30],
+          backgroundColor: ['#ec4899', '#3b82f6']
+        }]
+      },
+      options: { responsive: true }
+    });
+
+    // Filter tables by month
+    document.getElementById('monthFilter').addEventListener('change', function() {
+      const month = this.value;
+      document.querySelectorAll('#vaccinationTable tr').forEach(tr => {
+        tr.style.display = (month === 'All' || tr.children[0].textContent === month) ? '' : 'none';
+      });
+      document.querySelectorAll('#volunteerTable tr').forEach(tr => {
+        tr.style.display = (month === 'All' || tr.children[0].textContent === month) ? '' : 'none';
+      });
+    });
+  </script>
+
+</body>
+</html>

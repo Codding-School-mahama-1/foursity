@@ -1,0 +1,289 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Birth Certificate Generator</title>
+  <style>
+    :root{--accent:#0b74de;--paper:#fffdf7;--muted:#666}
+    body{font-family:Inter,ui-sans-serif,system-ui,Segoe UI,Roboto,"Helvetica Neue",Arial;line-height:1.4;background:#f3f6fb;padding:24px}
+    .container{max-width:980px;margin:0 auto;display:grid;grid-template-columns:1fr 420px;gap:20px;align-items:start}
+    .card{background:white;border-radius:12px;box-shadow:0 6px 18px rgba(20,30,60,0.08);padding:20px}
+    h1{font-size:20px;margin:0 0 12px}
+
+    form .row{display:flex;gap:10px}
+    label{display:block;font-size:13px;margin-bottom:6px;color:var(--muted)}
+    input[type=text],input[type=date],select,textarea{width:100%;padding:10px;border-radius:8px;border:1px solid #e6e9ef;font-size:14px}
+    textarea{min-height:70px}
+    .btn{display:inline-block;padding:10px 14px;border-radius:8px;border:0;background:var(--accent);color:white;font-weight:600;cursor:pointer}
+    .btn.secondary{background:#f3f6fb;color:#0b2b56}
+    .actions{display:flex;gap:8px;margin-top:12px}
+
+    /* certificate styling */
+    .certificate{background:var(--paper);padding:22px;border-radius:8px;border:2px solid #efe7d8;min-height:480px}
+    .cert-header{text-align:center;margin-bottom:14px}
+    .cert-title{font-size:18px;font-weight:800;color:#16335b}
+    .cert-sub{font-size:13px;color:var(--muted)}
+    .cert-body{margin-top:18px}
+    .field{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px dashed rgba(10,20,40,0.04)}
+    .field strong{display:block}
+    .meta{display:flex;justify-content:space-between;margin-top:18px}
+    .seal{border-radius:50%;width:86px;height:86px;background:linear-gradient(180deg,#fff,#f5f5f5);display:flex;align-items:center;justify-content:center;border:2px solid rgba(0,0,0,0.06);font-weight:700;color:#16335b}
+
+    .small{font-size:12px;color:var(--muted)}
+    .error{color:#b00020;font-size:13px;margin-top:8px}
+
+    @media (max-width:980px){.container{grid-template-columns:1fr;}}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <h1>Birth Certificate — Fill details</h1>
+      <form id="bcForm">
+        <div>
+          <label>Child's Full Name</label>
+          <input type="text" id="childName" placeholder="e.g. John Doe" required />
+        </div>
+
+        <div class="row" >
+          <div >
+            <label>Date of Birth</label>
+            <input type="date" id="dob" required placeholder="Date of Birth"/>
+          </div>
+          <div >
+            <label>Gender</label>
+            <select id="gender" required>
+              <option value="">Select</option>
+              <option>Male</option>
+              <option>Female</option>
+              <option>Other</option>
+            </select>
+          </div>
+        </div>
+
+        <div style="margin-top:12px">
+          <label>Place of Birth</label>
+          <input type="text" id="place" placeholder="Hospital / Town" />
+        </div>
+
+        <div class="row" style="margin-top:12px">
+          <div style="flex:1">
+            <label>Father's / Parent 1 Name</label>
+            <input type="text" id="parent1" placeholder="Father's / Parent 1 Name">
+          </div>
+          <div style="flex:1">
+            <label>Mother's / Parent 2 Name</label>
+            <input type="text" id="parent2" placeholder="Mother's / Parent 2 Name" />
+          </div>
+        </div>
+
+        <div>
+          <label>Registration No. (optional)</label>
+          <input type="text" id="regNo" placeholder="e.g. BC-2025-0001" />
+        </div>
+
+        <div >
+          <label>Notes / Additional Info</label>
+          <textarea id="notes" placeholder="Notes / Additional Info"></textarea>
+        </div>
+
+        <div class="actions">
+          <button type="button" id="generate" class="btn">Generate Certificate</button>
+          <button type="button" id="saveLocal" class="btn secondary">Save (local)</button>
+          <button type="button" id="exportJson" class="btn secondary">Export JSON</button>
+          <button type="button" id="clearForm" class="btn secondary">Clear</button>
+        </div>
+        <div ></div>
+      </form>
+
+      <div >
+        Tip: Use <strong>Generate Certificate</strong> to preview. Use the Print button on the right to print/save as PDF.
+      </div>
+    </div>
+
+    <div class="card">
+      <h1>Preview & Print</h1>
+      <div id="certificate" class="certificate" aria-live="polite">
+        <div class="cert-header">
+          <div class="cert-title">OFFICIAL BIRTH CERTIFICATE</div>
+          <div class="cert-sub">This document certifies the birth details recorded below.</div>
+        </div>
+
+        <div class="cert-body" id="certBody">
+          <div class="field"><div><strong>Child's Name</strong><div id="cvName" class="small">—</div></div></div>
+          <div class="field"><div><strong>Date of Birth</strong><div id="cvDOB" class="small">—</div></div></div>
+          <div class="field"><div><strong>Gender</strong><div id="cvGender" class="small">—</div></div></div>
+          <div class="field"><div><strong>Place of Birth</strong><div id="cvPlace" class="small">—</div></div></div>
+          <div class="field"><div><strong>Father / Parent 1</strong><div id="cvP1" class="small">—</div></div></div>
+          <div class="field"><div><strong>Mother / Parent 2</strong><div id="cvP2" class="small">—</div></div></div>
+          <div class="field"><div><strong>Registration No.</strong><div id="cvReg" class="small">—</div></div></div>
+
+          <div style="margin-top:12px"><strong>Notes</strong><div id="cvNotes" class="small">—</div></div>
+
+          <div class="meta">
+            <div class="small">Issued: <span id="cvIssued">—</span></div>
+            <div style="text-align:right"><div class="seal">Seal</div></div>
+          </div>
+        </div>
+
+        <div style="margin-top:12px;display:flex;justify-content:space-between;align-items:center">
+          <div class="small">Authorized Signature: ____________________</div>
+          <div>
+            <button id="printBtn" class="btn">Print</button>
+          </div>
+        </div>
+      </div>
+
+      <div id="error" class="error" style="display:none"></div>
+    </div>
+  </div>
+
+  <script>
+    // Helper to format a date to readable string
+    function formatDate(input){
+      if(!input) return '—';
+      const d = new Date(input);
+      if(isNaN(d)) return input;
+      return d.toLocaleDateString();
+    }
+
+    // Form elements
+    const form = document.getElementById('bcForm');
+    const generate = document.getElementById('generate');
+    const printBtn = document.getElementById('printBtn');
+    const saveLocal = document.getElementById('saveLocal');
+    const exportJson = document.getElementById('exportJson');
+    const clearForm = document.getElementById('clearForm');
+    const message = document.getElementById('message');
+    const error = document.getElementById('error');
+
+    // certificate fields
+    const cvName = document.getElementById('cvName');
+    const cvDOB = document.getElementById('cvDOB');
+    const cvGender = document.getElementById('cvGender');
+    const cvPlace = document.getElementById('cvPlace');
+    const cvP1 = document.getElementById('cvP1');
+    const cvP2 = document.getElementById('cvP2');
+    const cvReg = document.getElementById('cvReg');
+    const cvNotes = document.getElementById('cvNotes');
+    const cvIssued = document.getElementById('cvIssued');
+
+    function readForm(){
+      return {
+        childName: document.getElementById('childName').value.trim(),
+        dob: document.getElementById('dob').value,
+        gender: document.getElementById('gender').value,
+        place: document.getElementById('place').value.trim(),
+        parent1: document.getElementById('parent1').value.trim(),
+        parent2: document.getElementById('parent2').value.trim(),
+        regNo: document.getElementById('regNo').value.trim(),
+        notes: document.getElementById('notes').value.trim(),
+        issued: new Date().toISOString()
+      };
+    }
+
+    function validate(data){
+      const errs = [];
+      if(!data.childName) errs.push('Child name is required.');
+      if(!data.dob) errs.push('Date of birth is required.');
+      if(!data.gender) errs.push('Gender is required.');
+      return errs;
+    }
+
+    function renderCertificate(data){
+      cvName.textContent = data.childName || '—';
+      cvDOB.textContent = formatDate(data.dob);
+      cvGender.textContent = data.gender || '—';
+      cvPlace.textContent = data.place || '—';
+      cvP1.textContent = data.parent1 || '—';
+      cvP2.textContent = data.parent2 || '—';
+      cvReg.textContent = data.regNo || '—';
+      cvNotes.textContent = data.notes || '—';
+      cvIssued.textContent = formatDate(data.issued);
+    }
+
+    generate.addEventListener('click', ()=>{
+      error.style.display = 'none';
+      const data = readForm();
+      const errs = validate(data);
+      if(errs.length){
+        error.style.display = 'block';
+        error.textContent = errs.join(' ');
+        return;
+      }
+      renderCertificate(data);
+      message.textContent = 'Certificate generated — you can now print or save.';
+    });
+
+    printBtn.addEventListener('click', ()=>{
+      // Use a print-friendly window with only the certificate
+      const cert = document.getElementById('certificate').outerHTML;
+      const popup = window.open('', '_blank', 'width=900,height=700');
+      popup.document.write(`<html><head><title>Birth Certificate</title><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><style>body{font-family:Arial,Helvetica,sans-serif;padding:20px;background:#fff} .certificate{max-width:760px;margin:0 auto}</style></head><body>${cert}</body></html>`);
+      popup.document.close();
+      // Wait for render and then print
+      popup.focus();
+      setTimeout(()=>{popup.print();},300);
+    });
+
+    saveLocal.addEventListener('click', ()=>{
+      const data = readForm();
+      const errs = validate(data);
+      if(errs.length){
+        error.style.display = 'block';
+        error.textContent = errs.join(' ');
+        return;
+      }
+      try{
+        // save with generated key
+        const key = data.regNo || (`birth_${Date.now()}`);
+        localStorage.setItem(key, JSON.stringify(data));
+        message.textContent = `Saved locally under key: ${key}`;
+        error.style.display = 'none';
+      }catch(e){
+        console.error(e);
+        error.style.display = 'block';
+        error.textContent = 'Error saving data to localStorage. Make sure your browser allows local storage.';
+      }
+    });
+
+    exportJson.addEventListener('click', ()=>{
+      const data = readForm();
+      const errs = validate(data);
+      if(errs.length){
+        error.style.display = 'block';
+        error.textContent = errs.join(' ');
+        return;
+      }
+      const blob = new Blob([JSON.stringify(data, null, 2)], {type:'application/json'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = (data.regNo || 'birth') + '.json';
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+      message.textContent = 'Exported JSON file.';
+      error.style.display = 'none';
+    });
+
+    clearForm.addEventListener('click', ()=>{
+      if(!confirm('Clear the form?')) return;
+      form.reset();
+      renderCertificate({});
+      message.textContent = '';
+      error.style.display = 'none';
+    });
+
+    // On load: render empty certificate
+    renderCertificate({});
+
+    // small usability: populate today as issue date
+    document.addEventListener('DOMContentLoaded', ()=>{
+      cvIssued.textContent = new Date().toLocaleDateString();
+    });
+  </script>
+</body>
+</html>
