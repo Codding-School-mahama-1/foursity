@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Birth Certificate Generator</title>
   <style>
-    :root{--accent:#0b74de;--paper:#fffdf7;--muted:#666}
+    .root{--accent:#0b74de;--paper:#fffdf7;--muted:#666}
     body{font-family:Inter,ui-sans-serif,system-ui,Segoe UI,Roboto,"Helvetica Neue",Arial;line-height:1.4;background:#f3f6fb;padding:24px}
     .container{max-width:980px;margin:0 auto;display:grid;grid-template-columns:1fr 420px;gap:20px;align-items:start}
     .card{background:white;border-radius:12px;box-shadow:0 6px 18px rgba(20,30,60,0.08);padding:20px}
@@ -139,7 +139,7 @@
     </div>
   </div>
 
-  <script>
+  <!-- <script>
     // Helper to format a date to readable string
     function formatDate(input){
       if(!input) return '—';
@@ -284,6 +284,6 @@
     document.addEventListener('DOMContentLoaded', ()=>{
       cvIssued.textContent = new Date().toLocaleDateString();
     });
-  </script>
+  </script> -->
 </body>
 </html>
