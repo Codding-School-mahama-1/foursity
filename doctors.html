@@ -1,0 +1,953 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MediBook - Doctor Appointment Booking</title>
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+     <style>
+        /* Base Design */
+        :root {
+            --primary: #2c7fb8;
+            --secondary: #7fcdbb;
+            --accent: #edf8b1;
+            --dark: #253237;
+            --light: #f8f9fa;
+            --success: #28a745;
+            --danger: #dc3545;
+            --gray: #6c757d;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            color: var(--dark);
+            line-height: 1.6;
+        }
+        
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+        
+        /* Header */
+        header {
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary);
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-links li {
+            margin-left: 1.5rem;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+        
+        .user-actions {
+            display: flex;
+            align-items: center;
+        }
+        
+        .btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: #1d6fa5;
+        }
+        
+        .btn-outline {
+            background-color: transparent;
+            border: 1px solid var(--primary);
+            color: var(--primary);
+        }
+        
+        .btn-outline:hover {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 3rem 0;
+            text-align: center;
+        }
+        
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 2rem;
+        }
+        
+        .search-bar {
+            display: flex;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .search-bar input {
+            flex: 1;
+            padding: 0.75rem;
+            border: none;
+            border-radius: 4px 0 0 4px;
+            font-size: 1rem;
+        }
+        
+        .search-bar button {
+            background-color: var(--dark);
+            color: white;
+            border: none;
+            padding: 0 1.5rem;
+            border-radius: 0 4px 4px 0;
+            cursor: pointer;
+        }
+        
+        /* Specialties Section */
+        .specialties {
+            padding: 2rem 0;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: var(--dark);
+        }
+        
+        .specialties-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .specialty-card {
+            background-color: white;
+            border-radius: 8px;
+            padding: 1rem;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+        }
+        
+        .specialty-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .specialty-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            color: var(--primary);
+        }
+        
+        /* Doctors Section */
+        .doctors-section {
+            padding: 2rem 0;
+        }
+        
+        .doctors-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .doctor-card {
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+        }
+        
+        .doctor-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .doctor-image {
+            height: 200px;
+            background-color: #e9ecef;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #adb5bd;
+            font-size: 3rem;
+        }
+        
+        .doctor-info {
+            padding: 1.5rem;
+        }
+        
+        .doctor-name {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        
+        .doctor-specialty {
+            color: var(--primary);
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+        
+        .doctor-department {
+            color: var(--gray);
+            margin-bottom: 1rem;
+        }
+        
+        .doctor-actions {
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        /* Doctor Details Page */
+        .doctor-details {
+            padding: 2rem 0;
+        }
+        
+        .doctor-profile {
+            display: flex;
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+        }
+        
+        .doctor-profile-image {
+            width: 300px;
+            background-color: #e9ecef;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #adb5bd;
+            font-size: 5rem;
+        }
+        
+        .doctor-profile-info {
+            flex: 1;
+            padding: 2rem;
+        }
+        
+        .doctor-profile-name {
+            font-size: 1.75rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .doctor-profile-specialty {
+            color: var(--primary);
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+        }
+        
+        .doctor-profile-details {
+            margin-bottom: 1.5rem;
+        }
+        
+        .doctor-profile-details p {
+            margin-bottom: 0.5rem;
+        }
+        
+        .doctor-bio {
+            margin-top: 1.5rem;
+            line-height: 1.8;
+        }
+        
+        /* Schedule Section */
+        .schedule-section {
+            background-color: white;
+            border-radius: 8px;
+            padding: 2rem;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+        }
+        
+        .calendar {
+            margin-bottom: 2rem;
+        }
+        
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 5px;
+        }
+        
+        .calendar-day {
+            text-align: center;
+            padding: 0.5rem;
+            font-weight: 500;
+        }
+        
+        .calendar-date {
+            text-align: center;
+            padding: 0.75rem;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .calendar-date:hover {
+            background-color: #e9ecef;
+        }
+        
+        .calendar-date.selected {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .time-slots {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 0.75rem;
+        }
+        
+        .time-slot {
+            padding: 0.75rem;
+            text-align: center;
+            background-color: #f8f9fa;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .time-slot:hover {
+            background-color: #e9ecef;
+        }
+        
+        .time-slot.selected {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .time-slot.booked {
+            background-color: var(--danger);
+            color: white;
+            cursor: not-allowed;
+        }
+        
+        /* Booking Form */
+        .booking-form {
+            background-color: white;
+            border-radius: 8px;
+            padding: 2rem;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+        
+        .booking-summary {
+            background-color: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+        }
+        
+        .booking-summary h3 {
+            margin-bottom: 1rem;
+        }
+        
+        .booking-summary p {
+            margin-bottom: 0.5rem;
+        }
+        
+        /* Confirmation Page */
+        .confirmation {
+            text-align: center;
+            padding: 3rem 0;
+        }
+        
+        .confirmation-icon {
+            font-size: 4rem;
+            color: var(--success);
+            margin-bottom: 1.5rem;
+        }
+        
+        .confirmation h2 {
+            margin-bottom: 1rem;
+        }
+        
+        .confirmation p {
+            margin-bottom: 2rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        /* Footer */
+        footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 3rem 0 1.5rem;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .footer-section h3 {
+            margin-bottom: 1rem;
+            font-size: 1.25rem;
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .footer-links a {
+            color: #adb5bd;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-links a:hover {
+            color: white;
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            padding-top: 1.5rem;
+            border-top: 1px solid #495057;
+            color: #adb5bd;
+        }
+        
+        /* Pages */
+        .page {
+            display: none;
+        }
+        
+        .page.active {
+            display: block;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+            }
+            
+            .nav-links {
+                margin: 1rem 0;
+            }
+            
+            .doctor-profile {
+                flex-direction: column;
+            }
+            
+            .doctor-profile-image {
+                width: 100%;
+                height: 250px;
+            }
+            
+            .search-bar {
+                flex-direction: column;
+            }
+            
+            .search-bar input {
+                border-radius: 4px;
+                margin-bottom: 0.5rem;
+            }
+            
+            .search-bar button {
+                border-radius: 4px;
+                padding: 0.75rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <nav class="navbar">
+                <div class="logo">MediBook</div>
+                <ul class="nav-links">
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#doctor-details">Doctors</a></li>
+                    <li><a href="#">Hospitals</a></li>
+                    <li><a href="#">Articles</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+                <!-- <div class="user-actions">
+                    <button class="btn btn-outline" style="margin-right: 10px;">Login</button>
+                    <button class="btn btn-primary">Sign Up</button>
+                </div> -->
+            </nav>
+        </div>
+    </header>
+
+    <!-- Home Page -->
+    <section id="home" class="page active">
+        <div class="hero">
+            <div class="container">
+                <h1>Find the Best Doctors & Book Appointments Easily</h1>
+                <p>Get access to thousands of certified doctors across various medical specialties</p>
+                <div class="search-bar">
+                    <input type="text" placeholder="Search for a doctor, specialty, or hospital...">
+                    <button><i class="fas fa-search"></i></button>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <!-- Medical Specialties -->
+            <section class="specialties">
+                <h2 class="section-title">Medical Specialties</h2>
+                <div class="specialties-grid">
+                    <div class="specialty-card">
+                        <div class="specialty-icon"><i class="fas fa-baby"></i></div>
+                        <h3>Pediatrics</h3>
+                    </div>
+                    <div class="specialty-card">
+                        <div class="specialty-icon"><i class="fas fa-heartbeat"></i></div>
+                        <h3>Cardiology</h3>
+                    </div>
+                    <div class="specialty-card">
+                        <div class="specialty-icon"><i class="fas fa-tooth"></i></div>
+                        <h3>Dentistry</h3>
+                    </div>
+                    <div class="specialty-card">
+                        <div class="specialty-icon"><i class="fas fa-eye"></i></div>
+                        <h3>Ophthalmology</h3>
+                    </div>
+                    <div class="specialty-card">
+                        <div class="specialty-icon"><i class="fas fa-brain"></i></div>
+                        <h3>Neurology</h3>
+                    </div>
+                    <div class="specialty-card">
+                        <div class="specialty-icon"><i class="fas fa-bone"></i></div>
+                        <h3>Orthopedics</h3>
+                    </div>
+                    <div class="specialty-card">
+                        <div class="specialty-icon"><i class="fas fa-female"></i></div>
+                        <h3>Gynecology</h3>
+                    </div>
+                    <div class="specialty-card">
+                        <div class="specialty-icon"><i class="fas fa-stethoscope"></i></div>
+                        <h3>Internal Medicine</h3>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Doctors List -->
+            <section class="doctors-section">
+                <h2 class="section-title">Available Doctors</h2>
+                <div class="doctors-grid">
+                    <!-- Doctor 1 -->
+                    <div class="doctor-card" data-doctor-id="1">
+                        <div class="doctor-image"><img src="/img/download(2).jpeg"alt=""></div>
+                        <div class="doctor-info">
+                            <h3 class="doctor-name">Dr. Ahmed Mohamed</h3>
+                            <p class="doctor-specialty">Pediatrics</p>
+                            <p class="doctor-department">King Faisal Specialist Hospital</p>
+                            <div class="doctor-actions">
+                                <button class="btn btn-outline view-details">View Details</button>
+                                <button class="btn btn-primary book-now">Book Now</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Doctor 2 -->
+                    <div class="doctor-card" data-doctor-id="2">
+                        <div class="doctor-image"><img src="/img/download(1).jpeg"alt=""></i></div>
+                        <div class="doctor-info">
+                            <h3 class="doctor-name">Dr. Sara Abdullah</h3>
+                            <p class="doctor-specialty">Cardiology</p>
+                            <p class="doctor-department">King Abdulaziz Hospital</p>
+                            <div class="doctor-actions">
+                                <button class="btn btn-outline view-details">View Details</button>
+                                <button class="btn btn-primary book-now">Book Now</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Doctor 3 -->
+                    <div class="doctor-card" data-doctor-id="3">
+                        <div class="doctor-image"><img src="/img/download.jpeg" alt=""></div>
+                        <div class="doctor-info">
+                            <h3 class="doctor-name">Dr. Khaled Saeed</h3>
+                            <p class="doctor-specialty">Dentistry</p>
+                            <p class="doctor-department">Armed Forces Hospital</p>
+                            <div class="doctor-actions">
+                                <button class="btn btn-outline view-details">View Details</button>
+                                <button class="btn btn-primary book-now">Book Now</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Doctor 4 -->
+                    <div class="doctor-card" data-doctor-id="4">
+                        <div class="doctor-image"><img src="/img/images.jpeg" alt=""></div>
+                        <div class="doctor-info">
+                            <h3 class="doctor-name">Dr. Fatima Ali</h3>
+                            <p class="doctor-specialty">Ophthalmology</p>
+                            <p class="doctor-department">King Khalid Hospital</p>
+                            <div class="doctor-actions">
+                                <button class="btn btn-outline view-details">View Details</button>
+                                <button class="btn btn-primary book-now">Book Now</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </section>
+
+    <!-- Doctor Details Page -->
+    <section id="doctor-details" class="page">
+        <div class="container">
+            <div class="doctor-details">
+                <div class="doctor-profile">
+                    <div class="doctor-profile-image"><i class="fas fa-user-md"></i></div>
+                    <div class="doctor-profile-info">
+                        <h1 class="doctor-profile-name">Dr. Ahmed Mohamed</h1>
+                        <p class="doctor-profile-specialty">Pediatrics Specialist</p>
+                        <div class="doctor-profile-details">
+                            <p><strong>Qualification:</strong> PhD in Pediatrics - Harvard University</p>
+                            <p><strong>Years of Experience:</strong> 15 years</p>
+                            <p><strong>Department:</strong> Pediatrics</p>
+                            <p><strong>Hospital:</strong> King Faisal Specialist Hospital</p>
+                            <p><strong>Phone:</strong> 0112345678</p>
+                        </div>
+                        <div class="doctor-bio">
+                            <h3>About the Doctor</h3>
+                            <p>Dr. Ahmed Mohamed is a certified Pediatrics Specialist with over 15 years of experience in diagnosing and treating diseases affecting children from birth to adolescence. He specializes in pediatric respiratory diseases and allergies. Fluent in Arabic and English.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Appointment Schedule -->
+                <div class="schedule-section">
+                    <h2 class="section-title">Available Appointments</h2>
+                    
+                    <!-- Calendar -->
+                    <div class="calendar">
+                        <div class="calendar-header">
+                            <button class="btn btn-outline">Previous Month</button>
+                            <h3>June 2023</h3>
+                            <button class="btn btn-outline">Next Month</button>
+                        </div>
+                        <div class="calendar-grid">
+                            <div class="calendar-day">Sun</div>
+                            <div class="calendar-day">Mon</div>
+                            <div class="calendar-day">Tue</div>
+                            <div class="calendar-day">Wed</div>
+                            <div class="calendar-day">Thu</div>
+                            <div class="calendar-day">Fri</div>
+                            <div class="calendar-day">Sat</div>
+                            
+                            <!-- Month Dates -->
+                            <div class="calendar-date">28</div>
+                            <div class="calendar-date">29</div>
+                            <div class="calendar-date">30</div>
+                            <div class="calendar-date">31</div>
+                            <div class="calendar-date">1</div>
+                            <div class="calendar-date">2</div>
+                            <div class="calendar-date">3</div>
+                            
+                            <div class="calendar-date">4</div>
+                            <div class="calendar-date">5</div>
+                            <div class="calendar-date">6</div>
+                            <div class="calendar-date">7</div>
+                            <div class="calendar-date">8</div>
+                            <div class="calendar-date">9</div>
+                            <div class="calendar-date">10</div>
+                            
+                            <div class="calendar-date">11</div>
+                            <div class="calendar-date">12</div>
+                            <div class="calendar-date">13</div>
+                            <div class="calendar-date">14</div>
+                            <div class="calendar-date selected">15</div>
+                            <div class="calendar-date">16</div>
+                            <div class="calendar-date">17</div>
+                            
+                            <div class="calendar-date">18</div>
+                            <div class="calendar-date">19</div>
+                            <div class="calendar-date">20</div>
+                            <div class="calendar-date">21</div>
+                            <div class="calendar-date">22</div>
+                            <div class="calendar-date">23</div>
+                            <div class="calendar-date">24</div>
+                            
+                            <div class="calendar-date">25</div>
+                            <div class="calendar-date">26</div>
+                            <div class="calendar-date">27</div>
+                            <div class="calendar-date">28</div>
+                            <div class="calendar-date">29</div>
+                            <div class="calendar-date">30</div>
+                            <div class="calendar-date">1</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Available Times -->
+                    <h3 style="margin-bottom: 1rem;">Available Times for June 15</h3>
+                    <div class="time-slots">
+                        <div class="time-slot">09:00 AM</div>
+                        <div class="time-slot">09:30 AM</div>
+                        <div class="time-slot">10:00 AM</div>
+                        <div class="time-slot">10:30 AM</div>
+                        <div class="time-slot">11:00 AM</div>
+                        <div class="time-slot">11:30 AM</div>
+                        <div class="time-slot">12:00 PM</div>
+                        <div class="time-slot">12:30 PM</div>
+                        <div class="time-slot">01:00 PM</div>
+                        <div class="time-slot">01:30 PM</div>
+                        <div class="time-slot">02:00 PM</div>
+                        <div class="time-slot">02:30 PM</div>
+                        <div class="time-slot">03:00 PM</div>
+                        <div class="time-slot">03:30 PM</div>
+                        <div class="time-slot">04:00 PM</div>
+                        <div class="time-slot">04:30 PM</div>
+                        <div class="time-slot">05:00 PM</div>
+                        <div class="time-slot">05:30 PM</div>
+                        <div class="time-slot">06:00 PM</div>
+                        <div class="time-slot">06:30 PM</div>
+                    </div>
+                </div>
+
+                <!-- Booking Form -->
+                <div class="booking-form">
+                    <h2 class="section-title">Book Appointment</h2>
+                    
+                    <div class="booking-summary">
+                        <h3>Booking Summary</h3>
+                        <p><strong>Doctor:</strong> Dr. Ahmed Mohamed</p>
+                        <p><strong>Date:</strong> June 15, 2023</p>
+                        <p><strong>Time:</strong> <span id="selected-time">No time selected yet</span></p>
+                        <p><strong>Location:</strong> King Faisal Specialist Hospital</p>
+                    </div>
+                    
+                    <form id="booking-form">
+                        <div class="form-group">
+                            <label for="patient-name">Full Name</label>
+                            <input type="text" id="patient-name" class="form-control" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="patient-phone">Phone Number</label>
+                            <input type="tel" id="patient-phone" class="form-control" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="patient-email">Email Address</label>
+                            <input type="email" id="patient-email" class="form-control" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="patient-age">Age</label>
+                            <input type="number" id="patient-age" class="form-control" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="appointment-reason">Reason for Visit</label>
+                            <textarea id="appointment-reason" class="form-control" rows="3"></textarea>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary" style="width: 100%; padding: 1rem; font-size: 1.1rem;">Confirm Booking</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Confirmation Page -->
+    <section id="confirmation" class="page">
+        <div class="container">
+            <div class="confirmation">
+                <div class="confirmation-icon"><i class="fas fa-check-circle"></i></div>
+                <h2>Your Appointment Has Been Confirmed!</h2>
+                <p>Your appointment with Dr. Ahmed Mohamed has been booked for June 15, 2023 at 10:00 AM at King Faisal Specialist Hospital. A confirmation message has been sent to your email and phone number.</p>
+                <div style="display: flex; gap: 1rem; justify-content: center;">
+                    <button class="btn btn-primary" id="back-to-home">Back to Home</button>
+                    <button class="btn btn-outline">Print Confirmation</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>MediBook</h3>
+                    <p>A leading platform for online medical appointment booking, providing patients access to the best doctors and simplifying the appointment booking process.</p>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#">Doctors</a></li>
+                        <li><a href="#">Hospitals</a></li>
+                        <li><a href="#">Medical Articles</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Specialties</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Pediatrics</a></li>
+                        <li><a href="#">Cardiology</a></li>
+                        <li><a href="#">Dentistry</a></li>
+                        <li><a href="#">Ophthalmology</a></li>
+                        <li><a href="#">Gynecology</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Contact Us</h3>
+                    <ul class="footer-links">
+                        <li>Phone: +250 795 741 042</li>
+                        <li>Email: hanibasha3270@gmil.com</li>
+                        <li>Address: Kigali, Rwanda</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>© 2025 MediBook. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Page Navigation
+        document.addEventListener('DOMContentLoaded', function() {
+            const pages = document.querySelectorAll('.page');
+            const homePage = document.getElementById('home');
+            const doctorDetailsPage = document.getElementById('doctor-details');
+            const confirmationPage = document.getElementById('confirmation');
+            
+            // Show specific page and hide others
+            function showPage(page) {
+                pages.forEach(p => p.classList.remove('active'));
+                page.classList.add('active');
+            }
+            
+            // Button events
+            document.querySelectorAll('.view-details, .book-now').forEach(button => {
+                button.addEventListener('click', function() {
+                    showPage(doctorDetailsPage);
+                    window.scrollTo(0, 0);
+                });
+            });
+            
+            document.getElementById('back-to-home').addEventListener('click', function() {
+                showPage(homePage);
+                window.scrollTo(0, 0);
+            });
+            
+            // Time slot selection
+            document.querySelectorAll('.time-slot').forEach(slot => {
+                slot.addEventListener('click', function() {
+                    if (!this.classList.contains('booked')) {
+                        document.querySelectorAll('.time-slot').forEach(s => s.classList.remove('selected'));
+                        this.classList.add('selected');
+                        document.getElementById('selected-time').textContent = this.textContent;
+                    }
+                });
+            });
+            
+            // Booking form submission
+            document.getElementById('booking-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                showPage(confirmationPage);
+                window.scrollTo(0, 0);
+            });
+            
+            // Date selection
+            document.querySelectorAll('.calendar-date').forEach(date => {
+                date.addEventListener('click', function() {
+                    document.querySelectorAll('.calendar-date').forEach(d => d.classList.remove('selected'));
+                    this.classList.add('selected');
+                });
+            });
+        });
+    </script>
+</body>
+</html>

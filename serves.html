@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MediCare Hospital - Comprehensive Healthcare Services</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#0d9488',
+                        secondary: '#0f766e',
+                        accent: '#14b8a6',
+                        light: '#f0fdfa',
+                        dark: '#134e4a'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style>
+        .dropdown:hover .dropdown-menu {
+            display: block;
+        }
+        .smooth-transition {
+            transition: all 0.3s ease;
+        }
+        .service-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+    </style>
+</head>
+<body class="font-sans bg-gray-50">
+    <!-- Header & Navigation -->
+    <header class="sticky top-0 z-50 bg-white shadow-md">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-between items-center py-4">
+                <!-- Logo -->
+                <div class="flex items-center space-x-2">
+                    <div class="bg-primary p-2 rounded-full">
+                        <i class="fas fa-hospital text-white text-xl"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-xl font-bold text-dark">Our Services</h1>
+                        <p class="text-xs text-gray-500">Comprehensive Healthcare</p>
+                    </div>
+                </div>
+
+                <!-- Desktop Navigation -->
+                <nav class="hidden md:flex items-center space-x-1">
+                    <a href="#" class="nav-link">Home</a>
+                    
+                    <!-- Medical Services Dropdown -->
+                    <div class="dropdown relative">
+                        <button class="nav-link flex items-center">
+                            Medical Services <i class="fas fa-chevron-down ml-1 text-xs"></i>
+                        </button>
+                        <div class="dropdown-menu absolute hidden bg-white py-2 mt-1 rounded-md shadow-lg w-64 z-50">
+                            <a href="#emergency" class="block px-4 py-2 text-gray-700 hover:bg-light">Emergency Department</a>
+                            <a href="#outpatient" class="block px-4 py-2 text-gray-700 hover:bg-light">Outpatient Clinics</a>
+                            <a href="#inpatient" class="block px-4 py-2 text-gray-700 hover:bg-light">Inpatient Department</a>
+                            <a href="#surgery" class="block px-4 py-2 text-gray-700 hover:bg-light">Surgery Department</a>
+                            <a href="#obgyn" class="block px-4 py-2 text-gray-700 hover:bg-light">OB/GYN & Maternity</a>
+                            <a href="#pediatrics" class="block px-4 py-2 text-gray-700 hover:bg-light">Pediatrics Department</a>
+                        </div>
+                    </div>
+                    
+                    <!-- Diagnostic Services Dropdown -->
+                    <div class="dropdown relative">
+                        <button class="nav-link flex items-center">
+                            Diagnostic Services <i class="fas fa-chevron-down ml-1 text-xs"></i>
+                        </button>
+                        <div class="dropdown-menu absolute hidden bg-white py-2 mt-1 rounded-md shadow-lg w-64 z-50">
+                            <a href="#laboratory" class="block px-4 py-2 text-gray-700 hover:bg-light">Medical Laboratories</a>
+                            <a href="#radiology" class="block px-4 py-2 text-gray-700 hover:bg-light">Radiology Department</a>
+                            <a href="#electrical" class="block px-4 py-2 text-gray-700 hover:bg-light">Electrical Examinations</a>
+                        </div>
+                    </div>
+                    
+                    <!-- Treatment & Support Dropdown -->
+                    <div class="dropdown relative">
+                        <button class="nav-link flex items-center">
+                            Treatment & Support <i class="fas fa-chevron-down ml-1 text-xs"></i>
+                        </button>
+                        <div class="dropdown-menu absolute hidden bg-white py-2 mt-1 rounded-md shadow-lg w-64 z-50">
+                            <a href="#pharmacy" class="block px-4 py-2 text-gray-700 hover:bg-light">Pharmacy</a>
+                            <a href="#physiotherapy" class="block px-4 py-2 text-gray-700 hover:bg-light">Physical Therapy</a>
+                            <a href="#nutrition" class="block px-4 py-2 text-gray-700 hover:bg-light">Nutrition Services</a>
+                            <a href="#nursing" class="block px-4 py-2 text-gray-700 hover:bg-light">Nursing Department</a>
+                        </div>
+                    </div>
+                    
+                    <!-- Administrative Services Dropdown -->
+                    <div class="dropdown relative">
+                        <button class="nav-link flex items-center">
+                            Administrative Services <i class="fas fa-chevron-down ml-1 text-xs"></i>
+                        </button>
+                        <div class="dropdown-menu absolute hidden bg-white py-2 mt-1 rounded-md shadow-lg w-64 z-50">
+                            <a href="#reception" class="block px-4 py-2 text-gray-700 hover:bg-light">Reception & Guidance</a>
+                            <a href="#social" class="block px-4 py-2 text-gray-700 hover:bg-light">Social & Psychological Services</a>
+                            <a href="#insurance" class="block px-4 py-2 text-gray-700 hover:bg-light">Insurance & Billing</a>
+                        </div>
+                    </div>
+                    
+                    <a href="#contact" class="nav-link">Contact</a>
+                </nav>
+
+                <!-- Mobile menu button -->
+                <button id="mobile-menu-button" class="md:hidden text-dark">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+            </div>
+
+            <!-- Mobile Navigation Menu -->
+            <div id="mobile-menu" class="hidden md:hidden py-4 border-t">
+                <a href="#" class="block py-2 text-dark font-medium">Home</a>
+                
+                <div class="py-2">
+                    <button class="flex justify-between items-center w-full text-dark font-medium">
+                        Medical Services <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="mt-2 pl-4 hidden">
+                        <a href="#emergency" class="block py-2 text-gray-600">Emergency Department</a>
+                        <a href="#outpatient" class="block py-2 text-gray-600">Outpatient Clinics</a>
+                        <a href="#inpatient" class="block py-2 text-gray-600">Inpatient Department</a>
+                        <a href="#surgery" class="block py-2 text-gray-600">Surgery Department</a>
+                        <a href="#obgyn" class="block py-2 text-gray-600">OB/GYN & Maternity</a>
+                        <a href="#pediatrics" class="block py-2 text-gray-600">Pediatrics Department</a>
+                    </div>
+                </div>
+                
+                <!-- Repeat for other dropdowns in mobile view -->
+                
+                <a href="#contact" class="block py-2 text-dark font-medium">Contact</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="bg-gradient-to-r from-primary to-secondary text-white py-16 md:py-24">
+        <div class="container mx-auto px-4 text-center">
+            <h1 class="text-4xl md:text-5xl font-bold mb-6">Comprehensive Healthcare Services</h1>
+            <p class="text-xl mb-8 max-w-2xl mx-auto">Providing exceptional medical care with state-of-the-art facilities and a dedicated team of healthcare professionals.</p>
+            <div class="flex flex-col sm:flex-row justify-center gap-4">
+                <a href="#contact" class="bg-white text-primary font-semibold py-3 px-8 rounded-lg shadow-lg hover:bg-gray-100 smooth-transition">
+                    Book an Appointment
+                </a>
+                <a href="#emergency" class="bg-accent text-white font-semibold py-3 px-8 rounded-lg shadow-lg hover:bg-teal-500 smooth-transition">
+                    Emergency Contact
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-12">
+        <!-- Medical Services Section -->
+        <section id="medical-services" class="mb-16">
+            <h2 class="text-3xl font-bold text-dark mb-2">Medical Services</h2>
+            <div class="w-20 h-1 bg-primary mb-8"></div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Emergency Department -->
+                <div id="emergency" class="service-card bg-white rounded-lg shadow-md overflow-hidden smooth-transition">
+                    <div class="bg-red-500 text-white p-4">
+                        <h3 class="text-xl font-bold">Emergency Department</h3>
+                    </div>
+                    <div class="p-6">
+                        <p class="text-gray-600 mb-4"><strong>Function:</strong> Receiving urgent cases 24/7</p>
+                        <p class="text-gray-600 mb-4"><strong>Services:</strong> Accident treatment, bleeding, burns, heart attacks, fainting</p>
+                        <p class="text-gray-600 mb-4"><strong>Team:</strong> Emergency physicians, specialized nurses, paramedics</p>
+                        <p class="text-gray-600"><strong>Location:</strong> At the hospital entrance for quick access</p>
+                    </div>
+                </div>
+                
+                <!-- Outpatient Clinics -->
+                <div id="outpatient" class="service-card bg-white rounded-lg shadow-md overflow-hidden smooth-transition">
+                    <div class="bg-blue-500 text-white p-4">
+                        <h3 class="text-xl font-bold">Outpatient Clinics</h3>
+                    </div>
+                    <div class="p-6">
+                        <p class="text-gray-600 mb-4"><strong>Function:</strong> Examining non-resident patients</p>
+                        <p class="text-gray-600 mb-4"><strong>Services:</strong></p>
+                        <ul class="list-disc pl-5 text-gray-600 mb-4">
+                            <li>Chronic disease follow-up (diabetes, hypertension)</li>
+                            <li>Regular general check-ups</li>
+                            <li>Specialty reviews (cardiology, ophthalmology, dentistry, orthopedics)</li>
+                        </ul>
+                        <p class="text-gray-600"><strong>Team:</strong> Consultant physicians and nurses for each specialty</p>
+                    </div>
+                </div>
+                
+                <!-- Inpatient Department -->
+                <div id="inpatient" class="service-card bg-white rounded-lg shadow-md overflow-hidden smooth-transition">
+                    <div class="bg-green-500 text-white p-4">
+                        <h3 class="text-xl font-bold">Inpatient Department</h3>
+                    </div>
+                    <div class="p-6">
+                        <p class="text-gray-600 mb-4"><strong>Function:</strong> Caring for patients who need to stay in the hospital</p>
+                        <p class="text-gray-600 mb-4"><strong>Services:</strong></p>
+                        <ul class="list-disc pl-5 text-gray-600 mb-4">
+                            <li>Regular medication administration</li>
+                            <li>Monitoring vital signs (pulse, pressure, temperature)</li>
+                            <li>Providing healthy meals</li>
+                        </ul>
+                        <p class="text-gray-600"><strong>Duration:</strong> From one day to weeks depending on the condition</p>
+                    </div>
+                </div>
+                
+                <!-- Surgery Department -->
+                <div id="surgery" class="service-card bg-white rounded-lg shadow-md overflow-hidden smooth-transition">
+                    <div class="bg-purple-500 text-white p-4">
+                        <h3 class="text-xl font-bold">Surgery Department</h3>
+                    </div>
+                    <div class="p-6">
+                        <p class="text-gray-600 mb-4"><strong>Function:</strong> Performing various surgical operations</p>
+                        <p class="text-gray-600 mb-4"><strong>Types of Surgery:</strong></p>
+                        <ul class="list-disc pl-5 text-gray-600 mb-4">
+                            <li><strong>Major:</strong> Such as heart, brain, or tumor removal</li>
+                            <li><strong>Minor:</strong> Such as appendix removal or skin abscess</li>
+                        </ul>
+                        <p class="text-gray-600"><strong>Location:</strong> Operating rooms equipped with complete anesthesia and sterilization devices</p>
+                    </div>
+                </div>
+                
+                <!-- OB/GYN & Maternity -->
+                <div id="obgyn" class="service-card bg-white rounded-lg shadow-md overflow-hidden smooth-transition">
+                    <div class="bg-pink-500 text-white p-4">
+                        <h3 class="text-xl font-bold">OB/GYN & Maternity</h3>
+                    </div>
+                    <div class="p-6">
+                        <p class="text-gray-600 mb-4"><strong>Function:</strong> Caring for women before, during, and after pregnancy</p>
+                        <p class="text-gray-600 mb-4"><strong>Services:</strong></p>
+                        <ul class="list-disc pl-5 text-gray-600 mb-4">
+                            <li>Pregnancy follow-up and fetal examinations</li>
+                            <li>Natural and cesarean delivery</li>
+                            <li>Treatment of uterine and ovarian diseases</li>
+                        </ul>
+                        <p class="text-gray-600"><strong>Team:</strong> Gynecologists, obstetricians, midwives, nurses</p>
+                    </div>
+                </div>
+                
+                <!-- Pediatrics Department -->
+                <div id="pediatrics" class="service-card bg-white rounded-lg shadow-md overflow-hidden smooth-transition">
+                    <div class="bg-yellow-500 text-white p-4">
+                        <h3 class="text-xl font-bold">Pediatrics Department</h3>
+                    </div>
+                    <div class="p-6">
+                        <p class="text-gray-600 mb-4"><strong>Function:</strong> Diagnosing and treating children's diseases from birth to adolescence</p>
+                        <p class="text-gray-600 mb-4"><strong>Services:</strong></p>
+                        <ul class="list-disc pl-5 text-gray-600 mb-4">
+                            <li>Treatment of infections, fever, respiratory diseases</li>
+                            <li>Growth and nutrition follow-up</li>
+                            <li>Administration of periodic vaccinations</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Diagnostic Services Section -->
+        <section id="diagnostic-services" class="mb-16">
+            <h2 class="text-3xl font-bold text-dark mb-2">Diagnostic Services</h2>
+            <div class="w-20 h-1 bg-primary mb-8"></div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Medical Laboratories -->
+                <div id="laboratory" class="service-card bg-white rounded-lg shadow-md overflow-hidden smooth-transition">
+                    <div class="bg-indigo-500 text-white p-4">
+                        <h3 class="text-xl font-bold">Medical Laboratories</h3>
+                    </div>
+                    <div class="p-6">
+                        <p class="text-gray-600 mb-4"><strong>Function:</strong> Analyzing medical samples to diagnose diseases</p>
+                        <p class="text-gray-600 mb-4"><strong>Common Tests:</strong></p>
+                        <ul class="list-disc pl-5 text-gray-600 mb-4">
+                            <li>Blood, urine, and stool analysis</li>
+                            <li>Hormone tests</li>
+                            <li>Virus and bacteria examination</li>
+                        </ul>
+                        <p class="text-gray-600"><strong>Result:</strong> Helps the doctor determine appropriate treatment</p>
+                    </div>
+                </div>
+                
+                <!-- Radiology Department -->
+                <div id="radiology" class="service-card bg-white rounded-lg shadow-md overflow-hidden smooth-transition">
+                    <div class="bg-teal-500 text-white p-4">
+                        <h3 class="text-xl font-bold">Radiology Department</h3>
+                    </div>
+                    <div class="p-6">
+                        <p class="text-gray-600 mb-4"><strong>Function:</strong> Imaging internal body organs</p>
+                        <p class="text-gray-600 mb-4"><strong>Types of Imaging:</strong></p>
+                        <ul class="list-disc pl-5 text-gray-600 mb-4">
+                            <li><strong>X-ray:</strong> For imaging bones and lungs</li>
+                            <li><strong>Ultrasound:</strong> For pregnancy and internal organs</li>
+                            <li><strong>CT scan:</strong> Accurate sectional imaging of organs</li>
+                            <li><strong>MRI:</strong> Magnetic resonance imaging for brain and muscles</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- Electrical Examinations -->
+                <div id="electrical" class="service-card bg-white rounded-lg shadow-md overflow-hidden smooth-transition">
+                    <div class="bg-cyan-500 text-white p-4">
+                        <h3 class="text-xl font-bold">Electrical Examinations</h3>
+                    </div>
+                    <div class="p-6">
+                        <p class="text-gray-600 mb-4"><strong>Function:</strong> Measuring heart and brain activity</p>
+                        <p class="text-gray-600 mb-4"><strong>Devices:</strong></p>
+                        <ul class="list-disc pl-5 text-gray-600 mb-4">
+                            <li><strong>ECG:</strong> Electrocardiogram</li>
+                            <li><strong>EEG:</strong> Electroencephalogram</li>
+                            <li><strong>EMG:</strong> Electromyography</li>
+                        </ul>
+                        <p class="text-gray-600"><strong>Goal:</strong> Detecting heart or nerve disorders</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Treatment & Support Section -->
+        <section id="treatment-support" class="mb-16">
+            <h2 class="text-3xl font-bold text-dark mb-2">Treatment & Support Services</h2>
+            <div class="w-20 h-1 bg-primary mb-8"></div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8">
+                <!-- Pharmacy -->
+                <div id="pharmacy" class="service-card bg-white rounded-lg shadow-md overflow-hidden smooth-transition">
+                    <div class="bg-orange-500 text-white p-4">
+                        <h3 class="text-xl font-bold">Pharmacy</h3>
+                    </div>
+                    <div class="p-6">
+                        <p class="text-gray-600 mb-4"><strong>Function:</strong> Dispensing medications prescribed by the doctor</p>
+                        <p class="text-gray-600 mb-4"><strong>Services:</strong></p>
+                        <ul class="list-disc pl-5 text-gray-600 mb-4">
+                            <li>Preparing special medications (solutions, ointments)</li>
+                            <li>Providing instructions on usage and dosages</li>
+                            <li>Storing medications in appropriate conditions</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- Physical Therapy -->
+                <div id="physiotherapy" class="service-card bg-white rounded-lg shadow-md overflow-hidden smooth-transition">
+                    <div class="bg-lime-500 text-white p-4">
+                        <h3 class="text-xl font-bold">Physical Therapy & Rehabilitation</h3>
+                    </div>
+                    <div class="p-6">
+                        <p class="text-gray-600 mb-4"><strong>Function:</strong> Helping patients regain movement and strength after operations or accidents</p>
+                        <p class="text-gray-600 mb-4"><strong>Services:</strong></p>
+                        <ul class="list-disc pl-5 text-gray-600 mb-4">
+                            <li>Therapeutic exercise sessions</li>
+                            <li>Electrical stimulation devices for muscles</li>
+                            <li>Rehabilitation after strokes or fractures</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- Nutrition Services -->
+                <div id="nutrition" class="service-card bg-white rounded-lg shadow-md overflow-hidden smooth-transition">
+                    <div class="bg-amber-500 text-white p-4">
+                        <h3 class="text-xl font-bold">Nutrition Services</h3>
+                    </div>
+                    <div class="p-6">
+                        <p class="text-gray-600 mb-4"><strong>Function:</strong> Preparing healthy meals suitable for each patient's condition</p>
+                        <p class="text-gray-600 mb-4"><strong>Services:</strong></p>
+                        <ul class="list-disc pl-5 text-gray-600 mb-4">
+                            <li>Organizing diets for diabetic and hypertensive patients</li>
+                            <li>Providing special meals for children or patients after operations</li>
+                            <li>Monitoring weight and proper nutrition</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- Nursing Department -->
+                <div id="nursing" class="service-card bg-white rounded-lg shadow-md overflow-hidden smooth-transition">
+                    <div class="bg-rose-500 text-white p-4">
+                        <h3 class="text-xl font-bold">Nursing Department</h3>
+                    </div>
+                    <div class="p-6">
+                        <p class="text-gray-600 mb-4"><strong>Function:</strong> Providing continuous care to patients</p>
+                        <p class="text-gray-600 mb-4"><strong>Services:</strong></p>
+                        <ul class="list-disc pl-5 text-gray-600 mb-4">
+                            <li>Administering medications on time</li>
+                            <li>Monitoring vital signs</li>
+                            <li>Assisting patients with personal hygiene</li>
+                            <li>Recording condition notes for the doctor</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Administrative Services Section -->
+        <section id="administrative-services" class="mb-16">
+            <h2 class="text-3xl font-bold text-dark mb-2">Administrative & Social Services</h2>
+            <div class="w-20 h-1 bg-primary mb-8"></div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Reception & Guidance -->
+                <div id="reception" class="service-card bg-white rounded-lg shadow-md overflow-hidden smooth-transition">
+                    <div class="bg-sky-500 text-white p-4">
+                        <h3 class="text-xl font-bold">Reception & Guidance</h3>
+                    </div>
+                    <div class="p-6">
+                        <p class="text-gray-600 mb-4"><strong>Function:</strong> Receiving patients and directing them to appropriate departments</p>
+                        <p class="text-gray-600 mb-4"><strong>Services:</strong></p>
+                        <ul class="list-disc pl-5 text-gray-600 mb-4">
+                            <li>Data registration</li>
+                            <li>Appointment scheduling</li>
+                            <li>Assisting visitors in finding clinics</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- Social & Psychological Services -->
+                <div id="social" class="service-card bg-white rounded-lg shadow-md overflow-hidden smooth-transition">
+                    <div class="bg-violet-500 text-white p-4">
+                        <h3 class="text-xl font-bold">Social & Psychological Services</h3>
+                    </div>
+                    <div class="p-6">
+                        <p class="text-gray-600 mb-4"><strong>Function:</strong> Providing psychological and social support to patients</p>
+                        <p class="text-gray-600 mb-4"><strong>Services:</strong></p>
+                        <ul class="list-disc pl-5 text-gray-600 mb-4">
+                            <li>Helping patients overcome anxiety and depression</li>
+                            <li>Communicating with patients' families</li>
+                            <li>Supporting the poor or those in need of free treatment</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- Insurance & Billing -->
+                <div id="insurance" class="service-card bg-white rounded-lg shadow-md overflow-hidden smooth-transition">
+                    <div class="bg-emerald-500 text-white p-4">
+                        <h3 class="text-xl font-bold">Insurance & Billing</h3>
+                    </div>
+                    <div class="p-6">
+                        <p class="text-gray-600 mb-4"><strong>Function:</strong> Organizing payment processes and dealing with insurance companies</p>
+                        <p class="text-gray-600 mb-4"><strong>Services:</strong></p>
+                        <ul class="list-disc pl-5 text-gray-600 mb-4">
+                            <li>Reviewing invoices</li>
+                            <li>Confirming insurance coverage</li>
+                            <li>Facilitating payment for patients</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="mb-16">
+            <h2 class="text-3xl font-bold text-dark mb-2">Contact Us</h2>
+            <div class="w-20 h-1 bg-primary mb-8"></div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <h3 class="text-xl font-bold text-dark mb-4">Get In Touch</h3>
+                    <form>
+                        <div class="mb-4">
+                            <label for="name" class="block text-gray-700 mb-2">Full Name</label>
+                            <input type="text" id="name" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
+                        </div>
+                        <div class="mb-4">
+                            <label for="email" class="block text-gray-700 mb-2">Email Address</label>
+                            <input type="email" id="email" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
+                        </div>
+                        <div class="mb-4">
+                            <label for="phone" class="block text-gray-700 mb-2">Phone Number</label>
+                            <input type="tel" id="phone" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
+                        </div>
+                        <div class="mb-4">
+                            <label for="message" class="block text-gray-700 mb-2">Message</label>
+                            <textarea id="message" rows="4" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"></textarea>
+                        </div>
+                        <button type="submit" class="bg-primary text-white font-semibold py-3 px-6 rounded-lg hover:bg-secondary smooth-transition">
+                            Send Message
+                        </button>
+                    </form>
+                </div>
+                
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <h3 class="text-xl font-bold text-dark mb-4">Contact Information</h3>
+                    <div class="space-y-4">
+                        <div class="flex items-start">
+                            <i class="fas fa-map-marker-alt text-primary mt-1 mr-3"></i>
+                            <div>
+                                <h4 class="font-semibold">Address</h4>
+                                <p class="text-gray-600">123 Healthcare Avenue, Medical District, City, Country</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <i class="fas fa-phone text-primary mt-1 mr-3"></i>
+                            <div>
+                                <h4 class="font-semibold">Phone</h4>
+                                <p class="text-gray-600">+250 795 741 042</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <i class="fas fa-envelope text-primary mt-1 mr-3"></i>
+                            <div>
+                                <h4 class="font-semibold">Email</h4>
+                                <p class="text-gray-600">hanibasha3270@gmail.com</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <i class="fas fa-clock text-primary mt-1 mr-3"></i>
+                            <div>
+                                <h4 class="font-semibold">Emergency Department</h4>
+                                <p class="text-gray-600">Open 24/7</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-8">
+                        <h4 class="font-semibold mb-2">Emergency Hotline</h4>
+                        <div class="bg-red-50 border border-red-200 rounded-lg p-4">
+                            <p class="text-red-700 font-bold text-xl">911 / 112</p>
+                            <p class="text-red-600">For immediate medical assistance</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-12">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="text-xl font-bold mb-4">MediCare Hospital</h3>
+                    <p class="text-gray-300">Providing comprehensive healthcare services with compassion and excellence.</p>
+                </div>
+                
+                <div>
+                    <h4 class="font-semibold mb-4">Quick Links</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#emergency" class="text-gray-300 hover:text-white smooth-transition">Emergency</a></li>
+                        <li><a href="#appointment" class="text-gray-300 hover:text-white smooth-transition">Book Appointment</a></li>
+                        <li><a href="#doctors" class="text-gray-300 hover:text-white smooth-transition">Our Doctors</a></li>
+                        <li><a href="#visitors" class="text-gray-300 hover:text-white smooth-transition">Visitors Info</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="font-semibold mb-4">Services</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#medical-services" class="text-gray-300 hover:text-white smooth-transition">Medical Services</a></li>
+                        <li><a href="#diagnostic-services" class="text-gray-300 hover:text-white smooth-transition">Diagnostic Services</a></li>
+                        <li><a href="#treatment-support" class="text-gray-300 hover:text-white smooth-transition">Treatment & Support</a></li>
+                        <li><a href="#administrative-services" class="text-gray-300 hover:text-white smooth-transition">Administrative Services</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="font-semibold mb-4">Connect With Us</h4>
+                    <div class="flex space-x-4 mb-4">
+                        <a href="#" class="bg-primary p-2 rounded-full hover:bg-accent smooth-transition">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="bg-primary p-2 rounded-full hover:bg-accent smooth-transition">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="bg-primary p-2 rounded-full hover:bg-accent smooth-transition">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="bg-primary p-2 rounded-full hover:bg-accent smooth-transition">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                    </div>
+                    <p class="text-gray-300">Subscribe to our newsletter</p>
+                    <div class="mt-2 flex">
+                        <input type="email" placeholder="Your email" class="px-3 py-2 text-gray-800 rounded-l-lg w-full">
+                        <button class="bg-primary px-4 rounded-r-lg hover:bg-accent smooth-transition">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
+                <p>&copy; 2023 MediCare Hospital. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        document.getElementById('mobile-menu-button').addEventListener('click', function() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        });
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if(targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if(targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 100,
+                        behavior: 'smooth'
+                    });
+                    
+                    // Close mobile menu if open
+                    const mobileMenu = document.getElementById('mobile-menu');
+                    mobileMenu.classList.add('hidden');
+                }
+            });
+        });
+
+        // Add active class to nav links on scroll
+        window.addEventListener('scroll', function() {
+            const sections = document.querySelectorAll('section');
+            const navLinks = document.querySelectorAll('.nav-link');
+            
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if(scrollY >= (sectionTop - 150)) {
+                    current = section.getAttribute('id');
+                }
+            });
+            
+            navLinks.forEach(link => {
+                link.classList.remove('text-primary', 'font-semibold');
+                if(link.getAttribute('href').substring(1) === current) {
+                    link.classList.add('text-primary', 'font-semibold');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
