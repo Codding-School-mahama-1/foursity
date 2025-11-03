@@ -1,3 +1,12 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./styl.css">
+</head>
+<style>
 
     
     body {
@@ -42,7 +51,7 @@
         width: 100%;
         padding: 14px;
         margin: 10px 0;
-        border-radius: 10px;
+        border-radius: 12px;
         border: 1px solid #ccc;
         outline: none;
         transition: all 0.3s ease;
@@ -82,3 +91,15 @@
     .toggle:hover {
         color: #a18cd1;
     }
+
+</style>
+<body>
+    <div class="container" id="login">
+    <h2>Login</h2>
+    <input type="email" placeholder="Email">
+    <input type="password" placeholder="Password">
+    <button>Login</button>
+    <div class="toggle" onclick="toggleForm()">Don't have an account? <a href="./sigin.html"> Sign In</a></div>
+</div>
+</body>
+</html>

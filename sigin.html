@@ -3,17 +3,104 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>sigup</title>
     <link rel="stylesheet" href="./styl.css">
 </head>
+<style>
+
+    
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        height: 100vh;
+        margin: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: linear-gradient(-45deg, #ff9a9e, #fad0c4, #a18cd1, #fbc2eb);
+        background-size: 500% 500%;
+        animation: gradientBG 15s ease infinite;
+    }
+    @keyframes gradientBG {
+        0% {background-position: 0% 50%;}
+        50% {background-position: 100% 50%;}
+        100% {background-position: 0% 50%;}
+    }
+
+    .container {
+        background: rgba(233, 223, 223, 0.9);
+        border-radius: 20px;
+        box-shadow: 0 15px 40px rgba(201, 185, 185, 0.3);
+        width: 380px;
+        padding: 40px;
+        text-align: center;
+        transition: transform 0.3s ease;
+    }
+    .container:hover {
+        transform: scale(1.05);
+        background-color: rgb(106, 223, 193);
+        color: rgb(128, 76, 133);
+    }
+
+    h2 {
+        margin-bottom: 25px;
+        color: #333;
+        letter-spacing: 1px;
+    }
+
+    input[type="text"], input[type="email"], input[type="password"] {
+        width: 100%;
+        padding: 14px;
+        margin: 10px 0;
+        border-radius: 12px;
+        border: 1px solid #ccc;
+        outline: none;
+        transition: all 0.3s ease;
+        font-size: 15px;
+    }
+    input[type="text"]:focus, input[type="email"]:focus, input[type="password"]:focus {
+        border: 10px solid #a18cd1;
+        box-shadow: 0 0 12px #a18cd1;
+        background-color: #66d3a6;
+    }
+
+    button {
+        width: 100%;
+        padding: 15px;
+        margin-top: 15px;
+        border: none;
+        border-radius: 12px;
+        background: linear-gradient(45deg, #755758, #66d3a6);
+        color: #fff;
+        font-size: 16px;
+        cursor: pointer;
+        transition: all 0.4s ease;
+    }
+    button:hover {
+        background: linear-gradient(45deg, #fad0c4, #fbc2eb);
+        transform: translateY(-3px);
+        box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+    }
+
+    .toggle {
+        margin-top: 18px;
+        font-size: 14px;
+        color: #555;
+        cursor: pointer;
+        transition: color 0.3s ease;
+    }
+    .toggle:hover {
+        color: #a18cd1;
+    }
+
+</style>
 <body>
-    <div class="container" id="login">
-    <h2>Login</h2>
-    <input type="text" placeholder="fullName">
-    <input type="email" placeholder="Email">
-    <input type="password" placeholder="Password">
-    <button>Login</button>
-    <div class="toggle" onclick="toggleForm()">Don't have an account? Sign Up <a href="./sigup.html">sigin</a></div>
-</div>
+     <div class="container" id="signup" >
+        <h2>Sign Up</h2>
+        <input type="text" placeholder="Full Name">
+        <input type="email" placeholder="Email">
+        <input type="password" placeholder="Password">
+        <button>Sign Up</button>
+        <div class="toggle" onclick="toggleForm()">Already have an account? <a href="./logup.html"> Login</a></div>
+    </div>
 </body>
 </html>
