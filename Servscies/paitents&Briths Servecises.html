@@ -1,0 +1,99 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Registration - Hospital Admin</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 text-gray-800">
+
+  <div class="flex min-h-screen">
+    <!-- Sidebar -->
+    <aside class="w-64 bg-blue-700 text-white flex flex-col ">
+      <div class="text-2xl font-bold p-6 border-b border-blue-600">Hospital Admin</div>
+      <nav class="flex-1 p-4 space-y-2">
+        <a href="dashboard.html" class="block p-2 rounded hover:bg-blue-600">📊 Dashboard</a>
+        <a href="#register-patient" class="block p-2 rounded hover:bg-blue-600">🧑‍⚕️ Register Patient</a>
+        <a href="#register-birth" class="block p-2 rounded hover:bg-blue-600">👶 Register Birth</a>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 p-6 space-y-8 overflow-y-auto bg-green-300">
+
+      <!-- Register Patient -->
+      <section id="register-patient">
+        <h2 class="text-2xl font-bold mb-4 ">Register New Patient</h2>
+        <form class="bg-gray-600 shadow rounded-2xl p-6 space-y-4 w-[790px]">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-sm font-medium mb-1">Full Name</label>
+              <input type="text" class="w-full border rounded-lg p-2 focus:ring-2 focus:ring-blue-500" placeholder="Patient Name" required>
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-1">Age</label>
+              <input type="number" class="w-full border rounded-lg p-2 focus:ring-2 focus:ring-blue-500" placeholder="Age" required>
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-1">Gender</label>
+              <select class="w-full border rounded-lg p-2 focus:ring-2 focus:ring-blue-500" required>
+                <option value="">Select</option>
+                <option>Male</option>
+                <option>Female</option>
+                <option>Other</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-1">Contact</label>
+              <input type="text" class="w-full border rounded-lg p-2 focus:ring-2 focus:ring-blue-500" placeholder="Phone number">
+            </div>
+          </div>
+          <div>
+            <label class="block text-sm font-medium mb-1">Address</label>
+            <textarea class="w-full border rounded-lg p-2 focus:ring-2 focus:ring-blue-500" rows="3" placeholder="Address"></textarea>
+          </div>
+          <button type="submit" class="bg-green-600 text-white px-6 py-2 rounded-xl hover:bg-blue-800">Submit</button>
+        </form>
+      </section>
+
+      <!-- Register Birth -->
+      <section id="register-birth" >
+        <h2 class="text-2xl font-bold mb-4">Register New Birth</h2>
+      <form class="bg-gray-600 shadow rounded-2xl p-6 space-y-4 w-[790px]">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-sm font-medium mb-1">Baby Name</label>
+              <input type="text" class="w-full border rounded-lg p-2 focus:ring-2 focus:ring-blue-500" placeholder="Baby Name" required>
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-1">Date of Birth</label>
+              <input type="date" class="w-full border rounded-lg p-2 focus:ring-2 focus:ring-blue-500" required>
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-1">Gender</label>
+              <select class="w-full border rounded-lg p-2 focus:ring-2 focus:ring-blue-500" required>
+                <option value="">Select</option>
+                <option>Male</option>
+                <option>Female</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-1">Mother's Name</label>
+              <input type="text" class="w-full border rounded-lg p-2 focus:ring-2 focus:ring-blue-500" placeholder="Mother Name">
+            </div>
+          </div>
+          <div>
+            <label class="block text-sm font-medium mb-1">Notes</label>
+            <textarea class="w-full border rounded-lg p-2 focus:ring-2 focus:ring-blue-500" rows="3" placeholder="Any notes"></textarea>
+          </div>
+          <button type="submit" class="bg-green-600 text-white px-6 py-2 rounded-xl hover:bg-green-700">Submit</button>
+        </form>
+      </section>
+
+    </main>
+  </div>
+
+</body>
+</html>
