@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CareBridge - Disability Care Services</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            overflow-x: hidden;
+            font-size: 0.875rem; /* Reduced base font size */
+        }
+        
+        .hero-bg {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.85) 0%, rgba(37, 99, 235, 0.9) 100%), 
+                        url('https://images.unsplash.com/photo-1576765608535-5f04d1e3f289?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80');
+            background-size: cover;
+            background-position: center;
+        }
+        
+        .floating {
+            animation: floating 3s ease-in-out infinite;
+        }
+        
+        @keyframes floating {
+            0% { transform: translate(0, 0px); }
+            50% { transform: translate(0, -10px); }
+            100% { transform: translate(0, 0px); }
+        }
+        
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.03); }
+            100% { transform: scale(1); }
+        }
+        
+        .fade-in {
+            opacity: 0;
+            transform: translateY(15px);
+            transition: all 0.5s ease-out;
+        }
+        
+        .fade-in.appear {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .service-card {
+            transition: all 0.3s ease;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+        
+        .service-card:hover::before {
+            left: 100%;
+        }
+        
+        .service-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+        }
+        
+        .parallax {
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+        
+        .glow {
+            box-shadow: 0 0 10px rgba(59, 130, 246, 0.4);
+        }
+        
+        .text-glow {
+            text-shadow: 0 0 8px rgba(255, 255, 255, 0.6);
+        }
+        
+        .gradient-text {
+            background: linear-gradient(135deg, #3b82f6, #1e40af);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .wave {
+            animation: wave 8s linear infinite;
+        }
+        
+        @keyframes wave {
+            0% { transform: rotate(0deg); }
+            10% { transform: rotate(14deg); }
+            20% { transform: rotate(-8deg); }
+            30% { transform: rotate(14deg); }
+            40% { transform: rotate(-4deg); }
+            50% { transform: rotate(10deg); }
+            60% { transform: rotate(0deg); }
+            100% { transform: rotate(0deg); }
+        }
+        
+        .active-section {
+            background-color: rgba(59, 130, 246, 0.08);
+            border-left: 3px solid #3b82f6;
+            transition: all 0.3s ease;
+        }
+        
+        .connection-line {
+            position: absolute;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #3b82f6, transparent);
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: -1;
+        }
+        
+        .nav-indicator {
+            position: fixed;
+            top: 50%;
+            right: 15px;
+            transform: translateY(-50%);
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        
+        .nav-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: #cbd5e1;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-dot.active {
+            background-color: #3b82f6;
+            transform: scale(1.2);
+        }
+        
+        .nav-dot:hover {
+            background-color: #60a5fa;
+        }
+        
+        .scroll-hint {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: white;
+            font-size: 12px;
+            opacity: 0.8;
+        }
+        
+        .scroll-arrow {
+            width: 16px;
+            height: 16px;
+            border-right: 2px solid white;
+            border-bottom: 2px solid white;
+            transform: rotate(45deg);
+            margin-top: 4px;
+            animation: bounce 2s infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0) rotate(45deg);
+            }
+            40% {
+                transform: translateY(-8px) rotate(45deg);
+            }
+            60% {
+                transform: translateY(-4px) rotate(45deg);
+            }
+        }
+        
+        .section-highlight {
+            position: relative;
+        }
+        
+        .section-highlight::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.04) 0%, rgba(37, 99, 235, 0.08) 100%);
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+        
+        .section-highlight.active::before {
+            opacity: 1;
+        }
+        
+        /* Reduced container max-width */
+        .container {
+            max-width: 1100px;
+        }
+        
+        /* Improved send button styles */
+        .send-button {
+            background: linear-gradient(135deg, #3b82f6, #1e40af);
+            color: white;
+            padding: 10px 24px;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+        }
+        
+        .send-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(59, 130, 246, 0.4);
+        }
+        
+        .send-button:active {
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Navigation Indicator -->
+    <div class="nav-indicator">
+        <div class="nav-dot active" data-section="hero"></div>
+        <div class="nav-dot" data-section="services"></div>
+        <div class="nav-dot" data-section="about"></div>
+        <div class="nav-dot" data-section="contact"></div>
+    </div>
+
+    <!-- Header -->
+    <header class="bg-white shadow-sm py-3 sticky top-0 z-50">
+        <div class="container mx-auto px-4 flex justify-between items-center">
+            <div class="flex items-center">
+                <i class="fas fa-hands-helping text-blue-600 text-xl mr-2 floating"></i>
+                <h1 class="text-xl font-bold text-blue-800">CareBridge</h1>
+            </div>
+            
+            <nav class="hidden md:flex space-x-6 text-sm">
+                <a href="#hero" class="text-blue-800 font-medium hover:text-blue-600 transition-colors nav-link" data-section="hero">Home</a>
+                <a href="#services" class="text-gray-600 font-medium hover:text-blue-600 transition-colors nav-link" data-section="services">Services</a>
+                <a href="#about" class="text-gray-600 font-medium hover:text-blue-600 transition-colors nav-link" data-section="about">About Us</a>
+                <a href="#contact" class="text-gray-600 font-medium hover:text-blue-600 transition-colors nav-link" data-section="contact">Contact</a>
+            </nav>
+            
+            <div class="flex items-center space-x-3">
+                <div class="relative group">
+                    <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center cursor-pointer pulse get-help-btn">
+                        <i class="fas fa-comment-dots text-blue-600 text-sm"></i>
+                    </div>
+                    <div class="absolute -bottom-10 right-0 bg-blue-600 text-white px-2 py-1 rounded text-xs opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">
+                        Need Help?
+                    </div>
+                </div>
+                
+                <div class="relative group">
+                    <div class="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center cursor-pointer">
+                        <i class="fas fa-user-md text-green-600 text-sm"></i>
+                    </div>
+                    <div class="absolute -bottom-10 right-0 bg-green-600 text-white px-2 py-1 rounded text-xs opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">
+                        Our Team
+                    </div>
+                </div>
+            </div>
+            
+            <button class="md:hidden text-gray-600">
+                <i class="fas fa-bars text-lg"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="hero" class="hero-bg text-white py-16 md:py-24 relative overflow-hidden section-highlight active">
+        <!-- Floating elements -->
+        <div class="absolute top-8 left-8 w-16 h-16 rounded-full bg-white opacity-10 floating"></div>
+        <div class="absolute bottom-16 right-16 w-12 h-12 rounded-full bg-white opacity-10 floating" style="animation-delay: 1s;"></div>
+        <div class="absolute top-1/3 right-1/4 w-10 h-10 rounded-full bg-white opacity-10 floating" style="animation-delay: 2s;"></div>
+        
+        <div class="container mx-auto px-4 text-center relative z-10">
+            <h1 class="text-3xl md:text-5xl font-bold mb-4 text-glow fade-in">Compassionate Disability Care</h1>
+            <p class="text-lg md:text-xl mb-6 max-w-2xl mx-auto fade-in" style="transition-delay: 0.2s;">Providing personalized support and care services to enhance the quality of life for individuals with disabilities.</p>
+            
+            <!-- Visual elements instead of buttons -->
+            <div class="flex justify-center items-center space-x-6 mt-10 relative">
+                <!-- Connection lines -->
+                <div class="connection-line" id="line-services" style="width: 0; left: 50%;"></div>
+                
+                <div class="flex flex-col items-center group cursor-pointer fade-in services-btn" style="transition-delay: 0.4s;">
+                    <div class="w-16 h-16 rounded-full bg-white bg-opacity-20 flex items-center justify-center mb-2 glow group-hover:bg-opacity-30 transition-all duration-300">
+                        <i class="fas fa-hands text-2xl wave"></i>
+                    </div>
+                    <span class="font-medium text-sm">Our Services</span>
+                </div>
+                
+                <div class="flex flex-col items-center group cursor-pointer fade-in contact-btn" style="transition-delay: 0.6s;">
+                    <div class="w-16 h-16 rounded-full bg-white bg-opacity-20 flex items-center justify-center mb-2 glow group-hover:bg-opacity-30 transition-all duration-300">
+                        <i class="fas fa-envelope text-2xl pulse"></i>
+                    </div>
+                    <span class="font-medium text-sm">Contact Us</span>
+                </div>
+                
+                <div class="flex flex-col items-center group cursor-pointer fade-in get-help-btn" style="transition-delay: 0.8s;">
+                    <div class="w-16 h-16 rounded-full bg-white bg-opacity-20 flex items-center justify-center mb-2 glow group-hover:bg-opacity-30 transition-all duration-300">
+                        <i class="fas fa-heart text-2xl floating"></i>
+                    </div>
+                    <span class="font-medium text-sm">Get Help</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Scroll hint -->
+        <div class="scroll-hint">
+            <span>Scroll to explore</span>
+            <div class="scroll-arrow"></div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="py-16 bg-white section-highlight">
+        <div class="container mx-auto px-4">
+            <h2 class="text-2xl md:text-3xl font-bold text-center text-blue-800 mb-3 fade-in">Our Services</h2>
+            <p class="text-gray-600 text-center max-w-xl mx-auto mb-12 text-sm fade-in" style="transition-delay: 0.2s;">We offer a comprehensive range of disability care services tailored to individual needs and preferences.</p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Service 1 -->
+                <div class="service-card bg-blue-50 p-5 rounded-lg border border-blue-100 fade-in">
+                    <div class="bg-blue-100 w-12 h-12 rounded-full flex items-center justify-center mb-3 glow">
+                        <i class="fas fa-user-nurse text-blue-600 text-xl"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-blue-800 mb-2">Personal Care Assistance</h3>
+                    <p class="text-gray-600 text-xs mb-3">Help with daily living activities including bathing, dressing, and meal preparation.</p>
+                    <div class="flex items-center text-blue-600 font-medium cursor-pointer group text-sm">
+                        <span>Learn More</span>
+                        <i class="fas fa-arrow-right ml-2 transform group-hover:translate-x-1 transition-transform text-xs"></i>
+                    </div>
+                </div>
+                
+                <!-- Service 2 -->
+                <div class="service-card bg-green-50 p-5 rounded-lg border border-green-100 fade-in" style="transition-delay: 0.1s;">
+                    <div class="bg-green-100 w-12 h-12 rounded-full flex items-center justify-center mb-3 glow">
+                        <i class="fas fa-home text-green-600 text-xl"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-green-800 mb-2">Residential Support</h3>
+                    <p class="text-gray-600 text-xs mb-3">Safe and comfortable accommodation options with 24/7 support staff.</p>
+                    <div class="flex items-center text-green-600 font-medium cursor-pointer group text-sm">
+                        <span>Learn More</span>
+                        <i class="fas fa-arrow-right ml-2 transform group-hover:translate-x-1 transition-transform text-xs"></i>
+                    </div>
+                </div>
+                
+                <!-- Service 3 -->
+                <div class="service-card bg-purple-50 p-5 rounded-lg border border-purple-100 fade-in" style="transition-delay: 0.2s;">
+                    <div class="bg-purple-100 w-12 h-12 rounded-full flex items-center justify-center mb-3 glow">
+                        <i class="fas fa-briefcase-medical text-purple-600 text-xl"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-purple-800 mb-2">Therapy Services</h3>
+                    <p class="text-gray-600 text-xs mb-3">Physical, occupational, and speech therapy to improve functional abilities.</p>
+                    <div class="flex items-center text-purple-600 font-medium cursor-pointer group text-sm">
+                        <span>Learn More</span>
+                        <i class="fas fa-arrow-right ml-2 transform group-hover:translate-x-1 transition-transform text-xs"></i>
+                    </div>
+                </div>
+                
+                <!-- Service 4 -->
+                <div class="service-card bg-yellow-50 p-5 rounded-lg border border-yellow-100 fade-in" style="transition-delay: 0.3s;">
+                    <div class="bg-yellow-100 w-12 h-12 rounded-full flex items-center justify-center mb-3 glow">
+                        <i class="fas fa-car text-yellow-600 text-xl"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-yellow-800 mb-2">Transportation Services</h3>
+                    <p class="text-gray-600 text-xs mb-3">Accessible transportation for medical appointments, shopping, and community activities.</p>
+                    <div class="flex items-center text-yellow-600 font-medium cursor-pointer group text-sm">
+                        <span>Learn More</span>
+                        <i class="fas fa-arrow-right ml-2 transform group-hover:translate-x-1 transition-transform text-xs"></i>
+                    </div>
+                </div>
+                
+                <!-- Service 5 -->
+                <div class="service-card bg-red-50 p-5 rounded-lg border border-red-100 fade-in" style="transition-delay: 0.4s;">
+                    <div class="bg-red-100 w-12 h-12 rounded-full flex items-center justify-center mb-3 glow">
+                        <i class="fas fa-users text-red-600 text-xl"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-red-800 mb-2">Social & Community Participation</h3>
+                    <p class="text-gray-600 text-xs mb-3">Opportunities to engage in social activities and build community connections.</p>
+                    <div class="flex items-center text-red-600 font-medium cursor-pointer group text-sm">
+                        <span>Learn More</span>
+                        <i class="fas fa-arrow-right ml-2 transform group-hover:translate-x-1 transition-transform text-xs"></i>
+                    </div>
+                </div>
+                
+                <!-- Service 6 -->
+                <div class="service-card bg-indigo-50 p-5 rounded-lg border border-indigo-100 fade-in" style="transition-delay: 0.5s;">
+                    <div class="bg-indigo-100 w-12 h-12 rounded-full flex items-center justify-center mb-3 glow">
+                        <i class="fas fa-heart text-indigo-600 text-xl"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-indigo-800 mb-2">Respite Care</h3>
+                    <p class="text-gray-600 text-xs mb-3">Temporary care services to give primary caregivers a break while ensuring quality care.</p>
+                    <div class="flex items-center text-indigo-600 font-medium cursor-pointer group text-sm">
+                        <span>Learn More</span>
+                        <i class="fas fa-arrow-right ml-2 transform group-hover:translate-x-1 transition-transform text-xs"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Parallax Section -->
+    <section class="parallax py-24" style="background-image: url('https://images.unsplash.com/photo-1559757148-5c350d0d3c56?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80');">
+        <div class="container mx-auto px-4 text-center text-white">
+            <h2 class="text-2xl md:text-3xl font-bold mb-4 text-glow fade-in">Committed to Excellence in Care</h2>
+            <p class="text-lg max-w-2xl mx-auto mb-6 fade-in" style="transition-delay: 0.2s;">Our dedicated team works tirelessly to ensure the highest quality of life for those we serve.</p>
+            
+            <div class="flex justify-center space-x-10 mt-10">
+                <div class="text-center fade-in" style="transition-delay: 0.4s;">
+                    <div class="text-3xl font-bold text-white mb-1 pulse">500+</div>
+                    <div class="text-sm">Clients Served</div>
+                </div>
+                <div class="text-center fade-in" style="transition-delay: 0.6s;">
+                    <div class="text-3xl font-bold text-white mb-1 pulse">50+</div>
+                    <div class="text-sm">Qualified Staff</div>
+                </div>
+                <div class="text-center fade-in" style="transition-delay: 0.8s;">
+                    <div class="text-3xl font-bold text-white mb-1 pulse">10+</div>
+                    <div class="text-sm">Years Experience</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-16 bg-blue-50 section-highlight">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row items-center">
+                <div class="md:w-1/2 mb-8 md:mb-0 fade-in">
+                    <div class="relative">
+                        <img src="https://images.unsplash.com/photo-1584516150909-c43483ee7932?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80" 
+                             alt="Caregiver assisting a person with disability" 
+                             class="rounded-lg shadow-md">
+                        <div class="absolute -bottom-4 -right-4 w-24 h-24 bg-blue-600 rounded-full flex items-center justify-center text-white text-sm font-bold glow">
+                            Since 2010
+                        </div>
+                    </div>
+                </div>
+                <div class="md:w-1/2 md:pl-10 fade-in" style="transition-delay: 0.2s;">
+                    <h2 class="text-2xl md:text-3xl font-bold text-blue-800 mb-3">About CareBridge</h2>
+                    <p class="text-gray-600 text-sm mb-4">At CareBridge, we believe that every individual deserves to live a fulfilling life with dignity and independence. Our mission is to provide exceptional disability care services that empower our clients and support their families.</p>
+                    
+                    <div class="mb-4">
+                        <h3 class="text-lg font-bold text-blue-700 mb-2">Our Values</h3>
+                        <ul class="text-gray-600 text-sm space-y-1">
+                            <li class="flex items-start">
+                                <i class="fas fa-check text-green-500 mt-0.5 mr-2 text-xs"></i>
+                                <span>Compassion and empathy in all our interactions</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check text-green-500 mt-0.5 mr-2 text-xs"></i>
+                                <span>Respect for individual choices and preferences</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check text-green-500 mt-0.5 mr-2 text-xs"></i>
+                                <span>Commitment to quality and continuous improvement</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check text-green-500 mt-0.5 mr-2 text-xs"></i>
+                                <span>Collaboration with families and healthcare professionals</span>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="flex space-x-3">
+                        <div class="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center text-white cursor-pointer glow hover:bg-blue-700 transition-colors">
+                            <i class="fas fa-play text-xs"></i>
+                        </div>
+                        <div class="flex flex-col justify-center">
+                            <span class="font-medium text-blue-800 text-sm">Watch Our Story</span>
+                            <span class="text-xs text-gray-600">2-minute video</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-16 bg-white section-highlight">
+        <div class="container mx-auto px-4">
+            <h2 class="text-2xl md:text-3xl font-bold text-center text-blue-800 mb-3 fade-in">Get In Touch</h2>
+            <p class="text-gray-600 text-center max-w-xl mx-auto mb-12 text-sm fade-in" style="transition-delay: 0.2s;">We're here to answer your questions and discuss how our services can support you or your loved one.</p>
+            
+            <div class="flex flex-col md:flex-row">
+                <div class="md:w-1/2 mb-8 md:mb-0 fade-in">
+                    <div class="bg-blue-50 p-6 rounded-lg h-full">
+                        <h3 class="text-xl font-bold text-blue-800 mb-4">Contact Information</h3>
+                        
+                        <div class="space-y-4">
+                            <div class="flex items-start">
+                                <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center mr-3 glow">
+                                    <i class="fas fa-map-marker-alt text-blue-600 text-sm"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-gray-800 text-sm">Our Location</h4>
+                                    <p class="text-gray-600 text-xs">123 Care Street, Compassion City, CC 12345</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start">
+                                <div class="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center mr-3 glow">
+                                    <i class="fas fa-phone text-green-600 text-sm"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-gray-800 text-sm">Call Us</h4>
+                                    <p class="text-gray-600 text-xs">(555) 123-4567</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start">
+                                <div class="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center mr-3 glow">
+                                    <i class="fas fa-envelope text-purple-600 text-sm"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-gray-800 text-sm">Email Us</h4>
+                                    <p class="text-gray-600 text-xs">info@carebridge.com</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start">
+                                <div class="w-10 h-10 rounded-full bg-yellow-100 flex items-center justify-center mr-3 glow">
+                                    <i class="fas fa-clock text-yellow-600 text-sm"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-gray-800 text-sm">Office Hours</h4>
+                                    <p class="text-gray-600 text-xs">Monday - Friday: 8am - 6pm</p>
+                                    <p class="text-gray-600 text-xs">Saturday: 9am - 1pm</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="md:w-1/2 md:pl-10 fade-in" style="transition-delay: 0.4s;">
+                    <form class="bg-gray-50 p-6 rounded-lg">
+                        <h3 class="text-xl font-bold text-blue-800 mb-4">Send Us a Message</h3>
+                        
+                        <div class="mb-4">
+                            <label class="block text-gray-700 text-sm mb-1" for="name">Full Name</label>
+                            <input type="text" id="name" class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-blue-500 transition-all text-sm">
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label class="block text-gray-700 text-sm mb-1" for="email">Email Address</label>
+                            <input type="email" id="email" class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-blue-500 transition-all text-sm">
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label class="block text-gray-700 text-sm mb-1" for="phone">Phone Number</label>
+                            <input type="tel" id="phone" class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-blue-500 transition-all text-sm">
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label class="block text-gray-700 text-sm mb-1" for="message">Message</label>
+                            <textarea id="message" rows="3" class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-blue-500 transition-all text-sm"></textarea>
+                        </div>
+                        
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <input type="checkbox" id="newsletter" class="mr-2">
+                                <label for="newsletter" class="text-gray-700 text-sm">Subscribe to our newsletter</label>
+                            </div>
+                            <button type="submit" class="send-button">
+                                <i class="fas fa-paper-plane"></i>
+                                Send Message
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-10">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                <div>
+                    <div class="flex items-center mb-3">
+                        <i class="fas fa-hands-helping text-blue-400 text-xl mr-2 floating"></i>
+                        <h3 class="text-lg font-bold">CareBridge</h3>
+                    </div>
+                    <p class="text-gray-400 text-xs">Providing compassionate disability care services since 2010.</p>
+                </div>
+                
+                <div>
+                    <h4 class="text-base font-bold mb-3">Quick Links</h4>
+                    <ul class="space-y-1 text-gray-400 text-xs">
+                        <li><a href="#hero" class="hover:text-white transition-colors nav-link" data-section="hero">Home</a></li>
+                        <li><a href="#services" class="hover:text-white transition-colors nav-link" data-section="services">Services</a></li>
+                        <li><a href="#about" class="hover:text-white transition-colors nav-link" data-section="about">About Us</a></li>
+                        <li><a href="#contact" class="hover:text-white transition-colors nav-link" data-section="contact">Contact</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-base font-bold mb-3">Our Services</h4>
+                    <ul class="space-y-1 text-gray-400 text-xs">
+                        <li><a href="#" class="hover:text-white transition-colors">Personal Care</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Residential Support</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Therapy Services</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Transportation</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Respite Care</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-base font-bold mb-3">Connect With Us</h4>
+                    <div class="flex space-x-3 mb-3">
+                        <a href="#" class="bg-gray-700 w-8 h-8 rounded-full flex items-center justify-center hover:bg-blue-600 transition-colors glow text-xs">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="bg-gray-700 w-8 h-8 rounded-full flex items-center justify-center hover:bg-blue-400 transition-colors glow text-xs">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="bg-gray-700 w-8 h-8 rounded-full flex items-center justify-center hover:bg-pink-600 transition-colors glow text-xs">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="bg-gray-700 w-8 h-8 rounded-full flex items-center justify-center hover:bg-blue-700 transition-colors glow text-xs">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                    </div>
+                    <p class="text-gray-400 text-xs mb-1">Subscribe to our newsletter</p>
+                    <div class="flex">
+                        <input type="email" placeholder="Your email" class="bg-gray-700 text-white px-3 py-1 rounded-l w-full focus:outline-none text-xs">
+                        <button class="bg-blue-600 px-3 py-1 rounded-r hover:bg-blue-700 transition-colors glow text-xs">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-700 mt-6 pt-6 text-center text-gray-400 text-xs">
+                <p>&copy; 2023 CareBridge Disability Care Services. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Fade in animation on scroll
+        const fadeElements = document.querySelectorAll('.fade-in');
+        
+        const appearOptions = {
+            threshold: 0.1,
+            rootMargin: "0px 0px -100px 0px"
+        };
+        
+        const appearOnScroll = new IntersectionObserver(function(entries, appearOnScroll) {
+            entries.forEach(entry => {
+                if (!entry.isIntersecting) {
+                    return;
+                } else {
+                    entry.target.classList.add('appear');
+                    appearOnScroll.unobserve(entry.target);
+                }
+            });
+        }, appearOptions);
+        
+        fadeElements.forEach(fader => {
+            appearOnScroll.observe(fader);
+        });
+        
+        // Section navigation and highlighting
+        const sections = document.querySelectorAll('section');
+        const navDots = document.querySelectorAll('.nav-dot');
+        const navLinks = document.querySelectorAll('.nav-link');
+        
+        // Function to update active section
+        function setActiveSection(sectionId) {
+            // Update sections
+            sections.forEach(section => {
+                section.classList.remove('active');
+                if (section.id === sectionId) {
+                    section.classList.add('active');
+                }
+            });
+            
+            // Update navigation dots
+            navDots.forEach(dot => {
+                dot.classList.remove('active');
+                if (dot.getAttribute('data-section') === sectionId) {
+                    dot.classList.add('active');
+                }
+            });
+            
+            // Update navigation links
+            navLinks.forEach(link => {
+                link.classList.remove('text-blue-800');
+                link.classList.add('text-gray-600');
+                if (link.getAttribute('data-section') === sectionId) {
+                    link.classList.remove('text-gray-600');
+                    link.classList.add('text-blue-800');
+                }
+            });
+        }
+        
+        // Click handlers for navigation dots
+        navDots.forEach(dot => {
+            dot.addEventListener('click', function() {
+                const sectionId = this.getAttribute('data-section');
+                document.getElementById(sectionId).scrollIntoView({ behavior: 'smooth' });
+                setActiveSection(sectionId);
+            });
+        });
+        
+        // Click handlers for navigation links
+        navLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const sectionId = this.getAttribute('data-section');
+                document.getElementById(sectionId).scrollIntoView({ behavior: 'smooth' });
+                setActiveSection(sectionId);
+            });
+        });
+        
+        // Scroll event to update active section
+        window.addEventListener('scroll', function() {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (scrollY >= (sectionTop - 150)) {
+                    current = section.getAttribute('id');
+                }
+            });
+            
+            setActiveSection(current);
+        });
+        
+        // Connect visual elements to sections
+        document.querySelector('.services-btn').addEventListener('click', function() {
+            document.getElementById('services').scrollIntoView({ behavior: 'smooth' });
+            setActiveSection('services');
+        });
+        
+        document.querySelector('.contact-btn').addEventListener('click', function() {
+            document.getElementById('contact').scrollIntoView({ behavior: 'smooth' });
+            setActiveSection('contact');
+        });
+        
+        // Get Help functionality
+        const getHelpButtons = document.querySelectorAll('.get-help-btn');
+        getHelpButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                // Show a modal or alert for getting help
+                alert("Thank you for reaching out! Our team will contact you shortly to discuss how we can help.");
+                
+                // Alternatively, scroll to contact section
+                document.getElementById('contact').scrollIntoView({ behavior: 'smooth' });
+                setActiveSection('contact');
+            });
+        });
+        
+        // Form submission
+        document.querySelector('form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert("Thank you for your message! We'll get back to you as soon as possible.");
+            this.reset();
+        });
+        
+        // Initialize with hero section active
+        setActiveSection('hero');
+    </script>
+</body>
+</html>
