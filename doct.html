@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>MediBook — Tailwind Full</title>
+
+  <!-- Tailwind CDN (good for dev/demo) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+
+  <style>
+    /* tiny custom tweaks */
+    .fade { transition: all .18s ease-in-out; }
+    .hidden-scrollbar::-webkit-scrollbar { display: none; } /* optional */
+  </style>
+</head>
+<body class="bg-gray-100 text-gray-800 antialiased">
+
+  <!-- ===== Header / Nav ===== -->
+  <header class="bg-white shadow sticky top-0 z-50">
+    <div class="max-w-6xl mx-auto px-4">
+      <div class="flex items-center justify-between py-4">
+        <div class="flex items-center gap-4">
+          <div class="text-2xl font-extrabold text-blue-600">DOCTORS</div>
+          <nav class="hidden md:flex gap-6 text-gray-600 font-medium">
+            <a href="#home" class="hover:text-blue-600">Home</a>
+            <a href="#doctors" class="hover:text-blue-600">Doctors</a>
+            <a href="index.htnl" class="hover:text-blue-600">Hospitals</a>
+            <!-- <a href="#articles" class="hover:text-blue-600">Articles</a> -->
+          </nav>
+        </div>
+
+        <div class="flex items-center gap-3">
+          <button id="openMenuBtn" class="md:hidden text-gray-700"><i class="fas fa-bars fa-lg"></i></button>
+          <div class="hidden md:flex gap-2">
+            <!-- <button class="px-4 py-2 border border-blue-600 text-blue-600 rounded hover:bg-blue-600 hover:text-white transition">Login</button>
+            <button class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition">Sign Up</button>
+          </div> -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Mobile nav -->
+    <div id="mobileMenu" class="md:hidden bg-white border-t hidden">
+      <div class="px-4 py-3 flex flex-col gap-2">
+        <a href="#home" class="py-2 hover:bg-gray-50 rounded">Home</a>
+        <a href="#doctors" class="py-2 hover:bg-gray-50 rounded">Doctors</a>
+        <a href="index.html" class="py-2 hover:bg-gray-50 rounded">Hospitals</a>
+        <!-- <a href="#articles" class="py-2 hover:bg-gray-50 rounded">Articles</a> -->
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== Main Content (single-page app style sections) ===== -->
+  <main id="app" class="max-w-6xl mx-auto px-4 pt-8 pb-20">
+
+    <!-- ===== Home / Hero ===== -->
+    <section id="home" class="mb-12">
+      <div class="bg-gradient-to-r from-blue-600 to-teal-400 text-white rounded-xl p-10 shadow-lg">
+        <div class="text-center max-w-3xl mx-auto">
+          <h1 class="text-3xl md:text-4xl font-bold mb-3">Find the Best Doctors & Book Appointments Easily</h1>
+          <p class="mb-6 text-lg opacity-90">Get access to certified doctors across medical specialties — book appointments in seconds.</p>
+
+          <div class="mx-auto max-w-2xl flex gap-0 rounded-lg overflow-hidden shadow-sm">
+            <input id="globalSearch" class="flex-1 px-4 py-3 text-gray-800" placeholder="Search doctor, specialty or hospital..." />
+            <button id="searchBtn" class="px-5 bg-gray-900 text-white"><i class="fas fa-search"></i></button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Specialties -->
+      <div class="mt-8 grid grid-cols-2 sm:grid-cols-4 gap-4">
+        <div class="bg-white rounded-lg p-5 shadow hover:shadow-lg transition text-center">
+          <i class="fas fa-baby text-3xl text-blue-600 mb-2"></i>
+          <div class="font-semibold">Pediatrics</div>
+        </div>
+        <div class="bg-white rounded-lg p-5 shadow hover:shadow-lg transition text-center">
+          <i class="fas fa-heartbeat text-3xl text-blue-600 mb-2"></i>
+          <div class="font-semibold">Cardiology</div>
+        </div>
+        <div class="bg-white rounded-lg p-5 shadow hover:shadow-lg transition text-center">
+          <i class="fas fa-tooth text-3xl text-blue-600 mb-2"></i>
+          <div class="font-semibold">Dentistry</div>
+        </div>
+        <div class="bg-white rounded-lg p-5 shadow hover:shadow-lg transition text-center">
+          <i class="fas fa-eye text-3xl text-blue-600 mb-2"></i>
+          <div class="font-semibold">Ophthalmology</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Doctors List ===== -->
+    <section id="doctors" class="mb-12">
+      <div class="flex items-center justify-between mb-6">
+        <h2 class="text-2xl font-bold">Available Doctors</h2>
+        <div id="filterWrap" class="hidden sm:flex gap-2 items-center">
+          <select id="specialtyFilter" class="px-3 py-2 border rounded">
+            <option value="">All Specialties</option>
+          </select>
+        </div>
+      </div>
+
+      <div id="doctorsGrid" class="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"></div>
+    </section>
+
+    <!-- ===== Doctor Details (hidden by default, shown when a doctor is selected) ===== -->
+    <section id="doctorDetails" class="hidden">
+      <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+        <div class="md:flex">
+          <div class="md:w-80 bg-gray-50 p-6 flex flex-col items-center gap-4">
+            <div id="docImage" class="w-40 h-40 rounded-full bg-gray-200 flex items-center justify-center text-4xl text-gray-500">
+              <i class="fas fa-user-md"></i>
+            </div>
+            <div class="text-center">
+              <h3 id="docName" class="text-xl font-bold"></h3>
+              <div id="docSpecialty" class="text-blue-600 font-medium"></div>
+              <div id="docHospital" class="text-gray-500 text-sm mt-1"></div>
+            </div>
+          </div>
+
+          <div class="p-6 flex-1">
+            <div class="flex justify-between items-start">
+              <div>
+                <p id="docQualification" class="text-sm text-gray-700"></p>
+                <p id="docExperience" class="text-sm text-gray-700"></p>
+              </div>
+              <div>
+                <button id="backToList" class="px-4 py-2 border rounded hover:bg-gray-50">Back</button>
+              </div>
+            </div>
+
+            <div class="mt-4">
+              <h4 class="font-semibold mb-2">About</h4>
+              <p id="docBio" class="text-gray-700 leading-relaxed"></p>
+            </div>
+
+            <!-- Schedule + Calendar -->
+            <div class="mt-6">
+              <h4 class="font-semibold mb-3">Available Appointments</h4>
+              <div class="grid md:grid-cols-3 gap-6">
+                <!-- Calendar -->
+                <div class="bg-gray-50 p-4 rounded">
+                  <div class="flex items-center justify-between mb-3">
+                    <button id="prevMonth" class="px-2 py-1 rounded border">‹</button>
+                    <div id="monthTitle" class="font-medium"></div>
+                    <button id="nextMonth" class="px-2 py-1 rounded border">›</button>
+                  </div>
+                  <div class="grid grid-cols-7 text-xs text-center text-gray-600 mb-2">
+                    <div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div>
+                  </div>
+                  <div id="calendarGrid" class="grid grid-cols-7 gap-1 text-sm"></div>
+                </div>
+
+                <!-- Time slots -->
+                <div class="bg-gray-50 p-4 rounded">
+                  <h5 class="font-medium mb-2">Times for <span id="selectedDateLabel">—</span></h5>
+                  <div id="timeSlots" class="grid grid-cols-2 gap-2 max-h-64 overflow-auto p-1"></div>
+                </div>
+
+                <!-- Booking form summary -->
+                <div class="bg-gray-50 p-4 rounded">
+                  <h5 class="font-medium mb-2">Booking Summary</h5>
+                  <div class="mb-3">
+                    <p><strong>Doctor:</strong> <span id="sumDoc"></span></p>
+                    <p><strong>Date:</strong> <span id="sumDate">—</span></p>
+                    <p><strong>Time:</strong> <span id="sumTime">—</span></p>
+                    <p><strong>Location:</strong> <span id="sumLocation"></span></p>
+                  </div>
+
+                  <form id="bookingForm" class="space-y-3">
+                    <input type="text" id="patientName" required placeholder="Full name" class="w-full px-3 py-2 border rounded" />
+                    <input type="tel" id="patientPhone" required placeholder="Phone number" class="w-full px-3 py-2 border rounded" />
+                    <input type="email" id="patientEmail" required placeholder="Email address" class="w-full px-3 py-2 border rounded" />
+                    <input type="number" id="patientAge" required placeholder="Age" class="w-full px-3 py-2 border rounded" />
+                    <textarea id="visitReason" placeholder="Reason (optional)" class="w-full px-3 py-2 border rounded"></textarea>
+                    <button type="submit" class="w-full bg-blue-600 text-white px-3 py-2 rounded">Confirm Booking</button>
+                  </form>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Confirmation Page ===== -->
+    <section id="confirmation" class="hidden mt-6">
+      <div class="bg-white rounded-lg p-8 shadow text-center">
+        <div class="text-5xl text-green-600 mb-4"><i class="fas fa-check-circle"></i></div>
+        <h3 class="text-2xl font-bold mb-2">Your Appointment Has Been Confirmed!</h3>
+        <p id="confirmMsg" class="text-gray-700 mb-4"></p>
+        <div class="flex justify-center gap-3">
+          <button id="backHome" class="px-4 py-2 bg-blue-600 text-white rounded">Back to Home</button>
+          <button id="printBtn" class="px-4 py-2 border rounded">Print</button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ===== Footer ===== -->
+  <footer class="bg-gray-800 text-gray-300 mt-20">
+    <div class="max-w-6xl mx-auto px-4 py-10 grid md:grid-cols-4 gap-6">
+      <div>
+        <h4 class="text-white font-semibold mb-2">MediBook</h4>
+        <p class="text-sm">Online appointment booking platform — quick, safe and reliable.</p>
+      </div>
+      <div>
+        <h4 class="text-white font-semibold mb-2">Quick Links</h4>
+        <ul class="text-sm space-y-1">
+          <li>Home</li><li>Doctors</li><li>Hospitals</li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="text-white font-semibold mb-2">Specialties</h4>
+        <ul class="text-sm space-y-1"><li>Pediatrics</li><li>Cardiology</li></ul>
+      </div>
+      <div>
+        <h4 class="text-white font-semibold mb-2">Contact</h4>
+        <ul class="text-sm space-y-1">
+          <li>Phone: +250 795 741 042</li>
+          <li>Email: hanibasha3270@gmil.com</li>
+          <li>Address: Kigali, Rwanda</li>
+        </ul>
+      </div>
+    </div>
+    <div class="text-center py-4 border-t border-gray-700 text-sm">© 2025 MediBook. All Rights Reserved.</div>
+  </footer>
+
+
+  <!-- ===== JavaScript (app logic) ===== -->
+  <script>
+    /**********************
+     * Demo Data
+     **********************/
+    const doctors = [
+      {
+        id: 1,
+        name: "Dr. Ahmed Mohamed",
+        specialty: "Pediatrics",
+        department: "Pediatrics",
+        hospital: "King Faisal Specialist Hospital",
+        qualification: "PhD in Pediatrics - Harvard University",
+        experience: "15 years",
+        phone: "0112345678",
+        bio: "Certified Pediatrics Specialist with over 15 years of experience in pediatric respiratory diseases and allergies. Fluent in Arabic and English.",
+        location: "King Faisal Specialist Hospital",
+        image: "img/download.jpeg",
+        workingHours: { start: "09:00", end: "18:30", slotMinutes: 30 } // used for generating times
+      },
+      {
+        id: 2,
+        name: "Dr. Sara Abdullah",
+        specialty: "Cardiology",
+        department: "Cardiology",
+        hospital: "King Abdulaziz Hospital",
+        qualification: "MD Cardiology - Oxford University",
+        experience: "10 years",
+        phone: "011222333",
+        bio: "Experienced cardiologist focusing on non-invasive procedures and preventive cardiology.",
+        location: "King Abdulaziz Hospital",
+        image: "img/download (1).jpeg",
+        workingHours: { start: "08:30", end: "16:00", slotMinutes: 30 }
+      },
+      {
+        id: 3,
+        name: "Dr. Khaled Saeed",
+        specialty: "Dentistry",
+        department: "Dentistry",
+        hospital: "Armed Forces Hospital",
+        qualification: "DDS - Cairo University",
+        experience: "12 years",
+        phone: "011998877",
+        bio: "Specialist in restorative dentistry and aesthetic treatments.",
+        location: "Armed Forces Hospital",
+        image: "img/download (2).jpeg",
+        workingHours: { start: "09:00", end: "14:00", slotMinutes: 30 }
+      },
+      {
+        id: 4,
+        name: "Dr. Fatima Ali",
+        specialty: "Ophthalmology",
+        department: "Ophthalmology",
+        hospital: "King Khalid Hospital",
+        qualification: "MS Ophthalmology",
+        experience: "8 years",
+        phone: "011667788",
+        bio: "Focus on cataract surgery and vision correction.",
+        location: "King Khalid Hospital",
+        image: "img/images.jpeg",
+        workingHours: { start: "10:00", end: "18:00", slotMinutes: 30 }
+      }
+    ];
+
+    /**********************
+     * Utility helpers
+     **********************/
+    const qs = s => document.querySelector(s);
+    const qsa = s => Array.from(document.querySelectorAll(s));
+
+    // Format date like "June 15, 2023"
+    function formatDateReadable(date) {
+      return date.toLocaleDateString(undefined, { year: "numeric", month: "long", day: "numeric" });
+    }
+
+    // Format ISO date like yyyy-mm-dd
+    function isoDate(d) {
+      return d.toISOString().slice(0,10);
+    }
+
+    // Parse "HH:MM" into minutes since midnight
+    function parseHMtoMinutes(hm){
+      const [h,m] = hm.split(":").map(Number);
+      return h*60 + m;
+    }
+    function minutesToHM(min){
+      const h = Math.floor(min/60);
+      const m = min%60;
+      const ampm = h >= 12 ? "PM" : "AM";
+      const hour12 = ((h + 11) % 12) + 1;
+      return `${hour12.toString().padStart(2,'0')}:${m.toString().padStart(2,'0')} ${ampm}`;
+    }
+
+    // Bookings storage (localStorage)
+    const STORAGE_KEY = "mediBookBookings_v1";
+    function loadBookings(){
+      try {
+        return JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+      } catch(e) {
+        return [];
+      }
+    }
+    function saveBookings(bookings){
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(bookings));
+    }
+    function addBooking(b){
+      const all = loadBookings();
+      all.push(b);
+      saveBookings(all);
+    }
+    function findBookingsFor(docId, dateISO){
+      return loadBookings().filter(x => x.doctorId === docId && x.date === dateISO);
+    }
+    function isSlotBooked(docId, dateISO, timeStr){
+      return findBookingsFor(docId, dateISO).some(b => b.time === timeStr);
+    }
+
+    /**********************
+     * Render doctors grid
+     **********************/
+    const doctorsGrid = qs("#doctorsGrid");
+    const specialtyFilter = qs("#specialtyFilter");
+
+    function populateSpecialties(){
+      const specs = [...new Set(doctors.map(d => d.specialty))];
+      specs.forEach(s => {
+        const opt = document.createElement("option");
+        opt.value = s;
+        opt.textContent = s;
+        specialtyFilter.appendChild(opt);
+      });
+    }
+
+    function renderDoctors(filterSpecialty = ""){
+      doctorsGrid.innerHTML = "";
+      const list = filterSpecialty ? doctors.filter(d=> d.specialty === filterSpecialty) : doctors;
+      list.forEach(doc => {
+        const card = document.createElement("div");
+        card.className = "bg-white rounded-lg shadow overflow-hidden fade";
+        card.innerHTML = `
+          <img src="${doc.image}" onerror="this.src='https://via.placeholder.com/600x400?text=Doctor' " class="h-48 w-full object-cover">
+          <div class="p-4">
+            <h4 class="font-bold text-gray-900">${doc.name}</h4>
+            <p class="text-blue-600 font-medium">${doc.specialty}</p>
+            <p class="text-sm text-gray-500 mb-3">${doc.hospital}</p>
+            <div class="flex gap-2">
+              <button class="viewBtn px-3 py-1 border rounded text-sm w-full">View Details</button>
+              <button class="bookBtn px-3 py-1 bg-blue-600 text-white rounded text-sm w-full">Book Now</button>
+            </div>
+          </div>
+        `;
+        // attach doctor id
+        card.dataset.doctorId = doc.id;
+        doctorsGrid.appendChild(card);
+
+        // wire buttons
+        card.querySelector(".viewBtn").addEventListener("click", ()=> openDoctor(doc.id));
+        card.querySelector(".bookBtn").addEventListener("click", ()=> openDoctor(doc.id, true));
+      });
+    }
+
+    /**********************
+     * Single Doctor Page (calendar, times, booking)
+     **********************/
+    const doctorDetailsSection = qs("#doctorDetails");
+    const calendarGrid = qs("#calendarGrid");
+    const monthTitle = qs("#monthTitle");
+    const prevMonthBtn = qs("#prevMonth");
+    const nextMonthBtn = qs("#nextMonth");
+    const timeSlotsWrap = qs("#timeSlots");
+    const selectedDateLabel = qs("#selectedDateLabel");
+    const sumDoc = qs("#sumDoc");
+    const sumDate = qs("#sumDate");
+    const sumTime = qs("#sumTime");
+    const sumLocation = qs("#sumLocation");
+    const bookingForm = qs("#bookingForm");
+
+    // state
+    let activeDoctor = null;
+    let visibleMonth = new Date(); // tracks which month is shown
+    let selectedDate = null; // Date object
+    let selectedTime = null; // "HH:MM AM/PM" string
+
+    function openDoctor(docId, focusBook=false){
+      const doc = doctors.find(d => d.id === docId);
+      if(!doc) return;
+      activeDoctor = doc;
+      // fill profile
+      qs("#docName").textContent = doc.name;
+      qs("#docSpecialty").textContent = doc.specialty + " Specialist";
+      qs("#docHospital").textContent = doc.hospital;
+      qs("#docQualification").textContent = `Qualification: ${doc.qualification}`;
+      qs("#docExperience").textContent = `Years of Experience: ${doc.experience}`;
+      qs("#docBio").textContent = doc.bio;
+      qs("#sumDoc").textContent = doc.name;
+      qs("#sumLocation").textContent = doc.location;
+
+      // show doctor details page
+      document.querySelectorAll("section").forEach(s => s.classList.add("hidden"));
+      doctorDetailsSection.classList.remove("hidden");
+      window.scrollTo(0,0);
+
+      // reset calendar to current month
+      visibleMonth = new Date();
+      selectedDate = null;
+      selectedTime = null;
+      renderCalendar();
+      updateSummary();
+
+      if(focusBook){
+        // open the booking area (already visible)
+        // we can optionally highlight booking form
+      }
+    }
+
+    qs("#backToList").addEventListener("click", ()=> {
+      document.querySelectorAll("section").forEach(s => s.classList.remove("hidden"));
+      doctorDetailsSection.classList.add("hidden");
+      // hide confirmation if visible
+      qs("#confirmation").classList.add("hidden");
+      window.scrollTo(0,0);
+    });
+
+    // month navigation
+    prevMonthBtn.addEventListener("click", ()=>{
+      visibleMonth.setMonth(visibleMonth.getMonth()-1);
+      renderCalendar();
+    });
+    nextMonthBtn.addEventListener("click", ()=>{
+      visibleMonth.setMonth(visibleMonth.getMonth()+1);
+      renderCalendar();
+    });
+
+    function renderCalendar(){
+      calendarGrid.innerHTML = "";
+      // set month title
+      const monthName = visibleMonth.toLocaleString(undefined, { month: "long", year: "numeric" });
+      monthTitle.textContent = monthName;
+
+      // compute first day of month grid
+      const year = visibleMonth.getFullYear();
+      const month = visibleMonth.getMonth();
+      const first = new Date(year, month, 1);
+      const last = new Date(year, month+1, 0);
+      const firstWeekday = first.getDay(); // 0=Sun..6=Sat
+      const daysInMonth = last.getDate();
+
+      // show previous month tail (optional)
+      for(let i=0;i<firstWeekday;i++){
+        const cell = document.createElement("div");
+        cell.className = "text-sm text-gray-400 py-2 rounded";
+        calendarGrid.appendChild(cell);
+      }
+
+      // show days
+      for(let d=1; d<=daysInMonth; d++){
+        const cell = document.createElement("button");
+        cell.className = "calendar-day text-sm p-2 rounded hover:bg-gray-100 transition";
+        const cur = new Date(year, month, d);
+        cell.textContent = d;
+
+        // disable past dates
+        const today = new Date();
+        today.setHours(0,0,0,0);
+        if(cur < today) {
+          cell.classList.add("text-gray-300", "cursor-not-allowed");
+          cell.disabled = true;
+        } else {
+          cell.addEventListener("click", ()=> {
+            selectedDate = cur;
+            // update UI selected
+            qsa(".calendar-day").forEach(n => n.classList.remove("bg-blue-600", "text-white"));
+            cell.classList.add("bg-blue-600", "text-white");
+            // update times for that date
+            renderTimesForDate(selectedDate);
+            updateSummary();
+          });
+        }
+
+        calendarGrid.appendChild(cell);
+      }
+
+      // if selected date is still in visible month, keep it selected
+      if(selectedDate && selectedDate.getMonth() === visibleMonth.getMonth() && selectedDate.getFullYear() === visibleMonth.getFullYear()){
+        // highlight that cell (find by text)
+        const cells = qsa("#calendarGrid .calendar-day");
+        cells.forEach(c => {
+          if(Number(c.textContent) === selectedDate.getDate()){
+            c.classList.add("bg-blue-600","text-white");
+          }
+        });
+      }
+    }
+
+    // render time slots based on doctor's workingHours and existing bookings
+    function renderTimesForDate(dateObj){
+      timeSlotsWrap.innerHTML = "";
+      if(!activeDoctor || !dateObj) return;
+      const dISO = isoDate(dateObj);
+      selectedDateLabel.textContent = formatDateReadable(dateObj);
+      sumDate.textContent = formatDateReadable(dateObj);
+
+      // compute slot times
+      const { start, end, slotMinutes } = activeDoctor.workingHours;
+      const sMin = parseHMtoMinutes(start);
+      const eMin = parseHMtoMinutes(end);
+      const slots = [];
+      for(let t = sMin; t <= eMin - slotMinutes; t += slotMinutes){
+        slots.push(t);
+      }
+
+      const bookingsForDay = findBookingsFor(activeDoctor.id, dISO);
+
+      slots.forEach(min => {
+        const timeLabel = minutesToHM(min);
+        const btn = document.createElement("button");
+        btn.className = "time-slot text-sm px-3 py-2 rounded border text-left";
+        btn.textContent = timeLabel;
+        // booked?
+        if(isSlotBooked(activeDoctor.id, dISO, timeLabel)){
+          btn.classList.add("bg-red-600","text-white","cursor-not-allowed");
+          btn.disabled = true;
+        } else {
+          btn.addEventListener("click", ()=> {
+            selectedTime = timeLabel;
+            // mark selection
+            qsa(".time-slot").forEach(t => t.classList.remove("bg-blue-600","text-white"));
+            btn.classList.add("bg-blue-600","text-white");
+            sumTime.textContent = selectedTime;
+            updateSummary();
+          });
+        }
+        timeSlotsWrap.appendChild(btn);
+      });
+    }
+
+    function updateSummary(){
+      sumDoc.textContent = activeDoctor?.name || "—";
+      sumLocation.textContent = activeDoctor?.location || "—";
+      sumDate.textContent = selectedDate ? formatDateReadable(selectedDate) : "—";
+      sumTime.textContent = selectedTime || "—";
+      selectedDateLabel.textContent = selectedDate ? formatDateReadable(selectedDate) : "—";
+    }
+
+    // booking form submit
+    bookingForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      // simple validation: ensure date & time selected
+      if(!selectedDate){
+        alert("Please select a date from the calendar.");
+        return;
+      }
+      if(!selectedTime){
+        alert("Please choose a time slot.");
+        return;
+      }
+      // gather patient info
+      const name = qs("#patientName").value.trim();
+      const phone = qs("#patientPhone").value.trim();
+      const email = qs("#patientEmail").value.trim();
+      const age = qs("#patientAge").value.trim();
+      const reason = qs("#visitReason").value.trim();
+
+      if(!name || !phone || !email || !age){
+        alert("Please complete all required fields.");
+        return;
+      }
+
+      // final check if slot still free
+      const dISO = isoDate(selectedDate);
+      if(isSlotBooked(activeDoctor.id, dISO, selectedTime)){
+        alert("Sorry — that time was just booked by someone else. Please choose another slot.");
+        renderTimesForDate(selectedDate);
+        return;
+      }
+
+      // save booking
+      const booking = {
+        id: Date.now(),
+        doctorId: activeDoctor.id,
+        doctorName: activeDoctor.name,
+        date: dISO,
+        time: selectedTime,
+        patient: { name, phone, email, age, reason },
+        location: activeDoctor.location
+      };
+      addBooking(booking);
+
+      // show confirmation
+      showConfirmation(booking);
+    });
+
+    function showConfirmation(booking){
+      // populate confirm text
+      qs("#confirmMsg").textContent = `Your appointment with ${booking.doctorName} has been booked for ${formatDateReadable(new Date(booking.date))} at ${booking.time} at ${booking.location}. A confirmation was stored locally.`;
+      // hide others, show confirmation
+      document.querySelectorAll("section").forEach(s => s.classList.add("hidden"));
+      qs("#confirmation").classList.remove("hidden");
+      window.scrollTo(0,0);
+    }
+
+    // print button
+    qs("#printBtn").addEventListener("click", ()=> window.print());
+    qs("#backHome").addEventListener("click", ()=>{
+      document.querySelectorAll("section").forEach(s => s.classList.remove("hidden"));
+      doctorDetailsSection.classList.add("hidden");
+      qs("#confirmation").classList.add("hidden");
+      window.scrollTo(0,0);
+    });
+
+    /**********************
+     * Search / filters
+     **********************/
+    qs("#searchBtn").addEventListener("click", () => {
+      const q = qs("#globalSearch").value.trim().toLowerCase();
+      if(!q) {
+        renderDoctors();
+        return;
+      }
+      const filtered = doctors.filter(d => 
+        d.name.toLowerCase().includes(q) ||
+        d.specialty.toLowerCase().includes(q) ||
+        d.hospital.toLowerCase().includes(q)
+      );
+      doctorsGrid.innerHTML = "";
+      filtered.forEach(d => {
+        const card = document.createElement("div");
+        card.className = "bg-white rounded-lg shadow overflow-hidden fade";
+        card.innerHTML = `
+          <img src="${d.image}" onerror="this.src='https://via.placeholder.com/600x400?text=Doctor' " class="h-48 w-full object-cover">
+          <div class="p-4">
+            <h4 class="font-bold text-gray-900">${d.name}</h4>
+            <p class="text-blue-600 font-medium">${d.specialty}</p>
+            <p class="text-sm text-gray-500 mb-3">${d.hospital}</p>
+            <div class="flex gap-2">
+              <button class="viewBtn px-3 py-1 border rounded text-sm w-full">View Details</button>
+              <button class="bookBtn px-3 py-1 bg-blue-600 text-white rounded text-sm w-full">Book Now</button>
+            </div>
+          </div>
+        `;
+        card.querySelector(".viewBtn").addEventListener("click", ()=> openDoctor(d.id));
+        card.querySelector(".bookBtn").addEventListener("click", ()=> openDoctor(d.id, true));
+        doctorsGrid.appendChild(card);
+      });
+    });
+
+    // specialty filter
+    specialtyFilter.addEventListener("change", () => {
+      renderDoctors(specialtyFilter.value);
+    });
+
+    /**********************
+     * Mobile menu toggle
+     **********************/
+    qs("#openMenuBtn").addEventListener("click", () => {
+      qs("#mobileMenu").classList.toggle("hidden");
+    });
+
+    /**********************
+     * Init app
+     **********************/
+    (function init(){
+      populateSpecialties();
+      renderDoctors();
+      // show home only by default
+      document.querySelectorAll("section").forEach(s => s.classList.remove("hidden"));
+      qs("#doctorDetails").classList.add("hidden");
+      qs("#confirmation").classList.add("hidden");
+    })();
+
+  </script>
+</body>
+</html>
