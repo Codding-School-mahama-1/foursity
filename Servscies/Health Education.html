@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Health Education for Refugee Communities</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="font-sans bg-gray-50 text-gray-900">
+    <!-- Header -->
+    <header class="bg-white shadow-md sticky top-0 z-50 text-green-700">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="flex items-center gap-2 text-primary text-xl font-bold">
+                <i class="fas fa-hand-holding-medical text-2xl"></i>
+                <span> Health Education</span>
+            </div>
+            
+            <div class="md:hidden text-xl cursor-pointer" id="mobile-toggle">
+                <i class="fas fa-bars"></i>
+            </div>
+            
+            <ul class="hidden md:flex list-none gap-6" id="nav-menu">
+                <li><a href="#home" class="text-gray-800 font-medium hover:text-blue-700 transition relative after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-0.5 after:bg-primary hover:after:w-full after:transition-all">Home</a></li>
+                <li><a href="#topics" class="text-gray-800 font-medium hover:text-blue-700 transition relative after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-0.5 after:bg-primary hover:after:w-full after:transition-all">Health Topics</a></li>
+                <li><a href="#emergency" class="text-gray-800 font-medium hover:text-blue-700 transition relative after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-0.5 after:bg-primary hover:after:w-full after:transition-all">Emergency Info</a></li>
+                <li><a href="#resources" class="text-gray-800 font-medium hover:text-blue-700 transition relative after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-0.5 after:bg-primary hover:after:w-full after:transition-all">Resources</a></li>
+                <li><a href="#guides" class="text-gray-800 font-medium hover:text-blue-700 transition relative after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-0.5 after:bg-primary hover:after:w-full after:transition-all">Visual Guides</a></li>
+            </ul>
+                </select>
+            </div>
+        </div>
+        
+        <!-- Mobile Menu -->
+        <div class="md:hidden fixed top-16 left-0 w-4/5 h-[calc(100vh-4rem)] bg-white flex flex-col items-center pt-12 shadow-lg transition-transform -translate-x-full" id="mobile-menu">
+            <a href="#home" class="py-3 text-gray-800 font-medium hover:text-primary transition w-full text-center">Home</a>
+            <a href="#topics" class="py-3 text-gray-800 font-medium hover:text-primary transition w-full text-center">Health Topics</a>
+            <a href="#emergency" class="py-3 text-gray-800 font-medium hover:text-primary transition w-full text-center">Emergency Info</a>
+            <a href="#resources" class="py-3 text-gray-800 font-medium hover:text-primary transition w-full text-center">Resources</a>
+            <a href="#guides" class="py-3 text-gray-800 font-medium hover:text-primary transition w-full text-center">Visual Guides</a>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="bg-blue-300 text-black py-24" id="home">
+        <div class="container mx-auto px-4 text-center">
+            <div class="max-w-3xl mx-auto">
+                <h1 class="text-4xl md:text-5xl font-bold mb-6 leading-tight">Health Education for Refugee Communities</h1>
+                <p class="text-xl mb-8 opacity-90">Accessible, culturally sensitive health information and resources for refugee camps</p>
+                <div class="flex flex-wrap gap-5 justify-center">
+                    <a href="#topics" class="bg-white text-blue-600 px-7 py-3 rounded-lg font-semibold hover:bg-gray-100 hover:-translate-y-1 transition shadow-md">Explore Health Topics</a>
+                    <a href="#emergency" class="bg-amber-700 text-white px-7 py-3 rounded-lg font-semibold hover:bg-amber-600 hover:-translate-y-1 transition shadow-md">Emergency Health Info</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Health Topics -->
+    <section class="py-20  " id="topics">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-primary-dark mb-4">Essential Health Topics</h2>
+                <p class="text-xl text-gray-600 max-w-2xl mx-auto">Learn about common health issues in refugee settings and how to prevent them</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="bg-white/10 rounded-lg overflow-hidden shadow-md hover:-translate-y-2 hover:shadow-xl transition-all">
+                    <div class="h-32  flex items-center justify-center text-white text-5xl">
+                        <i class="fas fa-hand-holding-water"></i>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-primary-dark mb-4">Clean Water & Sanitation</h3>
+                        <p class="text-gray-600 mb-6">Learn about safe water practices, proper handwashing, and maintaining hygiene in crowded conditions.</p>
+                        <a href="#" class="bg-blue-400 text-white px-5 py-2 rounded-lg font-semibold hover:bg-green-600 transition">Learn More</a>
+                    </div>
+                </div>
+                
+                <div class="bg-white/10 rounded-lg overflow-hidden shadow-md hover:-translate-y-2 hover:shadow-xl transition-all">
+                    <div class="h-32 bg-white/10 flex items-center justify-center text-white text-5xl">
+                        <i class="fas fa-baby"></i>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-primary-dark mb-4">Maternal & Child Health</h3>
+                        <p class="text-gray-600 mb-6">Information on prenatal care, safe delivery, newborn care, and childhood vaccinations.</p>
+                        <a href="#" class="bg-blue-400 text-white px-5 py-2 rounded-lg font-semibold hover:bg-green-600 transition">Learn More</a>
+                    </div>
+                </div>
+                
+                <div class="bg-white/10 rounded-lg overflow-hidden shadow-md hover:-translate-y-2 hover:shadow-xl transition-all">
+                    <div class="h-32  flex items-center justify-center text-white text-5xl">
+                        <i class="fas fa-lungs-virus"></i>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-primary-dark mb-4">Respiratory Infections</h3>
+                        <p class="text-gray-600 mb-6">Prevention and management of common respiratory illnesses like pneumonia, TB, and COVID-19.</p>
+                        <a href="#" class="bg-blue-400 text-white px-5 py-2 rounded-lg font-semibold hover:bg-green-600 transition">Learn More</a>
+                    </div>
+                </div>
+                
+                <div class="bg-white/10 rounded-lg overflow-hidden shadow-md hover:-translate-y-2 hover:shadow-xl transition-all">
+                    <div class="h-32  flex items-center justify-center text-white text-5xl">
+                        <i class="fas fa-stethoscope"></i>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-primary-dark mb-4">Primary Healthcare</h3>
+                        <p class="text-gray-600 mb-6">Accessing basic medical services, managing chronic conditions, and when to seek help.</p>
+                        <a href="#" class="bg-blue-400 text-white px-5 py-2 rounded-lg font-semibold hover:bg-green-600 transition">Learn More</a>
+                    </div>
+                </div>
+                
+                <div class="bg-white/10 rounded-lg overflow-hidden shadow-md hover:-translate-y-2 hover:shadow-xl transition-all">
+                    <div class="h-32 flex items-center justify-center text-white text-5xl">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-primary-dark mb-4">Mental Health & Wellness</h3>
+                        <p class="text-gray-600 mb-6">Coping with stress, trauma, and anxiety. Building resilience and community support.</p>
+                        <a href="#" class="bg-blue-400 text-white px-5 py-2 rounded-lg font-semibold hover:bg-green-600 transition">Learn More</a>
+                    </div>
+                </div>
+                
+                <div class="bg-white/10 rounded-lg overflow-hidden shadow-md hover:-translate-y-2 hover:shadow-xl transition-all">
+                    <div class="h-32  flex items-center justify-center text-white text-5xl">
+                        <i class="fas fa-bug"></i>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-primary-dark mb-4">Disease Prevention</h3>
+                        <p class="text-gray-600 mb-6">Protecting against malaria, dengue, cholera, and other common diseases in camp settings.</p>
+                        <a href="#" class="bg-blue-400 text-white px-5 py-2 rounded-lg font-semibold hover:bg-green-600 transition">Learn More</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Emergency Information -->
+    <section class="py-20 bg-blue-400" id="emergency">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-primary-dark mb-4">Emergency Health Information</h2>
+                <p class="text-xl text-gray-600">Critical information for urgent health situations</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="bg-white p-6 rounded-lg shadow-md text-center border-l-4 border-red-500">
+                    <div class="text-red-500 text-4xl mb-4">
+                        <i class="fas fa-plus-square"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-4">Medical Emergency</h3>
+                    <p class="text-gray-600 mb-4">If someone has severe injury, difficulty breathing, chest pain, or unconsciousness</p>
+                    <p class="font-bold">Go to the clinic immediately or call for help</p>
+                </div>
+                
+                <div class="bg-white p-6 rounded-lg shadow-md text-center border-l-4 border-amber-500">
+                    <div class="text-amber-500 text-4xl mb-4">
+                        <i class="fas fa-tint"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-4">Dehydration</h3>
+                    <p class="text-gray-600 mb-4">Signs: Dry mouth, dizziness, little urine, sunken eyes (especially in children)</p>
+                    <p class="font-bold">Drink clean water with oral rehydration salts</p>
+                </div>
+                
+                <div class="bg-white p-6 rounded-lg shadow-md text-center border-l-4 border-amber-500">
+                    <div class="text-amber-500 text-4xl mb-4">
+                        <i class="fas fa-temperature-high"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-4">High Fever</h3>
+                    <p class="text-gray-600 mb-4">If fever is very high (over 39°C/102°F) or lasts more than 2 days</p>
+                    <p class="font-bold">Seek medical care, especially for children</p>
+                </div>
+                
+                <div class="bg-white p-6 rounded-lg shadow-md text-center border-l-4 border-red-500">
+                    <div class="text-red-500 text-4xl mb-4">
+                        <i class="fas fa-female"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-4">Pregnancy Emergency</h3>
+                    <p class="text-gray-600 mb-4">Severe pain, bleeding, prolonged labor, or concerns about the baby</p>
+                    <p class="font-bold">Go to the health center immediately</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Resources -->
+    <section class="py-20 bg-[url(/img/res.png)] bg-no-repeat bg-cover" id="resources">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-blue-950 mb-4">Health Resources</h2>
+                <p class="text-xl text-black max-w-2xl mx-auto">Downloadable materials and information for community health workers</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="border border-gray-300 rounded-lg overflow-hidden hover:-translate-y-1 hover:shadow-md transition-all">
+                    <div class="h-48  flex items-center justify-center text-primary text-5xl">
+                        <i class="fas fa-print"></i>
+                    </div>
+                    <div class="p-6 bg-white">
+                        <h3 class="text-xl font-bold text-primary-dark mb-4">Health Education Posters</h3>
+                        <p class="text-black mb-6">Printable posters on hygiene, nutrition, disease prevention for display in common areas.</p>
+                        <a href="#" class="bg-blue-500 text-white px-5 py-2 rounded-lg font-semibold hover:bg-primary-dark transition">Download</a>
+                    </div>
+                </div>
+                
+                <div class="border border-gray-300 rounded-lg overflow-hidden hover:-translate-y-1 hover:shadow-md transition-all">
+                    <div class="h-48  flex items-center justify-center  text-5xl">
+                        <i class="fas fa-book"></i>
+                    </div>
+                    <div class="p-6 bg-white">
+                        <h3 class="text-xl font-bold  mb-4">Community Health Worker Guide</h3>
+                        <p class="text-black mb-6">Comprehensive manual for training community health volunteers in refugee settings.</p>
+                        <a href="#" class="bg-blue-500 text-white px-5 py-2 rounded-lg font-semibold hover:bg-primary-dark transition">Download</a>
+                    </div>
+                </div>
+                
+                <div class="border border-gray-300 rounded-lg overflow-hidden hover:-translate-y-1 hover:shadow-md transition-all">
+                    <div class="h-48 flex items-center justify-center text-primary text-5xl">
+                        <i class="fas fa-passport"></i>
+                    </div>
+                    <div class="p-6 bg-white">
+                        <h3 class="text-xl font-bold text-primary-dark mb-4">Health Passport</h3>
+                        <p class="text-black mb-6">Personal health record for families to track vaccinations, medications, and health visits.</p>
+                        <a href="#" class="bg-blue-500 text-white px-5 py-2 rounded-lg font-semibold hover:bg-primary-dark transition">Download</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Visual Guides -->
+    <section class="py-20 bg-blue-400" id="guides">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-primary-dark mb-4">Visual Health Guides</h2>
+                <p class="text-xl text-gray-600 max-w-2xl mx-auto">Easy-to-understand visual instructions for common health practices</p>
+            </div>
+            
+            <div class="flex flex-wrap justify-center gap-8">
+                <div class="bg-white rounded-lg overflow-hidden shadow-md max-w-xs">
+                    <div class="h-48  flex items-center justify-center text-primary text-6xl">
+                        <i class="fas fa-hands-wash"></i>
+                    </div>
+                    <div class="p-5">
+                        <h3 class="text-xl font-bold text-primary-dark mb-2">Proper Handwashing</h3>
+                        <p class="text-gray-600">Step-by-step guide to effective handwashing with soap</p>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-lg overflow-hidden shadow-md max-w-xs">
+                    <div class="h-48  flex items-center justify-center text-primary text-6xl">
+                        <i class="fas fa-tint"></i>
+                    </div>
+                    <div class="p-5">
+                        <h3 class="text-xl font-bold text-primary-dark mb-2">Water Purification</h3>
+                        <p class="text-gray-600">Methods to make water safe for drinking</p>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-lg overflow-hidden shadow-md max-w-xs">
+                    <div class="h-48  flex items-center justify-center text-primary text-6xl">
+                        <i class="fas fa-baby"></i>
+                    </div>
+                    <div class="p-5">
+                        <h3 class="text-xl font-bold text-primary-dark mb-2">Infant Feeding</h3>
+                        <p class="text-gray-600">Safe practices for breastfeeding and complementary feeding</p>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-lg overflow-hidden shadow-md max-w-xs">
+                    <div class="h-48  flex items-center justify-center text-primary text-6xl">
+                        <i class="fas fa-trash"></i>
+                    </div>
+                    <div class="p-5">
+                        <h3 class="text-xl font-bold text-primary-dark mb-2">Waste Disposal</h3>
+                        <p class="text-gray-600">Proper management of solid waste and human waste</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-blue-950 text-white pt-16 pb-8">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mb-10">
+                <div>
+                    <h3 class="text-xl font-bold mb-5 relative pb-2 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-12 after:h-0.5 after:bg-accent">Refugee Health Connect</h3>
+                    <p class="text-blue-200 mb-5">Providing accessible health education and resources for refugee communities worldwide.</p>
+                    <a href="#" class="bg-primary text-white px-5 py-2 rounded-lg font-semibold hover:bg-primary-light transition inline-block">Contact Us</a>
+                </div>
+                
+                <div>
+                    <h3 class="text-xl font-bold mb-5 relative pb-2 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-12 after:h-0.5 after:bg-accent">Quick Links</h3>
+                    <ul class="space-y-3">
+                        <li><a href="#home" class="text-blue-300 hover:text-white hover:pl-1 transition-all">Home</a></li>
+                        <li><a href="#topics" class="text-blue-300 hover:text-white hover:pl-1 transition-all">Health Topics</a></li>
+                        <li><a href="#emergency" class="text-blue-300 hover:text-white hover:pl-1 transition-all">Emergency Info</a></li>
+                        <li><a href="#resources" class="text-blue-300 hover:text-white hover:pl-1 transition-all">Resources</a></li>
+                        <li><a href="#guides" class="text-blue-300 hover:text-white hover:pl-1 transition-all">Visual Guides</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="text-xl font-bold mb-5 relative pb-2 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-12 after:h-0.5 after:bg-accent">Health Services</h3>
+                    <ul class="space-y-3">
+                        <li><a href="#" class="text-blue-300 hover:text-white hover:pl-1 transition-all">Find a Clinic</a></li>
+                        <li><a href="#" class="text-blue-300 hover:text-white hover:pl-1 transition-all">Community Health Workers</a></li>
+                        <li><a href="#" class="text-blue-300 hover:text-white hover:pl-1 transition-all">Vaccination Schedule</a></li>
+                        <li><a href="#" class="text-blue-300 hover:text-white hover:pl-1 transition-all">Mental Health Support</a></li>
+                        <li><a href="#" class="text-blue-300 hover:text-white hover:pl-1 transition-all">Nutrition Programs</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="text-xl font-bold mb-5 relative pb-2 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-12 after:h-0.5 after:bg-accent">Partners</h3>
+                    <ul class="space-y-3">
+                        <li><a href="#" class="text-blue-300 hover:text-white hover:pl-1 transition-all">UNHCR</a></li>
+                        <li><a href="#" class="text-blue-300 hover:text-white hover:pl-1 transition-all">World Health Organization</a></li>
+                        <li><a href="#" class="text-blue-300 hover:text-white hover:pl-1 transition-all">Red Cross/Crescent</a></li>
+                        <li><a href="#" class="text-blue-300 hover:text-white hover:pl-1 transition-all">International Rescue Committee</a></li>
+                        <li><a href="#" class="text-blue-300 hover:text-white hover:pl-1 transition-all">Doctors Without Borders</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+        </div>
+    </footer>
+</body>
+</html>
