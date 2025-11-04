@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Application Guide - Fursati</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 aspect ratio */
+            height: 0;
+            overflow: hidden;
+        }
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 12px;
+        }
+        .chapter-item:hover {
+            background-color: #f8fafc;
+            transform: translateX(4px);
+        }
+        .chapter-item.active {
+            background-color: #eff6ff;
+            border-left: 4px solid #3b82f6;
+        }
+        .playlist-item:hover {
+            background-color: #f8fafc;
+        }
+        .playlist-item.active {
+            background-color: #eff6ff;
+            border-left: 4px solid #3b82f6;
+        }
+        .progress-bar {
+            transition: width 0.3s ease;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-lg sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center py-4">
+                <!-- Logo -->
+                <div class="flex items-center">
+                    <a href="index.html" class="flex items-center">
+                        <div class="bg-blue-600 text-white p-2 rounded-lg">
+                            <i class="fas fa-graduation-cap text-xl"></i>
+                        </div>
+                        <span class="ml-3 text-2xl font-bold text-blue-600">Fursati</span>
+                    </a>
+                </div>
+
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="index.html" class="text-gray-700 hover:text-blue-600 font-medium">Home</a>
+                    <a href="all.html" class="text-gray-700 hover:text-blue-600 font-medium">Opportunities</a>
+                    <a href="howtoapply.htmlyt" class="text-gray-700 hover:text-blue-600 font-medium">How to Apply</a>
+                    <a href="video.html" class="text-blue-600 font-medium border-b-2 border-blue-600">Video Guide</a>
+                    <a href="about.html" class="text-gray-700 hover:text-blue-600 font-medium">About</a>
+                </div>
+
+                <!-- Auth Buttons -->
+                <div class="flex items-center space-x-4">
+                    <a href="lonin.html" class="text-blue-600 hover:text-blue-700 font-medium">Login</a>
+                    <a href="singup.html" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors font-medium">
+                        Sign Up
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="bg-gradient-to-r from-blue-600 to-purple-700 text-white py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <h1 class="text-3xl md:text-4xl font-bold mb-4">Video Application Guide</h1>
+                <p class="text-xl text-blue-100 mb-6 max-w-2xl mx-auto">
+                    Watch step-by-step video tutorials to master the Fursati application process
+                </p>
+                <div class="flex flex-col sm:flex-row justify-center items-center space-y-3 sm:space-y-0 sm:space-x-4 text-sm">
+                    <div class="flex items-center">
+                        <i class="fas fa-play-circle mr-2"></i>
+                        <span>15 Video Tutorials</span>
+                    </div>
+                    <div class="flex items-center">
+                        <i class="fas fa-clock mr-2"></i>
+                        <span>Total 2h 15m</span>
+                    </div>
+                    <div class="flex items-center">
+                        <i class="fas fa-certificate mr-2"></i>
+                        <span>Free Certificate</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div class="flex flex-col lg:flex-row gap-8">
+            <!-- Video Player Section -->
+            <div class="lg:w-2/3">
+                <!-- Main Video Player -->
+                <div class="bg-white rounded-xl shadow-lg p-6 mb-6">
+                    <div class="video-container mb-4">
+                        <!-- YouTube embed or custom video player -->
+                        <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" 
+                                frameborder="0" 
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                allowfullscreen>
+                        </iframe>
+                    </div>
+                    
+                    <!-- Video Info -->
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4">
+                        <div>
+                            <h2 class="text-2xl font-bold text-gray-900 mb-2">Complete Fursati Platform Walkthrough</h2>
+                            <p class="text-gray-600">Learn how to navigate and use all features of the Fursati platform</p>
+                        </div>
+                        <div class="flex items-center space-x-4 mt-4 sm:mt-0">
+                            <button class="flex items-center text-gray-600 hover:text-blue-600">
+                                <i class="far fa-thumbs-up mr-2"></i>
+                                <span>245</span>
+                            </button>
+                            <button class="flex items-center text-gray-600 hover:text-blue-600">
+                                <i class="far fa-thumbs-down mr-2"></i>
+                                <span>12</span>
+                            </button>
+                            <button class="flex items-center text-gray-600 hover:text-blue-600">
+                                <i class="fas fa-share mr-2"></i>
+                                <span>Share</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Video Stats -->
+                    <div class="flex items-center space-x-6 text-sm text-gray-500 mb-6">
+                        <div class="flex items-center">
+                            <i class="fas fa-eye mr-2"></i>
+                            <span>12,458 views</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-calendar mr-2"></i>
+                            <span>Posted on Dec 1, 2024</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-tag mr-2"></i>
+                            <span>Tutorial</span>
+                        </div>
+                    </div>
+
+                    <!-- Video Description -->
+                    <div class="bg-gray-50 rounded-lg p-4">
+                        <h3 class="font-semibold text-gray-900 mb-3">About this video:</h3>
+                        <p class="text-gray-700 mb-4">
+                            This comprehensive walkthrough covers everything you need to know about using the Fursati platform. 
+                            From creating your account to submitting successful applications, we'll guide you through each step.
+                        </p>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
+                            <div class="flex items-center">
+                                <i class="fas fa-check text-green-500 mr-3"></i>
+                                <span>Account creation and profile setup</span>
+                            </div>
+                            <div class="flex items-center">
+                                <i class="fas fa-check text-green-500 mr-3"></i>
+                                <span>Finding and filtering opportunities</span>
+                            </div>
+                            <div class="flex items-center">
+                                <i class="fas fa-check text-green-500 mr-3"></i>
+                                <span>Document preparation and upload</span>
+                            </div>
+                            <div class="flex items-center">
+                                <i class="fas fa-check text-green-500 mr-3"></i>
+                                <span>Application submission process</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Chapter Navigation -->
+                <div class="bg-white rounded-xl shadow-lg p-6 mb-6">
+                    <h3 class="text-xl font-bold text-gray-900 mb-4">Video Chapters</h3>
+                    <div class="space-y-2">
+                        <div class="chapter-item active p-3 rounded-lg border border-gray-200 cursor-pointer transition-all">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center">
+                                    <div class="w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-bold mr-3">
+                                        1
+                                    </div>
+                                    <div>
+                                        <h4 class="font-semibold text-gray-900">Introduction to Fursati</h4>
+                                        <p class="text-sm text-gray-600">2:15</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center space-x-2">
+                                    <span class="text-xs text-green-600 font-medium">Watched</span>
+                                    <i class="fas fa-play text-blue-600"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="chapter-item p-3 rounded-lg border border-gray-200 cursor-pointer transition-all">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center">
+                                    <div class="w-8 h-8 bg-gray-300 text-gray-600 rounded-full flex items-center justify-center text-sm font-bold mr-3">
+                                        2
+                                    </div>
+                                    <div>
+                                        <h4 class="font-semibold text-gray-900">Creating Your Account</h4>
+                                        <p class="text-sm text-gray-600">8:30</p>
+                                    </div>
+                                </div>
+                                <i class="fas fa-play text-gray-400"></i>
+                            </div>
+                        </div>
+
+                        <div class="chapter-item p-3 rounded-lg border border-gray-200 cursor-pointer transition-all">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center">
+                                    <div class="w-8 h-8 bg-gray-300 text-gray-600 rounded-full flex items-center justify-center text-sm font-bold mr-3">
+                                        3
+                                    </div>
+                                    <div>
+                                        <h4 class="font-semibold text-gray-900">Completing Your Profile</h4>
+                                        <p class="text-sm text-gray-600">12:45</p>
+                                    </div>
+                                </div>
+                                <i class="fas fa-play text-gray-400"></i>
+                            </div>
+                        </div>
+
+                        <div class="chapter-item p-3 rounded-lg border border-gray-200 cursor-pointer transition-all">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center">
+                                    <div class="w-8 h-8 bg-gray-300 text-gray-600 rounded-full flex items-center justify-center text-sm font-bold mr-3">
+                                        4
+                                    </div>
+                                    <div>
+                                        <h4 class="font-semibold text-gray-900">Finding Opportunities</h4>
+                                        <p class="text-sm text-gray-600">15:20</p>
+                                    </div>
+                                </div>
+                                <i class="fas fa-play text-gray-400"></i>
+                            </div>
+                        </div>
+
+                        <div class="chapter-item p-3 rounded-lg border border-gray-200 cursor-pointer transition-all">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center">
+                                    <div class="w-8 h-8 bg-gray-300 text-gray-600 rounded-full flex items-center justify-center text-sm font-bold mr-3">
+                                        5
+                                    </div>
+                                    <div>
+                                        <h4 class="font-semibold text-gray-900">Application Process</h4>
+                                        <p class="text-sm text-gray-600">18:10</p>
+                                    </div>
+                                </div>
+                                <i class="fas fa-play text-gray-400"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Download Resources -->
+                <div class="bg-white rounded-xl shadow-lg p-6">
+                    <h3 class="text-xl font-bold text-gray-900 mb-4">Download Resources</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="flex items-center p-4 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
+                            <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mr-4">
+                                <i class="fas fa-file-pdf text-blue-600"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-gray-900">Application Checklist</h4>
+                                <p class="text-sm text-gray-600">PDF • 2.4 MB</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center p-4 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
+                            <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mr-4">
+                                <i class="fas fa-file-word text-green-600"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-gray-900">Templates Pack</h4>
+                                <p class="text-sm text-gray-600">ZIP • 5.1 MB</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sidebar -->
+            <div class="lg:w-1/3">
+                <!-- Course Progress -->
+                <div class="bg-white rounded-xl shadow-lg p-6 mb-6">
+                    <h3 class="text-xl font-bold text-gray-900 mb-4">Your Progress</h3>
+                    <div class="space-y-4">
+                        <div>
+                            <div class="flex justify-between text-sm text-gray-600 mb-2">
+                                <span>Course Completion</span>
+                                <span>15%</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2">
+                                <div class="bg-blue-600 h-2 rounded-full progress-bar" style="width: 15%"></div>
+                            </div>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-600">Videos Watched</span>
+                            <span class="font-semibold">2/15</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-600">Time Spent</span>
+                            <span class="font-semibold">24m/2h 15m</span>
+                        </div>
+                    </div>
+                    <button class="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors mt-4">
+                        Continue Learning
+                    </button>
+                </div>
+
+                <!-- Video Playlist -->
+                <div class="bg-white rounded-xl shadow-lg p-6 mb-6">
+                    <h3 class="text-xl font-bold text-gray-900 mb-4">Video Playlist</h3>
+                    <div class="space-y-3">
+                        <div class="playlist-item active p-3 rounded-lg border border-blue-200 bg-blue-50 cursor-pointer">
+                            <div class="flex items-center">
+                                <div class="w-4 h-4 bg-blue-600 rounded-full mr-3"></div>
+                                <div class="flex-1">
+                                    <h4 class="font-semibold text-gray-900 text-sm">Platform Walkthrough</h4>
+                                    <p class="text-xs text-gray-600">15:20 • Currently playing</p>
+                                </div>
+                                <i class="fas fa-play text-blue-600"></i>
+                            </div>
+                        </div>
+
+                        <div class="playlist-item p-3 rounded-lg border border-gray-200 hover:border-gray-300 cursor-pointer">
+                            <div class="flex items-center">
+                                <div class="w-4 h-4 bg-gray-300 rounded-full mr-3"></div>
+                                <div class="flex-1">
+                                    <h4 class="font-semibold text-gray-900 text-sm">Scholarship Applications</h4>
+                                    <p class="text-xs text-gray-600">12:45</p>
+                                </div>
+                                <i class="fas fa-play text-gray-400"></i>
+                            </div>
+                        </div>
+
+                        <div class="playlist-item p-3 rounded-lg border border-gray-200 hover:border-gray-300 cursor-pointer">
+                            <div class="flex items-center">
+                                <div class="w-4 h-4 bg-gray-300 rounded-full mr-3"></div>
+                                <div class="flex-1">
+                                    <h4 class="font-semibold text-gray-900 text-sm">Job Applications</h4>
+                                    <p class="text-xs text-gray-600">10:30</p>
+                                </div>
+                                <i class="fas fa-play text-gray-400"></i>
+                            </div>
+                        </div>
+
+                        <div class="playlist-item p-3 rounded-lg border border-gray-200 hover:border-gray-300 cursor-pointer">
+                            <div class="flex items-center">
+                                <div class="w-4 h-4 bg-gray-300 rounded-full mr-3"></div>
+                                <div class="flex-1">
+                                    <h4 class="font-semibold text-gray-900 text-sm">Funding Proposals</h4>
+                                    <p class="text-xs text-gray-600">18:15</p>
+                                </div>
+                                <i class="fas fa-play text-gray-400"></i>
+                            </div>
+                        </div>
+
+                        <div class="playlist-item p-3 rounded-lg border border-gray-200 hover:border-gray-300 cursor-pointer">
+                            <div class="flex items-center">
+                                <div class="w-4 h-4 bg-gray-300 rounded-full mr-3"></div>
+                                <div class="flex-1">
+                                    <h4 class="font-semibold text-gray-900 text-sm">Document Preparation</h4>
+                                    <p class="text-xs text-gray-600">14:20</p>
+                                </div>
+                                <i class="fas fa-play text-gray-400"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="bg-white rounded-xl shadow-lg p-6">
+                    <h3 class="text-xl font-bold text-gray-900 mb-4">Quick Actions</h3>
+                    <div class="space-y-3">
+                        <a href="singup.html" class="flex items-center p-3 bg-blue-50 border border-blue-200 rounded-lg hover:bg-blue-100 transition-colors">
+                            <div class="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center mr-3">
+                                <i class="fas fa-user-plus text-white"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-gray-900">Create Account</h4>
+                                <p class="text-sm text-gray-600">Start your journey</p>
+                            </div>
+                        </a>
+                        <a href="all.html" class="flex items-center p-3 bg-green-50 border border-green-200 rounded-lg hover:bg-green-100 transition-colors">
+                            <div class="w-10 h-10 bg-green-600 rounded-lg flex items-center justify-center mr-3">
+                                <i class="fas fa-search text-white"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-gray-900">Find Opportunities</h4>
+                                <p class="text-sm text-gray-600">Browse available options</p>
+                            </div>
+                        </a>
+                        <a href="howtoapply.html" class="flex items-center p-3 bg-purple-50 border border-purple-200 rounded-lg hover:bg-purple-100 transition-colors">
+                            <div class="w-10 h-10 bg-purple-600 rounded-lg flex items-center justify-center mr-3">
+                                <i class="fas fa-file-alt text-white"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-gray-900">Application Guide</h4>
+                                <p class="text-sm text-gray-600">Step-by-step instructions</p>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Related Videos -->
+    <section class="py-16 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-gray-900 mb-4">More Helpful Videos</h2>
+                <p class="text-xl text-gray-600">Explore our complete video library</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Video 1 -->
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
+                    <div class="relative pb-[56.25%]"> <!-- 16:9 aspect ratio -->
+                        <img src="https://images.unsplash.com/photo-1556761175-b413da4baf72?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1000&q=80" 
+                             alt="Scholarship Application Guide" 
+                             class="absolute inset-0 w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity">
+                            <div class="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center cursor-pointer">
+                                <i class="fas fa-play text-white text-xl"></i>
+                            </div>
+                        </div>
+                        <div class="absolute bottom-2 right-2 bg-black bg-opacity-75 text-white px-2 py-1 rounded text-sm">
+                            12:45
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="font-semibold text-gray-900 mb-2">Scholarship Application Masterclass</h3>
+                        <p class="text-sm text-gray-600 mb-3">Learn how to create winning scholarship applications</p>
+                        <div class="flex items-center text-sm text-gray-500">
+                            <i class="fas fa-eye mr-1"></i>
+                            <span class="mr-4">8.4K views</span>
+                            <i class="fas fa-calendar mr-1"></i>
+                            <span>2 weeks ago</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Video 2 -->
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
+                    <div class="relative pb-[56.25%]"> <!-- 16:9 aspect ratio -->
+                        <img src="https://images.unsplash.com/photo-1551434678-e076c223a692?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1000&q=80" 
+                             alt="Job Application Tips" 
+                             class="absolute inset-0 w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity">
+                            <div class="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center cursor-pointer">
+                                <i class="fas fa-play text-white text-xl"></i>
+                            </div>
+                        </div>
+                        <div class="absolute bottom-2 right-2 bg-black bg-opacity-75 text-white px-2 py-1 rounded text-sm">
+                            10:30
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="font-semibold text-gray-900 mb-2">Job Application Success Tips</h3>
+                        <p class="text-sm text-gray-600 mb-3">Stand out from other applicants with these proven strategies</p>
+                        <div class="flex items-center text-sm text-gray-500">
+                            <i class="fas fa-eye mr-1"></i>
+                            <span class="mr-4">12.1K views</span>
+                            <i class="fas fa-calendar mr-1"></i>
+                            <span>1 month ago</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Video 3 -->
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
+                    <div class="relative pb-[56.25%]"> <!-- 16:9 aspect ratio -->
+                        <img src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1000&q=80" 
+                             alt="Funding Proposal Guide" 
+                             class="absolute inset-0 w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity">
+                            <div class="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center cursor-pointer">
+                                <i class="fas fa-play text-white text-xl"></i>
+                            </div>
+                        </div>
+                        <div class="absolute bottom-2 right-2 bg-black bg-opacity-75 text-white px-2 py-1 rounded text-sm">
+                            18:15
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="font-semibold text-gray-900 mb-2">Writing Winning Funding Proposals</h3>
+                        <p class="text-sm text-gray-600 mb-3">Create compelling proposals that get funded</p>
+                        <div class="flex items-center text-sm text-gray-500">
+                            <i class="fas fa-eye mr-1"></i>
+                            <span class="mr-4">6.3K views</span>
+                            <i class="fas fa-calendar mr-1"></i>
+                            <span>3 weeks ago</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <div class="flex justify-center items-center mb-6">
+                    <div class="bg-blue-600 text-white p-2 rounded-lg">
+                        <i class="fas fa-graduation-cap text-xl"></i>
+                    </div>
+                    <span class="ml-3 text-2xl font-bold">Fursati</span>
+                </div>
+                <p class="text-gray-400 mb-6">Learn, apply, and succeed with our video guides</p>
+                <div class="border-t border-gray-800 pt-6">
+                    <p class="text-gray-400">© 2024 Fursati. All rights reserved.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Video guide functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            // Chapter navigation
+            const chapterItems = document.querySelectorAll('.chapter-item');
+            chapterItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    // Remove active class from all chapters
+                    chapterItems.forEach(chapter => {
+                        chapter.classList.remove('active');
+                        chapter.style.backgroundColor = '';
+                        chapter.style.borderLeft = '';
+                    });
+                    
+                    // Add active class to clicked chapter
+                    this.classList.add('active');
+                    this.style.backgroundColor = '#eff6ff';
+                    this.style.borderLeft = '4px solid #3b82f6';
+                    
+                    // Update progress
+                    updateProgress();
+                });
+            });
+
+            // Playlist item navigation
+            const playlistItems = document.querySelectorAll('.playlist-item');
+            playlistItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    // Remove active class from all playlist items
+                    playlistItems.forEach(playItem => {
+                        playItem.classList.remove('active');
+                        playItem.style.backgroundColor = '';
+                        playItem.style.borderColor = '';
+                    });
+                    
+                    // Add active class to clicked item
+                    this.classList.add('active');
+                    this.style.backgroundColor = '#eff6ff';
+                    this.style.borderColor = '#3b82f6';
+                    
+                    // Simulate video change
+                    const videoTitle = this.querySelector('h4').textContent;
+                    document.querySelector('.text-2xl.font-bold').textContent = videoTitle;
+                });
+            });
+
+            // Video play functionality for related videos
+            const relatedVideoThumbs = document.querySelectorAll('.relative.pb-\\[56\\.25\\%\\]');
+            relatedVideoThumbs.forEach(thumb => {
+                thumb.addEventListener('click', function() {
+                    const videoCard = this.closest('.bg-white');
+                    const videoTitle = videoCard.querySelector('h3').textContent;
+                    alert(`Loading video: ${videoTitle}`);
+                    // Here you would typically load the selected video
+                });
+            });
+
+            // Progress tracking simulation
+            function updateProgress() {
+                const activeChapters = document.querySelectorAll('.chapter-item.active').length;
+                const totalChapters = document.querySelectorAll('.chapter-item').length;
+                const progressPercentage = (activeChapters / totalChapters) * 100;
+                
+                // Update progress bar
+                const progressBar = document.querySelector('.progress-bar');
+                progressBar.style.width = `${progressPercentage}%`;
+                
+                // Update progress text
+                const progressText = document.querySelector('.text-sm.text-gray-600 span:last-child');
+                if (progressText) {
+                    progressText.textContent = `${Math.round(progressPercentage)}%`;
+                }
+                
+                // Update videos watched count
+                const videosWatched = document.querySelector('.flex.justify-between.text-sm span.font-semibold');
+                if (videosWatched) {
+                    videosWatched.textContent = `${activeChapters}/${totalChapters}`;
+                }
+            }
+
+            // Like/dislike functionality
+            const likeButton = document.querySelector('.fa-thumbs-up').closest('button');
+            const dislikeButton = document.querySelector('.fa-thumbs-down').closest('button');
+            
+            likeButton.addEventListener('click', function() {
+                const likeCount = this.querySelector('span');
+                let count = parseInt(likeCount.textContent);
+                likeCount.textContent = count + 1;
+                this.classList.add('text-blue-600');
+                dislikeButton.classList.remove('text-blue-600');
+            });
+            
+            dislikeButton.addEventListener('click', function() {
+                const dislikeCount = this.querySelector('span');
+                let count = parseInt(dislikeCount.textContent);
+                dislikeCount.textContent = count + 1;
+                this.classList.add('text-blue-600');
+                likeButton.classList.remove('text-blue-600');
+            });
+
+            // Share functionality
+            const shareButton = document.querySelector('.fa-share').closest('button');
+            shareButton.addEventListener('click', function() {
+                alert('Share this video guide with others!');
+                // Here you would typically open a share dialog
+            });
+
+            // Initialize progress
+            updateProgress();
+        });
+    </script>
+</body>
+</html>

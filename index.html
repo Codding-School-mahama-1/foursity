@@ -6,6 +6,16 @@
     <title>Fursati - Unified Application Platform</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Add smooth scrolling */
+        html {
+            scroll-behavior: smooth;
+        }
+        /* Mobile menu animations */
+        .mobile-menu {
+            transition: all 0.3s ease-in-out;
+        }
+    </style>
 </head>
 <body class="bg-gray-50 font-sans">
     <!-- Navigation -->
@@ -14,10 +24,12 @@
             <div class="flex justify-between items-center py-4">
                 <!-- Logo -->
                 <div class="flex items-center">
-                    <div class="bg-blue-600 text-white p-2 rounded-lg">
-                        <i class="fas fa-graduation-cap text-xl"></i>
-                    </div>
-                    <span class="ml-3 text-2xl font-bold text-blue-600">Fursati</span>
+                    <a href="index.html" class="flex items-center">
+                        <div class="bg-blue-600 text-white p-2 rounded-lg">
+                            <i class="fas fa-graduation-cap text-xl"></i>
+                        </div>
+                        <span class="ml-3 text-2xl font-bold text-blue-600">Fursati</span>
+                    </a>
                 </div>
 
                 <!-- Desktop Menu -->
@@ -27,29 +39,38 @@
                     <a href="#how-it-works" class="text-gray-700 hover:text-blue-600 font-medium">How It Works</a>
                     <a href="about.html" class="text-gray-700 hover:text-blue-600 font-medium">About</a>
                     
-                    <!-- Language Selector -->
-                    <div class="flex items-center space-x-2">
-                        <button class="text-blue-600 font-semibold">EN</button>
-                        <span class="text-gray-300">|</span>
-                        <button class="text-gray-600 hover:text-blue-600">العربية</button>
-                    </div>
-                    
                     <!-- Auth Buttons -->
                     <div class="flex items-center space-x-4">
-                        <button class="text-blue-600 hover:text-blue-700 font-medium"><a href="lonin.html">log in</a></button>
+                        <a href="lonin.html" class="text-blue-600 hover:text-blue-700 font-medium">Login</a>
                         <a href="singup.html">
-                        <button class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors font-medium">
-                            Create Account
-                        </button>
+                            <button class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors font-medium">
+                                Create Account
+                            </button>
                         </a>
                     </div>
                 </div>
 
                 <!-- Mobile menu button -->
-                <div class="md:hidden">
-                    <button class="text-gray-700">
-                        <i class="fas fa-bars text-xl"></i>
+                <div class="md:hidden flex items-center">
+                    <button id="mobile-menu-button" class="text-gray-700 hover:text-blue-600 focus:outline-none">
+                        <i class="fas fa-bars text-2xl"></i>
                     </button>
+                </div>
+            </div>
+
+            <!-- Mobile Menu (Hidden by default) -->
+            <div id="mobile-menu" class="mobile-menu hidden md:hidden pb-4 border-t border-gray-200 mt-4">
+                <div class="flex flex-col space-y-4">
+                    <a href="#home" class="text-gray-700 hover:text-blue-600 font-medium">Home</a>
+                    <a href="#opportunities" class="text-gray-700 hover:text-blue-600 font-medium">Opportunities</a>
+                    <a href="#how-it-works" class="text-gray-700 hover:text-blue-600 font-medium">How It Works</a>
+                    <a href="about.html" class="text-gray-700 hover:text-blue-600 font-medium">About</a>
+                    <div class="flex flex-col space-y-3 pt-4 border-t border-gray-200">
+                        <a href="lonin.html" class="text-blue-600 hover:text-blue-700 font-medium text-center">Login</a>
+                        <a href="singup.html" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors font-medium text-center">
+                            Create Account
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -69,15 +90,18 @@
                 
                 <!-- CTA Buttons -->
                 <div class="flex flex-col sm:flex-row justify-center items-center space-y-4 sm:space-y-0 sm:space-x-6 mb-12">
-                    <a href="apply.html"><button class="bg-white text-blue-600 px-8 py-4 rounded-xl font-semibold hover:bg-gray-100 transition-all transform hover:scale-105 shadow-lg text-lg w-full sm:w-auto">
-                        <i class="fas fa-rocket mr-2"></i>
-                        Start Applying Now
-                    </button>
+                    <a href="apply.html">
+                        <button class="bg-white text-blue-600 px-8 py-4 rounded-xl font-semibold hover:bg-gray-100 transition-all transform hover:scale-105 shadow-lg text-lg w-full sm:w-auto">
+                            <i class="fas fa-rocket mr-2"></i>
+                            Start Applying Now
+                        </button>
                     </a>
-                    <button class="border-2 border-white text-white px-8 py-4 rounded-xl font-semibold hover:bg-white hover:text-blue-600 transition-all w-full sm:w-auto">
-                        <i class="fas fa-search mr-2"></i>
-                        Explore Opportunities
-                    </button>
+                    <a href="all.html">
+                        <button class="border-2 border-white text-white px-8 py-4 rounded-xl font-semibold hover:bg-white hover:text-blue-600 transition-all w-full sm:w-auto">
+                            <i class="fas fa-search mr-2"></i>
+                            Explore Opportunities
+                        </button>
+                    </a>
                 </div>
 
                 <!-- Stats -->
@@ -110,17 +134,20 @@
             <!-- Opportunity Type Tabs -->
             <div class="flex justify-center mb-8">
                 <div class="bg-gray-100 rounded-xl p-1 inline-flex">
-                    <a href="scholarships.html"><button class="px-6 py-3 rounded-lg bg-blue-600 text-white font-medium transition-all">
-                        <i class="fas fa-graduation-cap mr-2"></i>Scholarships
-                    </button>
+                    <a href="scholarships.html">
+                        <button class="px-6 py-3 rounded-lg bg-blue-600 text-white font-medium transition-all">
+                            <i class="fas fa-graduation-cap mr-2"></i>Scholarships
+                        </button>
                     </a>
-                   <a href="job.html"><button class="px-6 py-3 rounded-lg text-gray-700 hover:text-blue-600 font-medium transition-all">
-                        <i class="fas fa-briefcase mr-2"></i>Jobs
-                    </button>
-                    </a> 
-                   <a href="funding.html"> <button class="px-6 py-3 rounded-lg text-gray-700 hover:text-blue-600 font-medium transition-all">
-                        <i class="fas fa-hand-holding-usd mr-2"></i>Funding
-                    </button>
+                    <a href="job.html">
+                        <button class="px-6 py-3 rounded-lg text-gray-700 hover:text-blue-600 font-medium transition-all">
+                            <i class="fas fa-briefcase mr-2"></i>Jobs
+                        </button>
+                    </a>
+                    <a href="funding.html">
+                        <button class="px-6 py-3 rounded-lg text-gray-700 hover:text-blue-600 font-medium transition-all">
+                            <i class="fas fa-hand-holding-usd mr-2"></i>Funding
+                        </button>
                     </a>
                 </div>
             </div>
@@ -152,10 +179,11 @@
                             <span class="text-green-600 font-bold">Fully Funded</span>
                         </div>
                         
-                       <a href="apply.html"><button class="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition-colors font-medium">
-                            <i class="fas fa-paper-plane mr-2"></i>Apply Now
-                        </button>
-                        </a> 
+                        <a href="apply.html">
+                            <button class="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition-colors font-medium">
+                                <i class="fas fa-paper-plane mr-2"></i>Apply Now
+                            </button>
+                        </a>
                     </div>
                 </div>
 
@@ -184,9 +212,10 @@
                             <span class="text-orange-600 font-bold">Full-time</span>
                         </div>
                         
-                        <a href="apply.html"><button class="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition-colors font-medium">
-                            <i class="fas fa-paper-plane mr-2"></i>Apply Now
-                        </button>
+                        <a href="apply.html">
+                            <button class="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition-colors font-medium">
+                                <i class="fas fa-paper-plane mr-2"></i>Apply Now
+                            </button>
                         </a>
                     </div>
                 </div>
@@ -216,19 +245,21 @@
                             <span class="text-green-600 font-bold">50,000 SAR</span>
                         </div>
                         
-                       <a href="apply.html"><button class="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition-colors font-medium">
-                            <i class="fas fa-paper-plane mr-2"></i>Apply Now
-                        </button>
-                        </a> 
+                        <a href="apply.html">
+                            <button class="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition-colors font-medium">
+                                <i class="fas fa-paper-plane mr-2"></i>Apply Now
+                            </button>
+                        </a>
                     </div>
                 </div>
             </div>
 
             <!-- View All Button -->
             <div class="text-center">
-               <a href="all.html"> <button class="border-2 border-blue-600 text-blue-600 px-8 py-3 rounded-lg hover:bg-blue-600 hover:text-white transition-all font-semibold">
-                    <i class="fas fa-list mr-2"></i>View All Opportunities
-                </button>
+                <a href="all.html">
+                    <button class="border-2 border-blue-600 text-blue-600 px-8 py-3 rounded-lg hover:bg-blue-600 hover:text-white transition-all font-semibold">
+                        <i class="fas fa-list mr-2"></i>View All Opportunities
+                    </button>
                 </a>
             </div>
         </div>
@@ -249,7 +280,7 @@
                         <div class="bg-blue-600 text-white w-12 h-12 rounded-full flex items-center justify-center text-xl font-bold">1</div>
                     </div>
                     <h3 class="text-xl font-bold text-gray-900 mb-4">Create Account</h3>
-                    <p class="text-gray-600">Register with your personal information and <a href="singup.html">create your profile</a></p>
+                    <p class="text-gray-600">Register with your personal information and <a href="signup.html" class="text-blue-600 hover:text-blue-700">create your profile</a></p>
                 </div>
 
                 <!-- Step 2 -->
@@ -329,13 +360,16 @@
                 Join thousands of successful applicants who found their perfect opportunities through our platform
             </p>
             <div class="flex flex-col sm:flex-row justify-center items-center space-y-4 sm:space-y-0 sm:space-x-6">
-               <a href="singup.html"><button class="bg-white text-blue-600 px-8 py-4 rounded-xl font-semibold hover:bg-gray-100 transition-all transform hover:scale-105 shadow-lg text-lg">
-                    <i class="fas fa-user-plus mr-2"></i>Create Free Account
-                </button>
-                </a> 
-                <button class="border-2 border-white text-white px-8 py-4 rounded-xl font-semibold hover:bg-white hover:text-blue-600 transition-all">
-                    <i class="fas fa-play-circle mr-2"></i>Watch Demo Video
-                </button>
+                <a href="singup.html">
+                    <button class="bg-white text-blue-600 px-8 py-4 rounded-xl font-semibold hover:bg-gray-100 transition-all transform hover:scale-105 shadow-lg text-lg">
+                        <i class="fas fa-user-plus mr-2"></i>Create Free Account
+                    </button>
+                </a>
+                <a href="video.html">
+                    <button class="border-2 border-white text-white px-8 py-4 rounded-xl font-semibold hover:bg-white hover:text-blue-600 transition-all">
+                        <i class="fas fa-play-circle mr-2"></i>Watch Demo Video
+                    </button>
+                </a>
             </div>
         </div>
     </section>
@@ -362,7 +396,7 @@
                         <a href="https://www.facebook.com/hanialtayebbasha" class="text-gray-400 hover:text-white transition-colors">
                             <i class="fab fa-facebook text-xl"></i>
                         </a>
-                        <a href=" https://github.com/HaniBasha3270" class="text-gray-400 hover:text-white transition-colors">
+                        <a href="https://github.com/HaniBasha3270" class="text-gray-400 hover:text-white transition-colors">
                             <i class="fab fa-github text-xl"></i>
                         </a>
                         <a href="#" class="text-gray-400 hover:text-white transition-colors">
@@ -377,7 +411,7 @@
                     <ul class="space-y-2">
                         <li><a href="#home" class="text-gray-400 hover:text-white transition-colors">Home</a></li>
                         <li><a href="scholarships.html" class="text-gray-400 hover:text-white transition-colors">Scholarships</a></li>
-                        <li><a href="job.html" class="text-gray-400 hover:text-white transition-colors">Jobs</a></li>
+                        <li><a href="jobs.html" class="text-gray-400 hover:text-white transition-colors">Jobs</a></li>
                         <li><a href="funding.html" class="text-gray-400 hover:text-white transition-colors">Funding</a></li>
                     </ul>
                 </div>
@@ -388,7 +422,7 @@
                     <ul class="space-y-2 text-gray-400">
                         <li class="flex items-center">
                             <i class="fas fa-envelope mr-2"></i>
-                            hanibasha3270@gmail.comm
+                            hanibasha3270@gmail.com
                         </li>
                         <li class="flex items-center">
                             <i class="fas fa-phone mr-2"></i>
@@ -410,8 +444,24 @@
 
     <!-- JavaScript for interactivity -->
     <script>
-        // Simple tab functionality
+        // Mobile menu functionality
         document.addEventListener('DOMContentLoaded', function() {
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+
+            mobileMenuButton.addEventListener('click', function() {
+                mobileMenu.classList.toggle('hidden');
+            });
+
+            // Close mobile menu when clicking on a link
+            const mobileLinks = mobileMenu.querySelectorAll('a');
+            mobileLinks.forEach(link => {
+                link.addEventListener('click', function() {
+                    mobileMenu.classList.add('hidden');
+                });
+            });
+
+            // Simple tab functionality
             const tabs = document.querySelectorAll('.bg-gray-100 button');
             tabs.forEach(tab => {
                 tab.addEventListener('click', function() {
