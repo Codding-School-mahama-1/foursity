@@ -316,6 +316,142 @@
       </div>
     </div>
   </section>
+  <!-- CONTACT SECTION -->
+<section id="contact" class="py-16 bg-gray-50">
+  <div class="container mx-auto px-4">
+    <div class="text-center mb-12">
+      <h2 class="text-3xl md:text-4xl font-bold text-blue-600 mb-4">Get In Touch</h2>
+      <p class="text-gray-600 max-w-2xl mx-auto">We're here to help and answer any questions you might have. We look forward to hearing from you.</p>
+    </div>
+   
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+      <!-- Contact Form -->
+      <div class="bg-white rounded-xl shadow-lg p-8">
+        <h3 class="text-2xl font-bold text-gray-800 mb-6">Send us a Message</h3>
+        <form id="contact-form" class="space-y-6">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <label for="first-name" class="block text-gray-700 mb-2">First Name</label>
+              <input type="text" id="first-name" name="first-name" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+            </div>
+            <div>
+              <label for="last-name" class="block text-gray-700 mb-2">Last Name</label>
+              <input type="text" id="last-name" name="last-name" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+            </div>
+          </div>
+         
+          <div>
+            <label for="email" class="block text-gray-700 mb-2">Email Address</label>
+            <input type="email" id="email" name="email" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+          </div>
+         
+          <div>
+            <label for="phone" class="block text-gray-700 mb-2">Phone Number</label>
+            <input type="tel" id="phone" name="phone" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+          </div>
+         
+          <div>
+            <label for="subject" class="block text-gray-700 mb-2">Subject</label>
+            <select id="subject" name="subject" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+              <option value="">Select a subject</option>
+              <option value="appointment">Book an Appointment</option>
+              <option value="general">General Inquiry</option>
+              <option value="feedback">Feedback</option>
+              <option value="emergency">Emergency</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+         
+          <div>
+            <label for="message" class="block text-gray-700 mb-2">Message</label>
+            <textarea id="message" name="message" rows="5" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required></textarea>
+          </div>
+         
+          <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition duration-300 transform hover:-translate-y-1">
+            Send Message
+          </button>
+        </form>
+      </div>
+     
+      <!-- Contact Information & Map -->
+      <div class="space-y-8">
+        <!-- Contact Info Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="bg-white rounded-xl shadow-lg p-6 flex items-start">
+            <div class="bg-blue-100 p-3 rounded-lg mr-4">
+              <i class="fas fa-map-marker-alt text-blue-600 text-xl"></i>
+            </div>
+            <div>
+              <h4 class="font-bold text-gray-800 mb-1">Our Location</h4>
+              <p class="text-gray-600">123 Health Street, Medical District, City</p>
+            </div>
+          </div>
+         
+ 
+          <div class="bg-white rounded-xl shadow-lg p-6 flex items-start">
+            <div class="bg-blue-100 p-3 rounded-lg mr-4">
+              <i class="fas fa-phone text-blue-600 text-xl"></i>
+            </div>
+            <div>
+              <h4 class="font-bold text-gray-800 mb-1">Phone Number</h4>
+              <p class="text-gray-600">+250 000 000</p>
+            </div>
+          </div>
+         
+          <div class="bg-white rounded-xl shadow-lg p-6 flex items-start">
+            <div class="bg-blue-100 p-3 rounded-lg mr-4">
+              <i class="fas fa-envelope text-blue-600 text-xl"></i>
+            </div>
+            <div>
+              <h4 class="font-bold text-gray-800 mb-1">Email Address</h4>
+              <p class="text-gray-600">info@hopecare.com</p>
+            </div>
+          </div>
+         
+          <div class="bg-white rounded-xl shadow-lg p-6 flex items-start">
+            <div class="bg-blue-100 p-3 rounded-lg mr-4">
+              <i class="fas fa-clock text-blue-600 text-xl"></i>
+            </div>
+            <div>
+              <h4 class="font-bold text-gray-800 mb-1">Working Hours</h4>
+              <p class="text-gray-600">24/7 Emergency Services</p>
+              <p class="text-gray-600">Mon-Fri: 8am-6pm</p>
+            </div>
+          </div>
+        </div>
+          <!-- Google Map -->
+    <div class="bg-white rounded-xl shadow-lg p-6">
+      <iframe
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3153.123456789!2d-122.41941518468152!3d37.77492977975907!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x80858064c2f0f3bf%3A0x123456789abcdef!2s123%20Health%20Street%2C%20San%20Francisco%2C%20CA!5e0!3m2!1sen!2sus!4v1600000000000!5m2!1sen!2sus"
+        width="100%"
+        height="300"
+        style="border:0;"
+        allowfullscreen=""
+        loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade">
+      </iframe>
+    </div>
+  </div>
+</div>
+       
+       
+        <!-- Emergency Notice -->
+        <div class="bg-red-50 border border-red-200 rounded-xl p-6">
+          <div class="flex items-start">
+            <i class="fas fa-exclamation-triangle text-red-500 text-xl mt-1 mr-4"></i>
+            <div>
+              <h4 class="font-bold text-red-700 mb-2">Emergency Contact</h4>
+              <p class="text-red-600 mb-2">For urgent medical assistance, please call our emergency line immediately.</p>
+              <a href="tel:+250000000" class="inline-block bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg transition duration-300">
+                Call Emergency: +250 000 000
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
   <!-- FOOTER -->
   <footer class="bg-gray-900 text-white py-12">
@@ -392,6 +528,62 @@
             </div>
 
         </div>
+      </div>
+      
+      <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-500">
+        <p>&copy; 2025 MahamaCare Hospital. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Mobile menu toggle
+    document.getElementById('mobile-menu-button').addEventListener('click', function() {
+      const mobileMenu = document.getElementById('mobile-menu');
+      mobileMenu.classList.toggle('hidden');
+    });
+    
+    // Mobile services dropdown toggle
+    document.getElementById('mobile-services-toggle').addEventListener('click', function() {
+      const mobileServicesMenu = document.getElementById('mobile-services-menu');
+      mobileServicesMenu.classList.toggle('hidden');
+    });
+    
+    // Scroll animation for service cards
+    const cards = document.querySelectorAll('.service-card');
+    
+    const revealCards = () => {
+      const triggerBottom = window.innerHeight * 0.85;
+      cards.forEach(card => {
+        const cardTop = card.getBoundingClientRect().top;
+        if (cardTop < triggerBottom) {
+          card.classList.add('show');
+        }
+      });
+    };
+    
+    window.addEventListener('scroll', revealCards);
+    window.addEventListener('load', revealCards);
+  </script>
+  <script>
+  // Contact form handling
+  document.getElementById('contact-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+   
+    // Get form data
+    const formData = new FormData(this);
+    const data = Object.fromEntries(formData);
+   
+    // In a real application, you would send this data to a server
+    // For this example, we'll just show a success message
+    alert('Thank you for your message! We will get back to you soon.');
+   
+    // Reset the form
+    this.reset();
+  });
+</script>
+
+</body>
     </section>
 
     <script>
