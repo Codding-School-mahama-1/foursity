@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Birth Certificate Form</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-blue-400 p-6">
+  <div class="max-w-[480px] mx-auto bg-white p-4 rounded-2xl shadow">
+    <h1 class="text-xl font-bold mb-3 text-center">Birth Certificate Form</h1>
+
+    <form id="dataForm" class="space-y-2">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+        <div>
+          <label class="block text-xs font-medium mb-1">Child's Full Name</label>
+          <input name="childName" required class="w-full px-2 py-1.5 rounded-lg border" placeholder="e.g. Baby John" />
+        </div>
+        <div>
+          <label class="block text-xs font-medium mb-1">Gender</label>
+          <select name="gender" class="w-full px-2 py-1.5 rounded-lg border">
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+        <div>
+          <label class="block text-xs font-medium mb-1">Date of Birth</label>
+          <input type="date" name="dob" required class="w-full px-2 py-1.5 rounded-lg border" />
+        </div>
+        <div>
+          <label class="block text-xs font-medium mb-1">Time of Birth</label>
+          <input type="time" name="time" class="w-full px-2 py-1.5 rounded-lg border" />
+        </div>
+      </div>
+
+      <div>
+        <label class="block text-xs font-medium mb-1">Place of Birth</label>
+        <input name="place" class="w-full px-2 py-1.5 rounded-lg border" placeholder="e.g. St. Mary Hospital, Kigali" />
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+        <div>
+          <label class="block text-xs font-medium mb-1">Mother's Name</label>
+          <input name="mother" class="w-full px-2 py-1.5 rounded-lg border" />
+        </div>
+        <div>
+          <label class="block text-xs font-medium mb-1">Father's Name</label>
+          <input name="father" class="w-full px-2 py-1.5 rounded-lg border" />
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+        <div>
+          <label class="block text-xs font-medium mb-1">Registration No.</label>
+          <input name="regNo" class="w-full px-2 py-1.5 rounded-lg border" placeholder="Auto or manual" />
+        </div>
+        <div>
+          <label class="block text-xs font-medium mb-1">Registrar / Issuer</label>
+          <input name="issuer" class="w-full px-2 py-1.5 rounded-lg border" placeholder="Registrar" />
+        </div>
+      </div>
+
+      <div>
+        <label class="block text-xs font-medium mb-1">Notes</label>
+        <textarea name="notes" rows="2" class="w-full px-2 py-1.5 rounded-lg border" placeholder="Optional notes"></textarea>
+      </div>
+
+      <button type="submit" class="w-full bg-blue-600 text-white py-2 rounded-lg mt-3 text-sm">Generate Certificate</button>
+    </form>
+  </div>
+
+  <script>
+    document.getElementById("dataForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+      const formData = Object.fromEntries(new FormData(this).entries());
+      localStorage.setItem("birthData", JSON.stringify(formData));
+      window.location.href = "certificate.html"; // Go to the certificate page
+    });
+  </script>
+</body>
+</html>
