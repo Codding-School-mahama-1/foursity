@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>HopeCare Hospital</title>
+  <title>MahamaCare Hospital</title>
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- Font Awesome for icons -->
@@ -14,11 +15,87 @@
       from {
         opacity: 0;
         transform: translateY(40px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+    }
+
+    .service-card img {
+        width: 100%;
+        border-radius: 0.75rem;
+        margin-bottom: 1rem;
+    }
+
+    .service-card h3 {
+        font-size: 1.2rem;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        color: #111827;
+    }
+
+    .service-card p {
+        color: #4b5563;
+        font-size: 0.95rem;
+        line-height: 1.5;
+    }
+
+    /* HOVER EFFECT */
+    .service-card:hover {
+        transform: translateY(-6px) scale(1.02);
+        box-shadow: 0 10px 25px rgba(29, 78, 216, 0.25);
+        background: linear-gradient(135deg, #e0f2fe 0%, #f0f9ff 100%);
+    }
+
+    /* Footer */
+    footer {
+        background: #202124;
+        color: white;
+        padding: 40px 0;
+    }
+
+    .footer-content {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 30px;
+    }
+
+    .footer-col {
+        flex: 1;
+        min-width: 200px;
+    }
+
+    .footer-col h3,
+    .footer-col h4 {
+        margin-bottom: 20px;
+    }
+
+    .footer-links {
+        list-style: none;
+        padding: 0;
+    }
+
+    .footer-links li {
+        margin-bottom: 10px;
+    }
+
+    .footer-links a {
+        color: white;
+        text-decoration: none;
+        transition: color 0.3s;
+    }
+
+    .footer-links a:hover {
+        color: #1a73e8;
+    }
+
+    /* SCROLL ANIMATION */
+    @keyframes fadeUp {
+        from {
+            opacity: 0;
+            transform: translateY(40px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
     }
     
     .service-card {
@@ -27,125 +104,101 @@
     }
     
     .service-card.show {
-      animation: fadeUp 0.8s ease forwards;
+        animation: fadeUp 0.8s ease forwards;
     }
-    
-    /* Smooth scrolling */
-    html {
-      scroll-behavior: smooth;
-    }
-  </style>
-</head>
-<body class="font-serif text-gray-800">
-  <!-- NAVBAR -->
-  <header class="bg-white shadow-md sticky top-0 z-50">
-    <div class="container mx-auto px-4">
-      <div class="flex justify-between items-center py-4">
-        <!-- Logo -->
-        <div class="flex items-center">
-          <span class="text-2xl font-bold text-blue-600">🏥 MCH</span>
-        </div>
-        
-        <!-- Mobile menu button -->
-        <button id="mobile-menu-button" class="md:hidden text-gray-600 focus:outline-none">
-          <i class="fas fa-bars text-xl"></i>
-        </button>
-        
-        <!-- Navigation Links -->
-        <nav id="nav-links" class="hidden md:flex items-center space-x-6">
-          <a href="#home" class="text-gray-700 hover:text-blue-600 transition duration-300">Home</a>
-          <a href="#about" class="text-gray-700 hover:text-blue-600 transition duration-300">About</a>
-          
-          <!-- Services Dropdown -->
-          <div class="relative group">
-            <button class="flex items-center text-gray-700 hover:text-blue-600 transition duration-300">
-              Services <i class="fas fa-chevron-down ml-1 text-xs"></i>
-            </button>
-            <div class="absolute left-0 mt-2 w-64 bg-white shadow-xl rounded-lg py-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50">
-              <a href="./Servscies/Maternity&Brith Servecises.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">Maternity & Birth Services</a>
-              <a href="./Servscies/Maternity&Brith Servecises.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">Emergency Care</a>
-              <a href="./Servscies/veccination.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">Vaccination Programs</a>
-              <a href="./Servscies/mentalhealth.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">Mental Health Support</a>
-              <a href="./Servscies/NCD.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">Chronic Disease Care</a>
-              <a href="./Servscies/Health Education.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">Health Awareness & Education</a>
-              <a href="./Servscies/Disability.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">Disability Care</a>
-            </div>
-          </div>
-          
-          <a href="./doctors.html" class="text-gray-700 hover:text-blue-600 transition duration-300">Doctors</a>
-          <a href="#" class="text-gray-700 hover:text-blue-600 transition duration-300">Programs</a>
-          <a href="#contact" class="text-gray-700 hover:text-blue-600 transition duration-300">Contact</a>
-          <a href="#help" class="text-gray-700 hover:text-blue-600 transition duration-300">Help</a>
-        </nav>
-        
-        <!-- Actions -->
-        <div class="hidden md:flex items-center space-x-4">
-          <select class="border border-gray-300 rounded px-3 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
-            <option value="en">English</option>
-            <option value="ar">العربية</option>
-            <option value="rw">Kinyarwanda</option>
-          </select>
-          <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition duration-300">
-            <a href="./sigin.html">Sign in</a> </button>
-          <button class="border border-blue-600 text-blue-600 px-4 py-2 rounded hover:bg-blue-600 hover:text-white transition duration-300">
-           <a href="./logup.html">Log Up</a> </button>
-        </div>
-      </div>
-      
-      <!-- Mobile Menu -->
-      <div id="mobile-menu" class="hidden md:hidden py-4 border-t border-gray-200">
-        <div class="flex flex-col space-y-4">
-          <a href="#home" class="text-gray-700 hover:text-blue-600">Home</a>
-          <a href="#about" class="text-gray-700 hover:text-blue-600">About</a>
-          
-          <!-- Mobile Services Dropdown -->
-          <div class="relative">
-            <button id="mobile-services-toggle" class="flex items-center text-gray-700 hover:text-blue-600 w-full justify-between">
-              Services <i class="fas fa-chevron-down"></i>
-            </button>
-            <div id="mobile-services-menu" class="hidden pl-4 mt-2 space-y-2">
-              <a href="./Servscies/Maternity&Brith Servecises.html" class="block text-gray-700 hover:text-blue-600">Maternity & Birth Services</a>
-              <a href="./Servscies/" class="block text-gray-700 hover:text-blue-600">Emergency Care</a>
-              <a href="./Servscies/veccination.html" class="block text-gray-700 hover:text-blue-600">Vaccination Programs</a>
-              <a href="./Servscies/mentalhealth.html" class="block text-gray-700 hover:text-blue-600">Mental Health Support</a>
-              <a href="./Servscies/NCD.html" class="block text-gray-700 hover:text-blue-600">Chronic Disease Care</a>
-              <a href="./Servscies/Health Education.html" class="block text-gray-700 hover:text-blue-600">Health Awareness & Education</a>
-              <a href="./Servscies/Disability.html" class="block text-gray-700 hover:text-blue-600">Disability Care</a>
-            </div>
-          </div>
-          
-          <a href="./doctors.html" class="text-gray-700 hover:text-blue-600">Doctors</a>
-          <a href="#" class="text-gray-700 hover:text-blue-600">Programs</a>
-          <a href="#contact" class="text-gray-700 hover:text-blue-600">Contact</a>
-          <a href="#help" class="text-gray-700 hover:text-blue-600">Help</a>
-          
-          <div class="pt-4 border-t border-gray-200">
-            <select class="w-full border border-gray-300 rounded px-3 py-2 text-sm mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500">
-              <option value="en">English</option>
-              <option value="ar">العربية</option>
-              <option value="rw">Kinyarwanda</option>
-            </select>
-            <div class="flex space-x-2">
-              <button class="flex-1 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition duration-300">Sign Up</button>
-              <button class="flex-1 border border-blue-600 text-blue-600 px-4 py-2 rounded hover:bg-blue-600 hover:text-white transition duration-300">Log In</button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </header>
 
-  <!-- HERO SECTION -->
-  <section id="home" class="relative h-screen flex items-center justify-center overflow-hidden">
-    <!-- Video Background -->
-    <video class="absolute top-0 left-0 w-full h-full object-cover z-0" autoplay muted loop playsinline>
-      <source src="./img/vecteezy.gif" type="video/mp4">
-      Your browser does not support the video tag.
-    </video>
-    
-    <!-- Fallback in case video doesn't load -->
-    <div class="absolute top-0 left-0 w-full h-full bg-[url(/img/vecteezy.gif)] bg-no-repeat bg-cover z-10 flex items-center justify-center">
-      <div class="text-center text-white">
+    /* Responsive */
+    @media(max-width: 900px) {
+        .about-container {
+            flex-direction: column;
+            text-align: center;
+        }
+
+        .about-text {
+            text-align: center;
+        }
+    }
+</style>
+
+<body>
+    <!-- NAVBAR -->
+    <header>
+        <div class="nav-container">
+            <div class="logo">
+                <span style="display: flex; flex-direction: row;">🏥 HCH</span>
+            </div>
+            <nav class="nav-links">
+                <a href="#home">Home</a>
+                <a href="#about">About</a>
+
+                <!-- Services Dropdown -->
+                <div class="dropdown">
+                    <a href="#">Services <i class="fas fa-chevron-down"></i></a>
+                    <div class="dropdown-content">
+                        <a href="./Servscies/Maternity&Brith Servecises.html">Maternity & Birth Services</a>
+                        <a href="#">Emergency Care</a>
+                        <a href="./Servscies/veccination.html">Vaccination Programs</a>
+                        <a href="./Servscies/mentalhealth.html">Mental Health Support</a>
+                        <a href="#">Chronic Disease Care</a>
+                        <a href="./Servscies/Health Education.html">Health Awareness & Education</a>
+                        <a href="#">Disability Care</a>
+                    </div>
+                </div>
+
+
+                <a href="#">Doctots</a>
+                <a href="./Maternity&Brith Servecises.html">Dashboard &</a>
+                <a href="#contact">Contact</a>
+                <a href="#help">Help</a>
+            </nav>
+            <div class="actions">
+                <select id="languageSwitch" class="lang-select">
+                    <option value="en">English</option>
+                    <option value="ar">العربية</option>
+                    <option value="rw">Kinyarwanda</option>
+                </select>
+                <button id="openSignUp" class="btn signup">Sign Up</button>
+                <button id="openLogIn" class="btn login">Log In</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- HERO SECTION WITH VIDEO -->
+    <section id="home" class="hero">
+        <!-- Video Background -->
+       <iframe width="560" height="315" 
+    src="https://www.youtube.com/embed/GJ1uW4L1HT8?autoplay=1&mute=1&si=6Geou4hfS_6yTqDH" 
+    title="YouTube video player" 
+    frameborder="0" 
+    allow="autoplay; encrypted-media; gyroscope; picture-in-picture; web-share" 
+    referrerpolicy="strict-origin-when-cross-origin" 
+    allowfullscreen>
+</iframe>
+
+
+        <!-- Fallback in case video doesn't load -->
+        <div class="video-fallback">
+            <div style="text-align: center;">
+                <i class="fas fa-hospital" style="font-size: 4rem; margin-bottom: 20px;"></i>
+                <h2>HopeCare Hospital</h2>
+                <p>Quality Healthcare for Everyone</p>
+            </div>
+        </div>
+
+        <!-- Hero Content -->
+        <div class="hero-overlay">
+            <h1 id="hero-title">Welcome to HopeCare Hospital</h1>
+            <p id="hero-text">A practical digital platform for camp healthcare — book appointments, check medicine
+                availability, and keep chronic records.</p>
+            <div class="hero-buttons">
+                <button id="heroBook">Learn more</button>
+                <a href="#pharmacy">Check Pharmacy</a>
+            </div>
+            <div class="emergency">
+                Emergency? Call <strong>+250 000 000</strong>
+            </div>
+        </div>
+    </section>
 
         <p class="text-xl">Quality Healthcare for Everyone</p>
       </div>
@@ -258,7 +311,7 @@
           <h3 class="text-xl font-bold text-gray-800 mb-2">Health Awareness & Education</h3>
           <p class="text-gray-600 mb-4">Educational resources about hygiene, nutrition, pregnancy, child care, and disease prevention.</p>
           <button class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition duration-300">
-            <a href="./Servscies/Health Education.html">Learn More</a>Learn More</button>
+            <a href="./Servscies/Health Education.html">Learn More</a></button>
         </div>
       </div>
     </div>
@@ -432,24 +485,48 @@
             <p><i class="fas fa-map-marker-alt mr-2"></i> 123 Health St, City</p>
           </div>
         </div>
-        
-        <!-- Column 4 -->
-        <div>
-          <h4 class="text-lg font-semibold mb-4">Follow Us</h4>
-          <div class="flex space-x-4">
-            <a href="#" class="text-gray-400 hover:text-white transition duration-300">
-              <i class="fab fa-facebook-f text-xl"></i>
-            </a>
-            <a href="#" class="text-gray-400 hover:text-white transition duration-300">
-              <i class="fab fa-twitter text-xl"></i>
-            </a>
-            <a href="#" class="text-gray-400 hover:text-white transition duration-300">
-              <i class="fab fa-instagram text-xl"></i>
-            </a>
-            <a href="#" class="text-gray-400 hover:text-white transition duration-300">
-              <i class="fab fa-linkedin-in text-xl"></i>
-            </a>
-          </div>
+    </section>
+    <!-- SERVICES SECTION -->
+    <section id="services">
+        <h2>Our Services</h2>
+        <div class="services-container">
+
+            <div class="service-card">
+                <img src="./img/baby-1531059_1280.jpg" alt="Maternity">
+                <h3>Maternity & Birth Services</h3>
+                <p>Providing prenatal care, safe deliveries, and postnatal support for mothers and newborns.</p>
+            </div>
+
+            <div class="service-card">
+                <img src="./img/emer.png" alt="Emergency">
+                <h3>Emergency Care</h3>
+                <p>Immediate attention for urgent medical conditions with trained staff available 24/7.</p>
+            </div>
+
+            <div class="service-card">
+                <img src="./img/vac.jpg" alt="Vaccination">
+                <h3>Vaccination Programs</h3>
+                <p>Regular vaccination campaigns for children and adults to prevent infectious diseases.</p>
+            </div>
+
+            <div class="service-card">
+                <img src="./img/mentl.jpg" alt="Mental Health">
+                <h3>Mental Health Support</h3>
+                <p>Counseling and support services for mental well-being and trauma recovery.</p>
+            </div>
+
+            <div class="service-card">
+                <img src="./img/chro.jpg" alt="Chronic Care">
+                <h3>Chronic Disease Care</h3>
+                <p>Management and monitoring of chronic diseases like diabetes, hypertension, TB, and HIV.</p>
+            </div>
+
+            <div class="service-card">
+                <img src="" alt="Health Education">
+                <h3>Health Awareness & Education</h3>
+                <p>Educational resources about hygiene, nutrition, pregnancy, child care, and disease prevention.</p>
+            </div>
+
         </div>
       </div>
       
@@ -507,4 +584,54 @@
 </script>
 
 </body>
+    </section>
+
+    <script>
+        // Reveal on scroll effect
+        const cards = document.querySelectorAll('.service-card');
+
+        const revealCards = () => {
+            const triggerBottom = window.innerHeight * 0.85;
+            cards.forEach(card => {
+                const cardTop = card.getBoundingClientRect().top;
+                if (cardTop < triggerBottom) {
+                    card.classList.add('show');
+                }
+            });
+        };
+
+        window.addEventListener('scroll', revealCards);
+        window.addEventListener('load', revealCards);
+    </script>
+
+    <body>
+        <!-- Footer -->
+        <footer>
+            <div class="container footer-content">
+                <div class="footer-col">
+                    <h3>HopeCare Hospital</h3>
+                    <p>Providing high quality healthcare for over 20 years.</p>
+                </div>
+                <div class="footer-col">
+                    <h4>Quick Links</h4>
+                    <ul class="footer-links">
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#about">About</a></li>
+                        <li><a href="#services">Services</a></li>
+                        <li><a href="#doctors">Doctors</a></li>
+                        <li><a href="#faq">FAQ</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Contact Info</h4>
+                    <p>Email: info@hopecare.com</p>
+                    <p>Phone: +123456789</p>
+                    <p>Address: 123 Health St, City</p>
+                </div>
+            </div>
+        </footer>
+
+    </body>
+
 </html>
