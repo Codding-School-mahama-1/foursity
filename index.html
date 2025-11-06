@@ -34,11 +34,6 @@
     html {
       scroll-behavior: smooth;
     }
-    
-    .modal-bg {
-      background: linear-gradient(135deg, #e0f2fe, #bae6fd);
-    }
-    .faq-answer { display: none; }
   </style>
 </head>
 <body class="font-serif text-gray-800">
@@ -68,7 +63,8 @@
             </button>
             <div class="absolute left-0 mt-2 w-64 bg-white shadow-xl rounded-lg py-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50">
               <a href="./Servscies/Maternity&Brith Servecises.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">Maternity & Birth Services</a>
-              <a href="./Servscies/Maternity&Brith Servecises.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">Emergency Care</a>
+             <a href="./Servscies/paitents-Servecises.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">Patient Services</a>
+              <a href="./Servscies/" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">Emergency Care</a>
               <a href="./Servscies/veccination.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">Vaccination Programs</a>
               <a href="./Servscies/mentalhealth.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">Mental Health Support</a>
               <a href="./Servscies/NCD.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">Chronic Disease Care</a>
@@ -77,11 +73,10 @@
             </div>
           </div>
           
-          <a href="./doctors.html" class="text-gray-700 hover:text-blue-600 transition duration-300">Doctors</a>
-          <a href="#" class="text-gray-700 hover:text-blue-600 transition duration-300">Programs</a>
+          <a href="/doctors.html" class="text-gray-700 hover:text-blue-600 transition duration-300">Doctors</a>
+          <a href="/Dashboard.html" class="text-gray-700 hover:text-blue-600 transition duration-300">Dashdoard</a>
           <a href="#contact" class="text-gray-700 hover:text-blue-600 transition duration-300">Contact</a>
-          <!-- Fixed FAQ link -->
-          <button id="faq-nav-button" class="text-gray-700 hover:text-blue-600 transition duration-300">FAQ</button>
+          <a href="#help" class="text-gray-700 hover:text-blue-600 transition duration-300">Help</a>
         </nav>
         
         <!-- Actions -->
@@ -91,10 +86,8 @@
             <option value="ar">العربية</option>
             <option value="rw">Kinyarwanda</option>
           </select>
-          <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition duration-300">
-            <a href="./sigin.html">Sign in</a> </button>
-          <button class="border border-blue-600 text-blue-600 px-4 py-2 rounded hover:bg-blue-600 hover:text-white transition duration-300">
-           <a href="./logup.html">Log Up</a> </button>
+          <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition duration-300">Sign Up</button>
+          <button class="border border-blue-600 text-blue-600 px-4 py-2 rounded hover:bg-blue-600 hover:text-white transition duration-300">Log In</button>
         </div>
       </div>
       
@@ -110,21 +103,21 @@
               Services <i class="fas fa-chevron-down"></i>
             </button>
             <div id="mobile-services-menu" class="hidden pl-4 mt-2 space-y-2">
-              <a href="./Servscies/Maternity&Brith Servecises.html" class="block text-gray-700 hover:text-blue-600">Maternity & Birth Services</a>
+              <a href="/Servscies/Maternity&Brith Servecises.html" class="block text-gray-700 hover:text-blue-600">Maternity & Birth Services</a>
+              <a href="./Servscies/paitents-Servecises.html" class="block text-gray-700 hover:text-blue-600">Patient Services</a>
               <a href="./Servscies/" class="block text-gray-700 hover:text-blue-600">Emergency Care</a>
               <a href="./Servscies/veccination.html" class="block text-gray-700 hover:text-blue-600">Vaccination Programs</a>
               <a href="./Servscies/mentalhealth.html" class="block text-gray-700 hover:text-blue-600">Mental Health Support</a>
               <a href="./Servscies/NCD.html" class="block text-gray-700 hover:text-blue-600">Chronic Disease Care</a>
-              <a href="./Servscies/Health Education.html" class="block text-gray-700 hover:text-blue-600">Health Awareness & Education</a>
-              <a href="./Servscies/Disability.html" class="block text-gray-700 hover:text-blue-600">Disability Care</a>
+              <a href="/Servscies/Health Education.html" class="block text-gray-700 hover:text-blue-600">Health Awareness & Education</a>
+              <a href="/Servscies/Disability.html" class="block text-gray-700 hover:text-blue-600">Disability Care</a>
             </div>
           </div>
           
-          <a href="./doctors.html" class="text-gray-700 hover:text-blue-600">Doctors</a>
-          <a href="#" class="text-gray-700 hover:text-blue-600">Programs</a>
+          <a href="/doctors.html" class="text-gray-700 hover:text-blue-600">Doctors</a>
+          <a href="/Dashboard.html" class="text-gray-700 hover:text-blue-600">Dashdoard</a>
           <a href="#contact" class="text-gray-700 hover:text-blue-600">Contact</a>
-          <!-- Fixed FAQ link for mobile -->
-          <button id="mobile-faq-button" class="text-gray-700 hover:text-blue-600 text-left">FAQ</button>
+          <a href="#help" class="text-gray-700 hover:text-blue-600">Help</a>
           
           <div class="pt-4 border-t border-gray-200">
             <select class="w-full border border-gray-300 rounded px-3 py-2 text-sm mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500">
@@ -146,14 +139,13 @@
   <section id="home" class="relative h-screen flex items-center justify-center overflow-hidden">
     <!-- Video Background -->
     <video class="absolute top-0 left-0 w-full h-full object-cover z-0" autoplay muted loop playsinline>
-      <source src="./img/vecteezy.gif" type="video/mp4">
+      <source src="/videos/vecteezy.gif" type="video/mp4">
       Your browser does not support the video tag.
     </video>
     
     <!-- Fallback in case video doesn't load -->
-    <div class="absolute top-0 left-0 w-full h-full bg-[url(/img/vecteezy.gif)] bg-no-repeat bg-cover z-10 flex items-center justify-center">
+    <div class="absolute top-0 left-0 w-full h-full bg-[url(/img/hero.gif)] bg-no-repeat bg-cover bg-accent z-10 flex items-center justify-center">
       <div class="text-center text-white">
-
         <p class="text-xl">Quality Healthcare for Everyone</p>
       </div>
     </div>
@@ -163,7 +155,7 @@
       <h1 class="text-4xl md:text-5xl font-bold mb-6">Welcome to MahamaCare Hospital</h1>
       <p class="text-xl md:text-2xl mb-8">A practical digital platform for camp healthcare — book appointments, check medicine availability, and keep chronic records.</p>
       <div class="flex flex-col sm:flex-row justify-center gap-4 mb-8">
-        <button class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition duration-300 transform hover:-translate-y-1">Learn more</button>
+        <button class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition duration-300 transform hover:-translate-y-1"> <a href="#services">Learn more</a></button>
         <a href="#pharmacy" class="border border-white hover:bg-white hover:text-blue-600 text-white px-6 py-3 rounded-lg font-semibold transition duration-300 transform hover:-translate-y-1 text-center">Check Pharmacy</a>
       </div>
       <div class="bg-red-600/80 inline-block px-6 py-3 rounded-lg">
@@ -171,16 +163,15 @@
       </div>
     </div>
   </section>
-
   <!-- ABOUT SECTION -->
   <section id="about" class="py-16 bg-gray-50">
     <div class="container mx-auto px-4">
       <div class="flex flex-col lg:flex-row items-start justify-between gap-10">
         <!-- Text Content -->
         <div class="lg:w-1/2">
-          <h2 class="text-3xl md:text-4xl font-bold text-blue-600 mb-6">About HopeCare Hospital</h2>
+          <h2 class="text-3xl md:text-4xl font-bold text-blue-600 mb-6">About MahamaCare Hospital</h2>
           <p class="text-gray-700 mb-4 text-lg">
-            <strong>HopeCare Hospital</strong> is a comprehensive medical center offering healthcare services to global standards.  
+            <strong>MahamaCare Hospital</strong> is a comprehensive medical center offering healthcare services to global standards.  
             We aim to provide exceptional care in a safe and compassionate environment, with a qualified medical team and modern equipment.  
             Our goal is to improve patients' lives through specialized care and accurate treatment.
           </p>
@@ -193,16 +184,16 @@
         <!-- Image Gallery -->
         <div class="lg:w-1/2 grid grid-cols-2 gap-4">
           <div class="overflow-hidden rounded-xl shadow-lg transition-transform duration-300 hover:-translate-y-2">
-            <img src="/img/vecteezy_team-surgeon-at-work-in-operating-room-group-of-surgeons-in_33656243.jpg" alt="hospital hall" class="w-full h-full object-cover">
+            <img src="./img/vecteezy_team-surgeon-at-work-in-operating-room-group-of-surgeons-in_33656243.jpg" alt="hospital hall" class="w-full h-full object-cover">
           </div>
           <div class="overflow-hidden rounded-xl shadow-lg transition-transform duration-300 hover:-translate-y-2">
-            <img src="/img/vecteezy_a-hospital-room-with-medical-equipment-and-lights_27932654.jpg" alt="medical staff" class="w-full h-full object-cover">
+            <img src="./img/vecteezy_a-hospital-room-with-medical-equipment-and-lights_27932654.jpg" alt="medical staff" class="w-full h-full object-cover">
           </div>
           <div class="overflow-hidden rounded-xl shadow-lg transition-transform duration-300 hover:-translate-y-2">
-            <img src="/img/vecteezy_nurse-performing-cpr-for-patient-with-heart-attack-on-bed_8017059.jpg" alt="modern clinic" class="w-full h-full object-cover">
+            <img src="./img/vecteezy_nurse-performing-cpr-for-patient-with-heart-attack-on-bed_8017059.jpg" alt="modern clinic" class="w-full h-full object-cover">
           </div>
           <div class="overflow-hidden rounded-xl shadow-lg transition-transform duration-300 hover:-translate-y-2">
-            <img src="/img/vecteezy_doctor-is-guiding-the-paramedic-team-to-bring-patient-from_8016884.jpg" alt="patient care" class="w-full h-full object-cover">
+            <img src="./img/vecteezy_doctor-is-guiding-the-paramedic-team-to-bring-patient-from_8016884.jpg" alt="patient care" class="w-full h-full object-cover">
           </div>
         </div>
       </div>
@@ -652,7 +643,7 @@
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         <!-- Service Card 1 -->
         <div class="service-card bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl shadow-lg p-6 transition-all duration-300 hover:-translate-y-2 hover:shadow-xl">
-          <img src="/img/baby-1531059_1280.jpg" alt="Maternity" class="w-full h-48 object-cover rounded-lg mb-4">
+          <img src="./img/baby-1531059_1280.jpg" alt="Maternity" class="w-full h-48 object-cover rounded-lg mb-4">
           <h3 class="text-xl font-bold text-gray-800 mb-2">Maternity & Birth Services</h3>
           <p class="text-gray-600 mb-4">Providing prenatal care, safe deliveries, and postnatal support for mothers and newborns.</p>
           <button class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition duration-300"><a href="./Servscies/Maternity&Brith Servecises.html">Learn More</a></button>
@@ -660,52 +651,47 @@
         
         <!-- Service Card 2 -->
         <div class="service-card bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl shadow-lg p-6 transition-all duration-300 hover:-translate-y-2 hover:shadow-xl">
-          <img src="/img/emer.png" alt="Emergency" class="w-full h-48 object-cover rounded-lg mb-4">
+          <img src="./img/emer.png" alt="Emergency" class="w-full h-48 object-cover rounded-lg mb-4">
           <h3 class="text-xl font-bold text-gray-800 mb-2">Emergency Care</h3>
           <p class="text-gray-600 mb-4">Immediate attention for urgent medical conditions with trained staff available 24/7.</p>
-          <button class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition duration-300"><a href="./Servscies/">Learn More</a>Learn More</button>
+          <button class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition duration-300">Learn More</button>
         </div>
         
         <!-- Service Card 3 -->
         <div class="service-card bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl shadow-lg p-6 transition-all duration-300 hover:-translate-y-2 hover:shadow-xl">
-          <img src="/img/vac.jpg" alt="Vaccination" class="w-full h-48 object-cover rounded-lg mb-4">
+          <img src="./img/vac.jpg" alt="Vaccination" class="w-full h-48 object-cover rounded-lg mb-4">
           <h3 class="text-xl font-bold text-gray-800 mb-2">Vaccination Programs</h3>
           <p class="text-gray-600 mb-4">Regular vaccination campaigns for children and adults to prevent infectious diseases.</p>
-          <button class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition duration-300"><a href="./Servscies/veccination.html">Learn More</a></button>
+          <button class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition duration-300"><a href="/Servscies/veccination.html">Learn More</a></button>
         </div>
         
         <!-- Service Card 4 -->
         <div class="service-card bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl shadow-lg p-6 transition-all duration-300 hover:-translate-y-2 hover:shadow-xl">
-          <img src="/img/mentl.jpg" alt="Mental Health" class="w-full h-48 object-cover rounded-lg mb-4">
+          <img src="./img/mentl.jpg" alt="Mental Health" class="w-full h-48 object-cover rounded-lg mb-4">
           <h3 class="text-xl font-bold text-gray-800 mb-2">Mental Health Support</h3>
           <p class="text-gray-600 mb-4">Counseling and support services for mental well-being and trauma recovery.</p>
-          <button class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition duration-300">
-            <a href="./Servscies/mentalhealth.html">
-         Learn More
-          </a></button>
+          <button class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition duration-300"><a href="/Servscies/mentalhealth.html">Learn More</a></button>
         </div>
         
         <!-- Service Card 5 -->
         <div class="service-card bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl shadow-lg p-6 transition-all duration-300 hover:-translate-y-2 hover:shadow-xl">
-          <img src="/img/chro.jpg" alt="Chronic Care" class="w-full h-48 object-cover rounded-lg mb-4">
+          <img src="./img/chro.jpg" alt="Chronic Care" class="w-full h-48 object-cover rounded-lg mb-4">
           <h3 class="text-xl font-bold text-gray-800 mb-2">Chronic Disease Care</h3>
           <p class="text-gray-600 mb-4">Management and monitoring of chronic diseases like diabetes, hypertension, TB, and HIV.</p>
-          <button class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition duration-300">
-            <a href="./Servscies/NCD.html">Learn More</a></button>
+          <button class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition duration-300"><a href="/Servscies/NCD.html">Learn More</a></button>
         </div>
         
         <!-- Service Card 6 -->
         <div class="service-card bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl shadow-lg p-6 transition-all duration-300 hover:-translate-y-2 hover:shadow-xl">
-          <img src="/img/health.png" alt="Health Education" class="w-full h-48 object-cover rounded-lg mb-4">
+          <img src="/img/awernees.png" alt="Health Education" class="w-full h-48 object-cover rounded-lg mb-4">
           <h3 class="text-xl font-bold text-gray-800 mb-2">Health Awareness & Education</h3>
           <p class="text-gray-600 mb-4">Educational resources about hygiene, nutrition, pregnancy, child care, and disease prevention.</p>
-          <button class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition duration-300">
-            <a href="./Servscies/Health Education.html">Learn More</a>Learn More</button>
+          <button class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition duration-300"><a href="/Servscies/Health Education.html">Learn More</a></button>
         </div>
       </div>
     </div>
   </section>
-  <!-- CONTACT SECTION -->
+<!-- CONTACT SECTION -->
 <section id="contact" class="py-16 bg-gray-50">
   <div class="container mx-auto px-4">
     <div class="text-center mb-12">
@@ -835,7 +821,6 @@
     </div>
   </div>
 </section>
-
   <!-- FOOTER -->
   <footer class="bg-gray-900 text-white py-12">
     <div class="container mx-auto px-4">
@@ -924,87 +909,5 @@
     window.addEventListener('scroll', revealCards);
     window.addEventListener('load', revealCards);
   </script>
-  <script>
-  // Contact form handling
-  document.getElementById('contact-form').addEventListener('submit', function(e) {
-    e.preventDefault();
-   
-    // Get form data
-    const formData = new FormData(this);
-    const data = Object.fromEntries(formData);
-   
-    // In a real application, you would send this data to a server
-    // For this example, we'll just show a success message
-    alert('Thank you for your message! We will get back to you soon.');
-   
-    // Reset the form
-    this.reset();
-  });
-</script>
-  <!-- Scripts -->
-  <script>
-    // Modal toggle
-    const faqButton = document.getElementById('faq-button');
-    const faqNavButton = document.getElementById('faq-nav-button');
-    const mobileFaqButton = document.getElementById('mobile-faq-button');
-    const faqModal = document.getElementById('faq-modal');
-    const faqClose = document.getElementById('faq-close');
-
-    // Function to open FAQ modal
-    const openFaqModal = () => {
-      faqModal.classList.remove('hidden');
-      faqModal.classList.add('flex');
-    };
-
-    // Function to close FAQ modal
-    const closeFaqModal = () => {
-      faqModal.classList.add('hidden');
-      faqModal.classList.remove('flex');
-    };
-
-    // Event listeners for FAQ buttons
-    faqButton.addEventListener('click', openFaqModal);
-    faqNavButton.addEventListener('click', openFaqModal);
-    mobileFaqButton.addEventListener('click', openFaqModal);
-    faqClose.addEventListener('click', closeFaqModal);
-
-    // Close modal when clicking outside
-    faqModal.addEventListener('click', (e) => {
-      if (e.target === faqModal) {
-        closeFaqModal();
-      }
-    });
-
-    // Tabs
-    const tabs = document.querySelectorAll('.tab-btn');
-    const contents = document.querySelectorAll('.tab-content');
-
-    tabs.forEach(tab => {
-      tab.addEventListener('click', () => {
-        tabs.forEach(t => {
-          t.classList.remove('text-blue-600','border-blue-600');
-          t.classList.add('text-gray-600','border-transparent');
-        });
-        tab.classList.add('text-blue-600','border-blue-600');
-        tab.classList.remove('text-gray-600','border-transparent');
-
-        const target = tab.dataset.tab;
-        contents.forEach(c => {
-          c.classList.add('hidden');
-        });
-        document.getElementById(target).classList.remove('hidden');
-      });
-    });
-
-    // FAQ toggle answers
-    const questions = document.querySelectorAll('.faq-question');
-    questions.forEach(q => {
-      q.addEventListener('click', () => {
-        const answer = q.nextElementSibling;
-        answer.style.display = answer.style.display === 'block' ? 'none' : 'block';
-      });
-    });
-  </script>
-
 </body>
 </html>
