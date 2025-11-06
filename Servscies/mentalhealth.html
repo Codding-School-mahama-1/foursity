@@ -38,44 +38,101 @@
 </head>
 <body class="font-inter bg-light text-dark">
     <!-- Header & Navigation -->
-    <header class="bg-white shadow-custom sticky top-0 z-50">
-        <nav class="border-b border-gray-light">
-            <div class="container mx-auto px-4">
-                <div class="flex justify-between items-center py-4">
-                    <div class="logo flex items-center gap-2 text-primary text-xl font-bold">
-                        <span>Mental-Health</span>
-                    </div>
-                    
-                    <!-- Desktop Navigation -->
-                    <ul class="hidden md:flex items-center gap-8">
-                        <li><a href="#home" class="text-dark hover:text-primary font-medium transition-colors duration-300">Home</a></li>
-                        <li><a href="#services" class="text-dark hover:text-primary font-medium transition-colors duration-300">Services</a></li>
-                        <li><a href="#resources" class="text-dark hover:text-primary font-medium transition-colors duration-300">Resources</a></li>
-                        <li><a href="#emergency" class="text-dark hover:text-primary font-medium transition-colors duration-300">Emergency Help</a></li>
-                        <li><a href="#about" class="text-dark hover:text-primary font-medium transition-colors duration-300">About Us</a></li>
-                        <li><a href="#contact" class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary-dark transition-colors duration-300">Get Help Now</a></li>
-                    </ul>
-                    
-                    <!-- Mobile Menu Button -->
-                    <div class="hamburger md:hidden flex flex-col gap-1 cursor-pointer">
-                        <span class="w-6 h-0.5 bg-dark"></span>
-                        <span class="w-6 h-0.5 bg-dark"></span>
-                        <span class="w-6 h-0.5 bg-dark"></span>
-                    </div>
-                </div>
-                
-                <!-- Mobile Navigation -->
-                <ul class="mobile-menu hidden md:hidden py-4 border-t border-gray-light flex flex-col gap-4">
-                    <li><a href="#home" class="block text-dark hover:text-primary py-2">Home</a></li>
-                    <li><a href="#services" class="block text-dark hover:text-primary py-2">Services</a></li>
-                    <li><a href="#resources" class="block text-dark hover:text-primary py-2">Resources</a></li>
-                    <li><a href="#emergency" class="block text-dark hover:text-primary py-2">Emergency Help</a></li>
-                    <li><a href="#about" class="block text-dark hover:text-primary py-2">About Us</a></li>
-                    <li><a href="#contact" class="block bg-primary text-white text-center py-2 rounded-lg mt-2">Get Help Now</a></li>
-                </ul>
+   <header class="bg-white shadow-md sticky top-0 z-50">
+    <div class="container mx-auto px-4">
+      <div class="flex justify-between items-center py-4">
+        <!-- Logo -->
+        <div class="flex items-center">
+          <span class="text-2xl font-bold text-blue-600">🏥 MCH</span>
+        </div>
+        
+        <!-- Mobile menu button -->
+        <button id="mobile-menu-button" class="md:hidden text-gray-600 focus:outline-none">
+          <i class="fas fa-bars text-xl"></i>
+        </button>
+        
+        <!-- Navigation Links -->
+        <nav id="nav-links" class="hidden md:flex items-center space-x-6">
+          <a href="../index.html" class="text-gray-700 hover:text-blue-600 transition duration-300">Home</a>
+          <a href="#about" class="text-gray-700 hover:text-blue-600 transition duration-300">About</a>
+          
+          <!-- Services Dropdown -->
+          <div class="relative group">
+            <button class="flex items-center text-gray-700 hover:text-blue-600 transition duration-300">
+              Services <i class="fas fa-chevron-down ml-1 text-xs"></i>
+            </button>
+            <div class="absolute left-0 mt-2 w-64 bg-white shadow-xl rounded-lg py-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50">
+              <a href="./Maternity&Brith Servecises.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">Maternity & Birth Services</a>
+              <a href="" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">Emergency Care</a>
+              <a href="./veccination.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">Vaccination Programs</a>
+              <a href="./mentalhealth.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">Mental Health Support</a>
+              <a href="./NCD.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">Chronic Disease Care</a>
+              <a href="./Health Education.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">Health Awareness & Education</a>
+              <a href="./Disability.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">Disability Care</a>
             </div>
+          </div>
+          
+          <a href="#" class="text-gray-700 hover:text-blue-600 transition duration-300">Doctors</a>
+          <a href="#" class="text-gray-700 hover:text-blue-600 transition duration-300">Programs</a>
+          <a href="#contact" class="text-gray-700 hover:text-blue-600 transition duration-300">Contact</a>
+          <a href="#help" class="text-gray-700 hover:text-blue-600 transition duration-300">Help</a>
         </nav>
-    </header>
+        
+        <!-- Actions -->
+        <div class="hidden md:flex items-center space-x-4">
+          <select class="border border-gray-300 rounded px-3 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <option value="en">English</option>
+            <option value="ar">العربية</option>
+            <option value="rw">Kinyarwanda</option>
+          </select>
+          <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition duration-300">Sign Up</button>
+          <button class="border border-blue-600 text-blue-600 px-4 py-2 rounded hover:bg-blue-600 hover:text-white transition duration-300">Log In</button>
+        </div>
+      </div>
+      
+      <!-- Mobile Menu -->
+      <div id="mobile-menu" class="hidden md:hidden py-4 border-t border-gray-200">
+        <div class="flex flex-col space-y-4">
+          <a href="#home" class="text-gray-700 hover:text-blue-600">Home</a>
+          <a href="#about" class="text-gray-700 hover:text-blue-600">About</a>
+          
+          <!-- Mobile Services Dropdown -->
+          <div class="relative">
+            <button id="mobile-services-toggle" class="flex items-center text-gray-700 hover:text-blue-600 w-full justify-between">
+              Services <i class="fas fa-chevron-down"></i>
+            </button>
+            <div id="mobile-services-menu" class="hidden pl-4 mt-2 space-y-2">
+              <a href="#" class="block text-gray-700 hover:text-blue-600">Maternity & Birth Services</a>
+              <a href="#" class="block text-gray-700 hover:text-blue-600">Emergency Care</a>
+              <a href="#" class="block text-gray-700 hover:text-blue-600">Vaccination Programs</a>
+              <a href="#" class="block text-gray-700 hover:text-blue-600">Mental Health Support</a>
+              <a href="#" class="block text-gray-700 hover:text-blue-600">Chronic Disease Care</a>
+              <a href="#" class="block text-gray-700 hover:text-blue-600">Health Awareness & Education</a>
+              <a href="#" class="block text-gray-700 hover:text-blue-600">Disability Care</a>
+            </div>
+          </div>
+          
+          <a href="#" class="text-gray-700 hover:text-blue-600">Doctors</a>
+          <a href="#" class="text-gray-700 hover:text-blue-600">Programs</a>
+          <a href="#contact" class="text-gray-700 hover:text-blue-600">Contact</a>
+          <a href="#help" class="text-gray-700 hover:text-blue-600">Help</a>
+          
+          <div class="pt-4 border-t border-gray-200">
+            <select class="w-full border border-gray-300 rounded px-3 py-2 text-sm mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500">
+              <option value="en">English</option>
+              <option value="ar">العربية</option>
+              <option value="rw">Kinyarwanda</option>
+            </select>
+            <div class="flex space-x-2">
+              <button class="flex-1 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition duration-300">Sign Up</button>
+              <button class="flex-1 border border-blue-600 text-blue-600 px-4 py-2 rounded hover:bg-blue-600 hover:text-white transition duration-300">Log In</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
 
     <!-- Hero Section -->
     <section id="home" class="bg-[url(/img/m.png)] bg-no-repeat bg-cover bg-accent py-20 md:py-28">
@@ -134,7 +191,7 @@
             <div class="services-grid grid grid-cols-1 md:grid-cols-3 gap-8">
                 <!-- Service Card 1 -->
                 <div class="service-card bg-white rounded-xl shadow-custom overflow-hidden transition-transform duration-300 hover:-translate-y-2">
-                    <div class="service-icon bg-gradient-to-r from-primary to-primary-dark h-32 flex items-center justify-center text-white">
+                    <div class="service-icon bg-[url(/img/image1.png)] bg-no-repeat bg-cover h-32 flex items-center justify-center text-white">
                         <i class="fas fa-brain text-5xl"></i>
                     </div>
                     <div class="p-6">
@@ -166,7 +223,7 @@
                 
                 <!-- Service Card 2 -->
                 <div class="service-card bg-white rounded-xl shadow-custom overflow-hidden transition-transform duration-300 hover:-translate-y-2">
-                    <div class="service-icon bg-gradient-to-r from-accent to-pink-500 h-32 flex items-center justify-center text-white">
+                    <div class="service-icon  bg-[url(/img/copy.png)] bg-no-repeat bg-cover h-32 flex items-center justify-center text-white">
                         <i class="fas fa-shield-heart text-5xl"></i>
                     </div>
                     <div class="p-6">
@@ -198,7 +255,7 @@
                 
                 <!-- Service Card 3 -->
                 <div class="service-card bg-white rounded-xl shadow-custom overflow-hidden transition-transform duration-300 hover:-translate-y-2">
-                    <div class="service-icon bg-gradient-to-r from-success to-green-500 h-32 flex items-center justify-center text-white">
+                    <div class="service-icon  bg-[url(/img/imag.png)] bg-no-repeat bg-cover h-32 flex items-center justify-center text-white">
                         <i class="fas fa-users text-5xl"></i>
                     </div>
                     <div class="p-6">
