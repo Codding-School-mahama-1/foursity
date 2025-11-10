@@ -32,6 +32,10 @@
         .page.active {
             display: block;
         }
+        .doctor-image {
+            background-size: cover;
+            background-position: center;
+        }
     </style>
 </head>
 <body class="bg-gray-50 text-gray-800">
@@ -45,7 +49,7 @@
                     <li><a href="#doctor-details" class="text-gray-700 hover:text-primary font-medium transition-colors">Doctors</a></li>
                     <li><a href="index.html" class="text-gray-700 hover:text-primary font-medium transition-colors">Hospitals</a></li>
                     <li><a href="serves.html" class="text-gray-700 hover:text-primary font-medium transition-colors">Serves</a></li>
-                    <li><a href="#" class="text-gray-700 hover:text-primary font-medium transition-colors">Contact</a></li>
+                    <li><a href="Emergency.html" class="text-gray-700 hover:text-primary font-medium transition-colors">Emergency</a></li>
                 </ul>
                 <!-- <div class="flex space-x-2">
                     <button class="px-4 py-2 border border-primary text-primary rounded-md hover:bg-primary hover:text-white transition-colors">Login</button>
@@ -117,8 +121,7 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
                     <!-- Doctor 1 -->
                     <div class="bg-white rounded-lg shadow-lg overflow-hidden transition-transform hover:-translate-y-1" data-doctor-id="1">
-                        <div class="h-48 bg-gray-200 flex items-center justify-center text-gray-500 text-5xl">
-                            <i class="fas fa-user-md"></i>
+                        <div class="h-48 doctor-image" style="background-image: url('https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80')">
                         </div>
                         <div class="p-6">
                             <h3 class="text-xl font-bold mb-2">Dr. Ahmed Mohamed</h3>
@@ -133,8 +136,7 @@
 
                     <!-- Doctor 2 -->
                     <div class="bg-white rounded-lg shadow-lg overflow-hidden transition-transform hover:-translate-y-1" data-doctor-id="2">
-                        <div class="h-48 bg-gray-200 flex items-center justify-center text-gray-500 text-5xl">
-                            <i class="fas fa-user-md"></i>
+                        <div class="h-48 doctor-image" style="background-image: url('https://images.unsplash.com/photo-1559839734-2b71ea197ec2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80')">
                         </div>
                         <div class="p-6">
                             <h3 class="text-xl font-bold mb-2">Dr. Sara Abdullah</h3>
@@ -149,8 +151,7 @@
 
                     <!-- Doctor 3 -->
                     <div class="bg-white rounded-lg shadow-lg overflow-hidden transition-transform hover:-translate-y-1" data-doctor-id="3">
-                        <div class="h-48 bg-gray-200 flex items-center justify-center text-gray-500 text-5xl">
-                            <i class="fas fa-user-md"></i>
+                        <div class="h-48 doctor-image" style="background-image: url('https://images.unsplash.com/photo-1622253692010-333f2da6031d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1064&q=80')">
                         </div>
                         <div class="p-6">
                             <h3 class="text-xl font-bold mb-2">Dr. Khaled Saeed</h3>
@@ -165,8 +166,7 @@
 
                     <!-- Doctor 4 -->
                     <div class="bg-white rounded-lg shadow-lg overflow-hidden transition-transform hover:-translate-y-1" data-doctor-id="4">
-                        <div class="h-48 bg-gray-200 flex items-center justify-center text-gray-500 text-5xl">
-                            <i class="fas fa-user-md"></i>
+                        <div class="h-48 doctor-image" style="background-image: url('https://images.unsplash.com/photo-1594824947933-d0501ba2fe65?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1074&q=80')">
                         </div>
                         <div class="p-6">
                             <h3 class="text-xl font-bold mb-2">Dr. Fatima Ali</h3>
@@ -189,8 +189,7 @@
             <div class="doctor-details">
                 <div class="bg-white rounded-lg shadow-lg overflow-hidden mb-8">
                     <div class="flex flex-col md:flex-row">
-                        <div class="md:w-1/3 bg-gray-200 flex items-center justify-center text-gray-500 text-8xl p-8">
-                            <i class="fas fa-user-md"></i>
+                        <div class="md:w-1/3 h-80 doctor-image" style="background-image: url('https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80')">
                         </div>
                         <div class="md:w-2/3 p-8">
                             <h1 class="text-3xl font-bold mb-2">Dr. Ahmed Mohamed</h1>
@@ -373,9 +372,9 @@
                     <ul class="space-y-2">
                         <li><a href="index.html" class="text-gray-400 hover:text-white transition-colors">Home</a></li>
                         <li><a href="doctors.html" class="text-gray-400 hover:text-white transition-colors">Doctors</a></li>
-                        <li><a href="index.html" class="text-gray-400 hover:text-white transition-colors">Hospitals</a></li>
+                        <li><a href="serves.html" class="text-gray-400 hover:text-white transition-colors">Serves</a></li>
                         <li><a href="Emergency.html" class="text-gray-400 hover:text-white transition-colors">Emergency</a></li>
-                        <li><a href="serves.html" class="text-gray-400 hover:text-white transition-colors">serves</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Contact Us</a></li>
                     </ul>
                 </div>
                 
