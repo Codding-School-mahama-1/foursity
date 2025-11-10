@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Emergency Help Hub - Your trusted resource for emergency preparedness and response">
+  <title>Emergency Help Hub | Professional Emergency Response System</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Montserrat:wght@400;600;700&display=swap');
+
+    :root {
+      --primary: #0f3460;
+      --secondary: #e94560;
+      --accent: #1a73e8;
+      --light: #f8f9fa;
+      --dark: #1a1a2e;
+      --success: #28a745;
+      --warning: #ffc107;
+      --danger: #dc3545;
+      --radius: 12px;
+      --shadow: 0 5px 15px rgba(0,0,0,0.1);
+      --transition: all 0.3s ease;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Roboto', sans-serif;
+      background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
+      background-size: 400% 400%;
+      animation: gradientMove 15s ease infinite;
+      color: #333;
+      line-height: 1.6;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* Background pattern overlay */
+    body::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: 
+        radial-gradient(circle at 10% 20%, rgba(255, 255, 255, 0.05) 0%, transparent 20%),
+        radial-gradient(circle at 90% 60%, rgba(255, 255, 255, 0.05) 0%, transparent 20%),
+        radial-gradient(circle at 50% 80%, rgba(255, 255, 255, 0.05) 0%, transparent 20%);
+      z-index: -1;
+    }
+
+    @keyframes gradientMove {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    /* Emergency pulse animation */
+    @keyframes emergencyPulse {
+      0% { box-shadow: 0 0 0 0 rgba(220, 53, 69, 0.7); }
+      70% { box-shadow: 0 0 0 15px rgba(220, 53, 69, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(220, 53, 69, 0); }
+    }
+
+    h1, h2, h3, h4 {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      line-height: 1.2;
+    }
+
+    .container {
+      width: 90%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 15px;
+    }
+
+    header {
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(10px);
+      color: white;
+      padding: 25px 0;
+      text-align: center;
+      border-bottom-left-radius: 40px;
+      border-bottom-right-radius: 40px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+      position: relative;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      overflow: hidden;
+    }
+
+    .header-content {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .logo-container {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .logo {
+      width: 80px;
+      height: 80px;
+      background: rgba(255,255,255,0.2);
+      border-radius: 50%;
+      padding: 12px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .logo img {
+      width: 100%;
+      height: auto;
+      filter: brightness(0) invert(1);
+    }
+
+    .header-text {
+      text-align: left;
+    }
+
+    header h1 {
+      font-size: 2.2rem;
+      margin-bottom: 5px;
+      text-shadow: 0 2px 5px rgba(0,0,0,0.3);
+    }
+
+    header p {
+      font-size: 1.1rem;
+      opacity: 0.9;
+    }
+
+    .nav-container {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border-radius: var(--radius);
+      margin: 20px auto;
+      padding: 15px;
+      max-width: 1000px;
+    }
+
+    nav ul {
+      display: flex;
+      justify-content: center;
+      list-style: none;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      padding: 10px 20px;
+      border-radius: 30px;
+      transition: var(--transition);
+      font-weight: 500;
+    }
+
+    nav a:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    section {
+      background: white;
+      padding: 30px;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      margin: 30px auto;
+      transition: var(--transition);
+      max-width: 1000px;
+    }
+
+    section:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    }
+
+    h2 {
+      color: var(--primary);
+      margin-bottom: 20px;
+      border-left: 5px solid var(--secondary);
+      padding-left: 15px;
+      font-size: 1.8rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    h2 i {
+      font-size: 1.5rem;
+    }
+
+    p {
+      margin-bottom: 15px;
+      font-size: 1.05rem;
+    }
+
+    ul {
+      list-style-type: none;
+      padding-left: 0;
+    }
+
+    ul li {
+      padding: 10px 0;
+      padding-left: 35px;
+      position: relative;
+      font-size: 1.05rem;
+    }
+
+    ul li::before {
+      content: "✓";
+      position: absolute;
+      left: 0;
+      width: 25px;
+      height: 25px;
+      background: var(--success);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 25px;
+    }
+
+    .card {
+      background: white;
+      padding: 25px;
+      border-radius: var(--radius);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.08);
+      transition: var(--transition);
+      border-top: 4px solid var(--primary);
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+
+    .card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.12);
+    }
+
+    .card-icon {
+      font-size: 2.5rem;
+      margin-bottom: 15px;
+      color: var(--primary);
+    }
+
+    .card h3 {
+      color: var(--primary);
+      margin-bottom: 15px;
+      font-size: 1.3rem;
+    }
+
+    .card p {
+      flex-grow: 1;
+    }
+
+    footer {
+      background: rgba(255, 255, 255, 0.1);
+      color: white;
+      text-align: center;
+      padding: 30px 0;
+      border-top-left-radius: 40px;
+      border-top-right-radius: 40px;
+      margin-top: 50px;
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .footer-content {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin: 15px 0;
+    }
+
+    .footer-links a {
+      color: white;
+      text-decoration: none;
+      transition: var(--transition);
+    }
+
+    .footer-links a:hover {
+      color: var(--secondary);
+    }
+
+    input, textarea, select {
+      width: 100%;
+      margin-top: 8px;
+      padding: 14px;
+      border-radius: 8px;
+      border: 1px solid #ddd;
+      font-size: 1rem;
+      transition: var(--transition);
+      font-family: 'Roboto', sans-serif;
+    }
+
+    input:focus, textarea:focus, select:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(15, 52, 96, 0.2);
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    label {
+      font-weight: 500;
+      color: var(--dark);
+    }
+
+    button {
+      background: linear-gradient(135deg, var(--secondary), var(--primary));
+      color: white;
+      cursor: pointer;
+      border: none;
+      font-weight: 600;
+      transition: var(--transition);
+      margin-top: 10px;
+      padding: 16px 24px;
+      border-radius: 8px;
+      font-size: 1.05rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 7px 15px rgba(233, 69, 96, 0.4);
+    }
+
+    /* Emergency button style */
+    .emergency-btn {
+      background: linear-gradient(135deg, var(--danger), #c82333);
+      animation: emergencyPulse 2s infinite;
+      font-weight: bold;
+      font-size: 1.1rem;
+      padding: 18px;
+      width: 100%;
+    }
+
+    /* Alert styling */
+    .alert {
+      display: none;
+      background: var(--success);
+      color: white;
+      padding: 15px 20px;
+      border-radius: 10px;
+      text-align: center;
+      margin-top: 20px;
+      animation: fadeIn 0.5s ease;
+      font-weight: 500;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Emergency contacts highlight */
+    .emergency-contact {
+      background: linear-gradient(135deg, #fff3cd, #ffeaa7);
+      border-left: 5px solid var(--warning);
+    }
+
+    .emergency-contact strong {
+      color: #856404;
+    }
+
+    .hero {
+      text-align: center;
+      padding: 60px 20px;
+      color: white;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .hero h1 {
+      font-size: 2.8rem;
+      margin-bottom: 20px;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+    }
+
+    .hero p {
+      font-size: 1.2rem;
+      margin-bottom: 30px;
+      opacity: 0.9;
+    }
+
+    .cta-button {
+      background: linear-gradient(135deg, var(--secondary), var(--primary));
+      color: white;
+      padding: 16px 32px;
+      border-radius: 50px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 1.1rem;
+      display: inline-block;
+      transition: var(--transition);
+      box-shadow: 0 5px 15px rgba(233, 69, 96, 0.4);
+    }
+
+    .cta-button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(233, 69, 96, 0.5);
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      margin: 40px 0;
+    }
+
+    .stat-card {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border-radius: var(--radius);
+      padding: 25px;
+      text-align: center;
+      color: white;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .stat-number {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+      display: block;
+    }
+
+    .stat-label {
+      font-size: 1rem;
+      opacity: 0.9;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      .header-content {
+        flex-direction: column;
+        text-align: center;
+      }
+      
+      .header-text {
+        text-align: center;
+      }
+      
+      header h1 {
+        font-size: 1.8rem;
+      }
+      
+      section {
+        padding: 20px 15px;
+      }
+      
+      nav ul {
+        flex-direction: column;
+        align-items: center;
+      }
+      
+      .hero h1 {
+        font-size: 2.2rem;
+      }
+      
+      .hero p {
+        font-size: 1.1rem;
+      }
+      
+      .grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .logo {
+        width: 60px;
+        height: 60px;
+      }
+      
+      header h1 {
+        font-size: 1.6rem;
+      }
+      
+      h2 {
+        font-size: 1.5rem;
+      }
+      
+      .hero h1 {
+        font-size: 1.8rem;
+      }
+    }
+  </style>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+  <header>
+    <div class="container">
+      <div class="header-content">
+        <div class="logo-container">
+          <div class="logo">
+            <img src="https://cdn-icons-png.flaticon.com/512/2783/2783448.png" alt="Emergency Help Hub Logo">
+          </div>
+          <div class="header-text">
+            <h1>Emergency Help Hub</h1>
+            <p>Your trusted resource for emergency preparedness</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="nav-container">
+      <nav>
+        <ul>
+          <li><a href="#definition">Definition</a></li>
+          <li><a href="#types">Emergency Types</a></li>
+          <li><a href="#prevention">Prevention</a></li>
+          <li><a href="#contacts">Emergency Numbers</a></li>
+          <li><a href="#form">Report Emergency</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <div class="hero">
+    <h1>Emergency Preparedness Saves Lives</h1>
+    <p>Learn how to respond effectively in emergency situations and protect yourself and your loved ones</p>
+    <a href="#form" class="cta-button"><i class="fas fa-phone-alt"></i> Report Emergency Now</a>
+  </div>
+
+  <div class="stats container">
+    <div class="stat-card">
+      <span class="stat-number">911</span>
+      <span class="stat-label">Emergency Number</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-number">24/7</span>
+      <span class="stat-label">Available Assistance</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-number">5min</span>
+      <span class="stat-label">Average Response Time</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-number">1000+</span>
+      <span class="stat-label">Lives Saved Monthly</span>
+    </div>
+  </div>
+
+  <section id="definition" class="container">
+    <h2><i class="fas fa-info-circle"></i> Emergency Definition</h2>
+    <p>
+      An emergency is a sudden, unexpected situation that poses an immediate risk to health, life, property, or environment. These critical situations require prompt intervention to prevent escalation and minimize harm.
+    </p>
+    <p>
+      Emergencies can range from personal medical crises to large-scale natural disasters. The key characteristic is that they demand immediate action to protect people and property.
+    </p>
+  </section>
+
+  <section id="types" class="container">
+    <h2><i class="fas fa-list-alt"></i> Emergency Types</h2>
+    <div class="grid">
+      <div class="card">
+        <div class="card-icon">
+          <i class="fas fa-fire"></i>
+        </div>
+        <h3>Fire Emergencies</h3>
+        <p>Includes residential, commercial, and wildfires. Requires immediate evacuation, fire containment, and emergency response coordination.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">
+          <i class="fas fa-ambulance"></i>
+        </div>
+        <h3>Medical Emergencies</h3>
+        <p>Critical health situations like heart attacks, strokes, severe injuries, or allergic reactions requiring immediate medical attention.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">
+          <i class="fas fa-cloud-showers-heavy"></i>
+        </div>
+        <h3>Natural Disasters</h3>
+        <p>Earthquakes, floods, hurricanes, tornadoes, and other severe weather events requiring evacuation and emergency preparedness.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">
+          <i class="fas fa-car-crash"></i>
+        </div>
+        <h3>Traffic Accidents</h3>
+        <p>Vehicle collisions requiring emergency medical services, traffic control, and possible extraction of injured persons.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="prevention" class="container">
+    <h2><i class="fas fa-shield-alt"></i> Prevention & Preparedness</h2>
+    <p>Being prepared can significantly reduce the impact of emergencies. Follow these essential prevention and preparedness measures:</p>
+    <ul>
+      <li>Install and regularly test smoke detectors and carbon monoxide alarms</li>
+      <li>Learn CPR and basic first aid techniques</li>
+      <li>Keep emergency numbers visible and accessible to all household members</li>
+      <li>Participate in community emergency drills and training sessions</li>
+      <li>Prepare emergency kits with essential supplies for at least 72 hours</li>
+      <li>Develop and practice a family emergency communication plan</li>
+      <li>Identify safe spots in your home for different types of emergencies</li>
+      <li>Stay informed about potential hazards in your area</li>
+    </ul>
+  </section>
+
+  <section id="contacts" class="container">
+    <h2><i class="fas fa-phone-alt"></i> Emergency Contacts</h2>
+    <p>In case of emergency, immediately contact the appropriate services. For life-threatening situations, always call 911 first.</p>
+    <div class="grid">
+      <div class="card emergency-contact">
+        <h3><i class="fas fa-fire-extinguisher"></i> Fire Department</h3>
+        <p><strong>911</strong></p>
+        <p>For fires, hazardous material spills, and rescue operations</p>
+      </div>
+      <div class="card emergency-contact">
+        <h3><i class="fas fa-ambulance"></i> Medical Emergency</h3>
+        <p><strong>911</strong></p>
+        <p>For serious injuries, medical crises, and health emergencies</p>
+      </div>
+      <div class="card emergency-contact">
+        <h3><i class="fas fa-shield-alt"></i> Police</h3>
+        <p><strong>911</strong></p>
+        <p>For crimes in progress, safety threats, and suspicious activities</p>
+      </div>
+      <div class="card emergency-contact">
+        <h3><i class="fas fa-life-ring"></i> Poison Control</h3>
+        <p><strong>1-800-222-1222</strong></p>
+        <p>For poison exposures, chemical ingestions, and toxic substance concerns</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="form" class="container">
+    <h2><i class="fas fa-exclamation-triangle"></i> Report an Emergency</h2>
+    <p>Use this form to report non-life-threatening emergencies or request information. For immediate danger, always call 911 first.</p>
+    <form id="emergencyForm">
+      <div class="form-group">
+        <label for="name">Full Name</label>
+        <input type="text" id="name" placeholder="Enter your full name" required>
+      </div>
+      
+      <div class="form-group">
+        <label for="phone">Phone Number</label>
+        <input type="tel" id="phone" placeholder="Enter your phone number" required>
+      </div>
+      
+      <div class="form-group">
+        <label for="location">Emergency Location</label>
+        <input type="text" id="location" placeholder="Where is the emergency?" required>
+      </div>
+      
+      <div class="form-group">
+        <label for="type">Emergency Type</label>
+        <select id="type" required>
+          <option value="">Select emergency type</option>
+          <option value="fire">Fire</option>
+          <option value="medical">Medical Emergency</option>
+          <option value="natural">Natural Disaster</option>
+          <option value="accident">Traffic Accident</option>
+          <option value="other">Other</option>
+        </select>
+      </div>
+      
+      <div class="form-group">
+        <label for="description">Emergency Description</label>
+        <textarea id="description" rows="4" placeholder="Please describe the emergency situation in detail..." required></textarea>
+      </div>
+      
+      <button type="submit" class="emergency-btn">
+        <i class="fas fa-paper-plane"></i> Send Emergency Report
+      </button>
+      <div class="alert" id="alertMessage">
+        <i class="fas fa-check-circle"></i> Report sent successfully! Emergency services have been notified.
+      </div>
+    </form>
+  </section>
+
+  <footer>
+    <div class="container">
+      <div class="footer-content">
+        <p><strong>Emergency Help Hub</strong> - Your trusted emergency resource</p>
+        <div class="footer-links">
+          <a href="#"><i class="fas fa-shield-alt"></i> Privacy Policy</a>
+          <a href="#"><i class="fas fa-file-contract"></i> Terms of Service</a>
+          <a href="#"><i class="fas fa-question-circle"></i> FAQ</a>
+          <a href="#"><i class="fas fa-envelope"></i> Contact Us</a>
+        </div>
+        <p>For real emergencies, always call 911 immediately</p>
+        <p>&copy; 2025 Emergency Help Hub. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Alert system for form submission
+    const form = document.getElementById('emergencyForm');
+    const alertMsg = document.getElementById('alertMessage');
+
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      alertMsg.style.display = 'block';
+      form.reset();
+      
+      // Scroll to alert message
+      alertMsg.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      
+      setTimeout(() => {
+        alertMsg.style.display = 'none';
+      }, 5000);
+    });
+
+    // Smooth scrolling for navigation links
+    document.querySelectorAll('nav a').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        e.preventDefault();
+        const targetId = this.getAttribute('href');
+        document.querySelector(targetId).scrollIntoView({
+          behavior: 'smooth',
+          block: 'start'
+        });
+      });
+    });
+  </script>
+</body>
+</html>
