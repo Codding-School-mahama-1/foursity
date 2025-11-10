@@ -34,6 +34,35 @@
     html {
       scroll-behavior: smooth;
     }
+
+    /* FAQ Modal Styles */
+    .modal-bg {
+      background: white;
+    }
+    
+    .tab-btn.active {
+      color: #2563eb;
+      border-bottom-color: #2563eb;
+    }
+    
+    .faq-answer {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease;
+    }
+    
+    .faq-item.active .faq-answer {
+      max-height: 500px;
+    }
+    
+    .faq-question::after {
+      content: '+';
+      font-weight: normal;
+    }
+    
+    .faq-item.active .faq-question::after {
+      content: '-';
+    }
   </style>
 </head>
 <body class="font-serif text-gray-800">
@@ -76,7 +105,7 @@
           <a href="/doctors.html" class="text-gray-700 hover:text-blue-600 transition duration-300">Doctors</a>
           <a href="/Dashboard.html" class="text-gray-700 hover:text-blue-600 transition duration-300">Dashdoard</a>
           <a href="#contact" class="text-gray-700 hover:text-blue-600 transition duration-300">Contact</a>
-          <a href="#help" class="text-gray-700 hover:text-blue-600 transition duration-300">Help</a>
+          <a href="#faq" id="faq-nav-link" class="text-gray-700 hover:text-blue-600 transition duration-300">FAQ</a>
         </nav>
         
         <!-- Actions -->
@@ -86,14 +115,18 @@
             <option value="ar">العربية</option>
             <option value="rw">Kinyarwanda</option>
           </select>
-          <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition duration-300">Sign Up</button>
-          <button class="border border-blue-600 text-blue-600 px-4 py-2 rounded hover:bg-blue-600 hover:text-white transition duration-300">Log In</button>
+          <button id="desktop-signup-btn" class="bg-blue-600 text-white px-4 py-2 rounded...">Sign Up</button>
+          <button id="desktop-login-btn" class="border border-blue-600 text-blue-600 px-4 py-2 rounded...">Log In</button>
         </div>
       </div>
       
       <!-- Mobile Menu -->
       <div id="mobile-menu" class="hidden md:hidden py-4 border-t border-gray-200">
         <div class="flex flex-col space-y-4">
+          <div class="flex space-x-2">
+  <button id="mobile-signup-btn" class="flex-1 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition duration-300">Sign Up</button>
+  <button id="mobile-login-btn" class="flex-1 border border-blue-600 text-blue-600 px-4 py-2 rounded hover:bg-blue-600 hover:text-white transition duration-300">Log In</button>
+</div>
           <a href="#home" class="text-gray-700 hover:text-blue-600">Home</a>
           <a href="#about" class="text-gray-700 hover:text-blue-600">About</a>
           
@@ -117,7 +150,7 @@
           <a href="/doctors.html" class="text-gray-700 hover:text-blue-600">Doctors</a>
           <a href="/Dashboard.html" class="text-gray-700 hover:text-blue-600">Dashdoard</a>
           <a href="#contact" class="text-gray-700 hover:text-blue-600">Contact</a>
-          <a href="#help" class="text-gray-700 hover:text-blue-600">Help</a>
+          <a href="#faq" id="mobile-faq-link" class="text-gray-700 hover:text-blue-600">FAQ</a>
           
           <div class="pt-4 border-t border-gray-200">
             <select class="w-full border border-gray-300 rounded px-3 py-2 text-sm mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500">
@@ -126,14 +159,147 @@
               <option value="rw">Kinyarwanda</option>
             </select>
             <div class="flex space-x-2">
-              <button class="flex-1 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition duration-300">Sign Up</button>
-              <button class="flex-1 border border-blue-600 text-blue-600 px-4 py-2 rounded hover:bg-blue-600 hover:text-white transition duration-300">Log In</button>
+              <button  id="signup-btn" class="flex-1 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition duration-300">Sign Up</button>
+              <button  id="login-btn" class="flex-1 border border-blue-600 text-blue-600 px-4 py-2 rounded hover:bg-blue-600 hover:text-white transition duration-300">Log In</button>
             </div>
           </div>
         </div>
       </div>
     </div>
   </header>
+  <!-- Sign Up Modal -->
+  <div id="signup-modal" class="fixed inset-0 hidden items-center justify-center z-50">
+    <div class="absolute inset-0 bg-black/50"></div>
+    <div class="auth-modal relative z-10 w-11/12 sm:max-w-md mx-auto rounded-xl shadow-2xl overflow-hidden">
+      <div class="bg-white p-6 sm:p-8">
+        <!-- Header -->
+        <div class="flex justify-between items-center mb-6">
+          <h2 class="text-2xl font-bold text-blue-700">Create Account</h2>
+          <button id="signup-close" class="text-gray-500 hover:text-gray-700 text-xl">&times;</button>
+        </div>
+
+        <!-- Form -->
+        <form id="signup-form" class="space-y-4">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label for="signup-firstname" class="block text-sm font-medium text-gray-700 mb-1">First Name</label>
+              <input type="text" id="signup-firstname" name="firstname" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" required>
+            </div>
+            <div>
+              <label for="signup-lastname" class="block text-sm font-medium text-gray-700 mb-1">Last Name</label>
+              <input type="text" id="signup-lastname" name="lastname" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" required>
+            </div>
+          </div>
+
+          <div>
+            <label for="signup-email" class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
+            <input type="email" id="signup-email" name="email" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" required>
+          </div>
+
+          <div>
+            <label for="signup-phone" class="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>
+            <input type="tel" id="signup-phone" name="phone" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+          </div>
+
+          <div>
+            <label for="signup-password" class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+            <input type="password" id="signup-password" name="password" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" required>
+          </div>
+
+          <div>
+            <label for="signup-confirm-password" class="block text-sm font-medium text-gray-700 mb-1">Confirm Password</label>
+            <input type="password" id="signup-confirm-password" name="confirm-password" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" required>
+          </div>
+
+          <div class="flex items-center">
+            <input type="checkbox" id="signup-terms" name="terms" class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded" required>
+            <label for="signup-terms" class="ml-2 block text-sm text-gray-700">
+              I agree to the <a href="#" class="text-blue-600 hover:text-blue-500">Terms & Conditions</a>
+            </label>
+          </div>
+
+          <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-4 rounded-lg transition duration-300 transform hover:-translate-y-0.5">
+            Create Account
+          </button>
+
+          <div class="text-center text-sm text-gray-600">
+            Already have an account? 
+            <button type="button" id="switch-to-login" class="text-blue-600 hover:text-blue-500 font-semibold">Log In</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <!-- Login Modal -->
+  <div id="login-modal" class="fixed inset-0 hidden items-center justify-center z-50">
+    <div class="absolute inset-0 bg-black/50"></div>
+    <div class="auth-modal relative z-10 w-11/12 sm:max-w-md mx-auto rounded-xl shadow-2xl overflow-hidden">
+      <div class="bg-white p-6 sm:p-8">
+        <!-- Header -->
+        <div class="flex justify-between items-center mb-6">
+          <h2 class="text-2xl font-bold text-blue-700">Welcome Back</h2>
+          <button id="login-close" class="text-gray-500 hover:text-gray-700 text-xl">&times;</button>
+        </div>
+
+        <!-- Form -->
+        <form id="login-form" class="space-y-4">
+          <div>
+            <label for="login-email" class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
+            <input type="email" id="login-email" name="email" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" required>
+          </div>
+
+          <div>
+            <label for="login-password" class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+            <input type="password" id="login-password" name="password" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" required>
+          </div>
+
+          <div class="flex items-center justify-between">
+            <div class="flex items-center">
+              <input type="checkbox" id="remember-me" name="remember" class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
+              <label for="remember-me" class="ml-2 block text-sm text-gray-700">Remember me</label>
+            </div>
+            <a href="#" class="text-sm text-blue-600 hover:text-blue-500">Forgot password?</a>
+          </div>
+
+          <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-4 rounded-lg transition duration-300 transform hover:-translate-y-0.5">
+            Sign In
+          </button>
+
+          <div class="text-center text-sm text-gray-600">
+            Don't have an account? 
+            <button type="button" id="switch-to-signup" class="text-blue-600 hover:text-blue-500 font-semibold">Sign Up</button>
+          </div>
+
+          <!-- Social Login -->
+          <div class="mt-6">
+            <div class="relative">
+              <div class="absolute inset-0 flex items-center">
+                <div class="w-full border-t border-gray-300"></div>
+              </div>
+              <div class="relative flex justify-center text-sm">
+                <span class="px-2 bg-white text-gray-500">Or continue with</span>
+              </div>
+            </div>
+
+            <div class="mt-4 grid grid-cols-2 gap-3">
+              <button type="button" class="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 transition duration-300">
+                <i class="fab fa-google text-red-500"></i>
+                <span class="ml-2">Google</span>
+              </button>
+              <button type="button" class="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 transition duration-300">
+                <i class="fab fa-facebook text-blue-600"></i>
+                <span class="ml-2">Facebook</span>
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  
+
+
 
   <!-- HERO SECTION -->
   <section id="home" class="relative h-screen flex items-center justify-center overflow-hidden">
@@ -199,12 +365,7 @@
       </div>
     </div>
   </section>
-  <!-- FAQ Button -->
-  <div class="p-6 text-center">
-    <button id="faq-button" class="bg-blue-300 hover:bg-blue-400 text-white px-6 py-3 rounded-lg font-semibold transition duration-300">
-      FAQ
-    </button>
-  </div>
+  
 
   <!-- FAQ Modal -->
   <div id="faq-modal" class="fixed inset-0 hidden items-center justify-center z-50">
@@ -219,7 +380,7 @@
 
       <!-- Tabs -->
       <div class="flex flex-wrap border-b border-gray-300 bg-white text-sm sm:text-base">
-        <button class="tab-btn px-4 py-2 font-medium text-blue-600 border-b-2 border-blue-600 focus:outline-none" data-tab="general">General</button>
+        <button class="tab-btn px-4 py-2 font-medium text-blue-600 border-b-2 border-blue-600 focus:outline-none active" data-tab="general">General</button>
         <button class="tab-btn px-4 py-2 font-medium text-gray-600 hover:text-blue-600 border-b-2 border-transparent" data-tab="emergency">Emergency</button>
         <button class="tab-btn px-4 py-2 font-medium text-gray-600 hover:text-blue-600 border-b-2 border-transparent" data-tab="mental">Mental Health</button>
         <button class="tab-btn px-4 py-2 font-medium text-gray-600 hover:text-blue-600 border-b-2 border-transparent" data-tab="chronic">Chronic Diseases</button>
@@ -260,7 +421,7 @@
               Where is the hospital located?
             </button>
             <div class="faq-answer pl-4 text-gray-700">
-              123 Health Street, City. See map on the contact page for directions.
+              Mahama Refugee Camp, Kirehe District, Rwanda. See map on the contact page for directions.
             </div>
           </div>
           <div class="faq-item">
@@ -271,8 +432,7 @@
               Yes, free parking is available for patients and visitors.
             </div>
           </div>
-        </div>
-        <div class="faq-item">
+          <div class="faq-item">
             <button class="faq-question w-full text-left py-2 font-semibold flex justify-between items-center">
               What should I bring for my first visit?
             </button>
@@ -377,7 +537,8 @@
             </div>
           </div>
         </div>
-<!-- Chronic Diseases -->
+
+        <!-- Chronic Diseases -->
         <div class="tab-content hidden" id="chronic">
           <div class="faq-item">
             <button class="faq-question w-full text-left py-2 font-semibold flex justify-between items-center">
@@ -464,94 +625,8 @@
             </div>
           </div>
         </div>
-<!-- Chronic Diseases -->
-        <div class="tab-content hidden" id="chronic">
-          <div class="faq-item">
-            <button class="faq-question w-full text-left py-2 font-semibold flex justify-between items-center">
-              What types of chronic diseases do you manage?
-            </button>
-            <div class="faq-answer pl-4 text-gray-700">
-              We manage diabetes, hypertension, asthma, cardiovascular diseases, and more.
-            </div>
-          </div>
-          <div class="faq-item">
-            <button class="faq-question w-full text-left py-2 font-semibold flex justify-between items-center">
-              How often should chronic patients come for check-ups?
-            </button>
-            <div class="faq-answer pl-4 text-gray-700">
-              Check-ups are usually every 1-3 months, depending on the condition.
-            </div>
-          </div>
-          <div class="faq-item">
-            <button class="faq-question w-full text-left py-2 font-semibold flex justify-between items-center">
-              Do you offer medication follow-up or refill services?
-            </button>
-            <div class="faq-answer pl-4 text-gray-700">
-              Yes, we provide regular medication follow-ups and refill services.
-            </div>
-          </div>
-          <div class="faq-item">
-            <button class="faq-question w-full text-left py-2 font-semibold flex justify-between items-center">
-              Is there a support group for chronic patients?
-            </button>
-            <div class="faq-answer pl-4 text-gray-700">
-              Yes, we organize support groups for patients with chronic diseases.
-            </div>
-          </div>
-          <div class="faq-item">
-            <button class="faq-question w-full text-left py-2 font-semibold flex justify-between items-center">
-              Can I access my medical history online?
-            </button>
-            <div class="faq-answer pl-4 text-gray-700">
-              Yes, patients can access their records through our secure online portal.
-            </div>
-          </div>
-        </div>
 
-        <!-- Disability -->
-        <div class="tab-content hidden" id="disability">
-          <div class="faq-item">
-            <button class="faq-question w-full text-left py-2 font-semibold flex justify-between items-center">
-              Do you provide physical therapy or rehabilitation?
-            </button>
-            <div class="faq-answer pl-4 text-gray-700">
-              Yes, we have a full rehabilitation and physiotherapy department.
-            </div>
-          </div>
-          <div class="faq-item">
-            <button class="faq-question w-full text-left py-2 font-semibold flex justify-between items-center">
-              What services are available for people with disabilities?
-            </button>
-            <div class="faq-answer pl-4 text-gray-700">
-              We provide rehabilitation, assistive devices, counseling, and specialized care.
-            </div>
-          </div>
-          <div class="faq-item">
-            <button class="faq-question w-full text-left py-2 font-semibold flex justify-between items-center">
-              Do you offer assistive devices (wheelchairs, crutches, etc.)?
-            </button>
-            <div class="faq-answer pl-4 text-gray-700">
-              Yes, we provide necessary assistive devices for patients.
-            </div>
-          </div>
-          <div class="faq-item">
-            <button class="faq-question w-full text-left py-2 font-semibold flex justify-between items-center">
-              Is there a special unit for children with disabilities?
-            </button>
-            <div class="faq-answer pl-4 text-gray-700">
-              Yes, we have a dedicated pediatric disability unit.
-            </div>
-          </div>
-          <div class="faq-item">
-            <button class="faq-question w-full text-left py-2 font-semibold flex justify-between items-center">
-              Are your facilities accessible for wheelchair users?
-            </button>
-            <div class="faq-answer pl-4 text-gray-700">
-              Yes, all our facilities are fully accessible.
-            </div>
-          </div>
-        </div>
-<!-- Doctors -->
+        <!-- Doctors -->
         <div class="tab-content hidden" id="doctors">
           <div class="faq-item">
             <button class="faq-question w-full text-left py-2 font-semibold flex justify-between items-center">
@@ -579,7 +654,7 @@
           </div>
           <div class="faq-item">
             <button class="faq-question w-full text-left py-2 font-semibold flex justify-between items-center">
-              How can I check a doctor’s specialization?
+              How can I check a doctor's specialization?
             </button>
             <div class="faq-answer pl-4 text-gray-700">
               Specializations are listed on our website and at reception.
@@ -587,10 +662,10 @@
           </div>
           <div class="faq-item">
             <button class="faq-question w-full text-left py-2 font-semibold flex justify-between items-center">
-              Are female doctors available for women’s consultations?
+              Are female doctors available for women's consultations?
             </button>
             <div class="faq-answer pl-4 text-gray-700">
-              Yes, female doctors are available for all women’s consultations.
+              Yes, female doctors are available for all women's consultations.
             </div>
           </div>
         </div>
@@ -630,7 +705,6 @@
             </div>
           </div>
         </div>
-
       </div>
     </div>
   </div>
@@ -642,7 +716,7 @@
       
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         <!-- Service Card 1 -->
-        <div class="service-card bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl shadow-lg p-6 transition-all duration-300 hover:-translate-y-2 hover:shadow-xl">
+        <div class="service-card bg-white rounded-xl shadow-lg p-6 transition-all duration-300 hover:-translate-y-2 hover:shadow-xl">
           <img src="./img/baby-1531059_1280.jpg" alt="Maternity" class="w-full h-48 object-cover rounded-lg mb-4">
           <h3 class="text-xl font-bold text-gray-800 mb-2">Maternity & Birth Services</h3>
           <p class="text-gray-600 mb-4">Providing prenatal care, safe deliveries, and postnatal support for mothers and newborns.</p>
@@ -650,7 +724,7 @@
         </div>
         
         <!-- Service Card 2 -->
-        <div class="service-card bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl shadow-lg p-6 transition-all duration-300 hover:-translate-y-2 hover:shadow-xl">
+        <div class="service-card bg-white rounded-xl shadow-lg p-6 transition-all duration-300 hover:-translate-y-2 hover:shadow-xl">
           <img src="./img/emer.png" alt="Emergency" class="w-full h-48 object-cover rounded-lg mb-4">
           <h3 class="text-xl font-bold text-gray-800 mb-2">Emergency Care</h3>
           <p class="text-gray-600 mb-4">Immediate attention for urgent medical conditions with trained staff available 24/7.</p>
@@ -658,7 +732,7 @@
         </div>
         
         <!-- Service Card 3 -->
-        <div class="service-card bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl shadow-lg p-6 transition-all duration-300 hover:-translate-y-2 hover:shadow-xl">
+        <div class="service-card bg-white rounded-xl shadow-lg p-6 transition-all duration-300 hover:-translate-y-2 hover:shadow-xl">
           <img src="./img/vac.jpg" alt="Vaccination" class="w-full h-48 object-cover rounded-lg mb-4">
           <h3 class="text-xl font-bold text-gray-800 mb-2">Vaccination Programs</h3>
           <p class="text-gray-600 mb-4">Regular vaccination campaigns for children and adults to prevent infectious diseases.</p>
@@ -666,7 +740,7 @@
         </div>
         
         <!-- Service Card 4 -->
-        <div class="service-card bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl shadow-lg p-6 transition-all duration-300 hover:-translate-y-2 hover:shadow-xl">
+        <div class="service-card bg-white rounded-xl shadow-lg p-6 transition-all duration-300 hover:-translate-y-2 hover:shadow-xl">
           <img src="./img/mentl.jpg" alt="Mental Health" class="w-full h-48 object-cover rounded-lg mb-4">
           <h3 class="text-xl font-bold text-gray-800 mb-2">Mental Health Support</h3>
           <p class="text-gray-600 mb-4">Counseling and support services for mental well-being and trauma recovery.</p>
@@ -674,7 +748,7 @@
         </div>
         
         <!-- Service Card 5 -->
-        <div class="service-card bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl shadow-lg p-6 transition-all duration-300 hover:-translate-y-2 hover:shadow-xl">
+        <div class="service-card bg-white rounded-xl shadow-lg p-6 transition-all duration-300 hover:-translate-y-2 hover:shadow-xl">
           <img src="./img/chro.jpg" alt="Chronic Care" class="w-full h-48 object-cover rounded-lg mb-4">
           <h3 class="text-xl font-bold text-gray-800 mb-2">Chronic Disease Care</h3>
           <p class="text-gray-600 mb-4">Management and monitoring of chronic diseases like diabetes, hypertension, TB, and HIV.</p>
@@ -682,7 +756,7 @@
         </div>
         
         <!-- Service Card 6 -->
-        <div class="service-card bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl shadow-lg p-6 transition-all duration-300 hover:-translate-y-2 hover:shadow-xl">
+        <div class="service-card bg-white rounded-xl shadow-lg p-6 transition-all duration-300 hover:-translate-y-2 hover:shadow-xl">
           <img src="/img/awernees.png" alt="Health Education" class="w-full h-48 object-cover rounded-lg mb-4">
           <h3 class="text-xl font-bold text-gray-800 mb-2">Health Awareness & Education</h3>
           <p class="text-gray-600 mb-4">Educational resources about hygiene, nutrition, pregnancy, child care, and disease prevention.</p>
@@ -758,7 +832,7 @@
             </div>
             <div>
               <h4 class="font-bold text-gray-800 mb-1">Our Location</h4>
-              <p class="text-gray-600">123 Health Street, Medical District, City</p>
+              <p class="text-gray-600">Mahama Refugee Camp, Kirehe District, Rwanda</p>
             </div>
           </div>
          
@@ -793,16 +867,21 @@
             </div>
           </div>
         </div>
-       
-        <!-- Map Placeholder -->
-        <div class="bg-white rounded-xl shadow-lg overflow-hidden">
-          <div class="h-64 bg-gray-200 flex items-center justify-center">
-            <div class="text-center">
-              <i class="fas fa-map text-gray-400 text-4xl mb-2"></i>
-              <p class="text-gray-500">Interactive Map Location</p>
-            </div>
-          </div>
-        </div>
+        <!-- Google Map for Mahama Refugee Camp -->
+<div class="bg-white rounded-xl shadow-lg overflow-hidden">
+  <div class="h-96">
+    <iframe 
+      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1334.760614585555!2d30.642434783637935!3d-2.2630583877293016!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x19c4c500078c5f45%3A0xc3605c2533855d6b!2sMahama%20refugee%20camp!5e0!3m2!1sen!2sus!4v1762760708457!5m2!1sen!2sus" 
+      width="100%" 
+      height="100%" 
+      style="border:0;" 
+      allowfullscreen="" 
+      loading="lazy" 
+      referrerpolicy="no-referrer-when-downgrade"
+      title="Mahamacare Hospital Location at Mahama Refugee Camp">
+    </iframe>
+  </div>
+</div>
        
         <!-- Emergency Notice -->
         <div class="bg-red-50 border border-red-200 rounded-xl p-6">
@@ -839,7 +918,7 @@
             <li><a href="#about" class="text-gray-400 hover:text-white transition duration-300">About</a></li>
             <li><a href="#services" class="text-gray-400 hover:text-white transition duration-300">Services</a></li>
             <li><a href="#doctors" class="text-gray-400 hover:text-white transition duration-300">Doctors</a></li>
-            <li><a href="#faq" class="text-gray-400 hover:text-white transition duration-300">FAQ</a></li>
+            <li><a href="#faq" id="footer-faq-link" class="text-gray-400 hover:text-white transition duration-300">FAQ</a></li>
             <li><a href="#contact" class="text-gray-400 hover:text-white transition duration-300">Contact</a></li>
           </ul>
         </div>
@@ -849,8 +928,8 @@
           <h4 class="text-lg font-semibold mb-4">Contact Info</h4>
           <div class="space-y-2 text-gray-400">
             <p><i class="fas fa-envelope mr-2"></i> info@hopecare.com</p>
-            <p><i class="fas fa-phone mr-2"></i> +123456789</p>
-            <p><i class="fas fa-map-marker-alt mr-2"></i> 123 Health St, City</p>
+            <p><i class="fas fa-phone mr-2"></i> +250 000 000</p>
+            <p><i class="fas fa-map-marker-alt mr-2"></i> Mahama Refugee Camp, Rwanda</p>
           </div>
         </div>
         
@@ -881,6 +960,8 @@
   </footer>
 
   <script>
+    
+    
     // Mobile menu toggle
     document.getElementById('mobile-menu-button').addEventListener('click', function() {
       const mobileMenu = document.getElementById('mobile-menu');
@@ -908,6 +989,176 @@
     
     window.addEventListener('scroll', revealCards);
     window.addEventListener('load', revealCards);
+
+    // FAQ Modal Functionality
+    const faqModal = document.getElementById('faq-modal');
+    const faqNavLink = document.getElementById('faq-nav-link');
+    const mobileFaqLink = document.getElementById('mobile-faq-link');
+    const footerFaqLink = document.getElementById('footer-faq-link');
+    const faqClose = document.getElementById('faq-close');
+    const tabBtns = document.querySelectorAll('.tab-btn');
+    const faqItems = document.querySelectorAll('.faq-item');
+
+    // Open FAQ Modal
+    function openFaqModal() {
+      faqModal.classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+    }
+
+    // Close FAQ Modal
+    function closeFaqModal() {
+      faqModal.classList.add('hidden');
+      document.body.style.overflow = 'auto';
+    }
+
+    // Tab switching
+    tabBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const tabId = btn.getAttribute('data-tab');
+        
+        // Update active tab
+        tabBtns.forEach(b => b.classList.remove('active', 'text-blue-600', 'border-blue-600'));
+        btn.classList.add('active', 'text-blue-600', 'border-blue-600');
+        
+        // Show active tab content
+        document.querySelectorAll('.tab-content').forEach(content => {
+          content.classList.add('hidden');
+        });
+        document.getElementById(tabId).classList.remove('hidden');
+      });
+    });
+
+    // FAQ item toggle
+    faqItems.forEach(item => {
+      const question = item.querySelector('.faq-question');
+      question.addEventListener('click', () => {
+        item.classList.toggle('active');
+      });
+    });
+
+    // Event listeners
+    faqNavLink.addEventListener('click', (e) => {
+      e.preventDefault();
+      openFaqModal();
+    });
+
+    mobileFaqLink.addEventListener('click', (e) => {
+      e.preventDefault();
+      openFaqModal();
+      document.getElementById('mobile-menu').classList.add('hidden');
+    });
+
+    footerFaqLink.addEventListener('click', (e) => {
+      e.preventDefault();
+      openFaqModal();
+    });
+
+    faqClose.addEventListener('click', closeFaqModal);
+
+    // Close modal when clicking outside
+    faqModal.addEventListener('click', (e) => {
+      if (e.target === faqModal) {
+        closeFaqModal();
+      }
+    });
+
+    // Close modal with Escape key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !faqModal.classList.contains('hidden')) {
+        closeFaqModal();
+      }
+    });
+    // Auth Modals Functionality
+    const signupModal = document.getElementById('signup-modal');
+    const loginModal = document.getElementById('login-modal');
+    const signupBtn = document.getElementById('signup-btn');
+    const loginBtn = document.getElementById('login-btn');
+    const mobileSignupBtn = document.getElementById('mobile-signup-btn');
+    const mobileLoginBtn = document.getElementById('mobile-login-btn');
+    const signupClose = document.getElementById('signup-close');
+    const loginClose = document.getElementById('login-close');
+    const switchToLogin = document.getElementById('switch-to-login');
+    const switchToSignup = document.getElementById('switch-to-signup');
+
+    // Open Sign Up Modal
+    function openSignupModal() {
+      signupModal.classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+    }
+
+    // Open Login Modal
+    function openLoginModal() {
+      loginModal.classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+    }
+
+    // Close Modals
+    function closeModals() {
+      signupModal.classList.add('hidden');
+      loginModal.classList.add('hidden');
+      document.body.style.overflow = 'auto';
+    }
+
+    // Switch between modals
+    function switchToLoginModal() {
+      closeModals();
+      setTimeout(openLoginModal, 300);
+    }
+
+    function switchToSignupModal() {
+      closeModals();
+      setTimeout(openSignupModal, 300);
+    }
+
+    // Event Listeners for Auth Modals
+    signupBtn.addEventListener('click', openSignupModal);
+    loginBtn.addEventListener('click', openLoginModal);
+    mobileSignupBtn.addEventListener('click', () => {
+      openSignupModal();
+      document.getElementById('mobile-menu').classList.add('hidden');
+    });
+    mobileLoginBtn.addEventListener('click', () => {
+      openLoginModal();
+      document.getElementById('mobile-menu').classList.add('hidden');
+    });
+    signupClose.addEventListener('click', closeModals);
+    loginClose.addEventListener('click', closeModals);
+    switchToLogin.addEventListener('click', switchToLoginModal);
+    switchToSignup.addEventListener('click', switchToSignupModal);
+
+    // Close modals when clicking outside
+    [signupModal, loginModal].forEach(modal => {
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+          closeModals();
+        }
+      });
+    });
+
+    // Close modals with Escape key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        closeModals();
+      }
+    });
+
+    // Form submissions
+    document.getElementById('signup-form').addEventListener('submit', (e) => {
+      e.preventDefault();
+      // Add your signup logic here
+      alert('Sign up functionality would be implemented here!');
+      closeModals();
+    });
+
+    document.getElementById('login-form').addEventListener('submit', (e) => {
+      e.preventDefault();
+      // Add your login logic here
+      alert('Login functionality would be implemented here!');
+      closeModals();
+    });
+    document.getElementById('desktop-signup-btn').addEventListener('click', openSignupModal);
+    document.getElementById('desktop-login-btn').addEventListener('click', openLoginModal);
+
   </script>
 </body>
 </html>
