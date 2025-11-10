@@ -1,79 +1,265 @@
 <!doctype html>
 <html lang="en">
-
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Registration - Hospital Admin</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-
+  <title>Birth Registration - Hospital Admin</title>
+  <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
 <body class="bg-gray-100 text-gray-800">
-
   <div class="flex min-h-screen">
     <!-- Sidebar -->
-    <aside class="w-64 bg-blue-500 text-white flex flex-col ">
-      <div class="text-2xl font-bold p-6 border-b border-blue-600 font-mono ">Hospital Admin</div>
+    <aside class="w-64 bg-blue-500 text-white flex flex-col">
+      <div class="text-2xl font-bold p-6 border-b border-blue-600 font-mono">
+        Hospital Admin
+      </div>
       <nav class="flex-1 p-4 space-y-2">
-        <a href="../Dashboard.html" class="font-semibold text-1xl   block p-2 rounded hover:bg-purple-500 "><i
-            class="fa-solid fa-hospital text-yellow-500 text-2xl"></i>
-          Dashboard</a>
-        <a href="./paitents-Servecises.html" class="font-semibold block p-2 rounded  hover:bg-purple-500 text-1xl"><i
-            class="fa-solid fa-user text-gray-400 text-3xl"></i> Register Patient</a>
-        <a href="./Regester-fill-form.html" class="font-semibold block p-2 rounded hover:bg-purple-500"> <i
-            class="fa-solid fa-certificate text-gray-400 text-3xl"></i> Birth Certification</a>
+        <a href="../Dashboard.html"
+          class="font-semibold text-xl block p-2 rounded hover:bg-purple-500">
+          <i class="fa-solid fa-hospital text-yellow-500 text-2xl"></i>
+          Dashboard
+        </a>
+        <a href="./paitents-Servecises.html"
+          class="font-semibold block p-2 rounded hover:bg-purple-500">
+          <i class="fa-solid fa-user text-gray-400 text-3xl"></i>
+          Register Patient
+        </a>
+        <a href="./Regester-fill-form.html"
+          class="font-semibold block p-2 rounded hover:bg-purple-500 bg-blue-600">
+          <i class="fa-solid fa-baby text-gray-100 text-3xl"></i>
+          Birth Certification
+        </a>
       </nav>
     </aside>
 
     <!-- Main Content -->
-    <main class="flex-1 p-6 space-y-8 overflow-y-auto bg-blue-300">
+    <main class="flex-1 p-6 space-y-8 overflow-y-auto bg-white">
+      <section id="register-birth" class="min-h-screen flex flex-col items-center justify-center">
+        <h2 class="text-3xl font-extrabold mb-4 text-center">Register New Birth</h2>
 
-      <!-- Register Birth -->
-      <section id="register-birth " class="min-h-screen flex items-center justify-center flex-col">
-        <h2 class="text-3xl font-bold mb-4 text-center">Register New Birth</h2>
-       <form class="bg-slate-400 shadow rounded-2xl p-6 space-y-4 w-[790px]">
+        <!-- Search bar -->
+        <div id="findBirth" class="p-2 m-4 w-96 text-center font-sans">
+          <input id="findId" type="text" placeholder="Find record by Register No"
+            class="border border-orange-400 bg-slate-200 p-2 rounded-l-2xl">
+          <button id="findById"
+            class="bg-green-400 text-white p-2 rounded-r-2xl">Search</button>
+        </div>
+
+        <!-- Form -->
+        <form id="birthForm"
+          class="bg-slate-400 shadow rounded-2xl p-6 space-y-4 w-[790px]">
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label class="block text-sm font-medium mb-1">Baby Name</label>
-              <input type="text" class="w-full border rounded-lg p-2 focus:ring-2 focus:ring-blue-500"
+              <input id="babyName" type="text"
+                class="w-full border rounded-lg p-2 focus:ring-2 focus:ring-blue-500"
                 placeholder="Baby Name" required>
             </div>
+
             <div>
               <label class="block text-sm font-medium mb-1">Date of Birth</label>
-              <input type="date" class="w-full border rounded-lg p-2 focus:ring-2 focus:ring-blue-500" required>
+              <input id="dob" type="date"
+                class="w-full border rounded-lg p-2 focus:ring-2 focus:ring-blue-500"
+                required>
             </div>
+
             <div>
               <label class="block text-sm font-medium mb-1">Gender</label>
-              <select class="w-full border rounded-lg p-2 focus:ring-2 focus:ring-blue-500" required>
+              <select id="gender"
+                class="w-full border rounded-lg p-2 focus:ring-2 focus:ring-blue-500" required>
                 <option value="">Select</option>
                 <option>Male</option>
                 <option>Female</option>
               </select>
             </div>
+
             <div>
               <label class="block text-sm font-medium mb-1">Mother's Name</label>
-              <input type="text" class="w-full border rounded-lg p-2 focus:ring-2 focus:ring-blue-500"
+              <input id="motherName" type="text"
+                class="w-full border rounded-lg p-2 focus:ring-2 focus:ring-blue-500"
                 placeholder="Mother Name">
             </div>
-             <div>
-            <label for="">Regester No :</label><br>
-            <input type="number" placeholder="The Regester number" class="p-2 rounded-lg">
-          </div>
-          </div>
-          <div>
-            <label class="block text-sm font-medium mb-1">Notes</label>
-            <textarea class="w-full border rounded-lg p-2 focus:ring-2 focus:ring-blue-500" rows="3"
-              placeholder="Any notes"></textarea>
-          </div>
-          <button type="submit" class="bg-green-600 text-white px-6 py-2 rounded-xl hover:bg-green-700">Submit</button>
-        </form>
-      </section>
 
+            <div>
+              <label class="block text-sm font-medium mb-1">Register No</label>
+              <input id="registerNo" type="number"
+                class="w-full border rounded-lg p-2 focus:ring-2 focus:ring-blue-500"
+                placeholder="Registration number" required>
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium mb-1">Notes</label>
+              <textarea id="notes"
+                class="w-full border rounded-lg p-2 focus:ring-2 focus:ring-blue-500"
+                rows="2" placeholder="Any notes"></textarea>
+            </div>
+          </div>
+
+          <!-- Buttons -->
+          <div class="space-x-2 mt-4">
+            <button id="insertBtn" type="button"
+              class="bg-green-600 text-white px-6 py-2 rounded-xl hover:bg-green-700">INSERT</button>
+            <button id="updateBtn" type="button"
+              class="bg-blue-600 text-white px-6 py-2 rounded-xl hover:bg-blue-700">UPDATE</button>
+            <button id="removeBtn" type="button"
+              class="bg-red-600 text-white px-6 py-2 rounded-xl hover:bg-red-700">REMOVE</button>
+          </div>
+        </form>
+
+        <!-- Search Results -->
+        <div id="searchResult"
+          class="bg-gray-200 shadow rounded-2xl p-6 mt-6 w-[790px] hidden">
+          <h3 class="text-xl text-center font-bold mb-4 text-blue-700">Birth Record</h3>
+          <div class="text-center grid grid-cols-2 gap-2 m-4">
+            <p id="showName"></p>
+            <p id="showDOB"></p>
+            <p id="showGender"></p>
+            <p id="showMother"></p>
+            <p id="showNotes"></p>
+            <p id="showRegNo"></p>
+          </div>
+          <div class="mt-4 text-center">
+            <button id="backBtn"
+              class="bg-blue-500 text-white px-6 py-2 rounded-xl hover:bg-blue-700">Back
+              to Form</button>
+          </div>
+        </div>
+      </section>
     </main>
   </div>
 
-</body>
+  <!-- Firebase Script -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-app.js";
+    import { getDatabase, ref, set, update, remove, get, child }
+      from "https://www.gstatic.com/firebasejs/12.5.0/firebase-database.js";
 
+    const firebaseConfig = {
+      apiKey: "AIzaSyCZ774I4-U7CnvJ0R43zJifEfE5sGM48lY",
+      authDomain: "halawani-7126f.firebaseapp.com",
+      databaseURL: "https://halawani-7126f-default-rtdb.firebaseio.com",
+      projectId: "halawani-7126f",
+      storageBucket: "halawani-7126f.appspot.com",
+      messagingSenderId: "1065152267257",
+      appId: "1:1065152267257:web:636940f4c120e4ae927328"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+
+    // Elements
+    const form = document.getElementById('birthForm');
+    const searchResult = document.getElementById('searchResult');
+    const findById = document.getElementById('findById');
+    const backBtn = document.getElementById('backBtn');
+    const findId = document.getElementById('findId');
+
+    const babyName = document.getElementById('babyName');
+    const dob = document.getElementById('dob');
+    const gender = document.getElementById('gender');
+    const motherName = document.getElementById('motherName');
+    const notes = document.getElementById('notes');
+    const registerNo = document.getElementById('registerNo');
+
+    const insertBtn = document.getElementById('insertBtn');
+    const updateBtn = document.getElementById('updateBtn');
+    const removeBtn = document.getElementById('removeBtn');
+
+    const showName = document.getElementById('showName');
+    const showDOB = document.getElementById('showDOB');
+    const showGender = document.getElementById('showGender');
+    const showMother = document.getElementById('showMother');
+    const showNotes = document.getElementById('showNotes');
+    const showRegNo = document.getElementById('showRegNo');
+
+    // INSERT
+    function insertData() {
+      if (!registerNo.value.trim()) {
+        alert("Please enter Register No");
+        return;
+      }
+      set(ref(db, "Births/" + registerNo.value), {
+        babyName: babyName.value,
+        dob: dob.value,
+        gender: gender.value,
+        motherName: motherName.value,
+        notes: notes.value,
+        registerNo: registerNo.value
+      })
+        .then(() => alert("✅ Birth record added successfully"))
+        .catch(err => alert("❌ Error: " + err.message));
+    }
+
+    // UPDATE
+    function updateData() {
+      if (!registerNo.value.trim()) {
+        alert("Please enter Register No to update");
+        return;
+      }
+      update(ref(db, "Births/" + registerNo.value), {
+        babyName: babyName.value,
+        dob: dob.value,
+        gender: gender.value,
+        motherName: motherName.value,
+        notes: notes.value
+      })
+        .then(() => alert("✅ Record updated successfully"))
+        .catch(err => alert("❌ Error: " + err.message));
+    }
+
+    // REMOVE
+    function removeData() {
+      if (!registerNo.value.trim()) {
+        alert("Please enter Register No to remove");
+        return;
+      }
+      remove(ref(db, "Births/" + registerNo.value))
+        .then(() => alert("🗑️ Record removed successfully"))
+        .catch(err => alert("❌ Error: " + err.message));
+    }
+
+    // FIND
+    function findData() {
+      if (!findId.value.trim()) {
+        alert("Please enter Register No to search");
+        return;
+      }
+      const dbRef = ref(db);
+      get(child(dbRef, "Births/" + findId.value))
+        .then(snapshot => {
+          if (snapshot.exists()) {
+            const data = snapshot.val();
+            showName.textContent = "Baby Name: " + data.babyName;
+            showDOB.textContent = "Date of Birth: " + data.dob;
+            showGender.textContent = "Gender: " + data.gender;
+            showMother.textContent = "Mother Name: " + data.motherName;
+            showNotes.textContent = "Notes: " + data.notes;
+            showRegNo.textContent = "Register No: " + data.registerNo;
+
+            form.classList.add("hidden");
+            searchResult.classList.remove("hidden");
+          } else {
+            alert("❌ Record not found");
+          }
+        })
+        .catch(err => alert("❌ Error: " + err.message));
+    }
+
+    // BACK button
+    backBtn.addEventListener("click", () => {
+      searchResult.classList.add("hidden");
+      form.classList.remove("hidden");
+    });
+
+    // Event listeners
+    insertBtn.addEventListener("click", insertData);
+    updateBtn.addEventListener("click", updateData);
+    removeBtn.addEventListener("click", removeData);
+    findById.addEventListener("click", findData);
+  </script>
+</body>
 </html>
+
