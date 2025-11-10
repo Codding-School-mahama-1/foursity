@@ -11,113 +11,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     /* Custom styles for animations */
-    @keyframes fadeUp {
-      from {
-        opacity: 0;
-        transform: translateY(40px);
-    }
-
-    .service-card img {
-        width: 100%;
-        border-radius: 0.75rem;
-        margin-bottom: 1rem;
-    }
-
-    .service-card h3 {
-        font-size: 1.2rem;
-        font-weight: 600;
-        margin-bottom: 0.5rem;
-        color: #111827;
-    }
-
-    .service-card p {
-        color: #4b5563;
-        font-size: 0.95rem;
-        line-height: 1.5;
-    }
-
-    /* HOVER EFFECT */
-    .service-card:hover {
-        transform: translateY(-6px) scale(1.02);
-        box-shadow: 0 10px 25px rgba(29, 78, 216, 0.25);
-        background: linear-gradient(135deg, #e0f2fe 0%, #f0f9ff 100%);
-    }
-
-    /* Footer */
-    footer {
-        background: #202124;
-        color: white;
-        padding: 40px 0;
-    }
-
-    .footer-content {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 30px;
-    }
-
-    .footer-col {
-        flex: 1;
-        min-width: 200px;
-    }
-
-    .footer-col h3,
-    .footer-col h4 {
-        margin-bottom: 20px;
-    }
-
-    .footer-links {
-        list-style: none;
-        padding: 0;
-    }
-
-    .footer-links li {
-        margin-bottom: 10px;
-    }
-
-    .footer-links a {
-        color: white;
-        text-decoration: none;
-        transition: color 0.3s;
-    }
-
-    .footer-links a:hover {
-        color: #1a73e8;
-    }
-
-    /* SCROLL ANIMATION */
-    @keyframes fadeUp {
-        from {
-            opacity: 0;
-            transform: translateY(40px);
-        }
-
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
     
-    .service-card {
-      opacity: 0;
-      transform: translateY(40px);
-    }
-    
-    .service-card.show {
-        animation: fadeUp 0.8s ease forwards;
-    }
-
-    /* Responsive */
-    @media(max-width: 900px) {
-        .about-container {
-            flex-direction: column;
-            text-align: center;
-        }
-
-        .about-text {
-            text-align: center;
-        }
-    }
 </style>
 
 <body>
@@ -166,24 +60,6 @@
     <!-- HERO SECTION WITH VIDEO -->
     <section id="home" class="hero">
         <!-- Video Background -->
-       <iframe width="560" height="315" 
-    src="https://www.youtube.com/embed/GJ1uW4L1HT8?autoplay=1&mute=1&si=6Geou4hfS_6yTqDH" 
-    title="YouTube video player" 
-    frameborder="0" 
-    allow="autoplay; encrypted-media; gyroscope; picture-in-picture; web-share" 
-    referrerpolicy="strict-origin-when-cross-origin" 
-    allowfullscreen>
-</iframe>
-
-
-        <!-- Fallback in case video doesn't load -->
-        <div class="video-fallback">
-            <div style="text-align: center;">
-                <i class="fas fa-hospital" style="font-size: 4rem; margin-bottom: 20px;"></i>
-                <h2>HopeCare Hospital</h2>
-                <p>Quality Healthcare for Everyone</p>
-            </div>
-        </div>
 
         <!-- Hero Content -->
         <div class="hero-overlay">
