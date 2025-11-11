@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>HopeCare Hospital</title>
+  <title>MaCare Hospital</title>
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- Font Awesome for icons -->
@@ -964,21 +964,7 @@
       mobileServicesMenu.classList.toggle('hidden');
     });
     
-    // Scroll animation for service cards
-    const cards = document.querySelectorAll('.service-card');
-    
-    const revealCards = () => {
-      const triggerBottom = window.innerHeight * 0.85;
-      cards.forEach(card => {
-        const cardTop = card.getBoundingClientRect().top;
-        if (cardTop < triggerBottom) {
-          card.classList.add('show');
-        }
-      });
-    };
-    
-    window.addEventListener('scroll', revealCards);
-    window.addEventListener('load', revealCards);
+
 
     // FAQ Modal Functionality
     const faqModal = document.getElementById('faq-modal');
