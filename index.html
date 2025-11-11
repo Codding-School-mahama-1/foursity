@@ -963,22 +963,37 @@
       const mobileServicesMenu = document.getElementById('mobile-services-menu');
       mobileServicesMenu.classList.toggle('hidden');
     });
+    // Scroll animation for service cards - IMPROVED VERSION
+const cards = document.querySelectorAll('.service-card');
+
+const revealCards = () => {
+  const triggerBottom = window.innerHeight * 0.8; // Reduced from 0.85 to 0.8
+  
+  cards.forEach(card => {
+    const cardTop = card.getBoundingClientRect().top;
     
-    // Scroll animation for service cards
-    const cards = document.querySelectorAll('.service-card');
+    if (cardTop < triggerBottom) {
+      card.style.opacity = '1';
+      card.style.transform = 'translateY(0)';
+      card.classList.add('show');
+    }
+  });
+};
+
+// Initialize cards as visible but ready for animation
+cards.forEach(card => {
+  card.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+});
+
+window.addEventListener('scroll', revealCards);
+window.addEventListener('load', revealCards);
+// Also check on resize
+window.addEventListener('resize', revealCards);
+
+// Initial check
+revealCards();
     
-    const revealCards = () => {
-      const triggerBottom = window.innerHeight * 0.85;
-      cards.forEach(card => {
-        const cardTop = card.getBoundingClientRect().top;
-        if (cardTop < triggerBottom) {
-          card.classList.add('show');
-        }
-      });
-    };
-    
-    window.addEventListener('scroll', revealCards);
-    window.addEventListener('load', revealCards);
+   
 
     // FAQ Modal Functionality
     const faqModal = document.getElementById('faq-modal');
