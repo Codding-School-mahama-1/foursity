@@ -1,616 +1,967 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Life Hospital - NCD Services</title>
-
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-
-  <!-- Tailwind Play CDN (for quick prototyping) -->
-  <script src="https://cdn.tailwindcss.com"></script>
-
-  <!-- Optional: small Tailwind config for custom gradients/shadows -->
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            lhBlue: '#1a73e8',
-            lhGreen: '#34a853',
-            lhPurple: '#8e24aa',
-            lhOrange: '#f57c00',
-            lhYellow: '#ffca28'
-          },
-          boxShadow: {
-            'soft-lg': '0 4px 15px rgba(0,0,0,0.1)',
-            'soft-xl': '0 10px 25px rgba(0,0,0,0.1)'
-          },
-          animation: {
-            'float': 'float 6s ease-in-out infinite',
-            'pulse-glow': 'pulseGlow 2s ease-in-out infinite'
-          },
-          keyframes: {
-            float: {
-              '0%, 100%': { transform: 'translateY(0px)' },
-              '50%': { transform: 'translateY(-20px)' }
-            },
-            pulseGlow: {
-              '0%, 100%': { boxShadow: '0 0 20px rgba(239, 68, 68, 0.5)' },
-              '50%': { boxShadow: '0 0 30px rgba(239, 68, 68, 0.8)' }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MediCare Excellence Hospital | Patient History</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#0ea5e9',
+                        'primary-dark': '#0284c7',
+                        secondary: '#6366f1',
+                        accent: '#10b981',
+                    }
+                }
             }
-          }
         }
-      }
-    }
-  </script>
-  
-  <style>
-    .hero-gradient {
-      background: linear-gradient(135deg, #0ea5e9 0%, #3b82f6 50%, #6366f1 100%);
-      position: relative;
-      overflow: hidden;
-    }
-    .hero-gradient::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E") repeat;
-    }
-    .service-card {
-      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-      backdrop-filter: blur(10px);
-    }
-    .service-card:hover {
-      transform: translateY(-8px) scale(1.02);
-      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-    }
-    .glass-effect {
-      background: rgba(255, 255, 255, 0.1);
-      backdrop-filter: blur(10px);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-    }
-    .gradient-text {
-      background: linear-gradient(135deg, #3b82f6, #8b5cf6);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-    .medical-pattern {
-      background-image: 
-        radial-gradient(circle at 25% 25%, rgba(59, 130, 246, 0.1) 0%, transparent 50%),
-        radial-gradient(circle at 75% 75%, rgba(139, 92, 246, 0.1) 0%, transparent 50%);
-    }
-    .nav-blur {
-      backdrop-filter: blur(20px);
-      background: rgba(255, 255, 255, 0.95);
-    }
-    
-    /* Video Background Styles */
-    .video-background {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      z-index: 0;
-    }
-    
-    .video-overlay {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(135deg, rgba(14, 165, 233, 0.7) 0%, rgba(59, 130, 246, 0.7) 50%, rgba(99, 102, 241, 0.7) 100%);
-      z-index: 1;
-    }
-    
-    .hero-content {
-      position: relative;
-      z-index: 2;
-    }
-    
-    /* Ultra Compact Medical History Form Styles */
-    .ultra-compact-form .form-group {
-      margin-bottom: 0.4rem;
-    }
-    
-    .ultra-compact-form label {
-      display: block;
-      font-size: 0.65rem;
-      font-weight: 600;
-      margin-bottom: 0.1rem;
-      color: #374151;
-    }
-    
-    .ultra-compact-form input, 
-    .ultra-compact-form textarea {
-      width: 100%;
-      padding: 0.25rem 0.4rem;
-      border: 1px solid #d1d5db;
-      border-radius: 0.2rem;
-      font-size: 0.7rem;
-      transition: all 0.2s;
-    }
-    
-    .ultra-compact-form input:focus, 
-    .ultra-compact-form textarea:focus {
-      outline: none;
-      border-color: #1a73e8;
-      box-shadow: 0 0 0 1px rgba(26, 115, 232, 0.1);
-    }
-    
-    .ultra-compact-form textarea {
-      resize: vertical;
-      min-height: 35px;
-    }
-  </style>
+    </script>
+    <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #0ea5e9 0%, #6366f1 100%);
+        }
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(to right, #0ea5e9, #6366f1);
+            border-radius: 2px;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            overflow-y: auto;
+        }
+        .modal-content {
+            background-color: white;
+            margin: 2% auto;
+            padding: 0;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 800px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+        }
+        .modal-header {
+            padding: 20px 24px;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .modal-body {
+            padding: 24px;
+            max-height: 70vh;
+            overflow-y: auto;
+        }
+        .form-step {
+            display: none;
+        }
+        .form-step.active {
+            display: block;
+        }
+        .progress-bar {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 24px;
+            position: relative;
+        }
+        .progress-bar::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background-color: #e5e7eb;
+            transform: translateY(-50%);
+            z-index: 1;
+        }
+        .progress-step {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background-color: #e5e7eb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            color: #6b7280;
+            position: relative;
+            z-index: 2;
+        }
+        .progress-step.active {
+            background-color: #0ea5e9;
+            color: white;
+        }
+        .progress-step.completed {
+            background-color: #10b981;
+            color: white;
+        }
+    </style>
 </head>
-<body class="min-h-full bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 text-gray-800 antialiased">
-
-  <!-- Header -->
- <header class="bg-white shadow-md sticky top-0 z-50">
-    <div class="container mx-auto px-4">
-      <div class="flex justify-between items-center py-4">
-        <!-- Logo -->
-        <div class="flex items-center">
-          <span class="text-2xl font-bold text-blue-600">🏥 MCH</span>
-        </div>
-        
-        <!-- Mobile menu button -->
-        <button id="mobile-menu-button" class="md:hidden text-gray-600 focus:outline-none">
-          <i class="fas fa-bars text-xl"></i>
-        </button>
-        
-        <!-- Navigation Links -->
-        <nav id="nav-links" class="hidden md:flex items-center space-x-6">
-          <a href="../index.html" class="text-gray-700 hover:text-blue-600 transition duration-300">Home</a>
-          <a href="#about" class="text-gray-700 hover:text-blue-600 transition duration-300">About</a>
-          
-          <!-- Services Dropdown -->
-          <div class="relative group">
-            <button class="flex items-center text-gray-700 hover:text-blue-600 transition duration-300">
-              Services <i class="fas fa-chevron-down ml-1 text-xs"></i>
-            </button>
-            <div class="absolute left-0 mt-2 w-64 bg-white shadow-xl rounded-lg py-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50">
-              <a href="./Maternity&Brith Servecises.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">Maternity & Birth Services</a>
-              <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">Emergency Care</a>
-              <a href="./veccination.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">Vaccination Programs</a>
-              <a href="./mentalhealth.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">Mental Health Support</a>
-              <a href="./NCD.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">Chronic Disease Care</a>
-              <a href="./Health Education.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">Health Awareness & Education</a>
-              <a href="./Disability.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">Disability Care</a>
+<body class="font-sans bg-gray-50">
+    <!-- Header -->
+    <header class="bg-white shadow-md sticky top-0 z-50">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-between items-center py-4">
+                <div class="flex items-center space-x-3">
+                    <div class="w-12 h-12 gradient-bg rounded-full flex items-center justify-center">
+                        <i class="fas fa-hospital text-white text-xl"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-xl font-bold text-gray-800">MediCare Excellence</h1>
+                        <p class="text-xs text-gray-500">Comprehensive Healthcare Services</p>
+                    </div>
+                </div>
+                
+                <button class="md:hidden p-2 rounded-lg bg-blue-50" id="mobileMenuBtn">
+                    <i class="fas fa-bars text-primary"></i>
+                </button>
+                
+                <nav class="hidden md:flex items-center space-x-6">
+                    <a href="index.html" class="font-semibold text-primary relative after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-primary after:scale-x-100">Home</a>
+                    <a href="#ncd" class="font-semibold text-gray-600 hover:text-primary transition-colors">NCD Care</a>
+                    <a href="#services" class="font-semibold text-gray-600 hover:text-primary transition-colors">Our Services</a>
+                    <a href="#specialties" class="font-semibold text-gray-600 hover:text-primary transition-colors">Specialties</a>
+                    <a href="#why-us" class="font-semibold text-gray-600 hover:text-primary transition-colors">Why Us</a>
+                    <a href="#contact" class="font-semibold text-gray-600 hover:text-primary transition-colors">Contact</a>
+                    <button id="openPatientHistory" class="bg-primary text-white px-4 py-2 rounded-lg font-semibold hover:bg-primary-dark transition-colors">Patient History</button>
+                </nav>
             </div>
-          </div>
-          
-          <a href="#" class="text-gray-700 hover:text-blue-600 transition duration-300">Doctors</a>
-          <a href="#" class="text-gray-700 hover:text-blue-600 transition duration-300">Programs</a>
-          <a href="#contact" class="text-gray-700 hover:text-blue-600 transition duration-300">Contact</a>
-          <a href="#help" class="text-gray-700 hover:text-blue-600 transition duration-300">Help</a>
-        </nav>
-        
-        <!-- Actions -->
-        <div class="hidden md:flex items-center space-x-4">
-          <select class="border border-gray-300 rounded px-3 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
-            <option value="en">English</option>
-            <option value="ar">العربية</option>
-            <option value="rw">Kinyarwanda</option>
-          </select>
-          <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition duration-300">Sign Up</button>
-          <button class="border border-blue-600 text-blue-600 px-4 py-2 rounded hover:bg-blue-600 hover:text-white transition duration-300">Log In</button>
+            
+            <nav class="md:hidden py-4 hidden" id="mobileMenu">
+                <div class="flex flex-col space-y-2">
+                    <a href="index.html" class="font-semibold text-primary bg-blue-50 py-2 px-4 rounded-lg">Home</a>
+                    <a href="#ncd" class="font-semibold text-gray-600 hover:text-primary py-2 px-4 rounded-lg transition-colors">NCD Care</a>
+                    <a href="#services" class="font-semibold text-gray-600 hover:text-primary py-2 px-4 rounded-lg transition-colors">Our Services</a>
+                    <a href="#specialties" class="font-semibold text-gray-600 hover:text-primary py-2 px-4 rounded-lg transition-colors">Specialties</a>
+                    <a href="#why-us" class="font-semibold text-gray-600 hover:text-primary py-2 px-4 rounded-lg transition-colors">Why Us</a>
+                    <a href="#contact" class="font-semibold text-gray-600 hover:text-primary py-2 px-4 rounded-lg transition-colors">Contact</a>
+                    <button id="openPatientHistoryMobile" class="font-semibold text-white bg-primary py-2 px-4 rounded-lg transition-colors">Patient History</button>
+                </div>
+            </nav>
         </div>
-      </div>
-      
-      <!-- Mobile Menu -->
-      <div id="mobile-menu" class="hidden md:hidden py-4 border-t border-gray-200">
-        <div class="flex flex-col space-y-4">
-          <a href="../index.html" class="text-gray-700 hover:text-blue-600">Home</a>
-          <a href="#about" class="text-gray-700 hover:text-blue-600">About</a>
-          
-          <!-- Mobile Services Dropdown -->
-          <div class="relative">
-            <button id="mobile-services-toggle" class="flex items-center text-gray-700 hover:text-blue-600 w-full justify-between">
-              Services <i class="fas fa-chevron-down"></i>
-            </button>
-            <div id="mobile-services-menu" class="hidden pl-4 mt-2 space-y-2">
-              <a href="#" class="block text-gray-700 hover:text-blue-600">Maternity & Birth Services</a>
-              <a href="#" class="block text-gray-700 hover:text-blue-600">Emergency Care</a>
-              <a href="#" class="block text-gray-700 hover:text-blue-600">Vaccination Programs</a>
-              <a href="#" class="block text-gray-700 hover:text-blue-600">Mental Health Support</a>
-              <a href="#" class="block text-gray-700 hover:text-blue-600">Chronic Disease Care</a>
-              <a href="#" class="block text-gray-700 hover:text-blue-600">Health Awareness & Education</a>
-              <a href="#" class="block text-gray-700 hover:text-blue-600">Disability Care</a>
-            </div>
-          </div>
-          
-          <a href="#" class="text-gray-700 hover:text-blue-600">Doctors</a>
-          <a href="#" class="text-gray-700 hover:text-blue-600">Programs</a>
-          <a href="#contact" class="text-gray-700 hover:text-blue-600">Contact</a>
-          <a href="#help" class="text-gray-700 hover:text-blue-600">Help</a>
-          
-          <div class="pt-4 border-t border-gray-200">
-            <select class="w-full border border-gray-300 rounded px-3 py-2 text-sm mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500">
-              <option value="en">English</option>
-              <option value="ar">العربية</option>
-              <option value="rw">Kinyarwanda</option>
-            </select>
-            <div class="flex space-x-2">
-              <button class="flex-1 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition duration-300">Sign Up</button>
-              <button class="flex-1 border border-blue-600 text-blue-600 px-4 py-2 rounded hover:bg-blue-600 hover:text-white transition duration-300">Log In</button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </header>
+    </header>
 
-  <!-- Hero with Video Background -->
-  <section id="home" class="hero-gradient text-white py-24 relative overflow-hidden">
-    <!-- Video Background -->
-    <video autoplay muted loop class="video-background">
-      <source src="https://assets.mixkit.co/videos/preview/mixkit-doctor-examining-a-patient-while-using-a-laptop-43230-large.mp4" type="video/mp4">
-      Your browser does not support the video tag.
-    </video>
-    
-    <!-- Video Overlay -->
-    <div class="video-overlay"></div>
-    
-    <!-- Hero Content -->
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 hero-content">
-      <div class="text-center">
-        <div class="inline-flex items-center bg-white/10 backdrop-blur-sm border border-white/20 rounded-full px-4 py-2 mb-4">
-          <span class="w-2 h-2 bg-green-400 rounded-full mr-2"></span>
-          <span class="text-xs font-medium">Available 24/7</span>
+    <!-- Hero Section -->
+    <section class="gradient-bg text-white py-20 md:py-28 relative overflow-hidden">
+        <div class="absolute inset-0 bg-white opacity-10" style="clip-path: polygon(0 0, 100% 0, 100% 100%, 0 80%);"></div>
+        <div class="container mx-auto px-4 relative z-10">
+            <div class="max-w-2xl">
+                <h1 class="text-4xl md:text-5xl font-bold mb-6">Exceptional Healthcare for Every Patient</h1>
+                <p class="text-xl mb-8 opacity-90">Comprehensive medical services with cutting-edge technology and compassionate care for all your health needs.</p>
+                <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
+                    <button id="openPatientHistoryHero" class="bg-white text-primary px-8 py-3 rounded-lg font-semibold text-center hover:bg-gray-100 transition-colors">Patient History Form</button>
+                    <a href="#ncd" class="border-2 border-white text-white px-8 py-3 rounded-lg font-semibold text-center hover:bg-white hover:text-primary transition-colors">NCD Care</a>
+                </div>
+            </div>
         </div>
-        <h1 class="text-3xl md:text-5xl font-black mb-4 leading-tight">Life Hospital</h1>
-        <p class="text-base md:text-lg mb-4 text-blue-100 leading-relaxed">Comprehensive NCD Care Services</p>
-        <p class="text-sm text-blue-100 mb-8 max-w-3xl mx-auto">Specialized medical care for chronic conditions with personalized treatment plans and continuous monitoring. Our dedicated team provides expert care for all non-communicable diseases.</p>
-        <div class="flex flex-col sm:flex-row gap-3 justify-center">
-          <a href="#ncd" class="group bg-white text-lhBlue hover:bg-blue-50 px-6 py-3 rounded-2xl font-bold text-sm transition-all duration-300 shadow-2xl hover:shadow-3xl hover:scale-105">
-            🩺 Explore NCD Services <span class="ml-2 group-hover:translate-x-1 transition-transform duration-300">→</span>
-          </a>
-          <a href="#medical-history" class="glass-effect text-white hover:bg-white/20 px-6 py-3 rounded-2xl font-bold text-sm transition-all duration-300 hover:scale-105">
-            📋 Medical History
-          </a>
-        </div>
-      </div>
-    </div>
-    <!-- Decorative elements -->
-    <div class="absolute top-20 left-10 w-20 h-20 bg-white/5 rounded-full blur-xl z-2"></div>
-    <div class="absolute bottom-20 right-10 w-32 h-32 bg-white/5 rounded-full blur-xl z-2"></div>
-  </section>
+    </section>
 
-  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12 -mt-8">
+    <!-- Stats Section -->
+    <section class="bg-white py-16">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div class="bg-white rounded-xl shadow-md p-8 text-center transition-transform hover:-translate-y-1">
+                    <div class="text-5xl font-bold text-primary mb-2">15+</div>
+                    <div class="text-lg text-gray-600">Years Experience</div>
+                </div>
+                <div class="bg-white rounded-xl shadow-md p-8 text-center transition-transform hover:-translate-y-1">
+                    <div class="text-5xl font-bold text-primary mb-2">50K+</div>
+                    <div class="text-lg text-gray-600">Patients Treated</div>
+                </div>
+                <div class="bg-white rounded-xl shadow-md p-8 text-center transition-transform hover:-translate-y-1">
+                    <div class="text-5xl font-bold text-primary mb-2">98%</div>
+                    <div class="text-lg text-gray-600">Success Rate</div>
+                </div>
+                <div class="bg-white rounded-xl shadow-md p-8 text-center transition-transform hover:-translate-y-1">
+                    <div class="text-5xl font-bold text-primary mb-2">24/7</div>
+                    <div class="text-lg text-gray-600">Emergency Care</div>
+                </div>
+            </div>
+        </div>
+    </section>
 
     <!-- NCD Section -->
-    <section id="ncd" class="bg-gradient-to-br from-white to-blue-50 rounded-3xl p-6 shadow-soft-xl">
-      <div class="text-center mb-8">
-        <div class="inline-flex items-center bg-lhPurple/10 text-lhPurple px-3 py-1 rounded-full text-xs font-semibold mb-3">
-          🩺 NCD Services
+    <section class="py-16 bg-gradient-to-r from-blue-50 to-indigo-50" id="ncd">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-gray-800 mb-4 relative section-title inline-block">Non-Communicable Diseases Care</h2>
+                <p class="text-xl text-gray-600 max-w-2xl mx-auto">Comprehensive management and treatment for chronic conditions</p>
+            </div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div>
+                    <img src="https://images.unsplash.com/photo-1559757175-0eb30cd8c063?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" 
+                         alt="Doctor discussing treatment with patient" 
+                         class="rounded-xl shadow-lg w-full">
+                </div>
+                
+                <div class="space-y-6">
+                    <h3 class="text-2xl font-bold text-gray-800">Specialized NCD Management</h3>
+                    <p class="text-lg text-gray-600">Our comprehensive Non-Communicable Diseases program provides personalized care for chronic conditions that require long-term management and specialized treatment approaches.</p>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="bg-white rounded-lg p-4 shadow-md">
+                            <div class="flex items-center mb-2">
+                                <i class="fas fa-heartbeat text-red-500 text-xl mr-3"></i>
+                                <h4 class="font-bold text-gray-800">Cardiovascular Diseases</h4>
+                            </div>
+                            <p class="text-sm text-gray-600">Hypertension, coronary artery disease, heart failure management</p>
+                        </div>
+                        
+                        <div class="bg-white rounded-lg p-4 shadow-md">
+                            <div class="flex items-center mb-2">
+                                <i class="fas fa-syringe text-blue-500 text-xl mr-3"></i>
+                                <h4 class="font-bold text-gray-800">Diabetes Care</h4>
+                            </div>
+                            <p class="text-sm text-gray-600">Type 1 & 2 diabetes management, insulin therapy, lifestyle coaching</p>
+                        </div>
+                        
+                        <div class="bg-white rounded-lg p-4 shadow-md">
+                            <div class="flex items-center mb-2">
+                                <i class="fas fa-lungs text-green-500 text-xl mr-3"></i>
+                                <h4 class="font-bold text-gray-800">Respiratory Conditions</h4>
+                            </div>
+                            <p class="text-sm text-gray-600">COPD, asthma, chronic bronchitis management and rehabilitation</p>
+                        </div>
+                        
+                        <div class="bg-white rounded-lg p-4 shadow-md">
+                            <div class="flex items-center mb-2">
+                                <i class="fas fa-brain text-purple-500 text-xl mr-3"></i>
+                                <h4 class="font-bold text-gray-800">Neurological Disorders</h4>
+                            </div>
+                            <p class="text-sm text-gray-600">Stroke, epilepsy, Parkinson's disease, and dementia care</p>
+                        </div>
+                    </div>
+                    
+                    <div class="pt-4">
+                        <button id="openPatientHistoryNCD" class="bg-primary text-white px-6 py-3 rounded-lg font-semibold inline-block hover:bg-primary-dark transition-colors">
+                            <i class="fas fa-calendar-check mr-2"></i>Complete Patient History
+                        </button>
+                    </div>
+                </div>
+            </div>
         </div>
-        <h2 class="text-2xl md:text-3xl font-black gradient-text mb-4">NCD Services & Chronic Disease Management</h2>
-        <p class="text-base text-gray-600 max-w-3xl mx-auto">Comprehensive care for non-communicable diseases with personalized treatment plans and continuous monitoring.</p>
-      </div>
-
-      <div class="md:flex md:items-center md:gap-6">
-        <div class="md:flex-1">
-          <h3 class="text-lg font-bold text-gray-800 mb-3">What are Non-Communicable Diseases?</h3>
-          <p class="text-sm text-gray-700 mb-4">Non-communicable diseases (NCDs) are chronic conditions that are not passed from person to person. They are typically of long duration and result from a combination of genetic, physiological, environmental, and behavioral factors.</p>
-
-          <h4 class="text-base font-semibold text-gray-800 mb-2">Our NCD Management Approach</h4>
-          <ul class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-gray-700 text-sm">
-            <li class="flex items-start">
-              <span class="text-lhPurple mr-2 mt-1">✓</span>
-              <span>Early detection and risk assessment programs</span>
-            </li>
-            <li class="flex items-start">
-              <span class="text-lhPurple mr-2 mt-1">✓</span>
-              <span>Personalized treatment plans for each patient</span>
-            </li>
-            <li class="flex items-start">
-              <span class="text-lhPurple mr-2 mt-1">✓</span>
-              <span>Regular monitoring and follow-up care</span>
-            </li>
-            <li class="flex items-start">
-              <span class="text-lhPurple mr-2 mt-1">✓</span>
-              <span>Lifestyle modification counseling</span>
-            </li>
-            <li class="flex items-start">
-              <span class="text-lhPurple mr-2 mt-1">✓</span>
-              <span>Medication management and adherence support</span>
-            </li>
-            <li class="flex items-start">
-              <span class="text-lhPurple mr-2 mt-1">✓</span>
-              <span>Multidisciplinary team approach</span>
-            </li>
-          </ul>
-        </div>
-
-        <div class="md:flex-1 mt-6 md:mt-0">
-          <div class="relative rounded-3xl overflow-hidden shadow-soft-xl">
-            <img src="https://images.unsplash.com/photo-1559757148-5c350d0d3c56?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1471&q=80" alt="Doctor discussing NCD treatment with patient" class="w-full h-64 object-cover transition-transform hover:scale-105 duration-500" />
-            <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
-            <div class="absolute bottom-4 left-4 text-white">
-              <p class="text-xs font-semibold">Comprehensive NCD Care</p>
-              <p class="text-xs">Personalized treatment plans for chronic conditions</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div class="service-card bg-white p-4 rounded-2xl shadow-soft-lg border-l-4 border-lhPurple">
-          <div class="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-lhPurple to-lhBlue">71%</div>
-          <p class="mt-1 text-xs text-gray-600">of global deaths are due to NCDs</p>
-        </div>
-        <div class="service-card bg-white p-4 rounded-2xl shadow-soft-lg border-l-4 border-lhPurple">
-          <div class="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-lhPurple to-lhBlue">85%</div>
-          <p class="mt-1 text-xs text-gray-600">of premature NCD deaths occur in low and middle-income countries</p>
-        </div>
-        <div class="service-card bg-white p-4 rounded-2xl shadow-soft-lg border-l-4 border-lhPurple">
-          <div class="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-lhPurple to-lhBlue">15M</div>
-          <p class="mt-1 text-xs text-gray-600">people die prematurely from NCDs each year</p>
-        </div>
-        <div class="service-card bg-white p-4 rounded-2xl shadow-soft-lg border-l-4 border-lhPurple">
-          <div class="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-lhPurple to-lhBlue">80%</div>
-          <p class="mt-1 text-xs text-gray-600">of heart diseases and diabetes are preventable</p>
-        </div>
-      </div>
-
-      <div class="mt-12">
-        <h3 class="text-xl font-bold text-center mb-6">Major NCD Conditions We Treat</h3>
-        <div class="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-          <!-- Disease card -->
-          <article class="service-card bg-white rounded-2xl shadow-soft-lg overflow-hidden group">
-            <div class="p-4 flex items-start gap-3">
-              <div class="p-3 rounded-xl bg-gradient-to-r from-lhPurple to-lhBlue text-white text-lg group-hover:scale-110 transition-transform duration-300">
-                <i class="fas fa-heart"></i>
-              </div>
-              <div>
-                <h4 class="text-base font-bold text-gray-800">Cardiovascular Diseases</h4>
-                <p class="text-xs text-gray-600 mt-1">Care for heart conditions, hypertension, and circulatory disorders.</p>
-              </div>
-            </div>
-          </article>
-
-          <article class="service-card bg-white rounded-2xl shadow-soft-lg overflow-hidden group">
-            <div class="p-4 flex items-start gap-3">
-              <div class="p-3 rounded-xl bg-gradient-to-r from-lhPurple to-lhBlue text-white text-lg group-hover:scale-110 transition-transform duration-300">
-                <i class="fas fa-tint"></i>
-              </div>
-              <div>
-                <h4 class="text-base font-bold text-gray-800">Diabetes Management</h4>
-                <p class="text-xs text-gray-600 mt-1">Monitoring, insulin management, nutrition planning.</p>
-              </div>
-            </div>
-          </article>
-
-          <article class="service-card bg-white rounded-2xl shadow-soft-lg overflow-hidden group">
-            <div class="p-4 flex items-start gap-3">
-              <div class="p-3 rounded-xl bg-gradient-to-r from-lhPurple to-lhBlue text-white text-lg group-hover:scale-110 transition-transform duration-300">
-                <i class="fas fa-lungs"></i>
-              </div>
-              <div>
-                <h4 class="text-base font-bold text-gray-800">Chronic Respiratory Diseases</h4>
-                <p class="text-xs text-gray-600 mt-1">Care for asthma, COPD and pulmonary rehab programs.</p>
-              </div>
-            </div>
-          </article>
-
-          <article class="service-card bg-white rounded-2xl shadow-soft-lg overflow-hidden group">
-            <div class="p-4 flex items-start gap-3">
-              <div class="p-3 rounded-xl bg-gradient-to-r from-lhPurple to-lhBlue text-white text-lg group-hover:scale-110 transition-transform duration-300">
-                <i class="fas fa-brain"></i>
-              </div>
-              <div>
-                <h4 class="text-base font-bold text-gray-800">Neurological Disorders</h4>
-                <p class="text-xs text-gray-600 mt-1">Management of epilepsy, dementia, Parkinson's disease, etc.</p>
-              </div>
-            </div>
-          </article>
-
-          <article class="service-card bg-white rounded-2xl shadow-soft-lg overflow-hidden group">
-            <div class="p-4 flex items-start gap-3">
-              <div class="p-3 rounded-xl bg-gradient-to-r from-lhPurple to-lhBlue text-white text-lg group-hover:scale-110 transition-transform duration-300">
-                <i class="fas fa-weight"></i>
-              </div>
-              <div>
-                <h4 class="text-base font-bold text-gray-800">Obesity & Metabolic Syndrome</h4>
-                <p class="text-xs text-gray-600 mt-1">Comprehensive weight management programs.</p>
-              </div>
-            </div>
-          </article>
-
-          <article class="service-card bg-white rounded-2xl shadow-soft-lg overflow-hidden group">
-            <div class="p-4 flex items-start gap-3">
-              <div class="p-3 rounded-xl bg-gradient-to-r from-lhPurple to-lhBlue text-white text-lg group-hover:scale-110 transition-transform duration-300">
-                <i class="fas fa-allergies"></i>
-              </div>
-              <div>
-                <h4 class="text-base font-bold text-gray-800">Autoimmune Diseases</h4>
-                <p class="text-xs text-gray-600 mt-1">Care for rheumatoid arthritis, lupus, MS, etc.</p>
-              </div>
-            </div>
-          </article>
-        </div>
-      </div>
-
-      <div class="mt-12 bg-white p-6 rounded-2xl shadow-soft-xl border-l-4 border-lhPurple">
-        <h3 class="text-center text-lg font-bold mb-6"><i class="fas fa-shield-alt mr-2 text-lhPurple"></i> NCD Prevention Strategies</h3>
-        <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          <div class="flex gap-3 items-start p-3 rounded-xl hover:bg-blue-50 transition-colors duration-300">
-            <div class="w-10 h-10 flex items-center justify-center rounded-xl bg-gradient-to-r from-lhPurple to-lhBlue text-white text-sm">
-              <i class="fas fa-utensils"></i>
-            </div>
-            <div class="text-xs text-gray-700">Healthy balanced diet with reduced salt, sugar, and saturated fats</div>
-          </div>
-
-          <div class="flex gap-3 items-start p-3 rounded-xl hover:bg-blue-50 transition-colors duration-300">
-            <div class="w-10 h-10 flex items-center justify-center rounded-xl bg-gradient-to-r from-lhPurple to-lhBlue text-white text-sm">
-              <i class="fas fa-running"></i>
-            </div>
-            <div class="text-xs text-gray-700">Regular physical activity (at least 150 minutes per week)</div>
-          </div>
-
-          <div class="flex gap-3 items-start p-3 rounded-xl hover:bg-blue-50 transition-colors duration-300">
-            <div class="w-10 h-10 flex items-center justify-center rounded-xl bg-gradient-to-r from-lhPurple to-lhBlue text-white text-sm">
-              <i class="fas fa-smoking-ban"></i>
-            </div>
-            <div class="text-xs text-gray-700">Tobacco cessation and alcohol moderation programs</div>
-          </div>
-
-          <div class="flex gap-3 items-start p-3 rounded-xl hover:bg-blue-50 transition-colors duration-300">
-            <div class="w-10 h-10 flex items-center justify-center rounded-xl bg-gradient-to-r from-lhPurple to-lhBlue text-white text-sm">
-              <i class="fas fa-weight"></i>
-            </div>
-            <div class="text-xs text-gray-700">Maintaining healthy body weight and BMI</div>
-          </div>
-
-          <div class="flex gap-3 items-start p-3 rounded-xl hover:bg-blue-50 transition-colors duration-300">
-            <div class="w-10 h-10 flex items-center justify-center rounded-xl bg-gradient-to-r from-lhPurple to-lhBlue text-white text-sm">
-              <i class="fas fa-heart"></i>
-            </div>
-            <div class="text-xs text-gray-700">Regular health screenings and blood pressure checks</div>
-          </div>
-
-          <div class="flex gap-3 items-start p-3 rounded-xl hover:bg-blue-50 transition-colors duration-300">
-            <div class="w-10 h-10 flex items-center justify-center rounded-xl bg-gradient-to-r from-lhPurple to-lhBlue text-white text-sm">
-              <i class="fas fa-bed"></i>
-            </div>
-            <div class="text-xs text-gray-700">Stress management and adequate sleep</div>
-          </div>
-        </div>
-      </div>
     </section>
 
-    <!-- Medical History Section - Ultra Compact -->
-    <section id="medical-history" class="bg-gradient-to-br from-white to-blue-50 rounded-2xl p-4 shadow-soft-lg">
-      <div class="text-center mb-4">
-        <div class="inline-flex items-center bg-lhGreen/10 text-lhGreen px-3 py-1 rounded-full text-xs font-semibold mb-2">
-          📋 Medical History
+    <!-- Patient History Modal -->
+    <div id="patientHistoryModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="text-2xl font-bold text-gray-800">Patient Medical History</h2>
+                <button id="closeModal" class="text-gray-500 hover:text-gray-700">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- Progress Bar -->
+                <div class="progress-bar">
+                    <div class="progress-step active" data-step="1">1</div>
+                    <div class="progress-step" data-step="2">2</div>
+                    <div class="progress-step" data-step="3">3</div>
+                    <div class="progress-step" data-step="4">4</div>
+                    <div class="progress-step" data-step="5">5</div>
+                </div>
+
+                <!-- Form Steps -->
+                <form id="patientHistoryForm">
+                    <!-- Step 1: Personal Information -->
+                    <div class="form-step active" id="step-1">
+                        <h3 class="text-xl font-bold text-gray-800 mb-6">Personal Information</h3>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                            <div>
+                                <label for="firstName" class="block text-gray-700 font-medium mb-2">First Name</label>
+                                <input type="text" id="firstName" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" required>
+                            </div>
+                            <div>
+                                <label for="lastName" class="block text-gray-700 font-medium mb-2">Last Name</label>
+                                <input type="text" id="lastName" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" required>
+                            </div>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                            <div>
+                                <label for="dob" class="block text-gray-700 font-medium mb-2">Date of Birth</label>
+                                <input type="date" id="dob" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" required>
+                            </div>
+                            <div>
+                                <label for="gender" class="block text-gray-700 font-medium mb-2">Gender</label>
+                                <select id="gender" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" required>
+                                    <option value="">Select Gender</option>
+                                    <option value="male">Male</option>
+                                    <option value="female">Female</option>
+                                    <option value="other">Other</option>
+                                    <option value="prefer-not-to-say">Prefer not to say</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                            <div>
+                                <label for="phone" class="block text-gray-700 font-medium mb-2">Phone Number</label>
+                                <input type="tel" id="phone" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" required>
+                            </div>
+                            <div>
+                                <label for="email" class="block text-gray-700 font-medium mb-2">Email Address</label>
+                                <input type="email" id="email" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" required>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-6">
+                            <label for="address" class="block text-gray-700 font-medium mb-2">Address</label>
+                            <textarea id="address" rows="3" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" required></textarea>
+                        </div>
+                        
+                        <div class="flex justify-end">
+                            <button type="button" class="bg-primary text-white px-6 py-3 rounded-lg font-semibold hover:bg-primary-dark transition-colors next-step" data-next="2">Next</button>
+                        </div>
+                    </div>
+
+                    <!-- Step 2: Medical History -->
+                    <div class="form-step" id="step-2">
+                        <h3 class="text-xl font-bold text-gray-800 mb-6">Medical History</h3>
+                        
+                        <div class="mb-6">
+                            <h4 class="text-lg font-semibold text-gray-700 mb-4">Existing Medical Conditions</h4>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div class="flex items-center">
+                                    <input type="checkbox" id="hypertension" class="mr-3 h-5 w-5 text-primary focus:ring-primary">
+                                    <label for="hypertension" class="text-gray-700">Hypertension</label>
+                                </div>
+                                <div class="flex items-center">
+                                    <input type="checkbox" id="diabetes" class="mr-3 h-5 w-5 text-primary focus:ring-primary">
+                                    <label for="diabetes" class="text-gray-700">Diabetes</label>
+                                </div>
+                                <div class="flex items-center">
+                                    <input type="checkbox" id="asthma" class="mr-3 h-5 w-5 text-primary focus:ring-primary">
+                                    <label for="asthma" class="text-gray-700">Asthma</label>
+                                </div>
+                                <div class="flex items-center">
+                                    <input type="checkbox" id="heart-disease" class="mr-3 h-5 w-5 text-primary focus:ring-primary">
+                                    <label for="heart-disease" class="text-gray-700">Heart Disease</label>
+                                </div>
+                                <div class="flex items-center">
+                                    <input type="checkbox" id="arthritis" class="mr-3 h-5 w-5 text-primary focus:ring-primary">
+                                    <label for="arthritis" class="text-gray-700">Arthritis</label>
+                                </div>
+                                <div class="flex items-center">
+                                    <input type="checkbox" id="thyroid" class="mr-3 h-5 w-5 text-primary focus:ring-primary">
+                                    <label for="thyroid" class="text-gray-700">Thyroid Disorder</label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-6">
+                            <label for="other-conditions" class="block text-gray-700 font-medium mb-2">Other Medical Conditions</label>
+                            <textarea id="other-conditions" rows="3" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" placeholder="Please list any other medical conditions not mentioned above"></textarea>
+                        </div>
+                        
+                        <div class="mb-6">
+                            <h4 class="text-lg font-semibold text-gray-700 mb-4">Past Surgeries</h4>
+                            <textarea id="past-surgeries" rows="3" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" placeholder="Please list any past surgeries with dates"></textarea>
+                        </div>
+                        
+                        <div class="mb-6">
+                            <h4 class="text-lg font-semibold text-gray-700 mb-4">Hospitalizations</h4>
+                            <textarea id="hospitalizations" rows="3" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" placeholder="Please list any previous hospitalizations with reasons and dates"></textarea>
+                        </div>
+                        
+                        <div class="flex justify-between">
+                            <button type="button" class="bg-gray-300 text-gray-700 px-6 py-3 rounded-lg font-semibold hover:bg-gray-400 transition-colors prev-step" data-prev="1">Previous</button>
+                            <button type="button" class="bg-primary text-white px-6 py-3 rounded-lg font-semibold hover:bg-primary-dark transition-colors next-step" data-next="3">Next</button>
+                        </div>
+                    </div>
+
+                    <!-- Step 3: Current Medications & Allergies -->
+                    <div class="form-step" id="step-3">
+                        <h3 class="text-xl font-bold text-gray-800 mb-6">Current Medications & Allergies</h3>
+                        
+                        <div class="mb-6">
+                            <h4 class="text-lg font-semibold text-gray-700 mb-4">Current Medications</h4>
+                            <div id="medications-container">
+                                <div class="medication-entry flex items-end gap-4 mb-4">
+                                    <div class="flex-grow">
+                                        <label class="block text-gray-700 font-medium mb-2">Medication Name</label>
+                                        <input type="text" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent medication-name">
+                                    </div>
+                                    <div class="w-32">
+                                        <label class="block text-gray-700 font-medium mb-2">Dosage</label>
+                                        <input type="text" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent medication-dosage">
+                                    </div>
+                                    <div class="w-32">
+                                        <label class="block text-gray-700 font-medium mb-2">Frequency</label>
+                                        <input type="text" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent medication-frequency">
+                                    </div>
+                                    <button type="button" class="remove-medication bg-red-500 text-white p-3 rounded-lg hover:bg-red-600 transition-colors">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <button type="button" id="add-medication" class="bg-gray-200 text-gray-700 px-4 py-2 rounded-lg font-medium hover:bg-gray-300 transition-colors">
+                                <i class="fas fa-plus mr-2"></i>Add Medication
+                            </button>
+                        </div>
+                        
+                        <div class="mb-6">
+                            <h4 class="text-lg font-semibold text-gray-700 mb-4">Allergies</h4>
+                            <div id="allergies-container">
+                                <div class="allergy-entry flex items-end gap-4 mb-4">
+                                    <div class="flex-grow">
+                                        <label class="block text-gray-700 font-medium mb-2">Allergy</label>
+                                        <input type="text" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent allergy-name" placeholder="e.g., Penicillin, Peanuts, etc.">
+                                    </div>
+                                    <div class="w-48">
+                                        <label class="block text-gray-700 font-medium mb-2">Reaction</label>
+                                        <input type="text" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent allergy-reaction" placeholder="e.g., Rash, Difficulty breathing">
+                                    </div>
+                                    <button type="button" class="remove-allergy bg-red-500 text-white p-3 rounded-lg hover:bg-red-600 transition-colors">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <button type="button" id="add-allergy" class="bg-gray-200 text-gray-700 px-4 py-2 rounded-lg font-medium hover:bg-gray-300 transition-colors">
+                                <i class="fas fa-plus mr-2"></i>Add Allergy
+                            </button>
+                        </div>
+                        
+                        <div class="flex justify-between">
+                            <button type="button" class="bg-gray-300 text-gray-700 px-6 py-3 rounded-lg font-semibold hover:bg-gray-400 transition-colors prev-step" data-prev="2">Previous</button>
+                            <button type="button" class="bg-primary text-white px-6 py-3 rounded-lg font-semibold hover:bg-primary-dark transition-colors next-step" data-next="4">Next</button>
+                        </div>
+                    </div>
+
+                    <!-- Step 4: Family History & Lifestyle -->
+                    <div class="form-step" id="step-4">
+                        <h3 class="text-xl font-bold text-gray-800 mb-6">Family History & Lifestyle</h3>
+                        
+                        <div class="mb-6">
+                            <h4 class="text-lg font-semibold text-gray-700 mb-4">Family Medical History</h4>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                                <div class="flex items-center">
+                                    <input type="checkbox" id="family-heart-disease" class="mr-3 h-5 w-5 text-primary focus:ring-primary">
+                                    <label for="family-heart-disease" class="text-gray-700">Heart Disease</label>
+                                </div>
+                                <div class="flex items-center">
+                                    <input type="checkbox" id="family-diabetes" class="mr-3 h-5 w-5 text-primary focus:ring-primary">
+                                    <label for="family-diabetes" class="text-gray-700">Diabetes</label>
+                                </div>
+                                <div class="flex items-center">
+                                    <input type="checkbox" id="family-cancer" class="mr-3 h-5 w-5 text-primary focus:ring-primary">
+                                    <label for="family-cancer" class="text-gray-700">Cancer</label>
+                                </div>
+                                <div class="flex items-center">
+                                    <input type="checkbox" id="family-high-bp" class="mr-3 h-5 w-5 text-primary focus:ring-primary">
+                                    <label for="family-high-bp" class="text-gray-700">High Blood Pressure</label>
+                                </div>
+                                <div class="flex items-center">
+                                    <input type="checkbox" id="family-stroke" class="mr-3 h-5 w-5 text-primary focus:ring-primary">
+                                    <label for="family-stroke" class="text-gray-700">Stroke</label>
+                                </div>
+                                <div class="flex items-center">
+                                    <input type="checkbox" id="family-mental-health" class="mr-3 h-5 w-5 text-primary focus:ring-primary">
+                                    <label for="family-mental-health" class="text-gray-700">Mental Health Conditions</label>
+                                </div>
+                            </div>
+                            <textarea id="other-family-history" rows="3" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" placeholder="Other family medical history"></textarea>
+                        </div>
+                        
+                        <div class="mb-6">
+                            <h4 class="text-lg font-semibold text-gray-700 mb-4">Lifestyle Information</h4>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
+                                <div>
+                                    <label for="smoking" class="block text-gray-700 font-medium mb-2">Smoking Status</label>
+                                    <select id="smoking" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+                                        <option value="">Select</option>
+                                        <option value="never">Never Smoked</option>
+                                        <option value="former">Former Smoker</option>
+                                        <option value="current">Current Smoker</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label for="alcohol" class="block text-gray-700 font-medium mb-2">Alcohol Consumption</label>
+                                    <select id="alcohol" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+                                        <option value="">Select</option>
+                                        <option value="never">Never</option>
+                                        <option value="occasional">Occasional</option>
+                                        <option value="regular">Regular</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div>
+                                    <label for="exercise" class="block text-gray-700 font-medium mb-2">Exercise Frequency</label>
+                                    <select id="exercise" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+                                        <option value="">Select</option>
+                                        <option value="none">None</option>
+                                        <option value="1-2">1-2 times per week</option>
+                                        <option value="3-4">3-4 times per week</option>
+                                        <option value="5+">5+ times per week</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label for="diet" class="block text-gray-700 font-medium mb-2">Diet Type</label>
+                                    <select id="diet" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+                                        <option value="">Select</option>
+                                        <option value="balanced">Balanced</option>
+                                        <option value="vegetarian">Vegetarian</option>
+                                        <option value="vegan">Vegan</option>
+                                        <option value="low-carb">Low Carb</option>
+                                        <option value="other">Other</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="flex justify-between">
+                            <button type="button" class="bg-gray-300 text-gray-700 px-6 py-3 rounded-lg font-semibold hover:bg-gray-400 transition-colors prev-step" data-prev="3">Previous</button>
+                            <button type="button" class="bg-primary text-white px-6 py-3 rounded-lg font-semibold hover:bg-primary-dark transition-colors next-step" data-next="5">Next</button>
+                        </div>
+                    </div>
+
+                    <!-- Step 5: Review & Submit -->
+                    <div class="form-step" id="step-5">
+                        <h3 class="text-xl font-bold text-gray-800 mb-6">Review & Submit</h3>
+                        
+                        <div class="bg-blue-50 p-4 rounded-lg mb-6">
+                            <div class="flex items-start">
+                                <i class="fas fa-info-circle text-primary text-xl mr-3 mt-1"></i>
+                                <p class="text-gray-700">Please review all the information you've provided. Once submitted, this information will be added to your medical records.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="space-y-6">
+                            <div>
+                                <h4 class="text-lg font-semibold text-gray-700 mb-2">Personal Information</h4>
+                                <div class="bg-white p-4 rounded-lg border border-gray-200">
+                                    <div id="review-personal" class="text-gray-600">
+                                        <!-- Personal info will be populated here -->
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <h4 class="text-lg font-semibold text-gray-700 mb-2">Medical History</h4>
+                                <div class="bg-white p-4 rounded-lg border border-gray-200">
+                                    <div id="review-medical" class="text-gray-600">
+                                        <!-- Medical history will be populated here -->
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <h4 class="text-lg font-semibold text-gray-700 mb-2">Medications & Allergies</h4>
+                                <div class="bg-white p-4 rounded-lg border border-gray-200">
+                                    <div id="review-meds-allergies" class="text-gray-600">
+                                        <!-- Medications and allergies will be populated here -->
+                                    </div>
+                                </div>
+                            </div>
+                            <h1></h1>
+                            <div>
+                                <h4 class="text-lg font-semibold text-gray-700 mb-2">Family History & Lifestyle</h4>
+                                <div class="bg-white p-4 rounded-lg border border-gray-200">
+                                    <div id="review-family-lifestyle" class="text-gray-600">
+                                        <!-- Family history and lifestyle will be populated here -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-8 flex justify-between">
+                            <button type="button" class="bg-gray-300 text-gray-700 px-6 py-3 rounded-lg font-semibold hover:bg-gray-400 transition-colors prev-step" data-prev="4">Previous</button>
+                            <button type="submit" class="bg-accent text-white px-6 py-3 rounded-lg font-semibold hover:bg-green-600 transition-colors">Submit Patient History</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
         </div>
-        <h2 class="text-lg md:text-xl font-black gradient-text mb-2">Patient Medical History</h2>
-        <p class="text-xs text-gray-600 max-w-xl mx-auto">Manage your medical records and track your health journey.</p>
-      </div>
-
-      <div class="max-w-2xl mx-auto">
-        <div class="bg-white rounded-lg shadow-sm p-3">
-          <h3 class="text-xs font-bold text-gray-800 mb-2">Update Your Medical Information</h3>
-          <form class="ultra-compact-form space-y-1">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-1">
-              <div class="form-group">
-                <label for="patientName">Full Name</label>
-                <input id="patientName" type="text" required placeholder="Enter your full name" />
-              </div>
-              <div class="form-group">
-                <label for="patientDob">Date of Birth</label>
-                <input id="patientDob" type="date" required />
-              </div>
-            </div>
-
-            <div class="form-group">
-              <label for="existingConditions">Existing Medical Conditions</label>
-              <textarea id="existingConditions" placeholder="List any chronic conditions or diagnoses"></textarea>
-            </div>
-
-            <div class="form-group">
-              <label for="currentMedications">Current Medications</label>
-              <textarea id="currentMedications" placeholder="List all medications, dosages, and frequency"></textarea>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-1">
-              <div class="form-group">
-                <label for="allergies">Allergies</label>
-                <textarea id="allergies" placeholder="Drug, food, or environmental allergies"></textarea>
-              </div>
-
-              <div class="form-group">
-                <label for="lifestyle">Lifestyle Factors</label>
-                <textarea id="lifestyle" placeholder="Diet, exercise, smoking, alcohol"></textarea>
-              </div>
-            </div>
-
-            <div class="form-group">
-              <label for="familyHistory">Family Medical History</label>
-              <textarea id="familyHistory" placeholder="Significant family medical history"></textarea>
-            </div>
-
-            <button type="submit" class="w-full bg-gradient-to-r from-lhGreen to-lhBlue hover:from-lhGreen/90 hover:to-lhBlue/90 text-white py-1.5 px-3 rounded text-xs font-bold transition-all duration-300 shadow-sm hover:shadow mt-1">
-              Update Medical History
-            </button>
-          </form>
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <!-- Footer -->
-  <footer id="contact" class="mt-12 bg-gradient-to-br from-gray-900 via-blue-900 to-indigo-900 text-white py-8 relative overflow-hidden">
-    <div class="absolute inset-0 bg-black/20"></div>
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-      <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
-        <div class="md:col-span-2">
-          <div class="flex items-center mb-3">
-            <div class="w-10 h-10 bg-gradient-to-br from-lhBlue to-lhGreen rounded-2xl flex items-center justify-center mr-3 shadow-lg">
-              <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
-              </svg>
-            </div>
-            <span class="text-lg font-bold">Life Hospital</span>
-          </div>
-          <p class="text-blue-100 text-xs leading-relaxed mb-3">Providing comprehensive healthcare services with a focus on NCD management and personalized care for all patients.</p>
-          <div class="flex space-x-2">
-            <div class="w-8 h-8 bg-white/10 backdrop-blur-sm rounded-lg flex items-center justify-center hover:bg-white/20 transition-all duration-300 cursor-pointer">
-              <i class="fab fa-facebook-f text-xs"></i>
-            </div>
-            <div class="w-8 h-8 bg-white/10 backdrop-blur-sm rounded-lg flex items-center justify-center hover:bg-white/20 transition-all duration-300 cursor-pointer">
-              <i class="fab fa-twitter text-xs"></i>
-            </div>
-            <div class="w-8 h-8 bg-white/10 backdrop-blur-sm rounded-lg flex items-center justify-center hover:bg-white/20 transition-all duration-300 cursor-pointer">
-              <i class="fab fa-instagram text-xs"></i>
-            </div>
-          </div>
-        </div>
-        <div>
-          <h4 class="text-base font-bold mb-3">Quick Links</h4>
-          <ul class="space-y-1">
-            <li><a href="#home" class="text-blue-200 hover:text-white transition-colors duration-300 flex items-center group text-xs"> <span class="mr-1 group-hover:translate-x-1 transition-transform duration-300">→</span> Home </a></li>
-            <li><a href="#ncd" class="text-blue-200 hover:text-white transition-colors duration-300 flex items-center group text-xs"> <span class="mr-1 group-hover:translate-x-1 transition-transform duration-300">→</span> NCD Services </a></li>
-            <li><a href="#medical-history" class="text-blue-200 hover:text-white transition-colors duration-300 flex items-center group text-xs"> <span class="mr-1 group-hover:translate-x-1 transition-transform duration-300">→</span> Medical History </a></li>
-            <li><a href="#contact" class="text-blue-200 hover:text-white transition-colors duration-300 flex items-center group text-xs"> <span class="mr-1 group-hover:translate-x-1 transition-transform duration-300">→</span> Contact </a></li>
-          </ul>
-        </div>
-        <div>
-          <h4 class="text-base font-bold mb-3">Contact Information</h4>
-          <div class="bg-blue-500/20 backdrop-blur-sm border border-blue-400/30 rounded-xl p-3">
-            <div class="flex items-center mb-1"><span class="text-lg mr-2">📞</span> <span class="font-bold text-sm">General Inquiries</span>
-            </div>
-            <p class="text-blue-200 font-bold text-base mb-1">+1 (555) 123-4567</p>
-            <p class="text-blue-100 text-xs">Available during business hours for appointments and information</p>
-          </div>
-        </div>
-      </div>
-      <div class="border-t border-white/20 mt-6 pt-4">
-        <div class="flex flex-col md:flex-row justify-between items-center">
-          <p class="text-blue-200 text-xs mb-2 md:mb-0">© 2023 Life Hospital. All rights reserved. | Committed to Comprehensive NCD Care</p>
-          <div class="flex space-x-3 text-xs">
-            <a href="#" class="text-blue-200 hover:text-white transition-colors duration-300">Privacy Policy</a>
-            <a href="#" class="text-blue-200 hover:text-white transition-colors duration-300">Terms of Service</a>
-            <a href="#" class="text-blue-200 hover:text-white transition-colors duration-300">Patient Rights</a>
-          </div><h1></h1>
-        </div>
-      </div>
     </div>
-    <!-- Decorative elements -->
-    <div class="absolute top-8 right-8 w-24 h-24 bg-white/5 rounded-full blur-xl"></div>
-    <div class="absolute bottom-8 left-8 w-20 h-20 bg-blue-400/10 rounded-full blur-lg"></div>
-  </footer>
 
+    <!-- CTA Section -->
+    <section class="gradient-bg text-white py-16 text-center">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold mb-4">Take the First Step Towards Better Health</h2>
+            <p class="text-xl max-w-2xl mx-auto mb-8 opacity-90">Our specialized team is ready to help you manage your condition and improve your quality of life. Complete your patient history now.</p>
+            <button id="openPatientHistoryCTA" class="bg-white text-primary px-8 py-3 rounded-lg font-semibold inline-block hover:bg-gray-100 transition-colors">Complete Patient History</button>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-12">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+                <div>
+                    <h3 class="text-xl font-bold mb-4">MediCare Excellence</h3>
+                    <p class="text-gray-300">Leading the way in comprehensive healthcare with compassionate, patient-centered services.</p>
+                </div>
+                
+                <div>
+                    <h3 class="text-xl font-bold mb-4">Quick Links</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#home" class="text-gray-300 hover:text-white transition-colors">Home</a></li>
+                        <li><a href="#ncd" class="text-gray-300 hover:text-white transition-colors">NCD Care</a></li>
+                        <li><a href="#services" class="text-gray-300 hover:text-white transition-colors">Our Services</a></li>
+                        <li><a href="#specialties" class="text-gray-300 hover:text-white transition-colors">Specialties</a></li>
+                        <li><a href="#contact" class="text-gray-300 hover:text-white transition-colors">Contact</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="text-xl font-bold mb-4">Our Services</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors">Cardiology</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors">Diabetes Care</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors">Neurology</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors">Respiratory Care</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors">Primary Care</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="text-xl font-bold mb-4">Contact Info</h3>
+                    <div class="space-y-3">
+                        <div class="flex items-center">
+                            <i class="fas fa-map-marker-alt text-primary mr-3"></i>
+                            <span class="text-gray-300">456 Health Plaza, Medical District</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-phone text-primary mr-3"></i>
+                            <span class="text-gray-300">+1 (555) 123-4567</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-envelope text-primary mr-3"></i>
+                            <span class="text-gray-300">care@medicare.com</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-clock text-primary mr-3"></i>
+                            <span class="text-gray-300">24/7 Emergency Care</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="pt-8 border-t border-gray-700 text-center text-gray-400">
+                <p>&copy; 2024 MediCare Excellence Hospital. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        document.getElementById('mobileMenuBtn').addEventListener('click', function() {
+            document.getElementById('mobileMenu').classList.toggle('hidden');
+        });
+        
+        // Modal functionality
+        const modal = document.getElementById('patientHistoryModal');
+        const openButtons = [
+            document.getElementById('openPatientHistory'),
+            document.getElementById('openPatientHistoryMobile'),
+            document.getElementById('openPatientHistoryHero'),
+            document.getElementById('openPatientHistoryNCD'),
+            document.getElementById('openPatientHistoryCTA')
+        ];
+        const closeButton = document.getElementById('closeModal');
+        
+        openButtons.forEach(button => {
+            if (button) {
+                button.addEventListener('click', function() {
+                    modal.style.display = 'block';
+                });
+            }
+        });
+        
+        closeButton.addEventListener('click', function() {
+            modal.style.display = 'none';
+        });
+        
+        window.addEventListener('click', function(event) {
+            if (event.target === modal) {
+                modal.style.display = 'none';
+            }
+        });
+        
+        // Multi-step form functionality
+        const formSteps = document.querySelectorAll('.form-step');
+        const progressSteps = document.querySelectorAll('.progress-step');
+        const nextButtons = document.querySelectorAll('.next-step');
+        const prevButtons = document.querySelectorAll('.prev-step');
+        
+        function updateProgressBar(currentStep) {
+            progressSteps.forEach((step, index) => {
+                if (index < currentStep - 1) {
+                    step.classList.add('completed');
+                    step.classList.remove('active');
+                } else if (index === currentStep - 1) {
+                    step.classList.add('active');
+                    step.classList.remove('completed');
+                } else {
+                    step.classList.remove('active', 'completed');
+                }
+            });
+        }
+        
+        function showStep(stepNumber) {
+            formSteps.forEach(step => {
+                step.classList.remove('active');
+            });
+            document.getElementById(`step-${stepNumber}`).classList.add('active');
+            updateProgressBar(stepNumber);
+        }
+        
+        nextButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const nextStep = parseInt(this.getAttribute('data-next'));
+                showStep(nextStep);
+                
+                // Update review section when moving to step 5
+                if (nextStep === 5) {
+                    updateReviewSection();
+                }
+            });
+        });
+        
+        prevButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const prevStep = parseInt(this.getAttribute('data-prev'));
+                showStep(prevStep);
+            });
+        });
+        
+        // Dynamic medication and allergy fields
+        document.getElementById('add-medication').addEventListener('click', function() {
+            const container = document.getElementById('medications-container');
+            const newEntry = document.createElement('div');
+            newEntry.className = 'medication-entry flex items-end gap-4 mb-4';
+            newEntry.innerHTML = `
+                <div class="flex-grow">
+                    <label class="block text-gray-700 font-medium mb-2">Medication Name</label>
+                    <input type="text" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent medication-name">
+                </div>
+                <div class="w-32">
+                    <label class="block text-gray-700 font-medium mb-2">Dosage</label>
+                    <input type="text" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent medication-dosage">
+                </div>
+                <div class="w-32">
+                    <label class="block text-gray-700 font-medium mb-2">Frequency</label>
+                    <input type="text" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent medication-frequency">
+                </div>
+                <button type="button" class="remove-medication bg-red-500 text-white p-3 rounded-lg hover:bg-red-600 transition-colors">
+                    <i class="fas fa-times"></i>
+                </button>
+            `;
+            container.appendChild(newEntry);
+            
+            // Add event listener to the new remove button
+            newEntry.querySelector('.remove-medication').addEventListener('click', function() {
+                container.removeChild(newEntry);
+            });
+        });
+        
+        document.getElementById('add-allergy').addEventListener('click', function() {
+            const container = document.getElementById('allergies-container');
+            const newEntry = document.createElement('div');
+            newEntry.className = 'allergy-entry flex items-end gap-4 mb-4';
+            newEntry.innerHTML = `
+                <div class="flex-grow">
+                    <label class="block text-gray-700 font-medium mb-2">Allergy</label>
+                    <input type="text" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent allergy-name" placeholder="e.g., Penicillin, Peanuts, etc.">
+                </div>
+                <div class="w-48">
+                    <label class="block text-gray-700 font-medium mb-2">Reaction</label>
+                    <input type="text" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent allergy-reaction" placeholder="e.g., Rash, Difficulty breathing">
+                </div>
+                <button type="button" class="remove-allergy bg-red-500 text-white p-3 rounded-lg hover:bg-red-600 transition-colors">
+                    <i class="fas fa-times"></i>
+                </button>
+            `;
+            container.appendChild(newEntry);
+            
+            // Add event listener to the new remove button
+            newEntry.querySelector('.remove-allergy').addEventListener('click', function() {
+                container.removeChild(newEntry);
+            });
+        });
+        
+        // Add event listeners to existing remove buttons
+        document.querySelectorAll('.remove-medication').forEach(button => {
+            button.addEventListener('click', function() {
+                this.closest('.medication-entry').remove();
+            });
+        });
+        
+        document.querySelectorAll('.remove-allergy').forEach(button => {
+            button.addEventListener('click', function() {
+                this.closest('.allergy-entry').remove();
+            });
+        });
+        
+        // Update review section
+        function updateReviewSection() {
+            // Personal Information
+            const firstName = document.getElementById('firstName').value || 'Not provided';
+            const lastName = document.getElementById('lastName').value || 'Not provided';
+            const dob = document.getElementById('dob').value || 'Not provided';
+            const gender = document.getElementById('gender').value || 'Not provided';
+            const phone = document.getElementById('phone').value || 'Not provided';
+            const email = document.getElementById('email').value || 'Not provided';
+            const address = document.getElementById('address').value || 'Not provided';
+            
+            document.getElementById('review-personal').innerHTML = `
+                <p><strong>Name:</strong> ${firstName} ${lastName}</p>
+                <p><strong>Date of Birth:</strong> ${dob}</p>
+                <p><strong>Gender:</strong> ${gender}</p>
+                <p><strong>Phone:</strong> ${phone}</p>
+                <p><strong>Email:</strong> ${email}</p>
+                <p><strong>Address:</strong> ${address}</p>
+            `;
+            
+            // Medical History
+            const conditions = [];
+            if (document.getElementById('hypertension').checked) conditions.push('Hypertension');
+            if (document.getElementById('diabetes').checked) conditions.push('Diabetes');
+            if (document.getElementById('asthma').checked) conditions.push('Asthma');
+            if (document.getElementById('heart-disease').checked) conditions.push('Heart Disease');
+            if (document.getElementById('arthritis').checked) conditions.push('Arthritis');
+            if (document.getElementById('thyroid').checked) conditions.push('Thyroid Disorder');
+            
+            const otherConditions = document.getElementById('other-conditions').value;
+            const pastSurgeries = document.getElementById('past-surgeries').value || 'None reported';
+            const hospitalizations = document.getElementById('hospitalizations').value || 'None reported';
+            
+            document.getElementById('review-medical').innerHTML = `
+                <p><strong>Existing Conditions:</strong> ${conditions.length > 0 ? conditions.join(', ') : 'None reported'}</p>
+                ${otherConditions ? `<p><strong>Other Conditions:</strong> ${otherConditions}</p>` : ''}
+                <p><strong>Past Surgeries:</strong> ${pastSurgeries}</p>
+                <p><strong>Hospitalizations:</strong> ${hospitalizations}</p>
+            `;
+            
+            // Medications & Allergies
+            const medications = [];
+            document.querySelectorAll('.medication-entry').forEach(entry => {
+                const name = entry.querySelector('.medication-name').value;
+                const dosage = entry.querySelector('.medication-dosage').value;
+                const frequency = entry.querySelector('.medication-frequency').value;
+                
+                if (name) {
+                    medications.push(`${name} - ${dosage} (${frequency})`);
+                }
+            });
+            
+            const allergies = [];
+            document.querySelectorAll('.allergy-entry').forEach(entry => {
+                const name = entry.querySelector('.allergy-name').value;
+                const reaction = entry.querySelector('.allergy-reaction').value;
+                
+                if (name) {
+                    allergies.push(`${name} (${reaction})`);
+                }
+            });
+            
+            document.getElementById('review-meds-allergies').innerHTML = `
+                <p><strong>Current Medications:</strong> ${medications.length > 0 ? medications.join('; ') : 'None reported'}</p>
+                <p><strong>Allergies:</strong> ${allergies.length > 0 ? allergies.join('; ') : 'None reported'}</p>
+            `;
+            
+            // Family History & Lifestyle
+            const familyConditions = [];
+            if (document.getElementById('family-heart-disease').checked) familyConditions.push('Heart Disease');
+            if (document.getElementById('family-diabetes').checked) familyConditions.push('Diabetes');
+            if (document.getElementById('family-cancer').checked) familyConditions.push('Cancer');
+            if (document.getElementById('family-high-bp').checked) familyConditions.push('High Blood Pressure');
+            if (document.getElementById('family-stroke').checked) familyConditions.push('Stroke');
+            if (document.getElementById('family-mental-health').checked) familyConditions.push('Mental Health Conditions');
+            
+            const otherFamilyHistory = document.getElementById('other-family-history').value;
+            const smoking = document.getElementById('smoking').value || 'Not specified';
+            const alcohol = document.getElementById('alcohol').value || 'Not specified';
+            const exercise = document.getElementById('exercise').value || 'Not specified';
+            const diet = document.getElementById('diet').value || 'Not specified';
+            
+            document.getElementById('review-family-lifestyle').innerHTML = `
+                <p><strong>Family Medical History:</strong> ${familyConditions.length > 0 ? familyConditions.join(', ') : 'None reported'}</p>
+                ${otherFamilyHistory ? `<p><strong>Other Family History:</strong> ${otherFamilyHistory}</p>` : ''}
+                <p><strong>Smoking Status:</strong> ${smoking}</p>
+                <p><strong>Alcohol Consumption:</strong> ${alcohol}</p>
+                <p><strong>Exercise Frequency:</strong> ${exercise}</p>
+                <p><strong>Diet Type:</strong> ${diet}</p>
+            `;
+        }
+        
+        // Form submission
+        document.getElementById('patientHistoryForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Patient history submitted successfully! Our medical team will review your information and contact you if needed.');
+            modal.style.display = 'none';
+            this.reset();
+            showStep(1);
+            
+            // Reset dynamic fields
+            document.getElementById('medications-container').innerHTML = `
+                <div class="medication-entry flex items-end gap-4 mb-4">
+                    <div class="flex-grow">
+                        <label class="block text-gray-700 font-medium mb-2">Medication Name</label>
+                        <input type="text" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent medication-name">
+                    </div>
+                    <div class="w-32">
+                        <label class="block text-gray-700 font-medium mb-2">Dosage</label>
+                        <input type="text" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent medication-dosage">
+                    </div>
+                    <div class="w-32">
+                        <label class="block text-gray-700 font-medium mb-2">Frequency</label>
+                        <input type="text" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent medication-frequency">
+                    </div>
+                    <button type="button" class="remove-medication bg-red-500 text-white p-3 rounded-lg hover:bg-red-600 transition-colors">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            `;
+            
+            document.getElementById('allergies-container').innerHTML = `
+                <div class="allergy-entry flex items-end gap-4 mb-4">
+                    <div class="flex-grow">
+                        <label class="block text-gray-700 font-medium mb-2">Allergy</label>
+                        <input type="text" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent allergy-name" placeholder="e.g., Penicillin, Peanuts, etc.">
+                    </div>
+                    <div class="w-48">
+                        <label class="block text-gray-700 font-medium mb-2">Reaction</label>
+                        <input type="text" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent allergy-reaction" placeholder="e.g., Rash, Difficulty breathing">
+                    </div>
+                    <button type="button" class="remove-allergy bg-red-500 text-white p-3 rounded-lg hover:bg-red-600 transition-colors">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            `;
+            
+            // Reattach event listeners to new remove buttons
+            document.querySelectorAll('.remove-medication').forEach(button => {
+                button.addEventListener('click', function() {
+                    this.closest('.medication-entry').remove();
+                });
+            });
+            
+            document.querySelectorAll('.remove-allergy').forEach(button => {
+                button.addEventListener('click', function() {
+                    this.closest('.allergy-entry').remove();
+                });
+            });
+        });
+    </script>
 </body>
 </html>
