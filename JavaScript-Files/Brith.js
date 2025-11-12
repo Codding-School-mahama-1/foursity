@@ -124,3 +124,64 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/12.5.0/firebas
     updateBtn.addEventListener("click", updateData);
     removeBtn.addEventListener("click", removeData);
     findById.addEventListener("click", findData);
+        
+
+     // Mobile menu toggle
+    document.addEventListener('DOMContentLoaded', function() {
+      const mobileMenuButton = document.getElementById('mobile-menu-button');
+      const mobileMenu = document.getElementById('mobile-menu');
+      const mobileServicesToggle = document.getElementById('mobile-services-toggle');
+      const mobileServicesMenu = document.getElementById('mobile-services-menu');
+      
+      // Toggle main mobile menu
+      if (mobileMenuButton && mobileMenu) {
+        mobileMenuButton.addEventListener('click', function() {
+          mobileMenu.classList.toggle('hidden');
+          // Change icon based on menu state
+          const icon = mobileMenuButton.querySelector('i');
+          if (mobileMenu.classList.contains('hidden')) {
+            icon.classList.remove('fa-times');
+            icon.classList.add('fa-bars');
+          } else {
+            icon.classList.remove('fa-bars');
+            icon.classList.add('fa-times');
+          }
+        });
+      }
+      
+      // Toggle mobile services dropdown
+      if (mobileServicesToggle && mobileServicesMenu) {
+        mobileServicesToggle.addEventListener('click', function() {
+          mobileServicesMenu.classList.toggle('hidden');
+          // Rotate chevron icon
+          const chevron = mobileServicesToggle.querySelector('i');
+          chevron.classList.toggle('fa-chevron-down');
+          chevron.classList.toggle('fa-chevron-up');
+        });
+      }
+      
+      // Close mobile menu when clicking on a link
+      const mobileMenuLinks = mobileMenu.querySelectorAll('a');
+      mobileMenuLinks.forEach(link => {
+        link.addEventListener('click', function() {
+          mobileMenu.classList.add('hidden');
+          // Reset menu icon
+          const icon = mobileMenuButton.querySelector('i');
+          icon.classList.remove('fa-times');
+          icon.classList.add('fa-bars');
+        });
+      });
+      
+      // Close mobile menu when clicking outside
+      document.addEventListener('click', function(event) {
+        if (!event.target.closest('#mobile-menu') && 
+            !event.target.closest('#mobile-menu-button') &&
+            !mobileMenu.classList.contains('hidden')) {
+          mobileMenu.classList.add('hidden');
+          // Reset menu icon
+          const icon = mobileMenuButton.querySelector('i');
+          icon.classList.remove('fa-times');
+          icon.classList.add('fa-bars');
+        }
+      });
+    });
