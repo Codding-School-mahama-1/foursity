@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Emergency System | Emergency Help Hub</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <script>
     tailwind.config = {
@@ -53,6 +54,51 @@
       }
     }
   </script>
+  <style>
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      .hero-video {
+        height: 60vh;
+      }
+      
+      .emergency-cards {
+        grid-template-columns: 1fr;
+      }
+      
+      .contact-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .footer-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    
+    @media (max-width: 640px) {
+      .hero-buttons {
+        flex-direction: column;
+        gap: 1rem;
+      }
+      
+      .hero-buttons button,
+      .hero-buttons a {
+        width: 100%;
+        text-align: center;
+      }
+      
+      .prevention-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .emergency-numbers {
+        grid-template-columns: 1fr;
+      }
+      
+      .contact-form-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
 </head>
 <body class="font-serif text-gray-800">
   <!-- Header -->
@@ -61,7 +107,7 @@
       <div class="flex justify-between items-center py-4">
         <!-- Logo -->
         <div class="flex items-center">
-          <span class="text-2xl font-bold text-blue-600">🏥 MCH</span>
+          <span class="text-2xl font-bold text-blue-600"><a href="./index.html">🏥 MCH</a></span>
         </div>
         
         <!-- Mobile menu button -->
@@ -156,233 +202,440 @@
       </div>
     </div>
   </header>
+  
   <!-- Hero Section -->
-  <section class="py-12 px-4">
-     <video class="absolute top-0 left-0 w-full h-full object-cover z-0" autoplay muted loop playsinline>
+  <section class="relative py-8 md:py-12 px-4">
+     <video class="hero-video absolute top-0 left-0 w-full h-full object-cover z-0" autoplay muted loop playsinline>
       <source src="./videos/emergency.mp4" type="video/mp4">
-      Your browser does not support the video tag.
     </video>
+    
     <div class="max-w-7xl mx-auto text-center relative">
-      <h2 class="text-4xl md:text-5xl font-bold mb-6 text-white">Emergency Response System</h2>
-      <p class="text-xl text-gray-300 max-w-3xl mx-auto mb-8">
+      <h2 class="text-3xl md:text-5xl font-bold mb-4 md:mb-6 text-white">Emergency Response System</h2>
+      <p class="text-lg md:text-xl text-gray-300 max-w-3xl mx-auto mb-6 md:mb-8">
         Learn about emergency types, prevention methods, and how to respond correctly to protect yourself and others.
       </p>
-      <div class="flex flex-col sm:flex-row justify-center gap-4">
-        <button class="bg-danger-500 hover:bg-danger-600 text-white font-bold py-4 px-8 rounded-xl shadow-lg transition-all duration-300 transform hover:scale-105 animate-emergency-pulse">
-          🚨 Emergency Call: 911
-        </button>
-        <button class="bg-primary-500 hover:bg-primary-600 text-white font-bold py-4 px-8 rounded-xl shadow-lg transition-all duration-300 transform hover:scale-105">
-          📋 Emergency Checklist
-        </button>
+       <div class="hero-buttons flex flex-col sm:flex-row justify-center gap-4 mb-6 md:mb-8">
+        <button class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition duration-300 transform hover:-translate-y-1"> <a href="#Emergency">Emergency Types</a></button>
+        <a href="#Prevention" class="border border-white hover:bg-white hover:text-blue-600 text-white px-6 py-3 rounded-lg font-semibold transition duration-300 transform hover:-translate-y-1 text-center">Prevention Methods </a>
       </div>
+      <div class="bg-red-600/80 inline-block px-4 py-2 rounded-lg hover:bg-danger-600 text-white font-bold py-3 md:py-4 px-6 md:px-8 rounded-xl shadow-lg transition-all duration-300 transform hover:scale-105 animate-emergency-pulse">
+         🚨 Emergency Call: 911 <strong class="text-lg md:text-xl"></strong>
+      </div>
+        <div class="flex items-center mb-4">
+        <h2 class="text-xl md:text-2xl font-bold text-white p-6 m-3">Emergency Definition</h2>
+      </div>
+      
+      <p class="text-gray-100 text-base md:text-lg">
+        An emergency is a sudden situation that threatens human life, property, or the environment, requiring a quick and immediate response such as fires, accidents, natural disasters, or critical health conditions.
+      </p>
     </div>
+   
   </section>
 
   <!-- Main Content -->
-  <main class="max-w-7xl mx-auto px-4 py-11 ">
+  <main class="max-w-7xl mx-auto px-4 py-8 md:py-11">
     <!-- Definition Section -->
-    <section class=" backdrop-blur-sm rounded-2xl p-6 mb-8  shadow-xl">
-      <div class="flex items-center mb-4">
-     
-        <h2 class="text-2xl font-bold text-white">Emergency Definition</h2>
-      </div>
-      <p class="text-gray-300 text-lg">
-        An emergency is a sudden situation that threatens human life, property, or the environment, requiring a quick and immediate response such as fires, accidents, natural disasters, or critical health conditions.
-      </p>
-    </section>
-
-    <!-- Emergency Types -->
-    <section class="mb-12 p-8">
-      <div class="flex items-center mb-6 p-9">
-           <h2 class="text-2xl font-bold">Emergency Types</h2>
-      </div>
    
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <div class="bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10 shadow-lg transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
-          <div class="bg-red-500/20 p-3 rounded-lg w-12 h-12 flex items-center justify-center mb-4">
-            <span class="text-2xl">🔥</span>
-          </div>
-          <h3 class="text-xl font-semibold mb-2">Fire Emergencies</h3>
-          <p class="text-gray-300">Includes house or forest fires, requiring quick evacuation and use of fire extinguishers.</p>
-        </div>
+    
+    <!-- Emergency Types -->
+    <section id="Emergency" class="py-12 md:py-16 bg-gray-50">
+      <div class="container mx-auto px-4">
+        <h2 class="text-2xl md:text-4xl font-bold text-center text-blue-600 mb-8 md:mb-12">Emergency Types</h2>
         
-        <div class="bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10 shadow-lg transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
-          <div class="bg-blue-500/20 p-3 rounded-lg w-12 h-12 flex items-center justify-center mb-4">
-            <span class="text-2xl">🏥</span>
+        <div class="emergency-cards grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
+          <!-- Emergency Types Card 1 -->
+          <div class="Emergency-card bg-white rounded-xl shadow-lg p-4 md:p-6 transition-all duration-300 hover:-translate-y-2 hover:shadow-xl">
+            <img src="./img/fire.png" alt="Fire Emergency" class="w-full h-40 md:h-48 object-cover rounded-lg mb-4">
+            <h3 class="text-lg md:text-xl font-bold text-gray-800 mb-2">Fire Emergencies</h3>
+            <p class="text-sm md:text-base text-gray-600 mb-4">Includes house or forest fires, requiring quick evacuation and use of fire extinguishers.</p>
           </div>
-          <h3 class="text-xl font-semibold mb-2">Medical Emergencies</h3>
-          <p class="text-gray-300">Such as serious injuries, heart attacks, or fainting, requiring immediate ambulance response.</p>
-        </div>
-        
-        <div class="bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10 shadow-lg transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
-          <div class="bg-green-500/20 p-3 rounded-lg w-12 h-12 flex items-center justify-center mb-4">
-            <span class="text-2xl">🌊</span>
+          
+          <!-- Emergency Types Card 2 -->
+          <div class="Emergency-card bg-white rounded-xl shadow-lg p-4 md:p-6 transition-all duration-300 hover:-translate-y-2 hover:shadow-xl">
+            <img src="./img/medicalE.png" alt="Medical Emergency" class="w-full h-40 md:h-48 object-cover rounded-lg mb-4">
+            <h3 class="text-lg md:text-xl font-bold text-gray-800 mb-2">Medical Emergencies</h3>
+            <p class="text-sm md:text-base text-gray-600 mb-4">Such as serious injuries, heart attacks, or fainting, requiring immediate ambulance response.</p>
           </div>
-          <h3 class="text-xl font-semibold mb-2">Natural Disasters</h3>
-          <p class="text-gray-300">Like floods, earthquakes, and storms, requiring preparation with pre-planned emergency procedures.</p>
-        </div>
-        
-        <div class="bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10 shadow-lg transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
-          <div class="bg-yellow-500/20 p-3 rounded-lg w-12 h-12 flex items-center justify-center mb-4">
-            <span class="text-2xl">🚗</span>
+          
+          <!-- Emergency Types Card 3 -->
+          <div class="Emergency-card bg-white rounded-xl shadow-lg p-4 md:p-6 transition-all duration-300 hover:-translate-y-2 hover:shadow-xl">
+            <img src="./img/natural.png" alt="Natural Disaster" class="w-full h-40 md:h-48 object-cover rounded-lg mb-4">
+            <h3 class="text-lg md:text-xl font-bold text-gray-800 mb-2">Natural Disasters</h3>
+            <p class="text-sm md:text-base text-gray-600 mb-4">Like floods, earthquakes, and storms, requiring preparation with pre-planned emergency procedures.</p>
           </div>
-          <h3 class="text-xl font-semibold mb-2">Traffic Accidents</h3>
-          <p class="text-gray-300">Require immediate reporting to police and ambulance, and ensuring the safety of the injured.</p>
+          
+          <!-- Emergency Types Card 4 -->
+          <div class="Emergency-card bg-white rounded-xl shadow-lg p-4 md:p-6 transition-all duration-300 hover:-translate-y-2 hover:shadow-xl">
+            <img src="./img/tarfic.png" alt="Traffic Accident" class="w-full h-40 md:h-48 object-cover rounded-lg mb-4">
+            <h3 class="text-lg md:text-xl font-bold text-gray-800 mb-2">Traffic Accidents</h3>
+            <p class="text-sm md:text-base text-gray-600 mb-4">Require immediate reporting to police and ambulance, and ensuring the safety of the injured.</p>
+          </div>
         </div>
       </div>
     </section>
-
+    
     <!-- Prevention Methods -->
-    <section class="bg-white/10 backdrop-blur-sm rounded-2xl p-6 mb-8 border border-white/10 shadow-xl">
+    <section id="Prevention" class="bg-white/10 backdrop-blur-sm rounded-2xl py-8 md:py-11 px-4 md:px-6 mb-8 border border-white/10 shadow-xl">
       <div class="flex items-center mb-4">
-        <div class="bg-primary-500 p-3 rounded-lg mr-4">
-          <span class="text-white text-xl">🔹</span>
-        </div>
-        <h2 class="text-2xl font-bold">Prevention Methods</h2>
+        <h2 class="text-xl md:text-2xl font-bold">Prevention Methods</h2>
       </div>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div class="prevention-grid grid grid-cols-1 md:grid-cols-2 gap-4">
         <div class="flex items-start">
-          <div class="bg-green-500/20 p-2 rounded-lg mr-3 mt-1">
-            <span class="text-green-400">✓</span>
+          <div class="p-2 rounded-lg mr-3 mt-1">
+            <span class="text-green-800">✓</span>
           </div>
-          <p class="text-gray-300">Install fire alarm devices in homes.</p>
+          <p class="text-gray-600">Install fire alarm devices in homes.</p>
         </div>
         <div class="flex items-start">
-          <div class="bg-green-500/20 p-2 rounded-lg mr-3 mt-1">
-            <span class="text-green-400">✓</span>
+          <div class="p-2 rounded-lg mr-3 mt-1">
+            <span class="text-green-800">✓</span>
           </div>
-          <p class="text-gray-300">Learn basic first aid skills.</p>
+          <p class="text-gray-600">Learn basic first aid skills.</p>
         </div>
         <div class="flex items-start">
-          <div class="bg-green-500/20 p-2 rounded-lg mr-3 mt-1">
-            <span class="text-green-400">✓</span>
+          <div class=" p-2 rounded-lg mr-3 mt-1">
+            <span class="text-green-800">✓</span>
           </div>
-          <p class="text-gray-300">Keep emergency numbers in a visible place.</p>
+          <p class="text-gray-600">Keep emergency numbers in a visible place.</p>
         </div>
         <div class="flex items-start">
-          <div class="bg-green-500/20 p-2 rounded-lg mr-3 mt-1">
-            <span class="text-green-400">✓</span>
+          <div class=" p-2 rounded-lg mr-3 mt-1">
+            <span class="text-green-800">✓</span>
           </div>
-          <p class="text-gray-300">Participate in evacuation and emergency drills.</p>
+          <p class="text-gray-600">Participate in evacuation and emergency drills.</p>
         </div>
         <div class="flex items-start">
-          <div class="bg-green-500/20 p-2 rounded-lg mr-3 mt-1">
-            <span class="text-green-400">✓</span>
+          <div class=" p-2 rounded-lg mr-3 mt-1">
+            <span class="text-green-800">✓</span>
           </div>
-          <p class="text-gray-300">Prepare an emergency kit with essential supplies.</p>
+          <p class="text-gray-600">Prepare an emergency kit with essential supplies.</p>
         </div>
         <div class="flex items-start">
-          <div class="bg-green-500/20 p-2 rounded-lg mr-3 mt-1">
-            <span class="text-green-400">✓</span>
+          <div class=" p-2 rounded-lg mr-3 mt-1">
+            <span class="text-green-800">✓</span>
           </div>
-          <p class="text-gray-300">Create a family emergency communication plan.</p>
+          <p class="text-gray-600">Create a family emergency communication plan.</p>
         </div>
       </div>
     </section>
 
-    <!-- Emergency Contacts -->
-    <section class="mb-12">
-      <div class="flex items-center mb-6">
-        <div class="bg-primary-500 p-3 rounded-lg mr-4">
-          <span class="text-white text-xl">🔹</span>
-        </div>
-        <h2 class="text-2xl font-bold">Important Emergency Numbers</h2>
+    <!-- Emergency number -->
+    <section class="mb-8 md:mb-12">
+      <div class="flex items-center mb-4 md:mb-6">
+        <h2 class="text-xl md:text-2xl font-bold">Important Emergency Numbers</h2>
       </div>
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <div class="bg-gradient-to-br from-yellow-500/20 to-yellow-600/10 backdrop-blur-sm rounded-xl p-6 border border-yellow-500/30 shadow-lg">
+      <div class="emergency-numbers grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+        <div class="bg-gradient-to-br from-yellow-500/20 to-yellow-600/10 backdrop-blur-sm rounded-xl p-4 md:p-6 border border-yellow-500/30 shadow-lg">
           <div class="flex items-center mb-3">
             <div class="bg-red-500 p-2 rounded-lg mr-3">
               <span class="text-white">🚒</span>
             </div>
-            <h3 class="text-lg font-semibold">Fire Department</h3>
+            <h3 class="text-base md:text-lg font-semibold">Fire Department</h3>
           </div>
-          <p class="text-2xl font-bold">911</p>
+          <p class="text-xl md:text-2xl font-bold">911</p>
         </div>
         
-        <div class="bg-gradient-to-br from-yellow-500/20 to-yellow-600/10 backdrop-blur-sm rounded-xl p-6 border border-yellow-500/30 shadow-lg">
+        <div class="bg-gradient-to-br from-yellow-500/20 to-yellow-600/10 backdrop-blur-sm rounded-xl p-4 md:p-6 border border-yellow-500/30 shadow-lg">
           <div class="flex items-center mb-3">
             <div class="bg-blue-500 p-2 rounded-lg mr-3">
               <span class="text-white">🚑</span>
             </div>
-            <h3 class="text-lg font-semibold">Ambulance</h3>
+            <h3 class="text-base md:text-lg font-semibold">Ambulance</h3>
           </div>
-          <p class="text-2xl font-bold">911</p>
+          <p class="text-xl md:text-2xl font-bold">911</p>
         </div>
         
-        <div class="bg-gradient-to-br from-yellow-500/20 to-yellow-600/10 backdrop-blur-sm rounded-xl p-6 border border-yellow-500/30 shadow-lg">
+        <div class="bg-gradient-to-br from-yellow-500/20 to-yellow-600/10 backdrop-blur-sm rounded-xl p-4 md:p-6 border border-yellow-500/30 shadow-lg">
           <div class="flex items-center mb-3">
             <div class="bg-indigo-500 p-2 rounded-lg mr-3">
               <span class="text-white">🚓</span>
             </div>
-            <h3 class="text-lg font-semibold">Police</h3>
+            <h3 class="text-base md:text-lg font-semibold">Police</h3>
           </div>
-          <p class="text-2xl font-bold">911</p>
+          <p class="text-xl md:text-2xl font-bold">911</p>
         </div>
         
-        <div class="bg-gradient-to-br from-yellow-500/20 to-yellow-600/10 backdrop-blur-sm rounded-xl p-6 border border-yellow-500/30 shadow-lg">
+        <div class="bg-gradient-to-br from-yellow-500/20 to-yellow-600/10 backdrop-blur-sm rounded-xl p-4 md:p-6 border border-yellow-500/30 shadow-lg">
           <div class="flex items-center mb-3">
             <div class="bg-purple-500 p-2 rounded-lg mr-3">
               <span class="text-white">⚡</span>
             </div>
-            <h3 class="text-lg font-semibold">General Emergency</h3>
+            <h3 class="text-base md:text-lg font-semibold">General Emergency</h3>
           </div>
-          <p class="text-2xl font-bold">911</p>
+          <p class="text-xl md:text-2xl font-bold">911</p>
         </div>
       </div>
     </section>
-
-    <!-- Contact Form -->
-    <section class="bg-white/10 backdrop-blur-sm rounded-2xl p-6 mb-8 border border-white/10 shadow-xl">
-      <div class="flex items-center mb-4">
-        <div class="bg-primary-500 p-3 rounded-lg mr-4">
-          <span class="text-white text-xl">🔹</span>
+    
+    <!-- CONTACT SECTION -->
+    <section id="contact" class="py-12 md:py-16 bg-gray-50">
+      <div class="container mx-auto px-4">
+        <div class="text-center mb-8 md:mb-12">
+          <h2 class="text-2xl md:text-4xl font-bold text-blue-600 mb-4">Get In Touch</h2>
+          <p class="text-gray-600 max-w-2xl mx-auto">Contact Us to Report an Emergency</p>
         </div>
-        <h2 class="text-2xl font-bold">Contact Us to Report an Emergency</h2>
+       
+        <div class="contact-grid grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12">
+          <!-- Contact Form -->
+          <div class="bg-gray-200 rounded-xl shadow-lg p-6 md:p-8">
+            <h3 class="text-xl md:text-2xl font-bold text-gray-800 mb-4 md:mb-6">Report an Emergency</h3>
+            <form id="contact-form" class="space-y-4 md:space-y-6">
+              <div class="contact-form-grid grid grid-cols-1 gap-6">
+                <div>
+                  <label for="full-name" class="block text-gray-700 mb-2">Full Name</label>
+                  <input type="text" id="first-name" name="first-name" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                </div>
+              </div>
+             
+              <div>
+                <label for="email" class="block text-gray-700 mb-2">Email Address</label>
+                <input type="email" id="email" name="email" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+              </div>
+             
+              <div>
+                <label for="phone" class="block text-gray-700 mb-2">Phone Number</label>
+                <input type="tel" id="phone" name="phone" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+              </div>
+             
+              <div>
+                <label for="subject" class="block text-gray-700 mb-2">Emergency Types</label>
+                <select id="subject" name="subject" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                  <option value="">Select Emergency Types</option>
+                  <option value="appointment">Fire Emergencies</option>
+                  <option value="general">Medical Emergencies</option>
+                  <option value="feedback">Natural Disasters</option>
+                  <option value="emergency">Traffic Accidents</option>
+                  <option value="other">Other</option>
+                </select>
+              </div>
+             
+              <div>
+                <label for="message" class="block text-gray-700 mb-2">Briefly describe the situation...</label>
+                <textarea id="message" name="message" rows="5" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required></textarea>
+              </div>
+             
+              <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition duration-300 transform hover:-translate-y-1">
+                Send Emergency Report
+              </button>
+            </form>
+          </div>
+         
+          <!-- Contact Information & Map -->
+          <div class="space-y-6 md:space-y-8">
+            <!-- Contact Info Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+              <div class="bg-white rounded-xl shadow-lg p-4 md:p-6 flex items-start">
+                <div class="bg-blue-100 p-3 rounded-lg mr-4">
+                  <i class="fas fa-map-marker-alt text-blue-600 text-xl"></i>
+                </div>
+                <div>
+                  <h4 class="font-bold text-gray-800 mb-1">Our Location</h4>
+                  <p class="text-gray-600">Mahama Refugee Camp, Kirehe District, Rwanda</p>
+                </div>
+              </div>
+             
+              <div class="bg-white rounded-xl shadow-lg p-4 md:p-6 flex items-start">
+                <div class="bg-blue-100 p-3 rounded-lg mr-4">
+                  <i class="fas fa-phone text-blue-600 text-xl"></i>
+                </div>
+                <div>
+                  <h4 class="font-bold text-gray-800 mb-1">Phone Number</h4>
+                  <p class="text-gray-600">+250 000 000</p>
+                </div>
+              </div>
+             
+              <div class="bg-white rounded-xl shadow-lg p-4 md:p-6 flex items-start">
+                <div class="bg-blue-100 p-3 rounded-lg mr-4">
+                  <i class="fas fa-envelope text-blue-600 text-xl"></i>
+                </div>
+                <div>
+                  <h4 class="font-bold text-gray-800 mb-1">Email Address</h4>
+                  <p class="text-gray-600">info@hopecare.com</p>
+                </div>
+              </div>
+             
+              <div class="bg-white rounded-xl shadow-lg p-4 md:p-6 flex items-start">
+                <div class="bg-blue-100 p-3 rounded-lg mr-4">
+                  <i class="fas fa-clock text-blue-600 text-xl"></i>
+                </div>
+                <div>
+                  <h4 class="font-bold text-gray-800 mb-1">Working Hours</h4>
+                  <p class="text-gray-600">24/7 Emergency Services</p>
+                  <p class="text-gray-600">Mon-Fri: 8am-6pm</p>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Google Map for Mahama Refugee Camp -->
+            <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+              <div class="h-64 md:h-96">
+                <iframe 
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1334.760614585555!2d30.642434783637935!3d-2.2630583877293016!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x19c4c500078c5f45%3A0xc3605c2533855d6b!2sMahama%20refugee%20camp!5e0!3m2!1sen!2sus!4v1762760708457!5m2!1sen!2sus" 
+                  width="100%" 
+                  height="100%" 
+                  style="border:0;" 
+                  allowfullscreen="" 
+                  loading="lazy" 
+                  referrerpolicy="no-referrer-when-downgrade"
+                  title="Mahamacare Hospital Location at Mahama Refugee Camp">
+                </iframe>
+              </div>
+            </div>
+           
+            <!-- Emergency Notice -->
+            <div class="bg-red-50 border border-red-200 rounded-xl p-4 md:p-6">
+              <div class="flex items-start">
+                <i class="fas fa-exclamation-triangle text-red-500 text-xl mt-1 mr-4"></i>
+                <div>
+                  <h4 class="font-bold text-red-700 mb-2">Emergency Contact</h4>
+                  <p class="text-red-600 mb-2">For urgent medical assistance, please call our emergency line immediately.</p>
+                  <a href="tel:+250000000" class="inline-block bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg transition duration-300">
+                    Call Emergency: +250 000 000
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-      <form id="emergencyForm" class="space-y-4">
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <input type="text" placeholder="Full Name" class="bg-white/5 border border-white/10 rounded-xl p-4 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent" required>
-          <input type="tel" placeholder="Phone Number" class="bg-white/5 border border-white/10 rounded-xl p-4 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent" required>
-        </div>
-        <input type="text" placeholder="Emergency Type" class="bg-white/5 border border-white/10 rounded-xl p-4 w-full focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent">
-        <textarea rows="4" placeholder="Briefly describe the situation..." class="bg-white/5 border border-white/10 rounded-xl p-4 w-full focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent" required></textarea>
-        <button type="submit" class="bg-danger-500 hover:bg-danger-600 text-white font-bold py-4 px-8 rounded-xl shadow-lg transition-all duration-300 transform hover:scale-105 w-full animate-emergency-pulse">
-          🚨 Send Emergency Report
-        </button>
-        <div class="hidden bg-green-500/20 border border-green-500/30 text-green-400 p-4 rounded-xl text-center" id="alertMessage">
-          ✅ Report sent successfully! Help is on the way.
-        </div>
-      </form>
     </section>
   </main>
 
   <!-- Footer -->
-  <footer class="bg-gradient-to-r from-primary-800/80 to-primary-900/80 backdrop-blur-md border-t border-primary-700/30 py-8 px-4 mt-12">
-    <div class="max-w-7xl mx-auto text-center">
-      <p class="text-lg mb-2">© 2025 All Rights Reserved | Emergency Response System</p>
-      <p class="text-primary-200">For real emergencies, always call 911 immediately</p>
+  <footer class="bg-gray-900 text-white py-8 md:py-12">
+    <div class="container mx-auto px-4">
+      <div class="footer-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
+        <!-- Column 1 -->
+        <div>
+          <h3 class="text-lg md:text-xl font-bold mb-3 md:mb-4">MahamaCare Hospital</h3>
+          <p class="text-sm md:text-base text-gray-400">Providing high quality healthcare for over 20 years.</p>
+        </div>
+        
+        <!-- Column 2 -->
+        <div>
+          <h4 class="text-base md:text-lg font-semibold mb-3 md:mb-4">Quick Links</h4>
+          <ul class="space-y-2">
+            <li><a href="#home" class="text-sm md:text-base text-gray-400 hover:text-white transition duration-300">Home</a></li>
+            <li><a href="#about" class="text-sm md:text-base text-gray-400 hover:text-white transition duration-300">About</a></li>
+            <li><a href="#services" class="text-sm md:text-base text-gray-400 hover:text-white transition duration-300">Services</a></li>
+            <li><a href="#doctors" class="text-sm md:text-base text-gray-400 hover:text-white transition duration-300">Doctors</a></li>
+            <li><a href="#faq" id="footer-faq-link" class="text-sm md:text-base text-gray-400 hover:text-white transition duration-300">FAQ</a></li>
+            <li><a href="#contact" class="text-sm md:text-base text-gray-400 hover:text-white transition duration-300">Contact</a></li>
+          </ul>
+        </div>
+        
+        <!-- Column 3 -->
+        <div>
+          <h4 class="text-base md:text-lg font-semibold mb-3 md:mb-4">Contact Info</h4>
+          <div class="space-y-2 text-sm md:text-base text-gray-400">
+            <p><i class="fas fa-envelope mr-2"></i> info@hopecare.com</p>
+            <p><i class="fas fa-phone mr-2"></i> +250 000 000</p>
+            <p><i class="fas fa-map-marker-alt mr-2"></i> Mahama Refugee Camp, Rwanda</p>
+          </div>
+        </div>
+        
+        <!-- Column 4 -->
+        <div>
+          <h4 class="text-base md:text-lg font-semibold mb-3 md:mb-4">Follow Us</h4>
+          <div class="flex space-x-3 md:space-x-4">
+            <a href="#" class="text-gray-400 hover:text-white transition duration-300">
+              <i class="fab fa-facebook-f text-lg md:text-xl"></i>
+            </a>
+            <a href="#" class="text-gray-400 hover:text-white transition duration-300">
+              <i class="fab fa-twitter text-lg md:text-xl"></i>
+            </a>
+            <a href="#" class="text-gray-400 hover:text-white transition duration-300">
+              <i class="fab fa-instagram text-lg md:text-xl"></i>
+            </a>
+            <a href="#" class="text-gray-400 hover:text-white transition duration-300">
+              <i class="fab fa-linkedin-in text-lg md:text-xl"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+      
+      <div class="border-t border-gray-800 mt-6 md:mt-8 pt-6 md:pt-8 text-center text-sm md:text-base text-gray-500">
+        <p>&copy; 2025 MahamaCare Hospital. All rights reserved.</p>
+      </div>
     </div>
   </footer>
 
+  <!-- Menu Functionality Script -->
   <script>
-    // Alert system for form submission
-    const form = document.getElementById('emergencyForm');
-    const alertMsg = document.getElementById('alertMessage');
-
-    form.addEventListener('submit', function(e) {
-      e.preventDefault();
-      alertMsg.classList.remove('hidden');
-      alertMsg.classList.add('flex');
-      form.reset();
+    // Mobile menu functionality
+    document.addEventListener('DOMContentLoaded', function() {
+      const mobileMenuButton = document.getElementById('mobile-menu-button');
+      const mobileMenu = document.getElementById('mobile-menu');
+      const mobileServicesToggle = document.getElementById('mobile-services-toggle');
+      const mobileServicesMenu = document.getElementById('mobile-services-menu');
       
-      // Scroll to alert message
-      alertMsg.scrollIntoView({ behavior: 'smooth' });
+      // Toggle main mobile menu
+      if (mobileMenuButton && mobileMenu) {
+        mobileMenuButton.addEventListener('click', function() {
+          mobileMenu.classList.toggle('hidden');
+          // Change icon based on menu state
+          const icon = mobileMenuButton.querySelector('i');
+          if (mobileMenu.classList.contains('hidden')) {
+            icon.classList.remove('fa-times');
+            icon.classList.add('fa-bars');
+          } else {
+            icon.classList.remove('fa-bars');
+            icon.classList.add('fa-times');
+          }
+        });
+      }
       
-      setTimeout(() => {
-        alertMsg.classList.add('hidden');
-        alertMsg.classList.remove('flex');
-      }, 5000);
+      // Toggle mobile services dropdown
+      if (mobileServicesToggle && mobileServicesMenu) {
+        mobileServicesToggle.addEventListener('click', function() {
+          mobileServicesMenu.classList.toggle('hidden');
+          // Rotate chevron icon
+          const chevron = mobileServicesToggle.querySelector('i');
+          chevron.classList.toggle('fa-chevron-down');
+          chevron.classList.toggle('fa-chevron-up');
+        });
+      }
+      
+      // Close mobile menu when clicking on a link
+      const mobileMenuLinks = mobileMenu.querySelectorAll('a');
+      mobileMenuLinks.forEach(link => {
+        link.addEventListener('click', function() {
+          mobileMenu.classList.add('hidden');
+          // Reset menu icon
+          const icon = mobileMenuButton.querySelector('i');
+          icon.classList.remove('fa-times');
+          icon.classList.add('fa-bars');
+          // Close services dropdown if open
+          if (!mobileServicesMenu.classList.contains('hidden')) {
+            mobileServicesMenu.classList.add('hidden');
+            const chevron = mobileServicesToggle.querySelector('i');
+            chevron.classList.remove('fa-chevron-up');
+            chevron.classList.add('fa-chevron-down');
+          }
+        });
+      });
+      
+      // Close mobile menu when clicking outside
+      document.addEventListener('click', function(event) {
+        if (!event.target.closest('#mobile-menu') && 
+            !event.target.closest('#mobile-menu-button') &&
+            !mobileMenu.classList.contains('hidden')) {
+          mobileMenu.classList.add('hidden');
+          // Reset menu icon
+          const icon = mobileMenuButton.querySelector('i');
+          icon.classList.remove('fa-times');
+          icon.classList.add('fa-bars');
+          // Close services dropdown if open
+          if (!mobileServicesMenu.classList.contains('hidden')) {
+            mobileServicesMenu.classList.add('hidden');
+            const chevron = mobileServicesToggle.querySelector('i');
+            chevron.classList.remove('fa-chevron-up');
+            chevron.classList.add('fa-chevron-down');
+          }
+        }
+      });
     });
   </script>
+
 </body>
 </html>
