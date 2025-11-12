@@ -111,6 +111,63 @@
             background-color: #10b981;
             color: white;
         }
+        .auth-modal {
+            max-width: 450px;
+        }
+        .auth-tabs {
+            display: flex;
+            border-bottom: 1px solid #e5e7eb;
+            margin-bottom: 24px;
+        }
+        .auth-tab {
+            flex: 1;
+            text-align: center;
+            padding: 16px;
+            cursor: pointer;
+            font-weight: 600;
+            color: #6b7280;
+            transition: all 0.3s ease;
+        }
+        .auth-tab.active {
+            color: #0ea5e9;
+            border-bottom: 3px solid #0ea5e9;
+        }
+        .auth-form {
+            display: none;
+        }
+        .auth-form.active {
+            display: block;
+        }
+        .password-strength {
+            height: 4px;
+            margin-top: 8px;
+            border-radius: 2px;
+            transition: all 0.3s ease;
+        }
+        .password-weak {
+            background-color: #ef4444;
+            width: 25%;
+        }
+        .password-medium {
+            background-color: #f59e0b;
+            width: 50%;
+        }
+        .password-strong {
+            background-color: #10b981;
+            width: 100%;
+        }
+        .error-message {
+            color: #ef4444;
+            font-size: 0.875rem;
+            margin-top: 4px;
+            display: none;
+        }
+        .success-message {
+            color: #10b981;
+            font-size: 0.875rem;
+            margin-top: 4px;
+            display: none;
+        }
     </style>
 </head>
 <body class="font-sans bg-gray-50">
@@ -128,19 +185,18 @@
                     </div>
                 </div>
                 
+                <div class="hidden md:flex items-center space-x-4">
+                    <div id="userStatus" class="flex items-center space-x-4">
+                        <button id="openAuthModal" class="text-gray-700 font-medium hover:text-primary transition-colors">
+                            <i class="fas fa-user mr-1"></i> Login
+                        </button>
+                        <button id="openPatientHistory" class="bg-primary text-white px-4 py-2 rounded-lg font-semibold hover:bg-primary-dark transition-colors">Patient History</button>
+                    </div>
+                </div>
+                
                 <button class="md:hidden p-2 rounded-lg bg-blue-50" id="mobileMenuBtn">
                     <i class="fas fa-bars text-primary"></i>
                 </button>
-                
-                <nav class="hidden md:flex items-center space-x-6">
-                    <a href="index.html" class="font-semibold text-primary relative after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-primary after:scale-x-100">Home</a>
-                    <a href="#ncd" class="font-semibold text-gray-600 hover:text-primary transition-colors">NCD Care</a>
-                    <a href="#services" class="font-semibold text-gray-600 hover:text-primary transition-colors">Our Services</a>
-                    <a href="#specialties" class="font-semibold text-gray-600 hover:text-primary transition-colors">Specialties</a>
-                    <a href="#why-us" class="font-semibold text-gray-600 hover:text-primary transition-colors">Why Us</a>
-                    <a href="#contact" class="font-semibold text-gray-600 hover:text-primary transition-colors">Contact</a>
-                    <button id="openPatientHistory" class="bg-primary text-white px-4 py-2 rounded-lg font-semibold hover:bg-primary-dark transition-colors">Patient History</button>
-                </nav>
             </div>
             
             <nav class="md:hidden py-4 hidden" id="mobileMenu">
@@ -151,7 +207,12 @@
                     <a href="#specialties" class="font-semibold text-gray-600 hover:text-primary py-2 px-4 rounded-lg transition-colors">Specialties</a>
                     <a href="#why-us" class="font-semibold text-gray-600 hover:text-primary py-2 px-4 rounded-lg transition-colors">Why Us</a>
                     <a href="#contact" class="font-semibold text-gray-600 hover:text-primary py-2 px-4 rounded-lg transition-colors">Contact</a>
-                    <button id="openPatientHistoryMobile" class="font-semibold text-white bg-primary py-2 px-4 rounded-lg transition-colors">Patient History</button>
+                    <div id="mobileUserStatus">
+                        <button id="openAuthModalMobile" class="font-semibold text-gray-600 hover:text-primary py-2 px-4 rounded-lg transition-colors w-full text-left">
+                            <i class="fas fa-user mr-2"></i>Login
+                        </button>
+                        <button id="openPatientHistoryMobile" class="font-semibold text-white bg-primary py-2 px-4 rounded-lg transition-colors w-full text-left mt-2">Patient History</button>
+                    </div>
                 </div>
             </nav>
         </div>
@@ -254,6 +315,256 @@
                             <i class="fas fa-calendar-check mr-2"></i>Complete Patient History
                         </button>
                     </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Our Services Section -->
+    <section class="py-16 bg-white" id="services">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-gray-800 mb-4 relative section-title inline-block">Our Services</h2>
+                <p class="text-xl text-gray-600 max-w-2xl mx-auto">Comprehensive healthcare services for all your medical needs</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-white rounded-xl shadow-md p-8 transition-transform hover:-translate-y-2">
+                    <div class="w-16 h-16 gradient-bg rounded-full flex items-center justify-center mb-6">
+                        <i class="fas fa-stethoscope text-white text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-4">Primary Care</h3>
+                    <p class="text-gray-600 mb-4">Comprehensive primary care services for patients of all ages, including preventive care, health screenings, and chronic disease management.</p>
+                    <a href="#" class="text-primary font-semibold hover:text-primary-dark transition-colors">Learn More <i class="fas fa-arrow-right ml-1"></i></a>
+                </div>
+                
+                <div class="bg-white rounded-xl shadow-md p-8 transition-transform hover:-translate-y-2">
+                    <div class="w-16 h-16 gradient-bg rounded-full flex items-center justify-center mb-6">
+                        <i class="fas fa-heartbeat text-white text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-4">Specialty Care</h3>
+                    <p class="text-gray-600 mb-4">Access to top specialists in cardiology, neurology, orthopedics, gastroenterology, and more for specialized medical treatment.</p>
+                    <a href="#" class="text-primary font-semibold hover:text-primary-dark transition-colors">Learn More <i class="fas fa-arrow-right ml-1"></i></a>
+                </div>
+                
+                <div class="bg-white rounded-xl shadow-md p-8 transition-transform hover:-translate-y-2">
+                    <div class="w-16 h-16 gradient-bg rounded-full flex items-center justify-center mb-6">
+                        <i class="fas fa-ambulance text-white text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-4">Emergency Care</h3>
+                    <p class="text-gray-600 mb-4">24/7 emergency services with state-of-the-art facilities and experienced emergency medicine physicians ready to handle any medical crisis.</p>
+                    <a href="#" class="text-primary font-semibold hover:text-primary-dark transition-colors">Learn More <i class="fas fa-arrow-right ml-1"></i></a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Specialties Section -->
+    <section class="py-16 bg-gradient-to-r from-blue-50 to-indigo-50" id="specialties">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-gray-800 mb-4 relative section-title inline-block">Our Specialties</h2>
+                <p class="text-xl text-gray-600 max-w-2xl mx-auto">Expert care in specialized medical fields</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="bg-white rounded-lg p-6 shadow-md text-center">
+                    <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-heart text-blue-500 text-xl"></i>
+                    </div>
+                    <h3 class="font-bold text-gray-800 mb-2">Cardiology</h3>
+                    <p class="text-sm text-gray-600">Heart and cardiovascular system care</p>
+                </div>
+                
+                <div class="bg-white rounded-lg p-6 shadow-md text-center">
+                    <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-brain text-green-500 text-xl"></i>
+                    </div>
+                    <h3 class="font-bold text-gray-800 mb-2">Neurology</h3>
+                    <p class="text-sm text-gray-600">Brain and nervous system disorders</p>
+                </div>
+                
+                <div class="bg-white rounded-lg p-6 shadow-md text-center">
+                    <div class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-bone text-purple-500 text-xl"></i>
+                    </div>
+                    <h3 class="font-bold text-gray-800 mb-2">Orthopedics</h3>
+                    <p class="text-sm text-gray-600">Musculoskeletal system care</p>
+                </div>
+                
+                <div class="bg-white rounded-lg p-6 shadow-md text-center">
+                    <div class="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-baby text-red-500 text-xl"></i>
+                    </div>
+                    <h3 class="font-bold text-gray-800 mb-2">Pediatrics</h3>
+                    <p class="text-sm text-gray-600">Healthcare for infants, children, and adolescents</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why Us Section -->
+    <section class="py-16 bg-white" id="why-us">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-gray-800 mb-4 relative section-title inline-block">Why Choose Us</h2>
+                <p class="text-xl text-gray-600 max-w-2xl mx-auto">What sets MediCare Excellence apart</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                <div>
+                    <div class="space-y-6">
+                        <div class="flex items-start">
+                            <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mr-4">
+                                <i class="fas fa-user-md text-primary text-xl"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-gray-800 mb-1">Expert Medical Team</h3>
+                                <p class="text-gray-600">Our board-certified physicians and specialists have years of experience and are committed to providing the highest quality care.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start">
+                            <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mr-4">
+                                <i class="fas fa-laptop-medical text-primary text-xl"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-gray-800 mb-1">Advanced Technology</h3>
+                                <p class="text-gray-600">We utilize the latest medical technology and equipment to ensure accurate diagnoses and effective treatments.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start">
+                            <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mr-4">
+                                <i class="fas fa-hand-holding-heart text-primary text-xl"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-gray-800 mb-1">Patient-Centered Care</h3>
+                                <p class="text-gray-600">We prioritize your comfort and well-being, providing personalized care plans tailored to your unique health needs.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div>
+                    <img src="https://images.unsplash.com/photo-1551076805-e1869033e561?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" 
+                         alt="Modern hospital facility" 
+                         class="rounded-xl shadow-lg w-full">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="py-16 bg-gradient-to-r from-blue-50 to-indigo-50" id="contact">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-gray-800 mb-4 relative section-title inline-block">Contact Us</h2>
+                <p class="text-xl text-gray-600 max-w-2xl mx-auto">Get in touch with our healthcare team for any questions or concerns</p>
+            </div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                <div>
+                    <h3 class="text-2xl font-bold text-gray-800 mb-6">Get In Touch</h3>
+                    <div class="space-y-6 mb-8">
+                        <div class="flex items-start">
+                            <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mr-4">
+                                <i class="fas fa-map-marker-alt text-primary text-xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-gray-800 mb-1">Our Location</h4>
+                                <p class="text-gray-600">456 Health Plaza, Medical District<br>Healthcare City, HC 12345</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start">
+                            <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mr-4">
+                                <i class="fas fa-phone text-primary text-xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-gray-800 mb-1">Phone Number</h4>
+                                <p class="text-gray-600">+1 (555) 123-4567<br>Emergency: +1 (555) 987-6543</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start">
+                            <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mr-4">
+                                <i class="fas fa-envelope text-primary text-xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-gray-800 mb-1">Email Address</h4>
+                                <p class="text-gray-600">care@medicare.com<br>appointments@medicare.com</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start">
+                            <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mr-4">
+                                <i class="fas fa-clock text-primary text-xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-gray-800 mb-1">Operating Hours</h4>
+                                <p class="text-gray-600">Monday - Friday: 8:00 AM - 8:00 PM<br>Saturday: 9:00 AM - 5:00 PM<br>Emergency: 24/7</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-blue-50 rounded-xl p-6">
+                        <h4 class="font-bold text-gray-800 mb-3">Emergency Contact</h4>
+                        <p class="text-gray-600 mb-4">For medical emergencies, please call our emergency line or visit our emergency department immediately.</p>
+                        <div class="flex items-center">
+                            <i class="fas fa-phone-alt text-red-500 text-xl mr-3"></i>
+                            <span class="font-bold text-red-600 text-lg">Emergency: +1 (555) 987-6543</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-xl p-8 shadow-md">
+                    <h3 class="text-2xl font-bold text-gray-800 mb-6">Send Us a Message</h3>
+                    <form id="contactForm">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                            <div>
+                                <label for="contactName" class="block text-gray-700 font-medium mb-2">Full Name</label>
+                                <input type="text" id="contactName" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" required>
+                            </div>
+                            <div>
+                                <label for="contactEmail" class="block text-gray-700 font-medium mb-2">Email Address</label>
+                                <input type="email" id="contactEmail" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" required>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-6">
+                            <label for="contactPhone" class="block text-gray-700 font-medium mb-2">Phone Number</label>
+                            <input type="tel" id="contactPhone" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+                        </div>
+                        
+                        <div class="mb-6">
+                            <label for="contactSubject" class="block text-gray-700 font-medium mb-2">Subject</label>
+                            <select id="contactSubject" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" required>
+                                <option value="">Select a subject</option>
+                                <option value="appointment">Appointment Request</option>
+                                <option value="general">General Inquiry</option>
+                                <option value="billing">Billing Question</option>
+                                <option value="medical">Medical Question</option>
+                                <option value="feedback">Feedback</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        
+                        <div class="mb-6">
+                            <label for="contactMessage" class="block text-gray-700 font-medium mb-2">Message</label>
+                            <textarea id="contactMessage" rows="5" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" required></textarea>
+                        </div>
+                        
+                        <button type="submit" class="w-full bg-primary text-white px-6 py-3 rounded-lg font-semibold hover:bg-primary-dark transition-colors">
+                            Send Message
+                        </button>
+                    </form>
+                </div>
+            </div>
+            
+            <div class="mt-12 bg-white rounded-xl shadow-md overflow-hidden">
+                <div class="h-64 bg-gray-300 flex items-center justify-center">
+                    <p class="text-gray-500">Map would be embedded here</p>
                 </div>
             </div>
         </div>
@@ -572,7 +883,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <h1></h1>
+                            
                             <div>
                                 <h4 class="text-lg font-semibold text-gray-700 mb-2">Family History & Lifestyle</h4>
                                 <div class="bg-white p-4 rounded-lg border border-gray-200">
@@ -587,6 +898,120 @@
                             <button type="button" class="bg-gray-300 text-gray-700 px-6 py-3 rounded-lg font-semibold hover:bg-gray-400 transition-colors prev-step" data-prev="4">Previous</button>
                             <button type="submit" class="bg-accent text-white px-6 py-3 rounded-lg font-semibold hover:bg-green-600 transition-colors">Submit Patient History</button>
                         </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Authentication Modal -->
+    <div id="authModal" class="modal">
+        <div class="modal-content auth-modal">
+            <div class="modal-header">
+                <h2 class="text-2xl font-bold text-gray-800">Account Access</h2>
+                <button id="closeAuthModal" class="text-gray-500 hover:text-gray-700">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- Tabs for Login and Signup -->
+                <div class="auth-tabs">
+                    <div class="auth-tab active" data-tab="login">Login</div>
+                    <div class="auth-tab" data-tab="signup">Sign Up</div>
+                </div>
+
+                <!-- Login Form -->
+                <form id="loginForm" class="auth-form active">
+                    <div class="mb-4">
+                        <label for="loginEmail" class="block text-gray-700 font-medium mb-2">Email Address</label>
+                        <input type="email" id="loginEmail" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" required>
+                        <div id="loginEmailError" class="error-message">Please enter a valid email address</div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label for="loginPassword" class="block text-gray-700 font-medium mb-2">Password</label>
+                        <input type="password" id="loginPassword" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" required>
+                        <div id="loginPasswordError" class="error-message">Password is required</div>
+                    </div>
+                    
+                    <div class="flex items-center justify-between mb-6">
+                        <div class="flex items-center">
+                            <input type="checkbox" id="rememberMe" class="mr-2 h-4 w-4 text-primary focus:ring-primary">
+                            <label for="rememberMe" class="text-gray-700 text-sm">Remember me</label>
+                        </div>
+                        <button type="button" id="forgotPasswordBtn" class="text-primary text-sm font-medium hover:text-primary-dark">Forgot Password?</button>
+                    </div>
+                    
+                    <button type="submit" class="w-full bg-primary text-white py-3 rounded-lg font-semibold hover:bg-primary-dark transition-colors mb-4">Login</button>
+                    
+                    <div class="text-center text-sm text-gray-600">
+                        Don't have an account? <button type="button" class="text-primary font-medium hover:text-primary-dark switch-tab" data-tab="signup">Sign up</button>
+                    </div>
+                </form>
+
+                <!-- Signup Form -->
+                <form id="signupForm" class="auth-form">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                        <div>
+                            <label for="signupFirstName" class="block text-gray-700 font-medium mb-2">First Name</label>
+                            <input type="text" id="signupFirstName" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" required>
+                            <div id="signupFirstNameError" class="error-message">First name is required</div>
+                        </div>
+                        <div>
+                            <label for="signupLastName" class="block text-gray-700 font-medium mb-2">Last Name</label>
+                            <input type="text" id="signupLastName" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" required>
+                            <div id="signupLastNameError" class="error-message">Last name is required</div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label for="signupEmail" class="block text-gray-700 font-medium mb-2">Email Address</label>
+                        <input type="email" id="signupEmail" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" required>
+                        <div id="signupEmailError" class="error-message">Please enter a valid email address</div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label for="signupPassword" class="block text-gray-700 font-medium mb-2">Password</label>
+                        <input type="password" id="signupPassword" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" required>
+                        <div class="password-strength" id="passwordStrength"></div>
+                        <div id="signupPasswordError" class="error-message">Password must be at least 8 characters with uppercase, lowercase, number and special character</div>
+                    </div>
+                    
+                    <div class="mb-6">
+                        <label for="signupConfirmPassword" class="block text-gray-700 font-medium mb-2">Confirm Password</label>
+                        <input type="password" id="signupConfirmPassword" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" required>
+                        <div id="signupConfirmPasswordError" class="error-message">Passwords do not match</div>
+                    </div>
+                    
+                    <div class="mb-6">
+                        <div class="flex items-center">
+                            <input type="checkbox" id="agreeTerms" class="mr-2 h-4 w-4 text-primary focus:ring-primary" required>
+                            <label for="agreeTerms" class="text-gray-700 text-sm">I agree to the <a href="#" class="text-primary hover:text-primary-dark">Terms of Service</a> and <a href="#" class="text-primary hover:text-primary-dark">Privacy Policy</a></label>
+                        </div>
+                        <div id="agreeTermsError" class="error-message">You must agree to the terms and conditions</div>
+                    </div>
+                    
+                    <button type="submit" class="w-full bg-primary text-white py-3 rounded-lg font-semibold hover:bg-primary-dark transition-colors mb-4">Create Account</button>
+                    
+                    <div class="text-center text-sm text-gray-600">
+                        Already have an account? <button type="button" class="text-primary font-medium hover:text-primary-dark switch-tab" data-tab="login">Login</button>
+                    </div>
+                </form>
+
+                <!-- Forgot Password Form -->
+                <form id="forgotPasswordForm" class="auth-form">
+                    <div class="mb-6">
+                        <p class="text-gray-700 mb-4">Enter your email address and we'll send you a link to reset your password.</p>
+                        <label for="forgotEmail" class="block text-gray-700 font-medium mb-2">Email Address</label>
+                        <input type="email" id="forgotEmail" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" required>
+                        <div id="forgotEmailError" class="error-message">Please enter a valid email address</div>
+                        <div id="forgotEmailSuccess" class="success-message">Password reset link sent successfully!</div>
+                    </div>
+                    
+                    <button type="submit" class="w-full bg-primary text-white py-3 rounded-lg font-semibold hover:bg-primary-dark transition-colors mb-4">Send Reset Link</button>
+                    
+                    <div class="text-center text-sm text-gray-600">
+                        Remember your password? <button type="button" class="text-primary font-medium hover:text-primary-dark switch-tab" data-tab="login">Back to Login</button>
                     </div>
                 </form>
             </div>
@@ -618,6 +1043,7 @@
                         <li><a href="#ncd" class="text-gray-300 hover:text-white transition-colors">NCD Care</a></li>
                         <li><a href="#services" class="text-gray-300 hover:text-white transition-colors">Our Services</a></li>
                         <li><a href="#specialties" class="text-gray-300 hover:text-white transition-colors">Specialties</a></li>
+                        <li><a href="#why-us" class="text-gray-300 hover:text-white transition-colors">Why Us</a></li>
                         <li><a href="#contact" class="text-gray-300 hover:text-white transition-colors">Contact</a></li>
                     </ul>
                 </div>
@@ -663,6 +1089,134 @@
     </footer>
 
     <script>
+        // Simple user storage (in a real app, this would be a backend)
+        const users = JSON.parse(localStorage.getItem('medicareUsers')) || [];
+        let currentUser = JSON.parse(localStorage.getItem('currentUser')) || null;
+
+        // Update UI based on login status
+        function updateUserStatus() {
+            const userStatus = document.getElementById('userStatus');
+            const mobileUserStatus = document.getElementById('mobileUserStatus');
+            
+            if (currentUser) {
+                userStatus.innerHTML = `
+                    <span class="text-gray-700">Welcome, ${currentUser.firstName}</span>
+                    <button id="logoutBtn" class="text-gray-700 font-medium hover:text-primary transition-colors">
+                        <i class="fas fa-sign-out-alt mr-1"></i> Logout
+                    </button>
+                    <button id="openPatientHistory" class="bg-primary text-white px-4 py-2 rounded-lg font-semibold hover:bg-primary-dark transition-colors">Patient History</button>
+                `;
+                
+                mobileUserStatus.innerHTML = `
+                    <div class="py-2 px-4 text-gray-700">Welcome, ${currentUser.firstName}</div>
+                    <button id="logoutBtnMobile" class="font-semibold text-gray-600 hover:text-primary py-2 px-4 rounded-lg transition-colors w-full text-left">
+                        <i class="fas fa-sign-out-alt mr-2"></i>Logout
+                    </button>
+                    <button id="openPatientHistoryMobile" class="font-semibold text-white bg-primary py-2 px-4 rounded-lg transition-colors w-full text-left mt-2">Patient History</button>
+                `;
+                
+                // Add logout event listeners
+                document.getElementById('logoutBtn').addEventListener('click', logout);
+                document.getElementById('logoutBtnMobile').addEventListener('click', logout);
+            } else {
+                userStatus.innerHTML = `
+                    <button id="openAuthModal" class="text-gray-700 font-medium hover:text-primary transition-colors">
+                        <i class="fas fa-user mr-1"></i> Login
+                    </button>
+                    <button id="openPatientHistory" class="bg-primary text-white px-4 py-2 rounded-lg font-semibold hover:bg-primary-dark transition-colors">Patient History</button>
+                `;
+                
+                mobileUserStatus.innerHTML = `
+                    <button id="openAuthModalMobile" class="font-semibold text-gray-600 hover:text-primary py-2 px-4 rounded-lg transition-colors w-full text-left">
+                        <i class="fas fa-user mr-2"></i>Login
+                    </button>
+                    <button id="openPatientHistoryMobile" class="font-semibold text-white bg-primary py-2 px-4 rounded-lg transition-colors w-full text-left mt-2">Patient History</button>
+                `;
+                
+                // Re-add auth modal event listeners
+                document.getElementById('openAuthModal').addEventListener('click', openAuthModal);
+                document.getElementById('openAuthModalMobile').addEventListener('click', openAuthModal);
+            }
+            
+            // Re-add patient history event listeners
+            document.getElementById('openPatientHistory').addEventListener('click', openPatientHistoryModal);
+            document.getElementById('openPatientHistoryMobile').addEventListener('click', openPatientHistoryModal);
+        }
+
+        function logout() {
+            currentUser = null;
+            localStorage.removeItem('currentUser');
+            updateUserStatus();
+        }
+
+        function openAuthModal() {
+            authModal.style.display = 'block';
+        }
+
+        function openPatientHistoryModal() {
+            if (!currentUser) {
+                alert('Please login first to access patient history');
+                authModal.style.display = 'block';
+                return;
+            }
+            modal.style.display = 'block';
+        }
+
+        // Password strength checker
+        function checkPasswordStrength(password) {
+            let strength = 0;
+            const strengthBar = document.getElementById('passwordStrength');
+            
+            if (password.length >= 8) strength++;
+            if (password.match(/[a-z]/)) strength++;
+            if (password.match(/[A-Z]/)) strength++;
+            if (password.match(/[0-9]/)) strength++;
+            if (password.match(/[^a-zA-Z0-9]/)) strength++;
+            
+            strengthBar.className = 'password-strength ';
+            if (strength <= 2) {
+                strengthBar.classList.add('password-weak');
+            } else if (strength <= 4) {
+                strengthBar.classList.add('password-medium');
+            } else {
+                strengthBar.classList.add('password-strong');
+            }
+            
+            return strength;
+        }
+
+        // Form validation functions
+        function validateEmail(email) {
+            const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return re.test(email);
+        }
+
+        function validatePassword(password) {
+            // At least 8 characters, 1 uppercase, 1 lowercase, 1 number, 1 special character
+            const re = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+            return re.test(password);
+        }
+
+        function showError(elementId, message) {
+            const errorElement = document.getElementById(elementId);
+            errorElement.textContent = message;
+            errorElement.style.display = 'block';
+        }
+
+        function hideError(elementId) {
+            const errorElement = document.getElementById(elementId);
+            errorElement.style.display = 'none';
+        }
+
+        function showSuccess(elementId, message) {
+            const successElement = document.getElementById(elementId);
+            successElement.textContent = message;
+            successElement.style.display = 'block';
+        }
+
+        // Initialize
+        updateUserStatus();
+
         // Mobile menu toggle
         document.getElementById('mobileMenuBtn').addEventListener('click', function() {
             document.getElementById('mobileMenu').classList.toggle('hidden');
@@ -670,34 +1224,28 @@
         
         // Modal functionality
         const modal = document.getElementById('patientHistoryModal');
-        const openButtons = [
-            document.getElementById('openPatientHistory'),
-            document.getElementById('openPatientHistoryMobile'),
-            document.getElementById('openPatientHistoryHero'),
-            document.getElementById('openPatientHistoryNCD'),
-            document.getElementById('openPatientHistoryCTA')
-        ];
+        const authModal = document.getElementById('authModal');
         const closeButton = document.getElementById('closeModal');
-        
-        openButtons.forEach(button => {
-            if (button) {
-                button.addEventListener('click', function() {
-                    modal.style.display = 'block';
-                });
-            }
-        });
+        const closeAuthButton = document.getElementById('closeAuthModal');
         
         closeButton.addEventListener('click', function() {
             modal.style.display = 'none';
+        });
+        
+        closeAuthButton.addEventListener('click', function() {
+            authModal.style.display = 'none';
         });
         
         window.addEventListener('click', function(event) {
             if (event.target === modal) {
                 modal.style.display = 'none';
             }
+            if (event.target === authModal) {
+                authModal.style.display = 'none';
+            }
         });
         
-        // Multi-step form functionality
+        // Multi-step form functionality (for patient history)
         const formSteps = document.querySelectorAll('.form-step');
         const progressSteps = document.querySelectorAll('.progress-step');
         const nextButtons = document.querySelectorAll('.next-step');
@@ -744,6 +1292,218 @@
             });
         });
         
+        // Authentication functionality
+        const authTabs = document.querySelectorAll('.auth-tab');
+        const authForms = document.querySelectorAll('.auth-form');
+        const switchTabButtons = document.querySelectorAll('.switch-tab');
+        
+        function showAuthForm(formType) {
+            // Update tabs
+            authTabs.forEach(tab => {
+                if (tab.getAttribute('data-tab') === formType) {
+                    tab.classList.add('active');
+                } else {
+                    tab.classList.remove('active');
+                }
+            });
+            
+            // Update forms
+            authForms.forEach(form => {
+                if (form.id === `${formType}Form`) {
+                    form.classList.add('active');
+                } else {
+                    form.classList.remove('active');
+                }
+            });
+            
+            // Clear all errors
+            document.querySelectorAll('.error-message').forEach(error => {
+                error.style.display = 'none';
+            });
+            document.querySelectorAll('.success-message').forEach(success => {
+                success.style.display = 'none';
+            });
+        }
+        
+        authTabs.forEach(tab => {
+            tab.addEventListener('click', function() {
+                const formType = this.getAttribute('data-tab');
+                showAuthForm(formType);
+            });
+        });
+        
+        switchTabButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const formType = this.getAttribute('data-tab');
+                showAuthForm(formType);
+            });
+        });
+        
+        // Forgot password functionality
+        document.getElementById('forgotPasswordBtn').addEventListener('click', function() {
+            showAuthForm('forgotPassword');
+        });
+        
+        // Password strength indicator
+        document.getElementById('signupPassword').addEventListener('input', function() {
+            checkPasswordStrength(this.value);
+        });
+        
+        // Form submissions with validation
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            let isValid = true;
+            
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            
+            // Validate email
+            if (!validateEmail(email)) {
+                showError('loginEmailError', 'Please enter a valid email address');
+                isValid = false;
+            } else {
+                hideError('loginEmailError');
+            }
+            
+            // Validate password
+            if (!password) {
+                showError('loginPasswordError', 'Password is required');
+                isValid = false;
+            } else {
+                hideError('loginPasswordError');
+            }
+            
+            if (isValid) {
+                // Check if user exists and password matches
+                const user = users.find(u => u.email === email && u.password === password);
+                if (user) {
+                    currentUser = user;
+                    localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                    updateUserStatus();
+                    authModal.style.display = 'none';
+                    this.reset();
+                    alert('Login successful!');
+                } else {
+                    showError('loginPasswordError', 'Invalid email or password');
+                }
+            }
+        });
+        
+        document.getElementById('signupForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            let isValid = true;
+            
+            const firstName = document.getElementById('signupFirstName').value;
+            const lastName = document.getElementById('signupLastName').value;
+            const email = document.getElementById('signupEmail').value;
+            const password = document.getElementById('signupPassword').value;
+            const confirmPassword = document.getElementById('signupConfirmPassword').value;
+            const agreeTerms = document.getElementById('agreeTerms').checked;
+            
+            // Validate first name
+            if (!firstName) {
+                showError('signupFirstNameError', 'First name is required');
+                isValid = false;
+            } else {
+                hideError('signupFirstNameError');
+            }
+            
+            // Validate last name
+            if (!lastName) {
+                showError('signupLastNameError', 'Last name is required');
+                isValid = false;
+            } else {
+                hideError('signupLastNameError');
+            }
+            
+            // Validate email
+            if (!validateEmail(email)) {
+                showError('signupEmailError', 'Please enter a valid email address');
+                isValid = false;
+            } else if (users.find(u => u.email === email)) {
+                showError('signupEmailError', 'Email already registered');
+                isValid = false;
+            } else {
+                hideError('signupEmailError');
+            }
+            
+            // Validate password
+            if (!validatePassword(password)) {
+                showError('signupPasswordError', 'Password must be at least 8 characters with uppercase, lowercase, number and special character');
+                isValid = false;
+            } else {
+                hideError('signupPasswordError');
+            }
+            
+            // Validate confirm password
+            if (password !== confirmPassword) {
+                showError('signupConfirmPasswordError', 'Passwords do not match');
+                isValid = false;
+            } else {
+                hideError('signupConfirmPasswordError');
+            }
+            
+            // Validate terms agreement
+            if (!agreeTerms) {
+                showError('agreeTermsError', 'You must agree to the terms and conditions');
+                isValid = false;
+            } else {
+                hideError('agreeTermsError');
+            }
+            
+            if (isValid) {
+                // Create new user
+                const newUser = {
+                    id: Date.now().toString(),
+                    firstName,
+                    lastName,
+                    email,
+                    password, // In a real app, this would be hashed
+                    createdAt: new Date().toISOString()
+                };
+                
+                users.push(newUser);
+                localStorage.setItem('medicareUsers', JSON.stringify(users));
+                
+                currentUser = newUser;
+                localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                updateUserStatus();
+                
+                authModal.style.display = 'none';
+                this.reset();
+                alert('Account created successfully!');
+            }
+        });
+        
+        document.getElementById('forgotPasswordForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            let isValid = true;
+            
+            const email = document.getElementById('forgotEmail').value;
+            
+            // Validate email
+            if (!validateEmail(email)) {
+                showError('forgotEmailError', 'Please enter a valid email address');
+                isValid = false;
+            } else if (!users.find(u => u.email === email)) {
+                showError('forgotEmailError', 'No account found with this email');
+                isValid = false;
+            } else {
+                hideError('forgotEmailError');
+            }
+            
+            if (isValid) {
+                // In a real app, you would send an email here
+                showSuccess('forgotEmailSuccess', 'Password reset link sent to your email!');
+                setTimeout(() => {
+                    showAuthForm('login');
+                    this.reset();
+                    hideError('forgotEmailError');
+                    document.getElementById('forgotEmailSuccess').style.display = 'none';
+                }, 3000);
+            }
+        });
+
         // Dynamic medication and allergy fields
         document.getElementById('add-medication').addEventListener('click', function() {
             const container = document.getElementById('medications-container');
@@ -962,6 +1722,18 @@
                 });
             });
         });
+
+        // Contact form submission
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Thank you for your message! We will get back to you as soon as possible.');
+            this.reset();
+        });
+
+        // Add event listeners for patient history buttons
+        document.getElementById('openPatientHistoryHero').addEventListener('click', openPatientHistoryModal);
+        document.getElementById('openPatientHistoryNCD').addEventListener('click', openPatientHistoryModal);
+        document.getElementById('openPatientHistoryCTA').addEventListener('click', openPatientHistoryModal);
     </script>
 </body>
 </html>
