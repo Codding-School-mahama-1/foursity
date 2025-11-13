@@ -210,3 +210,64 @@ revealCards();
     });
     document.getElementById('desktop-signup-btn').addEventListener('click', openSignupModal);
     document.getElementById('desktop-login-btn').addEventListener('click', openLoginModal);
+
+
+    // Add this to your existing script - ONLY saves to localStorage
+document.getElementById('signup-form').addEventListener('submit', (e) => {
+  e.preventDefault();
+  
+  // Get form data
+  const formData = {
+    firstname: document.getElementById('signup-firstname').value,
+    lastname: document.getElementById('signup-lastname').value,
+    email: document.getElementById('signup-email').value,
+    phone: document.getElementById('signup-phone').value,
+    password: document.getElementById('signup-password').value,
+    createdAt: new Date().toISOString()
+  };
+
+  // Get existing users from localStorage or create empty array
+  const existingUsers = JSON.parse(localStorage.getItem('users')) || [];
+  
+  // Add new user to array
+  existingUsers.push(formData);
+  
+  // Save to localStorage
+  localStorage.setItem('users', JSON.stringify(existingUsers));
+  
+  // Close modal and reset form (your existing functionality)
+  closeModals();
+  document.getElementById('signup-form').reset();
+});
+
+
+
+// Contact form localStorage functionality
+document.getElementById('contact-form').addEventListener('submit', (e) => {
+  e.preventDefault();
+  
+  // Get form data
+  const contactData = {
+    firstname: document.getElementById('first-name').value,
+    lastname: document.getElementById('last-name').value,
+    email: document.getElementById('email').value,
+    phone: document.getElementById('phone').value,
+    subject: document.getElementById('subject').value,
+    message: document.getElementById('message').value,
+    submittedAt: new Date().toISOString()
+  };
+
+  // Get existing contacts from localStorage or create empty array
+  const existingContacts = JSON.parse(localStorage.getItem('contacts')) || [];
+  
+  // Add new contact to array
+  existingContacts.push(contactData);
+  
+  // Save to localStorage
+  localStorage.setItem('contacts', JSON.stringify(existingContacts));
+  
+  alert('Message sent successfully!');
+  
+  // Reset form
+  document.getElementById('contact-form').reset();
+});
