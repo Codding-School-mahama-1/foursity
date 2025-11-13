@@ -8,47 +8,200 @@
   <link rel="stylesheet"
     href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      .sidebar {
+        width: 100%;
+        height: auto;
+      }
+      
+      .main-content {
+        margin-left: 0;
+      }
+      
+      .form-container {
+        width: 100%;
+        max-width: 100%;
+        padding: 1rem;
+      }
+      
+      .search-container {
+        width: 100%;
+        max-width: 100%;
+      }
+      
+      .grid-cols-3 {
+        grid-template-columns: 1fr;
+      }
+    }
+    
+    @media (max-width: 640px) {
+      .button-group {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+      
+      .button-group button {
+        width: 100%;
+      }
+      
+      .search-input-group {
+        flex-direction: column;
+      }
+      
+      .search-input-group input,
+      .search-input-group button {
+        border-radius: 0.5rem !important;
+        width: 100%;
+      }
+    }
+  </style>
 </head>
 
-<body class="bg-gray-100 text-gray-800">
-
-  <div class="flex min-h-screen">
+<body class="font-serif text-gray-800">
+ <!-- NAVBAR -->
+  <header class="bg-white shadow-md sticky top-0 z-50">
+    <div class="container mx-auto px-4">
+      <div class="flex justify-between items-center py-4">
+        <!-- Logo -->
+        <div class="flex items-center">
+          <span class="text-2xl font-bold text-blue-600"><a href="../index.html">🏥 MCH</a></span>
+        </div>
+        
+        <!-- Mobile menu button -->
+        <button id="mobile-menu-button" class="md:hidden text-gray-600 focus:outline-none">
+          <i class="fas fa-bars text-xl"></i>
+        </button>
+        
+        <!-- Navigation Links -->
+        <nav id="nav-links" class="hidden md:flex items-center space-x-6">
+          <a href="../index.html" class="text-gray-700 hover:text-blue-600 transition duration-300">Home</a>
+          <a href="../index.html#about" class="text-gray-700 hover:text-blue-600 transition duration-300">About</a>
+          
+          <!-- Services Dropdown -->
+          <div class="relative group">
+            <button class="flex items-center text-gray-700 hover:text-blue-600 transition duration-300">
+              Services <i class="fas fa-chevron-down ml-1 text-xs"></i>
+            </button>
+            <div class="absolute left-0 mt-2 w-64 bg-white shadow-xl rounded-lg py-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50">
+              <a href="../Servscies/Maternity&Brith Servecises.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">Maternity & Birth Services</a>
+             <a href="../Servscies/paitents-Servecises.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">Patient Services</a>
+              <a href="../Emergency.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">Emergency Care</a>
+              <a href="../Servscies/veccination.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">Vaccination Programs</a>
+              <a href="../Servscies/mentalhealth.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">Mental Health Support</a>
+              <a href="../Servscies/NCD.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">Chronic Disease Care</a>
+              <a href="../Servscies/Health Education.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">Health Awareness & Education</a>
+              <a href="../Servscies/Disability.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">Disability Care</a>
+            </div>
+          </div>
+          
+          <a href="/doctors.html" class="text-gray-700 hover:text-blue-600 transition duration-300">Doctors</a>
+          <a href="/Dashboard.html" class="text-gray-700 hover:text-blue-600 transition duration-300">Dashdoard</a>
+          <a href="../index.html#contact" class="text-gray-700 hover:text-blue-600 transition duration-300">Contact</a>
+          <a href="#faq" id="faq-nav-link" class="text-gray-700 hover:text-blue-600 transition duration-300">FAQ</a>
+        </nav>
+        
+        <!-- Actions -->
+        <div class="hidden md:flex items-center space-x-4">
+          <select class="border border-gray-300 rounded px-3 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <option value="en">English</option>
+            <option value="ar">العربية</option>
+            <option value="rw">Kinyarwanda</option>
+          </select>
+          <button id="desktop-signup-btn" class="bg-blue-600 text-white px-4 py-2 rounded...">Sign Up</button>
+          <button id="desktop-login-btn" class="border border-blue-600 text-blue-600 px-4 py-2 rounded...">Log In</button>
+        </div>
+      </div>
+      
+      <!-- Mobile Menu -->
+      <div id="mobile-menu" class="hidden md:hidden py-4 border-t border-gray-200">
+        <div class="flex flex-col space-y-4">
+          <div class="flex space-x-2">
+  <button id="mobile-signup-btn" class="flex-1 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition duration-300">Sign Up</button>
+  <button id="mobile-login-btn" class="flex-1 border border-blue-600 text-blue-600 px-4 py-2 rounded hover:bg-blue-600 hover:text-white transition duration-300">Log In</button>
+</div>
+          <a href="../index.html" class="text-gray-700 hover:text-blue-600">Home</a>
+          <a href="../index.html#about" class="text-gray-700 hover:text-blue-600">About</a>
+          
+          <!-- Mobile Services Dropdown -->
+          <div class="relative">
+            <button id="mobile-services-toggle" class="flex items-center text-gray-700 hover:text-blue-600 w-full justify-between">
+              Services <i class="fas fa-chevron-down"></i>
+            </button>
+            <div id="mobile-services-menu" class="hidden pl-4 mt-2 space-y-2">
+              <a href="../Servscies/Maternity&Brith Servecises.html" class="block text-gray-700 hover:text-blue-600">Maternity & Birth Services</a>
+              <a href="../Servscies/paitents-Servecises.html" class="block text-gray-700 hover:text-blue-600">Patient Services</a>
+              <a href="../Servscies/" class="block text-gray-700 hover:text-blue-600">Emergency Care</a>
+              <a href="../Servscies/veccination.html" class="block text-gray-700 hover:text-blue-600">Vaccination Programs</a>
+              <a href="../Servscies/mentalhealth.html" class="block text-gray-700 hover:text-blue-600">Mental Health Support</a>
+              <a href="../Servscies/NCD.html" class="block text-gray-700 hover:text-blue-600">Chronic Disease Care</a>
+              <a href="../Servscies/Health Education.html" class="block text-gray-700 hover:text-blue-600">Health Awareness & Education</a>
+              <a href="../Servscies/Disability.html" class="block text-gray-700 hover:text-blue-600">Disability Care</a>
+            </div>
+          </div>
+          
+          <a href="/doctors.html" class="text-gray-700 hover:text-blue-600">Doctors</a>
+          <a href="/Dashboard.html" class="text-gray-700 hover:text-blue-600">Dashdoard</a>
+          <a href="../index.html#contact" class="text-gray-700 hover:text-blue-600">Contact</a>
+          <a href="#faq" id="mobile-faq-link" class="text-gray-700 hover:text-blue-600">FAQ</a>
+          
+          <div class="pt-4 border-t border-gray-200">
+            <select class="w-full border border-gray-300 rounded px-3 py-2 text-sm mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500">
+              <option value="en">English</option>
+              <option value="ar">العربية</option>
+              <option value="rw">Kinyarwanda</option>
+            </select>
+            <div class="flex space-x-2">
+              <button  id="signup-btn" class="flex-1 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition duration-300">Sign Up</button>
+              <button  id="login-btn" class="flex-1 border border-blue-600 text-blue-600 px-4 py-2 rounded hover:bg-blue-600 hover:text-white transition duration-300">Log In</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+  
+  <div class="flex min-h-screen bg-gray-50 flex-col md:flex-row">
     <!-- Sidebar -->
-    <aside class="w-64 bg-blue-500 text-white flex flex-col">
+    <aside class="sidebar w-full md:w-64 bg-blue-500 text-white flex flex-col">
       <div class="text-2xl font-bold p-6 border-b border-blue-600 font-mono">
         Hospital Admin
       </div>
       <nav class="flex-1 p-4 space-y-2">
         <a href="../Dashboard.html"
-          class="font-semibold text-xl block p-2 rounded hover:bg-purple-500">
-          <i class="fa-solid fa-hospital text-yellow-500 text-2xl"></i>
-          Dashboard
+          class="font-semibold text-lg md:text-xl block p-2 rounded hover:bg-purple-500 flex items-center">
+          <i class="fa-solid fa-hospital text-yellow-500 text-xl md:text-2xl mr-2"></i>
+          <span>Dashboard</span>
         </a>
         <a href="./Briths Servecises.html"
-          class="font-semibold block p-2 rounded hover:bg-purple-500">
-          <i class="fa-solid fa-people-roof text-gray-400 text-3xl"></i>
-          Register Birth
+          class="font-semibold text-lg md:text-xl block p-2 rounded hover:bg-purple-500 flex items-center">
+          <i class="fa-solid fa-people-roof text-gray-400 text-xl md:text-3xl mr-2"></i>
+          <span>Register Birth</span>
         </a>
       </nav>
     </aside>
 
     <!-- Main Content -->
-    <main class="flex-1 p-6 space-y-8 overflow-y-auto bg-white">
+    <main class="main-content flex-1 p-4 md:p-6 space-y-6 md:space-y-8 overflow-y-auto bg-gray-50">
       <section id="register-patient"
-        class="min-h-screen flex flex-col items-center justify-center">
-        <h2 class="text-3xl font-extrabold mb-4 text-center">Register New Patient</h2>
+        class="min-h-screen flex flex-col items-center justify-center py-4">
+        <h2 class="text-2xl md:text-3xl font-extrabold mb-4 text-center">Register New Patient</h2>
 
         <!-- Search box -->
-        <div id="findPatient" class="p-2 m-4 w-96 text-center font-sans">
-          <input id="findId" type="text" placeholder="Find patient details by ID"
-            class="border border-orange-400 bg-slate-200 p-2 rounded-l-2xl">
-          <button id="findById"
-            class="bg-green-400 text-white p-2 rounded-r-2xl">Search</button>
+        <div id="findPatient" class="search-container p-2 m-4 w-full md:w-96 text-center font-sans">
+          <div class="search-input-group flex flex-col md:flex-row">
+            <input id="findId" type="text" placeholder="Find patient details by ID"
+              class="border border-orange-400 bg-slate-200 p-2 rounded-t-2xl md:rounded-l-2xl md:rounded-t-none flex-grow">
+            <button id="findById"
+              class="bg-green-400 text-white p-2 rounded-b-2xl md:rounded-r-2xl md:rounded-b-none">Search</button>
+          </div>
         </div>
 
         <!-- Form section -->
         <form id="patientForm"
-          class="bg-slate-500 shadow rounded-2xl p-6 space-y-4 w-[790px]">
+          class="form-container bg-gray-400 shadow rounded-2xl p-4 md:p-6 space-y-4 w-full max-w-[790px]">
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label for="EnterName" class="block text-sm font-medium mb-1">Full
@@ -111,170 +264,337 @@
           </div>
 
           <!-- Buttons -->
-          <div class="space-x-2">
+          <div class="button-group space-y-2 md:space-y-0 md:space-x-2">
             <button id="enterBtn" type="button"
-              class="bg-green-500 text-white px-6 py-2 rounded-xl hover:bg-green-700">INSERT</button>
+              class="bg-green-500 text-white px-6 py-2 rounded-xl hover:bg-green-700 w-full md:w-auto">INSERT</button>
             <button id="updateBtn" type="button"
-              class="bg-blue-500 text-white px-6 py-2 rounded-xl hover:bg-blue-700">UPDATE</button>
+              class="bg-blue-500 text-white px-6 py-2 rounded-xl hover:bg-blue-700 w-full md:w-auto">UPDATE</button>
             <button id="removeBtn" type="button"
-              class="bg-red-500 text-white px-6 py-2 rounded-xl hover:bg-red-700">REMOVE</button>
+              class="bg-red-500 text-white px-6 py-2 rounded-xl hover:bg-red-700 w-full md:w-auto">REMOVE</button>
           </div>
         </form>
 
         <!-- Search Results -->
         <div id="searchResult"
-          class="bg-gray-200 shadow rounded-2xl p-6 mt-6 w-[790px] hidden">
-          <h3 class="text-xl text-center font-bold mb-4 text-center text-blue-700">Patient
+          class="form-container bg-gray-200 shadow rounded-2xl p-4 md:p-6 mt-6 w-full max-w-[790px] hidden">
+          <h3 class="text-xl text-center font-bold mb-4 text-blue-700">Patient
             Details</h3>
-            <div class="text-center grid grid-cols-3 m-4 ">
-          <p id="showName" ></p>
-          <p id="showAge"></p>
-          <p id="showGender"></p>
-          <p id="showDisease"></p>
-          <p id="showContact"></p>
-          <p id="showAddress"></p>
-          </div>
+            <div class="text-center grid grid-cols-1 md:grid-cols-3 gap-4 m-4">
+              <div><strong>Name:</strong> <p id="showName"></p></div>
+              <div><strong>Age:</strong> <p id="showAge"></p></div>
+              <div><strong>Gender:</strong> <p id="showGender"></p></div>
+              <div><strong>Disease:</strong> <p id="showDisease"></p></div>
+              <div><strong>Contact:</strong> <p id="showContact"></p></div>
+              <div><strong>Address:</strong> <p id="showAddress"></p></div>
+            </div>
           <div class="mt-4 text-center">
             <button id="backBtn"
-              class="bg-blue-500 text-white px-6 py-2 rounded-xl hover:bg-blue-700">Back
+              class="bg-blue-500 text-white px-6 py-2 rounded-xl hover:bg-blue-700 w-full md:w-auto">Back
               to Form</button>
           </div>
         </div>
       </section>
     </main>
+    
   </div>
+   <!-- Sign Up Modal -->
+    <div id="signup-modal" class="fixed inset-0 hidden items-center justify-center z-50">
+        <div class="absolute inset-0 bg-black/50"></div>
+        <div class="auth-modal relative z-10 w-11/12 sm:max-w-md mx-auto rounded-xl shadow-2xl overflow-hidden">
+            <div class="bg-white p-6 sm:p-8">
+                <!-- Header -->
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-2xl font-bold text-blue-700">Create Account</h2>
+                    <button id="signup-close" class="text-gray-500 hover:text-gray-700 text-xl">&times;</button>
+                </div>
 
-  <!-- Firebase Script -->
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-app.js";
-    import { getDatabase, ref, set, update, remove, get, child }
-      from "https://www.gstatic.com/firebasejs/12.5.0/firebase-database.js";
+                <!-- Form -->
+                <form id="signup-form" class="space-y-4">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label for="signup-firstname" class="block text-sm font-medium text-gray-700 mb-1">First Name</label>
+                            <input type="text" id="signup-firstname" name="firstname" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" required>
+                        </div>
+                        <div>
+                            <label for="signup-lastname" class="block text-sm font-medium text-gray-700 mb-1">Last Name</label>
+                            <input type="text" id="signup-lastname" name="lastname" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" required>
+                        </div>
+                    </div>
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyCZ774I4-U7CnvJ0R43zJifEfE5sGM48lY",
-      authDomain: "halawani-7126f.firebaseapp.com",
-      databaseURL: "https://halawani-7126f-default-rtdb.firebaseio.com",
-      projectId: "halawani-7126f",
-      storageBucket: "halawani-7126f.firebasestorage.app",
-      messagingSenderId: "1065152267257",
-      appId: "1:1065152267257:web:636940f4c120e4ae927328"
-    };
+                    <div>
+                        <label for="signup-email" class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
+                        <input type="email" id="signup-email" name="email" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" required>
+                    </div>
 
-    const app = initializeApp(firebaseConfig);
-    const db = getDatabase(app);
+                    <div>
+                        <label for="signup-phone" class="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>
+                        <input type="tel" id="signup-phone" name="phone" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                    </div>
 
-    // Elements
-    const form = document.getElementById('patientForm');
-    const searchResult = document.getElementById('searchResult');
-    const findById = document.getElementById('findById');
-    const backBtn = document.getElementById('backBtn');
-    const findId = document.getElementById('findId');
+                    <div>
+                        <label for="signup-password" class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+                        <input type="password" id="signup-password" name="password" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" required>
+                    </div>
 
-    const EnterName = document.getElementById('EnterName');
-    const EnterAge = document.getElementById('EnterAge');
-    const EnterGender = document.getElementById('EnterGender');
-    const EnterDisease = document.getElementById('EnterDisease');
-    const EnterContact = document.getElementById('EnterContact');
-    const EnterAddress = document.getElementById('EnterAddress');
-    const EnterId = document.getElementById('EnterId');
+                    <div>
+                        <label for="signup-confirm-password" class="block text-sm font-medium text-gray-700 mb-1">Confirm Password</label>
+                        <input type="password" id="signup-confirm-password" name="confirm-password" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" required>
+                    </div>
 
-    const enterBtn = document.getElementById('enterBtn');
-    const updateBtn = document.getElementById('updateBtn');
-    const removeBtn = document.getElementById('removeBtn');
+                    <div class="flex items-center">
+                        <input type="checkbox" id="signup-terms" name="terms" class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded" required>
+                        <label for="signup-terms" class="ml-2 block text-sm text-gray-700">
+                            I agree to the <a href="#" class="text-blue-600 hover:text-blue-500">Terms & Conditions</a>
+                        </label>
+                    </div>
 
-    const showName = document.getElementById('showName');
-    const showAge = document.getElementById('showAge');
-    const showGender = document.getElementById('showGender');
-    const showDisease = document.getElementById('showDisease');
-    const showContact = document.getElementById('showContact');
-    const showAddress = document.getElementById('showAddress');
+                    <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-4 rounded-lg transition duration-300 transform hover:-translate-y-0.5">
+                        Create Account
+                    </button>
 
-    // INSERT
-    function enterData() {
-      if (!EnterId.value.trim()) {
-        alert("Please enter an ID");
-        return;
-      }
-      set(ref(db, "Person/" + EnterId.value), {
-        Name: EnterName.value,
-        Age: EnterAge.value,
-        Gender: EnterGender.value,
-        Disease: EnterDisease.value,
-        Contact: EnterContact.value,
-        Address: EnterAddress.value
-      }).then(() => alert("Data added successfully"))
-        .catch(err => alert("Error: " + err.message));
-    }
+                    <div class="text-center text-sm text-gray-600">
+                        Already have an account? 
+                        <button type="button" id="switch-to-login" class="text-blue-600 hover:text-blue-500 font-semibold">Log In</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 
-    // UPDATE
-    function updateData() {
-      if (!EnterId.value.trim()) {
-        alert("Please enter an ID to update");
-        return;
-      }
-      update(ref(db, "Person/" + EnterId.value), {
-        Name: EnterName.value,
-        Age: EnterAge.value,
-        Gender: EnterGender.value,
-        Disease: EnterDisease.value,
-        Contact: EnterContact.value,
-        Address: EnterAddress.value
-      }).then(() => alert("Data updated successfully"))
-        .catch(err => alert("Error: " + err.message));
-    }
+    <!-- Login Modal -->
+    <div id="login-modal" class="fixed inset-0 hidden items-center justify-center z-50">
+        <div class="absolute inset-0 bg-black/50"></div>
+        <div class="auth-modal relative z-10 w-11/12 sm:max-w-md mx-auto rounded-xl shadow-2xl overflow-hidden">
+            <div class="bg-white p-6 sm:p-8">
+                <!-- Header -->
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-2xl font-bold text-blue-700">Welcome Back</h2>
+                    <button id="login-close" class="text-gray-500 hover:text-gray-700 text-xl">&times;</button>
+                </div>
 
-    // REMOVE
-    function removeData() {
-      if (!EnterId.value.trim()) {
-        alert("Please enter an ID to remove");
-        return;
-      }
-      remove(ref(db, "Person/" + EnterId.value))
-        .then(() => alert("Data removed successfully"))
-        .catch(err => alert("Error: " + err.message));
-    }
+                <!-- Form -->
+                <form id="login-form" class="space-y-4">
+                    <div>
+                        <label for="login-email" class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
+                        <input type="email" id="login-email" name="email" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" required>
+                    </div>
 
-    // FIND
-    function findData() {
-      if (!findId.value.trim()) {
-        alert("Please enter an ID to search");
-        return;
-      }
+                    <div>
+                        <label for="login-password" class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+                        <input type="password" id="login-password" name="password" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" required>
+                    </div>
 
-      const dbRef = ref(db);
-      get(child(dbRef, "Person/" + findId.value))
-        .then(snapshot => {
-          if (snapshot.exists()) {
-            const data = snapshot.val();
-            showName.textContent = `Name: ${data.Name}`;
-            showAge.textContent = `Age: ${data.Age}`;
-            showGender.textContent = `Gender: ${data.Gender}`;
-            showDisease.textContent = `Disease: ${data.Disease}`;
-            showContact.textContent = `Contact: ${data.Contact}`;
-            showAddress.textContent = `Address: ${data.Address}`;
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center">
+                            <input type="checkbox" id="remember-me" name="remember" class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
+                            <label for="remember-me" class="ml-2 block text-sm text-gray-700">Remember me</label>
+                        </div>
+                        <a href="#" class="text-sm text-blue-600 hover:text-blue-500">Forgot password?</a>
+                    </div>
 
-            form.classList.add("hidden");
-            searchResult.classList.remove("hidden");
+                    <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-4 rounded-lg transition duration-300 transform hover:-translate-y-0.5">
+                        Sign In
+                    </button>
+
+                    <div class="text-center text-sm text-gray-600">
+                        Don't have an account? 
+                        <button type="button" id="switch-to-signup" class="text-blue-600 hover:text-blue-500 font-semibold">Sign Up</button>
+                    </div>
+
+                    <!-- Social Login -->
+                    <div class="mt-6">
+                        <div class="relative">
+                            <div class="absolute inset-0 flex items-center">
+                                <div class="w-full border-t border-gray-300"></div>
+                            </div>
+                            <div class="relative flex justify-center text-sm">
+                                <span class="px-2 bg-white text-gray-500">Or continue with</span>
+                            </div>
+                        </div>
+
+                        <div class="mt-4 grid grid-cols-2 gap-3">
+                            <button type="button" class="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 transition duration-300">
+                                <i class="fab fa-google text-red-500"></i>
+                                <span class="ml-2">Google</span>
+                            </button>
+                            <button type="button" class="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 transition duration-300">
+                                <i class="fab fa-facebook text-blue-600"></i>
+                                <span class="ml-2">Facebook</span>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- FAQ Modal -->
+    <div id="faq-modal" class="fixed inset-0 hidden items-center justify-center z-50">
+        <div class="absolute inset-0 bg-black/50"></div>
+        <div class="modal-bg relative z-10 w-11/12 sm:max-w-xl md:max-w-2xl lg:max-w-4xl mx-auto rounded-xl shadow-2xl overflow-hidden">
+
+            <!-- Header -->
+            <div class="flex justify-between items-center p-4 sm:p-6 border-b border-gray-300 bg-white">
+                <h2 class="text-2xl font-bold text-blue-700">Frequently Asked Questions</h2>
+                <button id="faq-close" class="text-gray-700 hover:text-gray-900 text-2xl">&times;</button>
+            </div>
+
+            <!-- Tabs -->
+            <div class="flex flex-wrap border-b border-gray-300 bg-white text-sm sm:text-base">
+                <button class="tab-btn px-4 py-2 font-medium text-blue-600 border-b-2 border-blue-600 focus:outline-none active" data-tab="general">General</button>
+                <button class="tab-btn px-4 py-2 font-medium text-gray-600 hover:text-blue-600 border-b-2 border-transparent" data-tab="emergency">Emergency</button>
+                <button class="tab-btn px-4 py-2 font-medium text-gray-600 hover:text-blue-600 border-b-2 border-transparent" data-tab="mental">Mental Health</button>
+                <button class="tab-btn px-4 py-2 font-medium text-gray-600 hover:text-blue-600 border-b-2 border-transparent" data-tab="chronic">Chronic Diseases</button>
+                <button class="tab-btn px-4 py-2 font-medium text-gray-600 hover:text-blue-600 border-b-2 border-transparent" data-tab="disability">Disability</button>
+                <button class="tab-btn px-4 py-2 font-medium text-gray-600 hover:text-blue-600 border-b-2 border-transparent" data-tab="doctors">Doctors</button>
+                <button class="tab-btn px-4 py-2 font-medium text-gray-600 hover:text-blue-600 border-b-2 border-transparent" data-tab="vaccination">Vaccination</button>
+            </div>
+            <!-- Content -->
+            <div class="p-4 sm:p-6 max-h-[80vh] sm:max-h-[70vh] overflow-y-auto space-y-4 bg-white">
+                <!-- General -->
+                <div class="tab-content " id="general">
+                    <div class="faq-item">
+                        <button class="faq-question w-full text-left py-2 font-semibold flex justify-between items-center">
+                            What are your working hours?
+                        </button>
+                        <div class="faq-answer pl-4 text-gray-700">
+                            We are open 24/7 for emergencies and 8 AM - 8 PM for regular appointments.
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-question w-full text-left py-2 font-semibold flex justify-between items-center">
+                            How can I book an appointment?
+                        </button>
+                        <div class="faq-answer pl-4 text-gray-700">
+                            You can book via our website, by phone, or at the hospital reception.
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-question w-full text-left py-2 font-semibold flex justify-between items-center">
+                            Do you accept insurance?
+                        </button>
+                        <div class="faq-answer pl-4 text-gray-700">
+                            Yes, we accept most local and international insurance providers.
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-question w-full text-left py-2 font-semibold flex justify-between items-center">
+                            Where is the hospital located?
+                        </button>
+                        <div class="faq-answer pl-4 text-gray-700">
+                            Mahama Refugee Camp, Kirehe District, Rwanda. See map on the contact page for directions.
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-question w-full text-left py-2 font-semibold flex justify-between items-center">
+                            Is parking available?
+                        </button>
+                        <div class="faq-answer pl-4 text-gray-700">
+                            Yes, free parking is available for patients and visitors.
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-question w-full text-left py-2 font-semibold flex justify-between items-center">
+                            What should I bring for my first visit?
+                        </button>
+                        <div class="faq-answer pl-4 text-gray-700">
+                            Bring ID, insurance info, and any previous medical records.
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-question w-full text-left py-2 font-semibold flex justify-between items-center">
+                            Do you offer home visits or telemedicine services?
+                        </button>
+                        <div class="faq-answer pl-4 text-gray-700">
+                            Yes, we offer both home visits and telemedicine consultations where applicable.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Other FAQ tabs remain the same -->
+                <!-- ... -->
+            </div>
+        </div>
+    </div>
+
+  <!-- Menu Functionality Script -->
+  <script>
+    // Mobile menu functionality
+    document.addEventListener('DOMContentLoaded', function() {
+      const mobileMenuButton = document.getElementById('mobile-menu-button');
+      const mobileMenu = document.getElementById('mobile-menu');
+      const mobileServicesToggle = document.getElementById('mobile-services-toggle');
+      const mobileServicesMenu = document.getElementById('mobile-services-menu');
+      
+      // Toggle main mobile menu
+      if (mobileMenuButton && mobileMenu) {
+        mobileMenuButton.addEventListener('click', function() {
+          mobileMenu.classList.toggle('hidden');
+          // Change icon based on menu state
+          const icon = mobileMenuButton.querySelector('i');
+          if (mobileMenu.classList.contains('hidden')) {
+            icon.classList.remove('fa-times');
+            icon.classList.add('fa-bars');
           } else {
-            alert("Patient not found");
+            icon.classList.remove('fa-bars');
+            icon.classList.add('fa-times');
           }
-        })
-        .catch(err => alert("Error: " + err.message));
-    }
-
-    // BACK
-    backBtn.addEventListener("click", () => {
-      searchResult.classList.add("hidden");
-      form.classList.remove("hidden");
+        });
+      }
+      
+      // Toggle mobile services dropdown
+      if (mobileServicesToggle && mobileServicesMenu) {
+        mobileServicesToggle.addEventListener('click', function() {
+          mobileServicesMenu.classList.toggle('hidden');
+          // Rotate chevron icon
+          const chevron = mobileServicesToggle.querySelector('i');
+          chevron.classList.toggle('fa-chevron-down');
+          chevron.classList.toggle('fa-chevron-up');
+        });
+      }
+      
+      // Close mobile menu when clicking on a link
+      const mobileMenuLinks = mobileMenu.querySelectorAll('a');
+      mobileMenuLinks.forEach(link => {
+        link.addEventListener('click', function() {
+          mobileMenu.classList.add('hidden');
+          // Reset menu icon
+          const icon = mobileMenuButton.querySelector('i');
+          icon.classList.remove('fa-times');
+          icon.classList.add('fa-bars');
+          // Close services dropdown if open
+          if (!mobileServicesMenu.classList.contains('hidden')) {
+            mobileServicesMenu.classList.add('hidden');
+            const chevron = mobileServicesToggle.querySelector('i');
+            chevron.classList.remove('fa-chevron-up');
+            chevron.classList.add('fa-chevron-down');
+          }
+        });
+      });
+      
+      // Close mobile menu when clicking outside
+      document.addEventListener('click', function(event) {
+        if (!event.target.closest('#mobile-menu') && 
+            !event.target.closest('#mobile-menu-button') &&
+            !mobileMenu.classList.contains('hidden')) {
+          mobileMenu.classList.add('hidden');
+          // Reset menu icon
+          const icon = mobileMenuButton.querySelector('i');
+          icon.classList.remove('fa-times');
+          icon.classList.add('fa-bars');
+          // Close services dropdown if open
+          if (!mobileServicesMenu.classList.contains('hidden')) {
+            mobileServicesMenu.classList.add('hidden');
+            const chevron = mobileServicesToggle.querySelector('i');
+            chevron.classList.remove('fa-chevron-up');
+            chevron.classList.add('fa-chevron-down');
+          }
+        }
+      });
     });
-
-    // Event listeners
-    enterBtn.addEventListener("click", enterData);
-    updateBtn.addEventListener("click", updateData);
-    removeBtn.addEventListener("click", removeData);
-    findById.addEventListener("click", findData);
   </script>
+
+<script type="module" src="../JavaScript-Files/Dashboard.js"></script>
 </body>
 
 </html>
-

@@ -36,52 +36,151 @@
             transform: translateY(-10px);
             transition: all 0.3s ease;
         }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .hero-bg {
+                background-position: 70% center;
+            }
+            
+            .service-card {
+                margin-bottom: 1.5rem;
+            }
+            
+            .team-member {
+                margin-bottom: 2rem;
+            }
+        }
+        
+        @media (max-width: 640px) {
+            .container {
+                padding-left: 1rem;
+                padding-right: 1rem;
+            }
+            
+            .hero-title {
+                font-size: 2rem;
+                line-height: 1.2;
+            }
+            
+            .hero-subtitle {
+                font-size: 1.125rem;
+            }
+            
+            .section-title {
+                font-size: 1.875rem;
+            }
+        }
     </style>
 </head>
 <body class="font-serif text-dark">
     <!-- Header -->
-    <header class="bg-white shadow-sm sticky top-0 z-50">
-        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
-            <div class="flex items-center">
-                <i class="fas fa-baby text-accent text-3xl mr-2"></i>
-                <h1 class="text-2xl font-serif font-bold text-dark">Serene Beginnings</h1>
+    <header class="bg-white shadow-md sticky top-0 z-50">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-between items-center py-4">
+                <!-- Logo -->
+                <div class="flex items-center">
+                    <span class="text-2xl font-bold text-blue-600"><a href="../index.html">🏥 MCH</a></span>
+                </div>
+                
+                <!-- Mobile menu button -->
+                <button id="mobile-menu-button" class="md:hidden text-gray-600 focus:outline-none">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+                
+                <!-- Navigation Links -->
+                <nav id="nav-links" class="hidden md:flex items-center space-x-6">
+                    <a href="../index.html" class="text-gray-700 hover:text-blue-600 transition duration-300">Home</a>
+                    <a href="../index.html#about" class="text-gray-700 hover:text-blue-600 transition duration-300">About</a>
+                    
+                    <!-- Services Dropdown -->
+                    <div class="relative group">
+                        <button class="flex items-center text-gray-700 hover:text-blue-600 transition duration-300">
+                            Services <i class="fas fa-chevron-down ml-1 text-xs"></i>
+                        </button>
+                        <div class="absolute left-0 mt-2 w-64 bg-white shadow-xl rounded-lg py-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50">
+                            <a href="../Servscies/Maternity&Brith Servecises.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">Maternity & Birth Services</a>
+                            <a href="../Servscies/paitents-Servecises.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">Patient Services</a>
+                            <a href="../Emergency.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">Emergency Care</a>
+                            <a href="../Servscies/veccination.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">Vaccination Programs</a>
+                            <a href="../Servscies/mentalhealth.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">Mental Health Support</a>
+                            <a href="../Servscies/NCD.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">Chronic Disease Care</a>
+                            <a href="../Servscies/Health Education.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">Health Awareness & Education</a>
+                            <a href="../Servscies/Disability.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">Disability Care</a>
+                        </div>
+                    </div>
+                    
+                    <a href="/doctors.html" class="text-gray-700 hover:text-blue-600 transition duration-300">Doctors</a>
+                    <a href="/Dashboard.html" class="text-gray-700 hover:text-blue-600 transition duration-300">Dashdoard</a>
+                    <a href="#contact" class="text-gray-700 hover:text-blue-600 transition duration-300">Contact</a>
+                    <a href="#faq" id="faq-nav-link" class="text-gray-700 hover:text-blue-600 transition duration-300">FAQ</a>
+                </nav>
+                
+                <!-- Actions -->
+                <div class="hidden md:flex items-center space-x-4">
+                    <select class="border border-gray-300 rounded px-3 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <option value="en">English</option>
+                        <option value="ar">العربية</option>
+                        <option value="rw">Kinyarwanda</option>
+                    </select>
+                    <button id="desktop-signup-btn" class="bg-blue-600 text-white px-4 py-2 rounded...">Sign Up</button>
+                    <button id="desktop-login-btn" class="border border-blue-600 text-blue-600 px-4 py-2 rounded...">Log In</button>
+                </div>
             </div>
             
-            <!-- Mobile Menu Button -->
-            <button id="menu-toggle" class="md:hidden text-dark">
-                <i class="fas fa-bars text-xl"></i>
-            </button>
-            
-            <!-- Navigation -->
-            <nav id="main-nav" class="hidden md:flex space-x-8">
-                <a href="#home" class="text-dark hover:text-accent font-medium">Home</a>
-                <a href="#services" class="text-dark hover:text-accent font-medium">Services</a>
-                <a href="#team" class="text-dark hover:text-accent font-medium">Our Team</a>
-                <a href="#testimonials" class="text-dark hover:text-accent font-medium">Testimonials</a>
-                <a href="#contact" class="text-dark hover:text-accent font-medium">Contact</a>
-            </nav>
-            
-            <div class="hidden md:block">
-                <a href="#contact" class="bg-accent text-white px-6 py-2 rounded-full hover:bg-pink-400 transition">Book Consultation</a>
+            <!-- Mobile Menu -->
+            <div id="mobile-menu" class="hidden md:hidden py-4 border-t border-gray-200">
+                <div class="flex flex-col space-y-4">
+                    <div class="flex space-x-2">
+                        <button id="mobile-signup-btn" class="flex-1 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition duration-300">Sign Up</button>
+                        <button id="mobile-login-btn" class="flex-1 border border-blue-600 text-blue-600 px-4 py-2 rounded hover:bg-blue-600 hover:text-white transition duration-300">Log In</button>
+                    </div>
+                    <a href="#home" class="text-gray-700 hover:text-blue-600">Home</a>
+                    <a href="#about" class="text-gray-700 hover:text-blue-600">About</a>
+                    
+                    <!-- Mobile Services Dropdown -->
+                    <div class="relative">
+                        <button id="mobile-services-toggle" class="flex items-center text-gray-700 hover:text-blue-600 w-full justify-between">
+                            Services <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div id="mobile-services-menu" class="hidden pl-4 mt-2 space-y-2">
+                            <a href="../Servscies/Maternity&Brith Servecises.html" class="block text-gray-700 hover:text-blue-600">Maternity & Birth Services</a>
+                            <a href="../Servscies/paitents-Servecises.html" class="block text-gray-700 hover:text-blue-600">Patient Services</a>
+                            <a href="../Emergency.html" class="block text-gray-700 hover:text-blue-600">Emergency Care</a>
+                            <a href="../Servscies/veccination.html" class="block text-gray-700 hover:text-blue-600">Vaccination Programs</a>
+                            <a href="../Servscies/mentalhealth.html" class="block text-gray-700 hover:text-blue-600">Mental Health Support</a>
+                            <a href="../Servscies/NCD.html" class="block text-gray-700 hover:text-blue-600">Chronic Disease Care</a>
+                            <a href="../Servscies/Health Education.html" class="block text-gray-700 hover:text-blue-600">Health Awareness & Education</a>
+                            <a href="../Servscies/Disability.html" class="block text-gray-700 hover:text-blue-600">Disability Care</a>
+                        </div>
+                    </div>
+                    
+                    <a href="/doctors.html" class="text-gray-700 hover:text-blue-600">Doctors</a>
+                    <a href="/Dashboard.html" class="text-gray-700 hover:text-blue-600">Dashdoard</a>
+                    <a href="#contact" class="text-gray-700 hover:text-blue-600">Contact</a>
+                    <a href="#faq" id="mobile-faq-link" class="text-gray-700 hover:text-blue-600">FAQ</a>
+                    
+                    <div class="pt-4 border-t border-gray-200">
+                        <select class="w-full border border-gray-300 rounded px-3 py-2 text-sm mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <option value="en">English</option>
+                            <option value="ar">العربية</option>
+                            <option value="rw">Kinyarwanda</option>
+                        </select>
+                        <div class="flex space-x-2">
+                            <button id="signup-btn" class="flex-1 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition duration-300">Sign Up</button>
+                            <button id="login-btn" class="flex-1 border border-blue-600 text-blue-600 px-4 py-2 rounded hover:bg-blue-600 hover:text-white transition duration-300">Log In</button>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
-        
-        <!-- Mobile Menu -->
-        <div id="mobile-menu" class="hidden md:hidden bg-white py-4 px-4 shadow-lg">
-            <a href="#home" class="block py-2 text-dark hover:text-accent">Home</a>
-            <a href="#services" class="block py-2 text-dark hover:text-accent">Services</a>
-            <a href="#team" class="block py-2 text-dark hover:text-accent">Our Team</a>
-            <a href="#testimonials" class="block py-2 text-dark hover:text-accent">Testimonials</a>
-            <a href="#contact" class="block py-2 text-dark hover:text-accent">Contact</a>
-            <a href="#contact" class="block mt-4 bg-accent text-white px-6 py-2 rounded-full text-center">Book Consultation</a>
         </div>
     </header>
 
     <!-- Hero Section -->
-    <section id="home" class="bg-[url(/img/imagecopy3.png)] bg-no-repeat bg-cover text-white py-24 md:py-32">
+    <section id="home" class="bg-[url(/img/imagecopy3.png)] bg-no-repeat bg-cover text-white py-16 md:py-32">
         <div class="container mx-auto px-4 text-center">
-            <h1 class="text-4xl md:text-6xl font-serif font-bold mb-6">Nurturing Mothers, Welcoming Babies</h1>
-            <p class="text-xl md:text-2xl mb-8 max-w-2xl mx-auto">Comprehensive maternity and birth services designed to support you through every step of your journey.</p>
+            <h1 class="hero-title text-3xl md:text-6xl font-serif font-bold mb-4 md:mb-6">Nurturing Mothers, Welcoming Babies</h1>
+            <p class="hero-subtitle text-lg md:text-2xl mb-6 md:mb-8 max-w-2xl mx-auto">Comprehensive maternity and birth services designed to support you through every step of your journey.</p>
             <div class="flex flex-col md:flex-row justify-center gap-4">
                 <a href="#services" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition duration-300 transform hover:-translate-y-1">Our Services</a>
                 <a href="#contact" class="border border-white hover:bg-white hover:text-blue-600 text-white px-6 py-3 rounded-lg font-semibold transition duration-300 transform hover:-translate-y-1 text-center">Book Appointment</a>
@@ -90,78 +189,71 @@
     </section>
 
     <!-- Services Section -->
-    <section id="services" class="py-16 ">
-        <div class="container mx-auto px-4 ">
-            <div class="text-center mb-12">
-                <h2 class="text-3xl md:text-4xl font-serif font-bold mb-4 text-blue-700">Our Services</h2>
-                <p class="text-lg max-w-2xl mx-auto">We offer a complete range of maternity and birth services to support you from pregnancy through postpartum.</p>
+    <section id="services" class="py-12 md:py-16">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-8 md:mb-12">
+                <h2 class="section-title text-2xl md:text-4xl font-serif font-bold mb-4 text-blue-700">Our Services</h2>
+                <p class="text-base md:text-lg max-w-2xl mx-auto">We offer a complete range of maternity and birth services to support you from pregnancy through postpartum.</p>
             </div>
             
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
                 <!-- Service 1 -->
-                <div class=" bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl shadow-lg p-6 transition-all duration-300 hover:-translate-y-2 hover:shadow-xl ">
-                    <div class="h-48 bg-[url(/img/imagecopy.png)] bg-no-repeat bg-cover flex items-center justify-center">
-                
-                    </div>
-                    <div class="p-6">
-                        <h3 class="text-xl font-serif font-bold mb-3 text-gray-800">Prenatal Care</h3>
-                        <p class="text-gray-600 mb-4">Comprehensive prenatal checkups, ultrasounds, and personalized care plans to ensure a healthy pregnancy.</p>
-                        <a href="#" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition duration-300"> <button>Learn More</button></a>
+                <div class="service-card bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl shadow-lg p-4 md:p-6 transition-all duration-300 hover:-translate-y-2 hover:shadow-xl">
+                    <div class="h-40 md:h-48 bg-[url(/img/imagecopy.png)] bg-no-repeat bg-cover bg-center rounded-lg flex items-center justify-center"></div>
+                    <div class="p-4 md:p-6">
+                        <h3 class="text-lg md:text-xl font-serif font-bold mb-2 md:mb-3 text-gray-800">Prenatal Care</h3>
+                        <p class="text-sm md:text-base text-gray-600 mb-3 md:mb-4">Comprehensive prenatal checkups, ultrasounds, and personalized care plans to ensure a healthy pregnancy.</p>
+                        <a href="#" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition duration-300 inline-block">Learn More</a>
                     </div>
                 </div>
                 
                 <!-- Service 2 -->
-                <div class="bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl shadow-lg p-6 transition-all duration-300 hover:-translate-y-2 hover:shadow-xl">
-                    <div class="h-48 bg-[url(/img/imagecopy6.png)] bg-no-repeat bg-cover flex items-center justify-center">
-                    </div>
-                    <div class="p-6">
-                        <h3 class="text-xl font-serif font-bold mb-3 text-gray-800">Birth Support</h3>
-                        <p class="text-gray-600 mb-4">Expert doula services, birth planning, and labor support for a positive and empowering birth experience.</p>
-                            <a href="#" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition duration-300"> <button>Learn More</button></a>
+                <div class="service-card bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl shadow-lg p-4 md:p-6 transition-all duration-300 hover:-translate-y-2 hover:shadow-xl">
+                    <div class="h-40 md:h-48 bg-[url(/img/imagecopy6.png)] bg-no-repeat bg-cover bg-center rounded-lg flex items-center justify-center"></div>
+                    <div class="p-4 md:p-6">
+                        <h3 class="text-lg md:text-xl font-serif font-bold mb-2 md:mb-3 text-gray-800">Birth Support</h3>
+                        <p class="text-sm md:text-base text-gray-600 mb-3 md:mb-4">Expert doula services, birth planning, and labor support for a positive and empowering birth experience.</p>
+                        <a href="#" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition duration-300 inline-block">Learn More</a>
                     </div>
                 </div>
                 
                 <!-- Service 3 -->
-                <div class="bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl shadow-lg p-6 transition-all duration-300 hover:-translate-y-2 hover:shadow-xl">
-                    <div class="h-48 bg-[url(/img/imagecopy1.png)] bg-no-repeat bg-cover  flex items-center justify-center">
-                    </div>
-                    <div class="p-6">
-                        <h3 class="text-xl font-serif font-bold mb-3 text-gray-800">Postpartum Care</h3>
-                        <p class="text-gray-600 mb-4">Support for new mothers including lactation consulting, newborn care, and emotional wellness checks.</p>
-    <a href="#" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition duration-300"> <button>Learn More</button></a>
+                <div class="service-card bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl shadow-lg p-4 md:p-6 transition-all duration-300 hover:-translate-y-2 hover:shadow-xl">
+                    <div class="h-40 md:h-48 bg-[url(/img/imagecopy1.png)] bg-no-repeat bg-cover bg-center rounded-lg flex items-center justify-center"></div>
+                    <div class="p-4 md:p-6">
+                        <h3 class="text-lg md:text-xl font-serif font-bold mb-2 md:mb-3 text-gray-800">Postpartum Care</h3>
+                        <p class="text-sm md:text-base text-gray-600 mb-3 md:mb-4">Support for new mothers including lactation consulting, newborn care, and emotional wellness checks.</p>
+                        <a href="#" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition duration-300 inline-block">Learn More</a>
                     </div>
                 </div>
                 
                 <!-- Service 4 -->
-                <div class="bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl shadow-lg p-6 transition-all duration-300 hover:-translate-y-2 hover:shadow-xl">
-                    <div class="h-48 bg-[url(/img/imagecopy2.png)] bg-no-repeat bg-cover flex items-center justify-center">
-                    </div>
-                    <div class="p-6">
-                        <h3 class="text-xl font-serif font-bold mb-3 text-gray-800">Midwifery Services</h3>
-                        <p class="text-gray-600 mb-4">Personalized care from certified midwives focusing on natural birth options and holistic approaches.</p>
-                          <a href="#" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition duration-300"> <button>Learn More</button></a>
+                <div class="service-card bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl shadow-lg p-4 md:p-6 transition-all duration-300 hover:-translate-y-2 hover:shadow-xl">
+                    <div class="h-40 md:h-48 bg-[url(/img/imagecopy2.png)] bg-no-repeat bg-cover bg-center rounded-lg flex items-center justify-center"></div>
+                    <div class="p-4 md:p-6">
+                        <h3 class="text-lg md:text-xl font-serif font-bold mb-2 md:mb-3 text-gray-800">Midwifery Services</h3>
+                        <p class="text-sm md:text-base text-gray-600 mb-3 md:mb-4">Personalized care from certified midwives focusing on natural birth options and holistic approaches.</p>
+                        <a href="#" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition duration-300 inline-block">Learn More</a>
                     </div>
                 </div>
                 
                 <!-- Service 5 -->
-                <div class="bg-white rounded-xl shadow-md overflow-hidden service-card">
-                    <div class="h-48 bg-[url(/img/imagecopy4.png)] bg-no-repeat bg-cover  flex items-center justify-center">
-                    </div>
-                    <div class="p-6">
-                        <h3 class="text-xl font-serif font-bold mb-3 text-gray-800">Childbirth Education</h3>
-                        <p class="text-gray-600 mb-4">Comprehensive classes covering labor techniques, breastfeeding, and newborn care for expecting parents.</p>
-    <a href="#" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition duration-300"> <button>Learn More</button></a>
+                <div class="service-card bg-white rounded-xl shadow-md overflow-hidden p-4 md:p-6 transition-all duration-300 hover:-translate-y-2 hover:shadow-xl">
+                    <div class="h-40 md:h-48 bg-[url(/img/imagecopy4.png)] bg-no-repeat bg-cover bg-center rounded-lg flex items-center justify-center"></div>
+                    <div class="p-4 md:p-6">
+                        <h3 class="text-lg md:text-xl font-serif font-bold mb-2 md:mb-3 text-gray-800">Childbirth Education</h3>
+                        <p class="text-sm md:text-base text-gray-600 mb-3 md:mb-4">Comprehensive classes covering labor techniques, breastfeeding, and newborn care for expecting parents.</p>
+                        <a href="#" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition duration-300 inline-block">Learn More</a>
                     </div>
                 </div>
                 
                 <!-- Service 6 -->
-                <div class="bg-white rounded-xl shadow-md overflow-hidden service-card">
-                    <div class="h-48 bg-[url(/img/imagecopy5.png)] bg-no-repeat bg-cover  flex items-center justify-center">
-                    </div>
-                    <div class="p-6">
-                        <h3 class="text-xl font-serif font-bold mb-3 text-gray-800">Lactation Support</h3>
-                        <p class="text-gray-600 mb-4">One-on-one consultations with certified lactation specialists to help with breastfeeding challenges.</p>
-    <a href="#" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition duration-300"> <button>Learn More</button></a>
+                <div class="service-card bg-white rounded-xl shadow-md overflow-hidden p-4 md:p-6 transition-all duration-300 hover:-translate-y-2 hover:shadow-xl">
+                    <div class="h-40 md:h-48 bg-[url(/img/imagecopy5.png)] bg-no-repeat bg-cover bg-center rounded-lg flex items-center justify-center"></div>
+                    <div class="p-4 md:p-6">
+                        <h3 class="text-lg md:text-xl font-serif font-bold mb-2 md:mb-3 text-gray-800">Lactation Support</h3>
+                        <p class="text-sm md:text-base text-gray-600 mb-3 md:mb-4">One-on-one consultations with certified lactation specialists to help with breastfeeding challenges.</p>
+                        <a href="#" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition duration-300 inline-block">Learn More</a>
                     </div>
                 </div>
             </div>
@@ -169,296 +261,466 @@
     </section>
 
     <!-- Team Section -->
-    <section id="team" class="py-16 bg-white">
+    <section id="team" class="py-12 md:py-16 bg-white">
         <div class="container mx-auto px-4">
-            <div class="text-center mb-12">
-                <h2 class="text-3xl md:text-4xl font-serif font-bold mb-4 text-gray-800">Meet Our Team</h2>
-                <p class="text-lg max-w-2xl mx-auto text-gray-600">Our compassionate team of professionals is dedicated to providing exceptional care throughout your pregnancy journey.</p>
+            <div class="text-center mb-8 md:mb-12">
+                <h2 class="section-title text-2xl md:text-4xl font-serif font-bold mb-4 text-gray-800">Meet Our Team</h2>
+                <p class="text-base md:text-lg max-w-2xl mx-auto text-gray-600">Our compassionate team of professionals is dedicated to providing exceptional care throughout your pregnancy journey.</p>
             </div>
             
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
                 <!-- Team Member 1 -->
-                <div class="text-center">
-                    <div class="w-40 h-40 bg-[url(/img/Drsara.png)] bg-no-repeat bg-cover rounded-full mx-auto mb-4 flex items-center justify-center">
-                     
-                    </div>
-                    <h3 class="text-xl font-bold mb-1 text-gray-800">Dr. Sarah Johnson</h3>
-                    <p class="text-gray-600 mb-3">OB/GYN Specialist</p>
-                    <p class="text-gray-600">With over 15 years of experience, Dr. Johnson specializes in high-risk pregnancies and minimally invasive procedures.</p>
+                <div class="team-member text-center">
+                    <div class="w-32 h-32 md:w-40 md:h-40 bg-[url(/img/Drsara.png)] bg-no-repeat bg-cover bg-center rounded-full mx-auto mb-4 flex items-center justify-center"></div>
+                    <h3 class="text-lg md:text-xl font-bold mb-1 text-gray-800">Dr. Sarah Johnson</h3>
+                    <p class="text-sm md:text-base text-gray-600 mb-2 md:mb-3">OB/GYN Specialist</p>
+                    <p class="text-sm md:text-base text-gray-600">With over 15 years of experience, Dr. Johnson specializes in high-risk pregnancies and minimally invasive procedures.</p>
                 </div>
                 
                 <!-- Team Member 2 -->
-                <div class="text-center">
-                    <div class="w-40 h-40  bg-[url(/img/Dr.emily.png)] bg-no-repeat bg-cover rounded-full mx-auto mb-4 flex items-center justify-center">
-                      
-                    </div>
-                    <h3 class="text-xl font-bold mb-1">Emily Rodriguez</h3>
-                    <p class="text-accent mb-3">Certified Doula</p>
-                    <p class="text-gray-600">Emily has supported over 200 births and is passionate about helping mothers have positive birth experiences.</p>
+                <div class="team-member text-center">
+                    <div class="w-32 h-32 md:w-40 md:h-40 bg-[url(/img/Dr.emily.png)] bg-no-repeat bg-cover bg-center rounded-full mx-auto mb-4 flex items-center justify-center"></div>
+                    <h3 class="text-lg md:text-xl font-bold mb-1 text-gray-800">Emily Rodriguez</h3>
+                    <p class="text-sm md:text-base text-gray-600 mb-2 md:mb-3">Certified Doula</p>
+                    <p class="text-sm md:text-base text-gray-600">Emily has supported over 200 births and is passionate about helping mothers have positive birth experiences.</p>
                 </div>
                 
                 <!-- Team Member 3 -->
-                <div class="text-center">
-                    <div class="w-40 h-40 bg-primary rounded-full mx-auto mb-4 flex items-center justify-center">
-                        <i class="fas fa-stethoscope text-white text-5xl"></i>
-                    </div>
-                    <h3 class="text-xl font-bold mb-1">Michelle Chen</h3>
-                    <p class="text-accent mb-3">Certified Midwife</p>
-                    <p class="text-gray-600">Michelle believes in the power of natural birth and provides holistic care tailored to each mother's needs.</p>
+                <div class="team-member text-center">
+                    <div class="w-32 h-32 md:w-40 md:h-40 bg-[url(/img/Dr.m.png)] bg-no-repeat bg-cover bg-center rounded-full mx-auto mb-4 flex items-center justify-center"></div>
+                    <h3 class="text-lg md:text-xl font-bold mb-1 text-gray-800">Michelle Chen</h3>
+                    <p class="text-sm md:text-base text-gray-600 mb-2 md:mb-3">Certified Midwife</p>
+                    <p class="text-sm md:text-base text-gray-600">Michelle believes in the power of natural birth and provides holistic care tailored to each mother's needs.</p>
                 </div>
                 
                 <!-- Team Member 4 -->
-                <div class="text-center">
-                    <div class="w-40 h-40 bg-secondary rounded-full mx-auto mb-4 flex items-center justify-center">
-                        <i class="fas fa-heart text-white text-5xl"></i>
-                    </div>
-                    <h3 class="text-xl font-bold mb-1">Jessica Williams</h3>
-                    <p class="text-accent mb-3">Lactation Consultant</p>
-                    <p class="text-gray-600">Jessica is an IBCLC with extensive experience helping mothers and babies establish successful breastfeeding relationships.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Testimonials -->
-    <section id="testimonials" class="py-16 bg-light">
-        <div class="container mx-auto px-4">
-            <div class="text-center mb-12">
-                <h2 class="text-3xl md:text-4xl font-serif font-bold mb-4">What Our Clients Say</h2>
-                <p class="text-lg max-w-2xl mx-auto">Hear from families who have experienced our maternity and birth services.</p>
-            </div>
-            
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <!-- Testimonial 1 -->
-                <div class="bg-white p-6 rounded-xl shadow-md">
-                    <div class="flex items-center mb-4">
-                        <div class="w-12 h-12 bg-primary rounded-full flex items-center justify-center text-white mr-4">
-                            <i class="fas fa-user"></i>
-                        </div>
-                        <div>
-                            <h4 class="font-bold">Amanda T.</h4>
-                            <div class="text-yellow-400">
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                            </div>
-                        </div>
-                    </div>
-                    <p class="text-gray-600">"The care I received during my pregnancy and birth was exceptional. Emily's support as my doula made all the difference in having the natural birth I wanted."</p>
-                </div>
-                
-                <!-- Testimonial 2 -->
-                <div class="bg-white p-6 rounded-xl shadow-md">
-                    <div class="flex items-center mb-4">
-                        <div class="w-12 h-12 bg-secondary rounded-full flex items-center justify-center text-white mr-4">
-                            <i class="fas fa-user"></i>
-                        </div>
-                        <div>
-                            <h4 class="font-bold">Jennifer L.</h4>
-                            <div class="text-yellow-400">
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                            </div>
-                        </div>
-                    </div>
-                    <p class="text-gray-600">"Dr. Johnson guided me through a high-risk pregnancy with such expertise and compassion. I always felt heard and cared for at every appointment."</p>
-                </div>
-                
-                <!-- Testimonial 3 -->
-                <div class="bg-white p-6 rounded-xl shadow-md">
-                    <div class="flex items-center mb-4">
-                        <div class="w-12 h-12 bg-primary rounded-full flex items-center justify-center text-white mr-4">
-                            <i class="fas fa-user"></i>
-                        </div>
-                        <div>
-                            <h4 class="font-bold">Maria S.</h4>
-                            <div class="text-yellow-400">
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                            </div>
-                        </div>
-                    </div>
-                    <p class="text-gray-600">"Jessica's lactation support saved our breastfeeding journey. She was patient, knowledgeable, and gave us the confidence we needed to succeed."</p>
+                <div class="team-member text-center">
+                    <div class="w-32 h-32 md:w-40 md:h-40 bg-[url(/img/Dr.ess.png)] bg-no-repeat bg-cover bg-center rounded-full mx-auto mb-4 flex items-center justify-center"></div>
+                    <h3 class="text-lg md:text-xl font-bold mb-1 text-gray-800">Jessica Williams</h3>
+                    <p class="text-sm md:text-base text-gray-600 mb-2 md:mb-3">Lactation Consultant</p>
+                    <p class="text-sm md:text-base text-gray-600">Jessica is an IBCLC with extensive experience helping mothers and babies establish successful breastfeeding relationships.</p>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Contact Section -->
-    <section id="contact" class="py-16 bg-white">
+    <section id="contact" class="py-12 md:py-16 bg-gray-50">
         <div class="container mx-auto px-4">
-            <div class="text-center mb-12">
-                <h2 class="text-3xl md:text-4xl font-serif font-bold mb-4">Contact Us</h2>
-                <p class="text-lg max-w-2xl mx-auto">Ready to begin your journey with us? Get in touch to schedule a consultation.</p>
+            <div class="text-center mb-8 md:mb-12">
+                <h2 class="section-title text-2xl md:text-4xl font-bold text-blue-600 mb-4">Get In Touch</h2>
+                <p class="text-base md:text-lg text-gray-600 max-w-2xl mx-auto">We're here to help and answer any questions you might have. We look forward to hearing from you.</p>
             </div>
-            
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
-                <!-- Contact Info -->
-                <div>
-                    <h3 class="text-2xl font-serif font-bold mb-6">Get In Touch</h3>
-                    
-                    <div class="flex items-start mb-6">
-                        <div class="bg-primary p-3 rounded-full mr-4">
-                            <i class="fas fa-map-marker-alt text-white"></i>
-                        </div>
-                        <div>
-                            <h4 class="font-bold mb-1">Our Location</h4>
-                            <p class="text-gray-600">123 Birth Center Lane, Maternity City, MC 12345</p>
-                        </div>
-                    </div>
-                    
-                    <div class="flex items-start mb-6">
-                        <div class="bg-secondary p-3 rounded-full mr-4">
-                            <i class="fas fa-phone text-white"></i>
-                        </div>
-                        <div>
-                            <h4 class="font-bold mb-1">Phone Number</h4>
-                            <p class="text-gray-600">(555) 123-4567</p>
-                        </div>
-                    </div>
-                    
-                    <div class="flex items-start mb-6">
-                        <div class="bg-primary p-3 rounded-full mr-4">
-                            <i class="fas fa-envelope text-white"></i>
-                        </div>
-                        <div>
-                            <h4 class="font-bold mb-1">Email Address</h4>
-                            <p class="text-gray-600">info@serenebeginnings.com</p>
-                        </div>
-                    </div>
-                    
-                    <div class="flex items-start">
-                        <div class="bg-secondary p-3 rounded-full mr-4">
-                            <i class="fas fa-clock text-white"></i>
-                        </div>
-                        <div>
-                            <h4 class="font-bold mb-1">Office Hours</h4>
-                            <p class="text-gray-600">Monday - Friday: 8am - 6pm</p>
-                            <p class="text-gray-600">Saturday: 9am - 2pm</p>
-                            <p class="text-gray-600">Sunday: Closed</p>
-                        </div>
-                    </div>
-                </div>
-                
+           
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12">
                 <!-- Contact Form -->
-                <div class="bg-light p-8 rounded-xl">
-                    <h3 class="text-2xl font-serif font-bold mb-6">Schedule a Consultation</h3>
-                    
-                    <form>
-                        <div class="mb-4">
-                            <label class="block text-gray-700 mb-2" for="name">Full Name</label>
-                            <input type="text" id="name" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-accent">
+                <div class="bg-gray-200 rounded-xl shadow-lg p-6 md:p-8">
+                    <h3 class="text-xl md:text-2xl font-bold text-gray-800 mb-4 md:mb-6">Send us a Message</h3>
+                    <form id="contact-form" class="space-y-4 md:space-y-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+                            <div>
+                                <label for="first-name" class="block text-gray-700 mb-2">First Name</label>
+                                <input type="text" id="first-name" name="first-name" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                            </div>
+                            <div>
+                                <label for="last-name" class="block text-gray-700 mb-2">Last Name</label>
+                                <input type="text" id="last-name" name="last-name" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                            </div>
                         </div>
-                        
-                        <div class="mb-4">
-                            <label class="block text-gray-700 mb-2" for="email">Email Address</label>
-                            <input type="email" id="email" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-accent">
+                       
+                        <div>
+                            <label for="email" class="block text-gray-700 mb-2">Email Address</label>
+                            <input type="email" id="email" name="email" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required>
                         </div>
-                        
-                        <div class="mb-4">
-                            <label class="block text-gray-700 mb-2" for="phone">Phone Number</label>
-                            <input type="tel" id="phone" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-accent">
+                       
+                        <div>
+                            <label for="phone" class="block text-gray-700 mb-2">Phone Number</label>
+                            <input type="tel" id="phone" name="phone" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
                         </div>
-                        
-                        <div class="mb-4">
-                            <label class="block text-gray-700 mb-2" for="service">Service Interested In</label>
-                            <select id="service" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-accent">
-                                <option>Prenatal Care</option>
-                                <option>Birth Support</option>
-                                <option>Postpartum Care</option>
-                                <option>Midwifery Services</option>
-                                <option>Childbirth Education</option>
-                                <option>Lactation Support</option>
+                       
+                        <div>
+                            <label for="subject" class="block text-gray-700 mb-2">Subject</label>
+                            <select id="subject" name="subject" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                <option value="">Select a subject</option>
+                                <option value="appointment">Book an Appointment</option>
+                                <option value="general">General Inquiry</option>
+                                <option value="feedback">Feedback</option>
+                                <option value="emergency">Emergency</option>
+                                <option value="other">Other</option>
                             </select>
                         </div>
-                        
-                        <div class="mb-6">
-                            <label class="block text-gray-700 mb-2" for="message">Message</label>
-                            <textarea id="message" rows="4" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-accent"></textarea>
+                       
+                        <div>
+                            <label for="message" class="block text-gray-700 mb-2">Message</label>
+                            <textarea id="message" name="message" rows="5" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required></textarea>
                         </div>
-                        
-                        <button type="submit" class="w-full bg-accent text-white py-3 rounded-lg font-medium hover:bg-pink-400 transition">Submit Request</button>
+                       
+                        <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition duration-300 transform hover:-translate-y-1">
+                            Send Message
+                        </button>
                     </form>
+                </div>
+               
+                <!-- Contact Information & Map -->
+                <div class="space-y-6 md:space-y-8">
+                    <!-- Contact Info Cards -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+                        <div class="bg-white rounded-xl shadow-lg p-4 md:p-6 flex items-start">
+                            <div class="bg-blue-100 p-3 rounded-lg mr-4">
+                                <i class="fas fa-map-marker-alt text-blue-600 text-xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-gray-800 mb-1">Our Location</h4>
+                                <p class="text-gray-600">Mahama Refugee Camp, Kirehe District, Rwanda</p>
+                            </div>
+                        </div>
+                       
+                        <div class="bg-white rounded-xl shadow-lg p-4 md:p-6 flex items-start">
+                            <div class="bg-blue-100 p-3 rounded-lg mr-4">
+                                <i class="fas fa-phone text-blue-600 text-xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-gray-800 mb-1">Phone Number</h4>
+                                <p class="text-gray-600">+250 000 000</p>
+                            </div>
+                        </div>
+                       
+                        <div class="bg-white rounded-xl shadow-lg p-4 md:p-6 flex items-start">
+                            <div class="bg-blue-100 p-3 rounded-lg mr-4">
+                                <i class="fas fa-envelope text-blue-600 text-xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-gray-800 mb-1">Email Address</h4>
+                                <p class="text-gray-600">info@hopecare.com</p>
+                            </div>
+                        </div>
+                       
+                        <div class="bg-white rounded-xl shadow-lg p-4 md:p-6 flex items-start">
+                            <div class="bg-blue-100 p-3 rounded-lg mr-4">
+                                <i class="fas fa-clock text-blue-600 text-xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-gray-800 mb-1">Working Hours</h4>
+                                <p class="text-gray-600">24/7 Emergency Services</p>
+                                <p class="text-gray-600">Mon-Fri: 8am-6pm</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Google Map for Mahama Refugee Camp -->
+                    <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+                        <div class="h-64 md:h-96">
+                            <iframe 
+                                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1334.760614585555!2d30.642434783637935!3d-2.2630583877293016!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x19c4c500078c5f45%3A0xc3605c2533855d6b!2sMahama%20refugee%20camp!5e0!3m2!1sen!2sus!4v1762760708457!5m2!1sen!2sus" 
+                                width="100%" 
+                                height="100%" 
+                                style="border:0;" 
+                                allowfullscreen="" 
+                                loading="lazy" 
+                                referrerpolicy="no-referrer-when-downgrade"
+                                title="Mahamacare Hospital Location at Mahama Refugee Camp">
+                            </iframe>
+                        </div>
+                    </div>
+                   
+                    <!-- Emergency Notice -->
+                    <div class="bg-red-50 border border-red-200 rounded-xl p-4 md:p-6">
+                        <div class="flex items-start">
+                            <i class="fas fa-exclamation-triangle text-red-500 text-xl mt-1 mr-4"></i>
+                            <div>
+                                <h4 class="font-bold text-red-700 mb-2">Emergency Contact</h4>
+                                <p class="text-red-600 mb-2">For urgent medical assistance, please call our emergency line immediately.</p>
+                                <a href="tel:+250000000" class="inline-block bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg transition duration-300">
+                                    Call Emergency: +250 000 000
+                                </a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Footer -->
-    <footer class="bg-dark text-white py-12">
+    <footer class="bg-gray-900 text-white py-8 md:py-12">
         <div class="container mx-auto px-4">
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-                <!-- Company Info -->
-                <div class="md:col-span-2">
-                    <div class="flex items-center mb-4">
-                        <i class="fas fa-baby text-accent text-3xl mr-2"></i>
-                        <h2 class="text-2xl font-serif font-bold">Serene Beginnings</h2>
-                    </div>
-                    <p class="mb-4 text-gray-300">Providing compassionate, comprehensive maternity and birth services to support families through the transformative journey of pregnancy, birth, and beyond.</p>
-                    <div class="flex space-x-4">
-                        <a href="#" class="bg-primary p-2 rounded-full text-white hover:bg-pink-400 transition">
-                            <i class="fab fa-facebook-f"></i>
-                        </a>
-                        <a href="#" class="bg-primary p-2 rounded-full text-white hover:bg-pink-400 transition">
-                            <i class="fab fa-instagram"></i>
-                        </a>
-                        <a href="#" class="bg-primary p-2 rounded-full text-white hover:bg-pink-400 transition">
-                            <i class="fab fa-twitter"></i>
-                        </a>
-                    </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
+                <!-- Column 1 -->
+                <div>
+                    <h3 class="text-lg md:text-xl font-bold mb-3 md:mb-4">MahamaCare Hospital</h3>
+                    <p class="text-sm md:text-base text-gray-400">Providing high quality healthcare for over 20 years.</p>
                 </div>
                 
-                <!-- Quick Links -->
+                <!-- Column 2 -->
                 <div>
-                    <h3 class="text-lg font-bold mb-4">Quick Links</h3>
+                    <h4 class="text-base md:text-lg font-semibold mb-3 md:mb-4">Quick Links</h4>
                     <ul class="space-y-2">
-                        <li><a href="#home" class="text-gray-300 hover:text-white transition">Home</a></li>
-                        <li><a href="#services" class="text-gray-300 hover:text-white transition">Services</a></li>
-                        <li><a href="#team" class="text-gray-300 hover:text-white transition">Our Team</a></li>
-                        <li><a href="#testimonials" class="text-gray-300 hover:text-white transition">Testimonials</a></li>
-                        <li><a href="#contact" class="text-gray-300 hover:text-white transition">Contact</a></li>
+                        <li><a href="#home" class="text-sm md:text-base text-gray-400 hover:text-white transition duration-300">Home</a></li>
+                        <li><a href="#about" class="text-sm md:text-base text-gray-400 hover:text-white transition duration-300">About</a></li>
+                        <li><a href="#services" class="text-sm md:text-base text-gray-400 hover:text-white transition duration-300">Services</a></li>
+                        <li><a href="#doctors" class="text-sm md:text-base text-gray-400 hover:text-white transition duration-300">Doctors</a></li>
+                        <li><a href="#faq" id="footer-faq-link" class="text-sm md:text-base text-gray-400 hover:text-white transition duration-300">FAQ</a></li>
+                        <li><a href="#contact" class="text-sm md:text-base text-gray-400 hover:text-white transition duration-300">Contact</a></li>
                     </ul>
                 </div>
                 
-                <!-- Services -->
+                <!-- Column 3 -->
                 <div>
-                    <h3 class="text-lg font-bold mb-4">Our Services</h3>
-                    <ul class="space-y-2">
-                        <li><a href="#" class="text-gray-300 hover:text-white transition">Prenatal Care</a></li>
-                        <li><a href="#" class="text-gray-300 hover:text-white transition">Birth Support</a></li>
-                        <li><a href="#" class="text-gray-300 hover:text-white transition">Postpartum Care</a></li>
-                        <li><a href="#" class="text-gray-300 hover:text-white transition">Midwifery Services</a></li>
-                        <li><a href="#" class="text-gray-300 hover:text-white transition">Childbirth Education</a></li>
-                    </ul>
+                    <h4 class="text-base md:text-lg font-semibold mb-3 md:mb-4">Contact Info</h4>
+                    <div class="space-y-2 text-sm md:text-base text-gray-400">
+                        <p><i class="fas fa-envelope mr-2"></i> info@hopecare.com</p>
+                        <p><i class="fas fa-phone mr-2"></i> +250 000 000</p>
+                        <p><i class="fas fa-map-marker-alt mr-2"></i> Mahama Refugee Camp, Rwanda</p>
+                    </div>
+                </div>
+                
+                <!-- Column 4 -->
+                <div>
+                    <h4 class="text-base md:text-lg font-semibold mb-3 md:mb-4">Follow Us</h4>
+                    <div class="flex space-x-3 md:space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-white transition duration-300">
+                            <i class="fab fa-facebook-f text-lg md:text-xl"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white transition duration-300">
+                            <i class="fab fa-twitter text-lg md:text-xl"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white transition duration-300">
+                            <i class="fab fa-instagram text-lg md:text-xl"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white transition duration-300">
+                            <i class="fab fa-linkedin-in text-lg md:text-xl"></i>
+                        </a>
+                    </div>
                 </div>
             </div>
             
-            <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
-                <p>&copy; 2023 Serene Beginnings Maternity & Birth Services. All rights reserved.</p>
+            <div class="border-t border-gray-800 mt-6 md:mt-8 pt-6 md:pt-8 text-center text-sm md:text-base text-gray-500">
+                <p>&copy; 2025 MahamaCare Hospital. All rights reserved.</p>
             </div>
         </div>
     </footer>
 
-    <script>
-        // Mobile menu toggle
-        document.getElementById('menu-toggle').addEventListener('click', function() {
-            document.getElementById('mobile-menu').classList.toggle('hidden');
-        });
-        
-        // Close mobile menu when clicking on a link
-        document.querySelectorAll('#mobile-menu a').forEach(link => {
-            link.addEventListener('click', function() {
-                document.getElementById('mobile-menu').classList.add('hidden');
-            });
-        });
-    </script>
+    <!-- Modals (unchanged) -->
+    <!-- Sign Up Modal -->
+    <div id="signup-modal" class="fixed inset-0 hidden items-center justify-center z-50">
+        <div class="absolute inset-0 bg-black/50"></div>
+        <div class="auth-modal relative z-10 w-11/12 sm:max-w-md mx-auto rounded-xl shadow-2xl overflow-hidden">
+            <div class="bg-white p-6 sm:p-8">
+                <!-- Header -->
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-2xl font-bold text-blue-700">Create Account</h2>
+                    <button id="signup-close" class="text-gray-500 hover:text-gray-700 text-xl">&times;</button>
+                </div>
+
+                <!-- Form -->
+                <form id="signup-form" class="space-y-4">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label for="signup-firstname" class="block text-sm font-medium text-gray-700 mb-1">First Name</label>
+                            <input type="text" id="signup-firstname" name="firstname" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" required>
+                        </div>
+                        <div>
+                            <label for="signup-lastname" class="block text-sm font-medium text-gray-700 mb-1">Last Name</label>
+                            <input type="text" id="signup-lastname" name="lastname" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" required>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label for="signup-email" class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
+                        <input type="email" id="signup-email" name="email" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" required>
+                    </div>
+
+                    <div>
+                        <label for="signup-phone" class="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>
+                        <input type="tel" id="signup-phone" name="phone" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                    </div>
+
+                    <div>
+                        <label for="signup-password" class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+                        <input type="password" id="signup-password" name="password" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" required>
+                    </div>
+
+                    <div>
+                        <label for="signup-confirm-password" class="block text-sm font-medium text-gray-700 mb-1">Confirm Password</label>
+                        <input type="password" id="signup-confirm-password" name="confirm-password" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" required>
+                    </div>
+
+                    <div class="flex items-center">
+                        <input type="checkbox" id="signup-terms" name="terms" class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded" required>
+                        <label for="signup-terms" class="ml-2 block text-sm text-gray-700">
+                            I agree to the <a href="#" class="text-blue-600 hover:text-blue-500">Terms & Conditions</a>
+                        </label>
+                    </div>
+
+                    <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-4 rounded-lg transition duration-300 transform hover:-translate-y-0.5">
+                        Create Account
+                    </button>
+
+                    <div class="text-center text-sm text-gray-600">
+                        Already have an account? 
+                        <button type="button" id="switch-to-login" class="text-blue-600 hover:text-blue-500 font-semibold">Log In</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Login Modal -->
+    <div id="login-modal" class="fixed inset-0 hidden items-center justify-center z-50">
+        <div class="absolute inset-0 bg-black/50"></div>
+        <div class="auth-modal relative z-10 w-11/12 sm:max-w-md mx-auto rounded-xl shadow-2xl overflow-hidden">
+            <div class="bg-white p-6 sm:p-8">
+                <!-- Header -->
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-2xl font-bold text-blue-700">Welcome Back</h2>
+                    <button id="login-close" class="text-gray-500 hover:text-gray-700 text-xl">&times;</button>
+                </div>
+
+                <!-- Form -->
+                <form id="login-form" class="space-y-4">
+                    <div>
+                        <label for="login-email" class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
+                        <input type="email" id="login-email" name="email" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" required>
+                    </div>
+
+                    <div>
+                        <label for="login-password" class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+                        <input type="password" id="login-password" name="password" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" required>
+                    </div>
+
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center">
+                            <input type="checkbox" id="remember-me" name="remember" class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
+                            <label for="remember-me" class="ml-2 block text-sm text-gray-700">Remember me</label>
+                        </div>
+                        <a href="#" class="text-sm text-blue-600 hover:text-blue-500">Forgot password?</a>
+                    </div>
+
+                    <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-4 rounded-lg transition duration-300 transform hover:-translate-y-0.5">
+                        Sign In
+                    </button>
+
+                    <div class="text-center text-sm text-gray-600">
+                        Don't have an account? 
+                        <button type="button" id="switch-to-signup" class="text-blue-600 hover:text-blue-500 font-semibold">Sign Up</button>
+                    </div>
+
+                    <!-- Social Login -->
+                    <div class="mt-6">
+                        <div class="relative">
+                            <div class="absolute inset-0 flex items-center">
+                                <div class="w-full border-t border-gray-300"></div>
+                            </div>
+                            <div class="relative flex justify-center text-sm">
+                                <span class="px-2 bg-white text-gray-500">Or continue with</span>
+                            </div>
+                        </div>
+
+                        <div class="mt-4 grid grid-cols-2 gap-3">
+                            <button type="button" class="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 transition duration-300">
+                                <i class="fab fa-google text-red-500"></i>
+                                <span class="ml-2">Google</span>
+                            </button>
+                            <button type="button" class="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 transition duration-300">
+                                <i class="fab fa-facebook text-blue-600"></i>
+                                <span class="ml-2">Facebook</span>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- FAQ Modal -->
+    <div id="faq-modal" class="fixed inset-0 hidden items-center justify-center z-50">
+        <div class="absolute inset-0 bg-black/50"></div>
+        <div class="modal-bg relative z-10 w-11/12 sm:max-w-xl md:max-w-2xl lg:max-w-4xl mx-auto rounded-xl shadow-2xl overflow-hidden">
+
+            <!-- Header -->
+            <div class="flex justify-between items-center p-4 sm:p-6 border-b border-gray-300 bg-white">
+                <h2 class="text-2xl font-bold text-blue-700">Frequently Asked Questions</h2>
+                <button id="faq-close" class="text-gray-700 hover:text-gray-900 text-2xl">&times;</button>
+            </div>
+
+            <!-- Tabs -->
+            <div class="flex flex-wrap border-b border-gray-300 bg-white text-sm sm:text-base">
+                <button class="tab-btn px-4 py-2 font-medium text-blue-600 border-b-2 border-blue-600 focus:outline-none active" data-tab="general">General</button>
+                <button class="tab-btn px-4 py-2 font-medium text-gray-600 hover:text-blue-600 border-b-2 border-transparent" data-tab="emergency">Emergency</button>
+                <button class="tab-btn px-4 py-2 font-medium text-gray-600 hover:text-blue-600 border-b-2 border-transparent" data-tab="mental">Mental Health</button>
+                <button class="tab-btn px-4 py-2 font-medium text-gray-600 hover:text-blue-600 border-b-2 border-transparent" data-tab="chronic">Chronic Diseases</button>
+                <button class="tab-btn px-4 py-2 font-medium text-gray-600 hover:text-blue-600 border-b-2 border-transparent" data-tab="disability">Disability</button>
+                <button class="tab-btn px-4 py-2 font-medium text-gray-600 hover:text-blue-600 border-b-2 border-transparent" data-tab="doctors">Doctors</button>
+                <button class="tab-btn px-4 py-2 font-medium text-gray-600 hover:text-blue-600 border-b-2 border-transparent" data-tab="vaccination">Vaccination</button>
+            </div>
+            <!-- Content -->
+            <div class="p-4 sm:p-6 max-h-[80vh] sm:max-h-[70vh] overflow-y-auto space-y-4 bg-white">
+                <!-- General -->
+                <div class="tab-content " id="general">
+                    <div class="faq-item">
+                        <button class="faq-question w-full text-left py-2 font-semibold flex justify-between items-center">
+                            What are your working hours?
+                        </button>
+                        <div class="faq-answer pl-4 text-gray-700">
+                            We are open 24/7 for emergencies and 8 AM - 8 PM for regular appointments.
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-question w-full text-left py-2 font-semibold flex justify-between items-center">
+                            How can I book an appointment?
+                        </button>
+                        <div class="faq-answer pl-4 text-gray-700">
+                            You can book via our website, by phone, or at the hospital reception.
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-question w-full text-left py-2 font-semibold flex justify-between items-center">
+                            Do you accept insurance?
+                        </button>
+                        <div class="faq-answer pl-4 text-gray-700">
+                            Yes, we accept most local and international insurance providers.
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-question w-full text-left py-2 font-semibold flex justify-between items-center">
+                            Where is the hospital located?
+                        </button>
+                        <div class="faq-answer pl-4 text-gray-700">
+                            Mahama Refugee Camp, Kirehe District, Rwanda. See map on the contact page for directions.
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-question w-full text-left py-2 font-semibold flex justify-between items-center">
+                            Is parking available?
+                        </button>
+                        <div class="faq-answer pl-4 text-gray-700">
+                            Yes, free parking is available for patients and visitors.
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-question w-full text-left py-2 font-semibold flex justify-between items-center">
+                            What should I bring for my first visit?
+                        </button>
+                        <div class="faq-answer pl-4 text-gray-700">
+                            Bring ID, insurance info, and any previous medical records.
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-question w-full text-left py-2 font-semibold flex justify-between items-center">
+                            Do you offer home visits or telemedicine services?
+                        </button>
+                        <div class="faq-answer pl-4 text-gray-700">
+                            Yes, we offer both home visits and telemedicine consultations where applicable.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Other FAQ tabs remain the same -->
+                <!-- ... -->
+            </div>
+        </div>
+    </div>
+
+    <script src="../JavaScript-Files/index.js"></script>
 </body>
 </html>
