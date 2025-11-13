@@ -7,50 +7,199 @@
   <link rel="stylesheet"
     href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      .sidebar {
+        width: 100%;
+        height: auto;
+        position: relative;
+      }
+      
+      .main-content {
+        margin-left: 0;
+      }
+      
+      .flex-container {
+        flex-direction: column;
+      }
+      
+      .form-container {
+        width: 100%;
+        max-width: 100%;
+        padding: 1rem;
+      }
+      
+      .search-container {
+        width: 100%;
+        max-width: 100%;
+      }
+    }
+    
+    @media (max-width: 640px) {
+      .grid-cols-2 {
+        grid-template-columns: 1fr;
+      }
+      
+      .button-group {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+      
+      .button-group button {
+        width: 100%;
+      }
+    }
+  </style>
 </head>
 
-<body class="bg-gray-100 text-gray-800">
-  <div class="flex min-h-screen">
+<body class="font-serif text-gray-800">
+  <!-- NAVBAR -->
+  <header class="bg-white shadow-md sticky top-0 z-50">
+    <div class="container mx-auto px-4">
+      <div class="flex justify-between items-center py-4">
+        <!-- Logo -->
+        <div class="flex items-center">
+          <span class="text-2xl font-bold text-blue-600"><a href="../index.html">🏥 MCH</a></span>
+        </div>
+        
+        <!-- Mobile menu button -->
+        <button id="mobile-menu-button" class="md:hidden text-gray-600 focus:outline-none">
+          <i class="fas fa-bars text-xl"></i>
+        </button>
+        
+        <!-- Navigation Links -->
+        <nav id="nav-links" class="hidden md:flex items-center space-x-6">
+          <a href="../index.html" class="text-gray-700 hover:text-blue-600 transition duration-300">Home</a>
+          <a href="../index.html#about" class="text-gray-700 hover:text-blue-600 transition duration-300">About</a>
+          
+          <!-- Services Dropdown -->
+          <div class="relative group">
+            <button class="flex items-center text-gray-700 hover:text-blue-600 transition duration-300">
+              Services <i class="fas fa-chevron-down ml-1 text-xs"></i>
+            </button>
+            <div class="absolute left-0 mt-2 w-64 bg-white shadow-xl rounded-lg py-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50">
+              <a href="../Servscies/Maternity&Brith Servecises.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">Maternity & Birth Services</a>
+             <a href="../Servscies/paitents-Servecises.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">Patient Services</a>
+              <a href="../Emergency.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">Emergency Care</a>
+              <a href="../Servscies/veccination.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">Vaccination Programs</a>
+              <a href="../Servscies/mentalhealth.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">Mental Health Support</a>
+              <a href="../Servscies/NCD.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">Chronic Disease Care</a>
+              <a href="../Servscies/Health Education.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">Health Awareness & Education</a>
+              <a href="../Servscies/Disability.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">Disability Care</a>
+            </div>
+          </div>
+          
+          <a href="/doctors.html" class="text-gray-700 hover:text-blue-600 transition duration-300">Doctors</a>
+          <a href="/Dashboard.html" class="text-gray-700 hover:text-blue-600 transition duration-300">Dashdoard</a>
+          <a href="../index.html#contact" class="text-gray-700 hover:text-blue-600 transition duration-300">Contact</a>
+          <a href="#faq" id="faq-nav-link" class="text-gray-700 hover:text-blue-600 transition duration-300">FAQ</a>
+        </nav>
+        
+        <!-- Actions -->
+        <div class="hidden md:flex items-center space-x-4">
+          <select class="border border-gray-300 rounded px-3 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <option value="en">English</option>
+            <option value="ar">العربية</option>
+            <option value="rw">Kinyarwanda</option>
+          </select>
+          <button id="desktop-signup-btn" class="bg-blue-600 text-white px-4 py-2 rounded...">Sign Up</button>
+          <button id="desktop-login-btn" class="border border-blue-600 text-blue-600 px-4 py-2 rounded...">Log In</button>
+        </div>
+      </div>
+      
+      <!-- Mobile Menu -->
+      <div id="mobile-menu" class="hidden md:hidden py-4 border-t border-gray-200">
+        <div class="flex flex-col space-y-4">
+          <div class="flex space-x-2">
+  <button id="mobile-signup-btn" class="flex-1 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition duration-300">Sign Up</button>
+  <button id="mobile-login-btn" class="flex-1 border border-blue-600 text-blue-600 px-4 py-2 rounded hover:bg-blue-600 hover:text-white transition duration-300">Log In</button>
+</div>
+          <a href="#home" class="text-gray-700 hover:text-blue-600">Home</a>
+          <a href="#about" class="text-gray-700 hover:text-blue-600">About</a>
+          
+          <!-- Mobile Services Dropdown -->
+          <div class="relative">
+            <button id="mobile-services-toggle" class="flex items-center text-gray-700 hover:text-blue-600 w-full justify-between">
+              Services <i class="fas fa-chevron-down"></i>
+            </button>
+            <div id="mobile-services-menu" class="hidden pl-4 mt-2 space-y-2">
+              <a href="../Servscies/Maternity&Brith Servecises.html" class="block text-gray-700 hover:text-blue-600">Maternity & Birth Services</a>
+              <a href="../Servscies/paitents-Servecises.html" class="block text-gray-700 hover:text-blue-600">Patient Services</a>
+              <a href="../Servscies/" class="block text-gray-700 hover:text-blue-600">Emergency Care</a>
+              <a href="../Servscies/veccination.html" class="block text-gray-700 hover:text-blue-600">Vaccination Programs</a>
+              <a href="../Servscies/mentalhealth.html" class="block text-gray-700 hover:text-blue-600">Mental Health Support</a>
+              <a href="../Servscies/NCD.html" class="block text-gray-700 hover:text-blue-600">Chronic Disease Care</a>
+              <a href="../Servscies/Health Education.html" class="block text-gray-700 hover:text-blue-600">Health Awareness & Education</a>
+              <a href="../Servscies/Disability.html" class="block text-gray-700 hover:text-blue-600">Disability Care</a>
+            </div>
+          </div>
+          
+          <a href="/doctors.html" class="text-gray-700 hover:text-blue-600">Doctors</a>
+          <a href="/Dashboard.html" class="text-gray-700 hover:text-blue-600">Dashdoard</a>
+          <a href="../index.html#contact" class="text-gray-700 hover:text-blue-600">Contact</a>
+          <a href="#faq" id="mobile-faq-link" class="text-gray-700 hover:text-blue-600">FAQ</a>
+          
+          <div class="pt-4 border-t border-gray-200">
+            <select class="w-full border border-gray-300 rounded px-3 py-2 text-sm mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500">
+              <option value="en">English</option>
+              <option value="ar">العربية</option>
+              <option value="rw">Kinyarwanda</option>
+            </select>
+            <div class="flex space-x-2">
+              <button  id="signup-btn" class="flex-1 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition duration-300">Sign Up</button>
+              <button  id="login-btn" class="flex-1 border border-blue-600 text-blue-600 px-4 py-2 rounded hover:bg-blue-600 hover:text-white transition duration-300">Log In</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+  
+  <div class="flex min-h-screen flex-col md:flex-row">
     <!-- Sidebar -->
-    <aside class="w-64 bg-blue-500 text-white flex flex-col">
+    <aside class="sidebar w-full md:w-64 bg-blue-500 text-white flex flex-col">
       <div class="text-2xl font-bold p-6 border-b border-blue-600 font-mono">
         Hospital Admin
       </div>
       <nav class="flex-1 p-4 space-y-2">
         <a href="../Dashboard.html"
-          class="font-semibold text-xl block p-2 rounded hover:bg-purple-500">
-          <i class="fa-solid fa-hospital text-yellow-500 text-2xl"></i>
-          Dashboard
+          class="font-semibold text-lg md:text-xl block p-2 rounded hover:bg-purple-500 flex items-center">
+          <i class="fa-solid fa-hospital text-yellow-500 text-xl md:text-2xl mr-2"></i>
+          <span>Dashboard</span>
         </a>
         <a href="./paitents-Servecises.html"
-          class="font-semibold block p-2 rounded hover:bg-purple-500">
-          <i class="fa-solid fa-user text-gray-400 text-3xl"></i>
-          Register Patient
+          class="font-semibold text-lg md:text-xl block p-2 rounded hover:bg-purple-500 flex items-center">
+          <i class="fa-solid fa-user text-gray-400 text-xl md:text-3xl mr-2"></i>
+          <span>Register Patient</span>
         </a>
         <a href="./Regester-fill-form.html"
-          class="font-semibold block p-2 rounded hover:bg-purple-500 bg-blue-600">
-          <i class="fa-solid fa-baby text-gray-100 text-3xl"></i>
-          Birth Certification
+          class="font-semibold text-lg md:text-xl block p-2 rounded hover:bg-purple-500 bg-blue-600 flex items-center">
+          <i class="fa-solid fa-baby text-gray-100 text-xl md:text-3xl mr-2"></i>
+          <span>Birth Certification</span>
         </a>
       </nav>
     </aside>
 
     <!-- Main Content -->
-    <main class="flex-1 p-6 space-y-8 overflow-y-auto bg-white">
-      <section id="register-birth" class="min-h-screen flex flex-col items-center justify-center">
-        <h2 class="text-3xl font-extrabold mb-4 text-center">Register New Birth</h2>
+    <main class="main-content flex-1 p-4 md:p-6 space-y-6 md:space-y-8 overflow-y-auto bg-white">
+      <section id="register-birth" class="min-h-screen flex flex-col items-center justify-center py-4">
+        <h2 class="text-2xl md:text-3xl font-extrabold mb-4 text-center">Register New Birth</h2>
 
         <!-- Search bar -->
-        <div id="FindBirth" class="p-2 m-4 w-96 text-center font-sans">
-          <input id="FindId" type="text" placeholder="Find record by Register No"
-            class="border border-orange-400 bg-slate-200 p-2 rounded-l-2xl">
-          <button id="FindById"
-            class="bg-green-400 text-white p-2 rounded-r-2xl">Search</button>
+        <div id="findBirth" class="search-container p-2 m-4 w-full md:w-96 text-center font-sans">
+          <div class="flex flex-col md:flex-row">
+            <input id="findId" type="text" placeholder="Find record by Register No"
+              class="border border-orange-400 bg-slate-200 p-2 rounded-t-2xl md:rounded-l-2xl md:rounded-t-none flex-grow">
+            <button id="findById"
+              class="bg-green-400 text-white p-2 rounded-b-2xl md:rounded-r-2xl md:rounded-b-none">Search</button>
+          </div>
         </div>
 
         <!-- Form -->
-        <form id="BirthForm"
-          class="bg-slate-400 shadow rounded-2xl p-6 space-y-4 w-[790px]">
+        <form id="birthForm"
+          class="form-container bg-slate-400 shadow rounded-2xl p-4 md:p-6 space-y-4 w-full max-w-[790px]">
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label class="block text-sm font-medium mb-1">Baby Name</label>
@@ -99,31 +248,31 @@
           </div>
 
           <!-- Buttons -->
-          <div class="space-x-2 mt-4">
-            <button id="InsertBtn" type="button"
-              class="bg-green-600 text-white px-6 py-2 rounded-xl hover:bg-green-700">INSERT</button>
-            <button id="UpdateBtn" type="button"
-              class="bg-blue-600 text-white px-6 py-2 rounded-xl hover:bg-blue-700">UPDATE</button>
-            <button id="RemoveBtn" type="button"
-              class="bg-red-600 text-white px-6 py-2 rounded-xl hover:bg-red-700">REMOVE</button>
+          <div class="button-group space-y-2 md:space-y-0 md:space-x-2 mt-4">
+            <button id="insertBtn" type="button"
+              class="bg-green-600 text-white px-6 py-2 rounded-xl hover:bg-green-700 w-full md:w-auto">INSERT</button>
+            <button id="updateBtn" type="button"
+              class="bg-blue-600 text-white px-6 py-2 rounded-xl hover:bg-blue-700 w-full md:w-auto">UPDATE</button>
+            <button id="removeBtn" type="button"
+              class="bg-red-600 text-white px-6 py-2 rounded-xl hover:bg-red-700 w-full md:w-auto">REMOVE</button>
           </div>
         </form>
 
         <!-- Search Results -->
-        <div id="RearchResult"
-          class="bg-gray-200 shadow rounded-2xl p-6 mt-6 w-[790px] hidden">
+        <div id="searchResult"
+          class="form-container bg-gray-200 shadow rounded-2xl p-4 md:p-6 mt-6 w-full max-w-[790px] hidden">
           <h3 class="text-xl text-center font-bold mb-4 text-blue-700">Birth Record</h3>
-          <div class="text-center grid grid-cols-2 gap-2 m-4">
-            <p id="ShowName"></p>
-            <p id="ShowDOB"></p>
-            <p id="ShowGender"></p>
-            <p id="ShowMother"></p>
-            <p id="ShowNotes"></p>
-            <p id="ShowRegNo"></p>
+          <div class="text-center grid grid-cols-1 sm:grid-cols-2 gap-2 m-4">
+            <p id="showName"></p>
+            <p id="showDOB"></p>
+            <p id="showGender"></p>
+            <p id="showMother"></p>
+            <p id="showNotes"></p>
+            <p id="showRegNo"></p>
           </div>
           <div class="mt-4 text-center">
-            <button id="BackBtn"
-              class="bg-blue-500 text-white px-6 py-2 rounded-xl hover:bg-blue-700">Back
+            <button id="backBtn"
+              class="bg-blue-500 text-white px-6 py-2 rounded-xl hover:bg-blue-700 w-full md:w-auto">Back
               to Form</button>
           </div>
         </div>
@@ -131,10 +280,11 @@
     </main>
   </div>
 
-  <!-- ✅ Fixed Firebase Script -->
-  <script type="module" src="../JavaScript-Files/Dashboard.js">
-    
+  <!-- Menu Functionality Script -->
+
+
+  <!-- Firebase Script -->
+  <script type="module" src="../JavaScript-Files/Brith.js">
   </script>
 </body>
 </html>
-

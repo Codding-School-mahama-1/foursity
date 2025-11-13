@@ -128,251 +128,144 @@ document.addEventListener('DOMContentLoaded', function() {
       });
     }
 
-    const birthCtx = document.getElementById('birthChart')?.getContext('2d');
-    if (birthCtx) {
-      new Chart(birthCtx, {
-        type: 'pie',
-        data: {
-          labels: ['Male', 'Female'],
-          datasets: [{
-            data: [55, 45],
-            backgroundColor: ['rgba(54,162,11,0.6)', 'rgba(255,99,132,0.6)']
-          }]
-        },
-        options: { responsive: true }
-      });
-    }
-
-    const trendCtx = document.getElementById('trendChart')?.getContext('2d');
-    if (trendCtx) {
-      new Chart(trendCtx, {
-        type: 'line',
-        data: {
-          labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
-          datasets: [{
-            label: 'Births',
-            data: [12, 19, 15, 17, 14, 16, 18],
-            backgroundColor: 'rgba(12,102,72)',
-            borderColor: 'rgba(12,10,192,1)',
-            tension: 0.4
-          }]
-        },
-        options: { responsive: true, scales: { y: { beginAtZero: true } } }
-      });
-    }
-  }
-
-  checkAuthStatus();
-});
-
-
-
-
-/****************************************************
- * 🏥 FIREBASE INITIALIZATION
- ****************************************************/
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-app.js";
-import { getDatabase, ref, set, update, remove, get, child }
-  from "https://www.gstatic.com/firebasejs/12.5.0/firebase-database.js";
-
-const firebaseConfig = {
-  apiKey: "AIzaSyCZ774I4-U7CnvJ0R43zJifEfE5sGM48lY",
-  authDomain: "halawani-7126f.firebaseapp.com",
-  databaseURL: "https://halawani-7126f-default-rtdb.firebaseio.com",
-  projectId: "halawani-7126f",
-  storageBucket: "halawani-7126f.firebasestorage.app",
-  messagingSenderId: "1065152267257",
-  appId: "1:1065152267257:web:636940f4c120e4ae927328"
-};
-
-const app = initializeApp(firebaseConfig);
-const db = getDatabase(app);
-
-/****************************************************
- * 👨‍⚕️ PATIENTS SERVICES SECTION
- ****************************************************/
-window.addEventListener("DOMContentLoaded", () => {
-  const form = document.getElementById('patientForm');
-  const searchResult = document.getElementById('searchResult');
-  const findById = document.getElementById('findById');
-  const backBtn = document.getElementById('backBtn');
-  const findId = document.getElementById('findId');
-
-  const EnterName = document.getElementById('EnterName');
-  const EnterAge = document.getElementById('EnterAge');
-  const EnterGender = document.getElementById('EnterGender');
-  const EnterDisease = document.getElementById('EnterDisease');
-  const EnterContact = document.getElementById('EnterContact');
-  const EnterAddress = document.getElementById('EnterAddress');
-  const EnterId = document.getElementById('EnterId');
-
-  const enterBtn = document.getElementById('enterBtn');
-  const updateBtn = document.getElementById('updateBtn');
-  const removeBtn = document.getElementById('removeBtn');
-
-  const showName = document.getElementById('showName');
-  const showAge = document.getElementById('showAge');
-  const showGender = document.getElementById('showGender');
-  const showDisease = document.getElementById('showDisease');
-  const showContact = document.getElementById('showContact');
-  const showAddress = document.getElementById('showAddress');
-
-  function enterData() {
-    if (!EnterId.value.trim()) return alert("Please enter an ID");
-    set(ref(db, "Person/" + EnterId.value), {
-      Name: EnterName.value,
-      Age: EnterAge.value,
-      Gender: EnterGender.value,
-      Disease: EnterDisease.value,
-      Contact: EnterContact.value,
-      Address: EnterAddress.value
-    }).then(() => alert("✅ Data added successfully"))
-      .catch(err => alert("❌ " + err.message));
-  }
-
-  function updateData() {
-    if (!EnterId.value.trim()) return alert("Please enter an ID");
-    update(ref(db, "Person/" + EnterId.value), {
-      Name: EnterName.value,
-      Age: EnterAge.value,
-      Gender: EnterGender.value,
-      Disease: EnterDisease.value,
-      Contact: EnterContact.value,
-      Address: EnterAddress.value
-    }).then(() => alert("✅ Data updated successfully"))
-      .catch(err => alert("❌ " + err.message));
-  }
-
-  function removeData() {
-    if (!EnterId.value.trim()) return alert("Please enter an ID");
-    remove(ref(db, "Person/" + EnterId.value))
-      .then(() => alert("🗑️ Data removed successfully"))
-      .catch(err => alert("❌ " + err.message));
-  }
-
-  function findData() {
-    if (!findId.value.trim()) return alert("Please enter an ID");
-    const dbRef = ref(db);
-    get(child(dbRef, "Person/" + findId.value))
-      .then(snapshot => {
-        if (snapshot.exists()) {
-          const data = snapshot.val();
-          showName.textContent = `Name: ${data.Name}`;
-          showAge.textContent = `Age: ${data.Age}`;
-          showGender.textContent = `Gender: ${data.Gender}`;
-          showDisease.textContent = `Disease: ${data.Disease}`;
-          showContact.textContent = `Contact: ${data.Contact}`;
-          showAddress.textContent = `Address: ${data.Address}`;
-          form.classList.add("hidden");
-          searchResult.classList.remove("hidden");
-        } else alert("Patient not found");
-      })
-      .catch(err => alert("❌ " + err.message));
-  }
-
-  backBtn.addEventListener("click", () => {
-    searchResult.classList.add("hidden");
-    form.classList.remove("hidden");
+    // Initialize the app
+    checkAuthStatus();
   });
 
-  enterBtn.addEventListener("click", enterData);
-  updateBtn.addEventListener("click", updateData);
-  removeBtn.addEventListener("click", removeData);
-  findById.addEventListener("click", findData);
-});
 
-/****************************************************
- * 👶 BIRTH SERVICES SECTION
- ****************************************************/
-window.addEventListener("DOMContentLoaded", () => {
-  const form = document.getElementById('BirthForm');
-  const RearchResult = document.getElementById('RearchResult');
-  const FindById = document.getElementById('FindById');
-  const BackBtn = document.getElementById('BackBtn');
-  const FindId = document.getElementById('FindId');
 
-  const BabyName = document.getElementById('BabyName');
-  const Dob = document.getElementById('Dob');
-  const Gender = document.getElementById('Gender');
-  const MotherName = document.getElementById('MotherName');
-  const Notes = document.getElementById('Notes');
-  const RegisterNo = document.getElementById('RegisterNo');
+  //paitent js file
+   
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-app.js";
+    import { getDatabase, ref, set, update, remove, get, child }
+      from "https://www.gstatic.com/firebasejs/12.5.0/firebase-database.js";
 
-  const InsertBtn = document.getElementById('InsertBtn');
-  const UpdateBtn = document.getElementById('UpdateBtn');
-  const RemoveBtn = document.getElementById('RemoveBtn');
+    const firebaseConfig = {
+      apiKey: "AIzaSyCZ774I4-U7CnvJ0R43zJifEfE5sGM48lY",
+      authDomain: "halawani-7126f.firebaseapp.com",
+      databaseURL: "https://halawani-7126f-default-rtdb.firebaseio.com",
+      projectId: "halawani-7126f",
+      storageBucket: "halawani-7126f.firebasestorage.app",
+      messagingSenderId: "1065152267257",
+      appId: "1:1065152267257:web:636940f4c120e4ae927328"
+    };
 
-  const ShowName = document.getElementById('ShowName');
-  const ShowDOB = document.getElementById('ShowDOB');
-  const ShowGender = document.getElementById('ShowGender');
-  const ShowMother = document.getElementById('ShowMother');
-  const ShowNotes = document.getElementById('ShowNotes');
-  const ShowRegNo = document.getElementById('ShowRegNo');
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
 
-  function InsertData() {
-    const reg = RegisterNo.value.trim();
-    if (!reg) return alert("Please enter Register No");
-    set(ref(db, "Births/" + reg), {
-      BabyName: BabyName.value,
-      Dob: Dob.value,
-      Gender: Gender.value,
-      MotherName: MotherName.value,
-      Notes: Notes.value,
-      RegisterNo: reg
-    })
-      .then(() => alert("✅ Birth record added successfully"))
-      .catch(err => alert("❌ " + err.message));
-  }
+    // Elements
+    const form = document.getElementById('patientForm');
+    const searchResult = document.getElementById('searchResult');
+    const findById = document.getElementById('findById');
+    const backBtn = document.getElementById('backBtn');
+    const findId = document.getElementById('findId');
 
-  function UpdateData() {
-    const reg = RegisterNo.value.trim();
-    if (!reg) return alert("Please enter Register No to update");
-    update(ref(db, "Births/" + reg), {
-      BabyName: BabyName.value,
-      Dob: Dob.value,
-      Gender: Gender.value,
-      MotherName: MotherName.value,
-      Notes: Notes.value
-    })
-      .then(() => alert("✅ Record updated successfully"))
-      .catch(err => alert("❌ " + err.message));
-  }
+    const EnterName = document.getElementById('EnterName');
+    const EnterAge = document.getElementById('EnterAge');
+    const EnterGender = document.getElementById('EnterGender');
+    const EnterDisease = document.getElementById('EnterDisease');
+    const EnterContact = document.getElementById('EnterContact');
+    const EnterAddress = document.getElementById('EnterAddress');
+    const EnterId = document.getElementById('EnterId');
 
-  function RemoveData() {
-    const reg = RegisterNo.value.trim();
-    if (!reg) return alert("Please enter Register No");
-    remove(ref(db, "Births/" + reg))
-      .then(() => alert("🗑️ Record removed successfully"))
-      .catch(err => alert("❌ " + err.message));
-  }
+    const enterBtn = document.getElementById('enterBtn');
+    const updateBtn = document.getElementById('updateBtn');
+    const removeBtn = document.getElementById('removeBtn');
 
-  function FindData() {
-    const id = FindId.value.trim();
-    if (!id) return alert("Please enter Register No");
-    get(ref(db, "Births/" + id))
-      .then(snapshot => {
-        if (snapshot.exists()) {
-          const data = snapshot.val();
-          ShowName.textContent = `Baby Name: ${data.BabyName}`;
-          ShowDOB.textContent = `Date of Birth: ${data.Dob}`;
-          ShowGender.textContent = `Gender: ${data.Gender}`;
-          ShowMother.textContent = `Mother: ${data.MotherName}`;
-          ShowNotes.textContent = `Notes: ${data.Notes}`;
-          ShowRegNo.textContent = `Register No: ${data.RegisterNo}`;
-          form.classList.add("hidden");
-          RearchResult.classList.remove("hidden");
-        } else alert("Record not found");
-      })
-      .catch(err => alert("❌ " + err.message));
-  }
+    const showName = document.getElementById('showName');
+    const showAge = document.getElementById('showAge');
+    const showGender = document.getElementById('showGender');
+    const showDisease = document.getElementById('showDisease');
+    const showContact = document.getElementById('showContact');
+    const showAddress = document.getElementById('showAddress');
 
-  BackBtn.addEventListener("click", () => {
-    RearchResult.classList.add("hidden");
-    form.classList.remove("hidden");
-  });
+    // INSERT
+    function enterData() {
+      if (!EnterId.value.trim()) {
+        alert("Please enter an ID");
+        return;
+      }
+      set(ref(db, "Person/" + EnterId.value), {
+        Name: EnterName.value,
+        Age: EnterAge.value,
+        Gender: EnterGender.value,
+        Disease: EnterDisease.value,
+        Contact: EnterContact.value,
+        Address: EnterAddress.value
+      }).then(() => alert("Data added successfully"))
+        .catch(err => alert("Error: " + err.message));
+    }
 
-  InsertBtn.addEventListener("click", InsertData);
-  UpdateBtn.addEventListener("click", UpdateData);
-  RemoveBtn.addEventListener("click", RemoveData);
-  FindById.addEventListener("click", FindData);
-});
+    // UPDATE
+    function updateData() {
+      if (!EnterId.value.trim()) {
+        alert("Please enter an ID to update");
+        return;
+      }
+      update(ref(db, "Person/" + EnterId.value), {
+        Name: EnterName.value,
+        Age: EnterAge.value,
+        Gender: EnterGender.value,
+        Disease: EnterDisease.value,
+        Contact: EnterContact.value,
+        Address: EnterAddress.value
+      }).then(() => alert("Data updated successfully"))
+        .catch(err => alert("Error: " + err.message));
+    }
+
+    // REMOVE
+    function removeData() {
+      if (!EnterId.value.trim()) {
+        alert("Please enter an ID to remove");
+        return;
+      }
+      remove(ref(db, "Person/" + EnterId.value))
+        .then(() => alert("Data removed successfully"))
+        .catch(err => alert("Error: " + err.message));
+    }
+
+    // FIND
+    function findData() {
+      if (!findId.value.trim()) {
+        alert("Please enter an ID to search");
+        return;
+      }
+
+      const dbRef = ref(db);
+      get(child(dbRef, "Person/" + findId.value))
+        .then(snapshot => {
+          if (snapshot.exists()) {
+            const data = snapshot.val();
+            showName.textContent = `Name: ${data.Name}`;
+            showAge.textContent = `Age: ${data.Age}`;
+            showGender.textContent = `Gender: ${data.Gender}`;
+            showDisease.textContent = `Disease: ${data.Disease}`;
+            showContact.textContent = `Contact: ${data.Contact}`;
+            showAddress.textContent = `Address: ${data.Address}`;
+
+            form.classList.add("hidden");
+            searchResult.classList.remove("hidden");
+          } else {
+            alert("Patient not found");
+          }
+        })
+        .catch(err => alert("Error: " + err.message));
+    }
+
+    // BACK
+    backBtn.addEventListener("click", () => {
+      searchResult.classList.add("hidden");
+      form.classList.remove("hidden");
+    });
+
+    // Event listeners
+    enterBtn.addEventListener("click", enterData);
+    updateBtn.addEventListener("click", updateData);
+    removeBtn.addEventListener("click", removeData);
+    findById.addEventListener("click", findData);
+  
+
+
+
+    //Brith registaration
+    
