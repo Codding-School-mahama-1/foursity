@@ -144,135 +144,23 @@
     </main>
   </div>
 
-  <!-- Firebase Script -->
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-app.js";
-    import { getDatabase, ref, set, update, remove, get, child }
-      from "https://www.gstatic.com/firebasejs/12.5.0/firebase-database.js";
+ <script type="module" src="../JavaScript-Files/Dashboard.js">
+  // === COUNTERS LOGIC ===
+import { onValue } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-database.js";
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyCZ774I4-U7CnvJ0R43zJifEfE5sGM48lY",
-      authDomain: "halawani-7126f.firebaseapp.com",
-      databaseURL: "https://halawani-7126f-default-rtdb.firebaseio.com",
-      projectId: "halawani-7126f",
-      storageBucket: "halawani-7126f.firebasestorage.app",
-      messagingSenderId: "1065152267257",
-      appId: "1:1065152267257:web:636940f4c120e4ae927328"
-    };
+// Select elements
+const birthRecord = document.getElementById("birthRecord");
+const totalPatient = document.getElementById("totalPatient");
 
-    const app = initializeApp(firebaseConfig);
-    const db = getDatabase(app);
+// Listen for Births count in Realtime Database
+const birthsRef = ref(dbase, "Births/");
+onValue(birthsRef, (snapshot) => {
+  const data = snapshot.val();
+  const count = data ? Object.keys(data).length : 0;
+  birthRecord.textContent = count;
+  totalPatient.textContent = count; // assuming total patients = total births for now
+});
 
-    // Elements
-    const form = document.getElementById('patientForm');
-    const searchResult = document.getElementById('searchResult');
-    const findById = document.getElementById('findById');
-    const backBtn = document.getElementById('backBtn');
-    const findId = document.getElementById('findId');
-
-    const EnterName = document.getElementById('EnterName');
-    const EnterAge = document.getElementById('EnterAge');
-    const EnterGender = document.getElementById('EnterGender');
-    const EnterDisease = document.getElementById('EnterDisease');
-    const EnterContact = document.getElementById('EnterContact');
-    const EnterAddress = document.getElementById('EnterAddress');
-    const EnterId = document.getElementById('EnterId');
-
-    const enterBtn = document.getElementById('enterBtn');
-    const updateBtn = document.getElementById('updateBtn');
-    const removeBtn = document.getElementById('removeBtn');
-
-    const showName = document.getElementById('showName');
-    const showAge = document.getElementById('showAge');
-    const showGender = document.getElementById('showGender');
-    const showDisease = document.getElementById('showDisease');
-    const showContact = document.getElementById('showContact');
-    const showAddress = document.getElementById('showAddress');
-
-    // INSERT
-    function enterData() {
-      if (!EnterId.value.trim()) {
-        alert("Please enter an ID");
-        return;
-      }
-      set(ref(db, "Person/" + EnterId.value), {
-        Name: EnterName.value,
-        Age: EnterAge.value,
-        Gender: EnterGender.value,
-        Disease: EnterDisease.value,
-        Contact: EnterContact.value,
-        Address: EnterAddress.value
-      }).then(() => alert("Data added successfully"))
-        .catch(err => alert("Error: " + err.message));
-    }
-
-    // UPDATE
-    function updateData() {
-      if (!EnterId.value.trim()) {
-        alert("Please enter an ID to update");
-        return;
-      }
-      update(ref(db, "Person/" + EnterId.value), {
-        Name: EnterName.value,
-        Age: EnterAge.value,
-        Gender: EnterGender.value,
-        Disease: EnterDisease.value,
-        Contact: EnterContact.value,
-        Address: EnterAddress.value
-      }).then(() => alert("Data updated successfully"))
-        .catch(err => alert("Error: " + err.message));
-    }
-
-    // REMOVE
-    function removeData() {
-      if (!EnterId.value.trim()) {
-        alert("Please enter an ID to remove");
-        return;
-      }
-      remove(ref(db, "Person/" + EnterId.value))
-        .then(() => alert("Data removed successfully"))
-        .catch(err => alert("Error: " + err.message));
-    }
-
-    // FIND
-    function findData() {
-      if (!findId.value.trim()) {
-        alert("Please enter an ID to search");
-        return;
-      }
-
-      const dbRef = ref(db);
-      get(child(dbRef, "Person/" + findId.value))
-        .then(snapshot => {
-          if (snapshot.exists()) {
-            const data = snapshot.val();
-            showName.textContent = `Name: ${data.Name}`;
-            showAge.textContent = `Age: ${data.Age}`;
-            showGender.textContent = `Gender: ${data.Gender}`;
-            showDisease.textContent = `Disease: ${data.Disease}`;
-            showContact.textContent = `Contact: ${data.Contact}`;
-            showAddress.textContent = `Address: ${data.Address}`;
-
-            form.classList.add("hidden");
-            searchResult.classList.remove("hidden");
-          } else {
-            alert("Patient not found");
-          }
-        })
-        .catch(err => alert("Error: " + err.message));
-    }
-
-    // BACK
-    backBtn.addEventListener("click", () => {
-      searchResult.classList.add("hidden");
-      form.classList.remove("hidden");
-    });
-
-    // Event listeners
-    enterBtn.addEventListener("click", enterData);
-    updateBtn.addEventListener("click", updateData);
-    removeBtn.addEventListener("click", removeData);
-    findById.addEventListener("click", findData);
   </script>
 </body>
 

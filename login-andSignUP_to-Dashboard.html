@@ -4,120 +4,129 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Dashboard - Hospital Admin</title>
+
+  <!-- Font Awesome & Tailwind -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
+
 <body class="bg-gray-100 text-gray-800">
 
-<!-- Login/Signup Modal -->
-<div id="authModal" class="fixed inset-0 bg-gray-800 bg-opacity-70 flex items-center justify-center z-50">
-  <div class="bg-white rounded-2xl shadow-lg p-8 w-96 relative">
-    <div id="loginFormDiv">
-      <h2 class="text-2xl font-bold mb-6 text-center">Login</h2>
-      <form id="loginForm" class="space-y-4">
-        <div>
-          <label class="block mb-1 font-semibold">Email</label>
-          <input type="email" id="loginEmail" required class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-        </div>
-        <div>
-          <label class="block mb-1 font-semibold">Password</label>
-          <input type="password" id="loginPassword" required class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-        </div>
-        <button type="submit" class="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600">Login</button>
-      </form>
-      <p class="mt-4 text-center text-gray-600">
-        Don't have an account? 
-        <a href="#" id="showSignup" class="text-blue-600 font-semibold hover:underline">Sign Up</a>
-      </p>
-    </div>
+  <!-- Login/Signup Modal -->
+  <div id="authModal" class="fixed inset-0 bg-gray-800 bg-opacity-70 flex items-center justify-center z-50">
+    <div class="bg-white rounded-2xl shadow-lg p-8 w-96 relative">
 
-    <div id="signupFormDiv" class="hidden">
-      <h2 class="text-2xl font-bold mb-6 text-center">Sign Up</h2>
-      <form id="signupForm" class="space-y-4">
-        <div>
-          <label class="block mb-1 font-semibold">Full Name</label>
-          <input type="text" id="signupName" required class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500">
-        </div>
-        <div>
-          <label class="block mb-1 font-semibold">Email</label>
-          <input type="email" id="signupEmail" required class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500">
-        </div>
-        <div>
-          <label class="block mb-1 font-semibold">Password</label>
-          <input type="password" id="signupPassword" required class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500">
-        </div>
-        <button type="submit" class="w-full bg-green-500 text-white py-2 rounded-lg hover:bg-green-600">Sign Up</button>
-      </form>
-      <p class="mt-4 text-center text-gray-600">
-        Already have an account? 
-        <a href="#" id="showLogin" class="text-green-600 font-semibold hover:underline">Login</a>
-      </p>
+      <!-- Login Form -->
+      <div id="loginFormDiv">
+        <h2 class="text-2xl font-bold mb-6 text-center">Login</h2>
+        <form id="loginForm" class="space-y-4">
+          <div>
+            <label class="block mb-1 font-semibold">Email</label>
+            <input type="email" id="loginEmail" required class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+          </div>
+          <div>
+            <label class="block mb-1 font-semibold">Password</label>
+            <input type="password" id="loginPassword" required class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+          </div>
+          <button type="submit" class="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600">Login</button>
+        </form>
+        <p class="mt-4 text-center text-gray-600">
+          Don't have an account?
+          <a href="#signupFormDiv" id="showSignup" class="text-blue-600 font-semibold hover:underline">Sign Up</a>
+        </p>
+      </div>
+
+      <!-- Signup Form -->
+      <div id="signupFormDiv" class="hidden">
+        <h2 class="text-2xl font-bold mb-6 text-center">Sign Up</h2>
+        <form id="signupForm" class="space-y-4">
+          <div>
+            <label class="block mb-1 font-semibold">Full Name</label>
+            <input type="text" id="signupName" required class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500">
+          </div>
+          <div>
+            <label class="block mb-1 font-semibold">Email</label>
+            <input type="email" id="signupEmail" required class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500">
+          </div>
+          <div>
+            <label class="block mb-1 font-semibold">Password</label>
+            <input type="password" id="signupPassword" required class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500">
+          </div>
+          <button type="submit" class="w-full bg-green-500 text-white py-2 rounded-lg hover:bg-green-600">Sign Up</button>
+        </form>
+        <p class="mt-4 text-center text-gray-600">
+          Already have an account?
+          <a href="#" id="showLogin" class="text-green-600 font-semibold hover:underline">Login</a>
+        </p>
+      </div>
     </div>
   </div>
-</div>
 
-<div id="dashboardContent" class="flex min-h-screen hidden">
-  <!-- Sidebar -->
-  <aside class="w-64 bg-blue-500 text-white flex flex-col ">
-    <div class="text-2xl font-bold p-6 border-b border-blue-600 font-mono" >Hospital Admin</div>
-    <nav class="flex-1 p-4 space-y-2">
-      <a href="#" id="logoutBtn" class="block p-2 rounded hover:bg-blue-600 text-red-200"><i class="fa-solid fa-right-from-bracket text-2xl"></i> Logout</a>
-      <a href="Servscies/paitents-Servecises.html" class="block p-2 rounded hover:bg-blue-600">
-        <i class="fa-solid fa-user text-yellow-500 text-3xl"></i> Register Patient
-      </a>
-      <a href="Servscies/Briths Servecises.html" class="block p-2 rounded hover:bg-blue-600">
-        <i class="fa-solid fa-people-roof text-yellow-500 text-3xl"></i> Register Birth
-      </a>
-    </nav>
-  </aside>
+  <!-- Dashboard -->
+  <div id="dashboardContent" class="flex min-h-screen hidden">
+    <!-- Sidebar -->
+    <aside class="w-64 bg-blue-500 text-white flex flex-col">
+      <div class="text-2xl font-bold p-6 border-b border-blue-600 font-mono">Hospital Admin</div>
+      <nav class="flex-1 p-4 space-y-2">
+        <a href="#" id="logoutBtn" class="block p-2 rounded hover:bg-blue-600 text-red-200">
+          <i class="fa-solid fa-right-from-bracket text-2xl"></i> Logout
+        </a>
+        <a href="Services/patients-Services.html" class="block p-2 rounded hover:bg-blue-600">
+          <i class="fa-solid fa-user text-yellow-500 text-3xl"></i> Register Patient
+        </a>
+        <a href="Services/births-Services.html" class="block p-2 rounded hover:bg-blue-600">
+          <i class="fa-solid fa-people-roof text-yellow-500 text-3xl"></i> Register Birth
+        </a>
+      </nav>
+    </aside>
 
-  <!-- Main Content -->
-  <main class="flex-1 p-6 space-y-8 overflow-y-auto bg-blue-300">
-    <section id="dashboard">
-      <h1 class="text-3xl font-bold mb-6">Dashboard Overview</h1>
-      <!-- Stats Cards -->
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        <div class="bg-white rounded-2xl shadow p-4 text-center">
-          <h2 class="text-gray-500">Total Patients</h2>
-          <p class="text-3xl font-bold text-blue-700">1,245</p>
-        </div>
-        <div class="bg-white rounded-2xl shadow p-4 text-center">
-          <h2 class="text-gray-500">Birth Records</h2>
-          <p class="text-3xl font-bold text-green-600">320</p>
-        </div>
-        <div class="bg-white rounded-2xl shadow p-4 text-center">
-          <h2 class="text-gray-500">Male Patients</h2>
-          <p class="text-3xl font-bold text-indigo-600">700</p>
-        </div>
-        <div class="bg-white rounded-2xl shadow p-4 text-center">
-          <h2 class="text-gray-500">Female Patients</h2>
-          <p class="text-3xl font-bold text-pink-600">545</p>
-        </div>
-      </div>
-      <!-- Charts -->
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-8 bg-blue-100">
-        <div class="bg-white rounded-2xl shadow p-4">
-          <h2 class="text-lg font-semibold mb-2">Patients by Month</h2>
-          <canvas id="patientsChart"></canvas>
-        </div>
-        <div class="bg-white rounded-2xl shadow p-4">
-          <h2 class="text-lg font-semibold mb-2">Birth Gender Ratio</h2>
-          <canvas id="birthChart"></canvas>
-        </div>
-        <div class="bg-white rounded-2xl shadow p-4 lg:col-span-2">
-          <h2 class="text-lg font-semibold mb-2">Monthly Birth Trends</h2>
-          <canvas id="trendChart"></canvas>
-        </div>
-      </div>
-    </section>
-  </main>
-</div>
+    <!-- Main Content -->
+    <main class="flex-1 p-6 space-y-8 overflow-y-auto bg-blue-300">
+      <section id="dashboard">
+        <h1 class="text-3xl font-bold mb-6">Dashboard Overview</h1>
 
-<script src="JavaScript-Files/Dashboard.js">
-  
-  
-</script>
+        <!-- Stats Cards -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div class="bg-white rounded-2xl shadow p-4 text-center">
+            <h2 class="text-gray-500">Total Patients</h2>
+            <p class="text-3xl font-bold text-blue-700">1,245</p>
+          </div>
+          <div class="bg-white rounded-2xl shadow p-4 text-center">
+            <h2 class="text-gray-500">Birth Records</h2>
+            <p class="text-3xl font-bold text-green-600">320</p>
+          </div>
+          <div class="bg-white rounded-2xl shadow p-4 text-center">
+            <h2 class="text-gray-500">Male Patients</h2>
+            <p class="text-3xl font-bold text-indigo-600">700</p>
+          </div>
+          <div class="bg-white rounded-2xl shadow p-4 text-center">
+            <h2 class="text-gray-500">Female Patients</h2>
+            <p class="text-3xl font-bold text-pink-600">545</p>
+          </div>
+        </div>
+
+        <!-- Charts -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-8 bg-blue-100">
+          <div class="bg-white rounded-2xl shadow p-4">
+            <h2 class="text-lg font-semibold mb-2">Patients by Month</h2>
+            <canvas id="patientsChart"></canvas>
+          </div>
+          <div class="bg-white rounded-2xl shadow p-4">
+            <h2 class="text-lg font-semibold mb-2">Birth Gender Ratio</h2>
+            <canvas id="birthChart"></canvas>
+          </div>
+          <div class="bg-white rounded-2xl shadow p-4 lg:col-span-2">
+            <h2 class="text-lg font-semibold mb-2">Monthly Birth Trends</h2>
+            <canvas id="trendChart"></canvas>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Dashboard JS -->
+  <script type="module" src="JavaScript-Files/Dashboard.js"></script>
 
 </body>
 </html>
