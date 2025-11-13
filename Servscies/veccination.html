@@ -29,101 +29,236 @@
 
 <body class="bg-gray-50 font-serif">
     <!-- Header -->
-    <header class="bg-white shadow-md sticky top-0 z-50">
-    <div class="container mx-auto px-4">
-      <div class="flex justify-between items-center py-4">
-        <!-- Logo -->
-        <div class="flex items-center">
-          <span class="text-2xl font-bold text-blue-600">🏥 MCH</span>
+   <header class="bg-white shadow-md sticky top-0 z-50">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-between items-center py-4">
+                <!-- Logo -->
+                <div class="flex items-center">
+                    <span class="text-2xl font-bold text-blue-600"><a href="../index.html">🏥 MCH</a></span>
+                </div>
+                
+                <!-- Mobile menu button -->
+                <button id="mobile-menu-button" class="md:hidden text-gray-600 focus:outline-none">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+                
+                <!-- Navigation Links -->
+                <nav id="nav-links" class="hidden md:flex items-center space-x-6">
+                    <a href="../index.html" class="text-gray-700 hover:text-blue-600 transition duration-300">Home</a>
+                    <a href="../index.html#about" class="text-gray-700 hover:text-blue-600 transition duration-300">About</a>
+                    
+                    <!-- Services Dropdown -->
+                    <div class="relative group">
+                        <button class="flex items-center text-gray-700 hover:text-blue-600 transition duration-300">
+                            Services <i class="fas fa-chevron-down ml-1 text-xs"></i>
+                        </button>
+                        <div class="absolute left-0 mt-2 w-64 bg-white shadow-xl rounded-lg py-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50">
+                            <a href="../Servscies/Maternity&Brith Servecises.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">Maternity & Birth Services</a>
+                            <a href="../Servscies/paitents-Servecises.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">Patient Services</a>
+                            <a href="../Emergency.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">Emergency Care</a>
+                            <a href="../Servscies/veccination.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">Vaccination Programs</a>
+                            <a href="../Servscies/mentalhealth.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">Mental Health Support</a>
+                            <a href="../Servscies/NCD.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">Chronic Disease Care</a>
+                            <a href="../Servscies/Health Education.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">Health Awareness & Education</a>
+                            <a href="../Servscies/Disability.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">Disability Care</a>
+                        </div>
+                    </div>
+                    
+                    <a href="/doctors.html" class="text-gray-700 hover:text-blue-600 transition duration-300">Doctors</a>
+                    <a href="/Dashboard.html" class="text-gray-700 hover:text-blue-600 transition duration-300">Dashdoard</a>
+                    <a href="#contact" class="text-gray-700 hover:text-blue-600 transition duration-300">Contact</a>
+                    <a href="#faq" id="faq-nav-link" class="text-gray-700 hover:text-blue-600 transition duration-300">FAQ</a>
+                </nav>
+                
+                <!-- Actions -->
+                <div class="hidden md:flex items-center space-x-4">
+                    <select class="border border-gray-300 rounded px-3 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <option value="en">English</option>
+                        <option value="ar">العربية</option>
+                        <option value="rw">Kinyarwanda</option>
+                    </select>
+                    <button id="desktop-signup-btn" class="bg-blue-600 text-white px-4 py-2 rounded...">Sign Up</button>
+                    <button id="desktop-login-btn" class="border border-blue-600 text-blue-600 px-4 py-2 rounded...">Log In</button>
+                </div>
+            </div>
+            
+            <!-- Mobile Menu -->
+            <div id="mobile-menu" class="hidden md:hidden py-4 border-t border-gray-200">
+                <div class="flex flex-col space-y-4">
+                    <div class="flex space-x-2">
+                        <button id="mobile-signup-btn" class="flex-1 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition duration-300">Sign Up</button>
+                        <button id="mobile-login-btn" class="flex-1 border border-blue-600 text-blue-600 px-4 py-2 rounded hover:bg-blue-600 hover:text-white transition duration-300">Log In</button>
+                    </div>
+                    <a href="#home" class="text-gray-700 hover:text-blue-600">Home</a>
+                    <a href="#about" class="text-gray-700 hover:text-blue-600">About</a>
+                    
+                    <!-- Mobile Services Dropdown -->
+                    <div class="relative">
+                        <button id="mobile-services-toggle" class="flex items-center text-gray-700 hover:text-blue-600 w-full justify-between">
+                            Services <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div id="mobile-services-menu" class="hidden pl-4 mt-2 space-y-2">
+                            <a href="../Servscies/Maternity&Brith Servecises.html" class="block text-gray-700 hover:text-blue-600">Maternity & Birth Services</a>
+                            <a href="../Servscies/paitents-Servecises.html" class="block text-gray-700 hover:text-blue-600">Patient Services</a>
+                            <a href="../Emergency.html" class="block text-gray-700 hover:text-blue-600">Emergency Care</a>
+                            <a href="../Servscies/veccination.html" class="block text-gray-700 hover:text-blue-600">Vaccination Programs</a>
+                            <a href="../Servscies/mentalhealth.html" class="block text-gray-700 hover:text-blue-600">Mental Health Support</a>
+                            <a href="../Servscies/NCD.html" class="block text-gray-700 hover:text-blue-600">Chronic Disease Care</a>
+                            <a href="../Servscies/Health Education.html" class="block text-gray-700 hover:text-blue-600">Health Awareness & Education</a>
+                            <a href="../Servscies/Disability.html" class="block text-gray-700 hover:text-blue-600">Disability Care</a>
+                        </div>
+                    </div>
+                    
+                    <a href="/doctors.html" class="text-gray-700 hover:text-blue-600">Doctors</a>
+                    <a href="/Dashboard.html" class="text-gray-700 hover:text-blue-600">Dashdoard</a>
+                    <a href="#contact" class="text-gray-700 hover:text-blue-600">Contact</a>
+                    <a href="#faq" id="mobile-faq-link" class="text-gray-700 hover:text-blue-600">FAQ</a>
+                    
+                    <div class="pt-4 border-t border-gray-200">
+                        <select class="w-full border border-gray-300 rounded px-3 py-2 text-sm mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <option value="en">English</option>
+                            <option value="ar">العربية</option>
+                            <option value="rw">Kinyarwanda</option>
+                        </select>
+                        <div class="flex space-x-2">
+                            <button id="signup-btn" class="flex-1 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition duration-300">Sign Up</button>
+                            <button id="login-btn" class="flex-1 border border-blue-600 text-blue-600 px-4 py-2 rounded hover:bg-blue-600 hover:text-white transition duration-300">Log In</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        
-        <!-- Mobile menu button -->
-        <button id="mobile-menu-button" class="md:hidden text-gray-600 focus:outline-none">
-          <i class="fas fa-bars text-xl"></i>
-        </button>
-        
-        <!-- Navigation Links -->
-        <nav id="nav-links" class="hidden md:flex items-center space-x-6">
-          <a href="../index.html" class="text-gray-700 hover:text-blue-600 transition duration-300">Home</a>
-          <a href="#about" class="text-gray-700 hover:text-blue-600 transition duration-300">About</a>
-          
-          <!-- Services Dropdown -->
-          <div class="relative group">
-            <button class="flex items-center text-gray-700 hover:text-blue-600 transition duration-300">
-              Services <i class="fas fa-chevron-down ml-1 text-xs"></i>
-            </button>
-            <div class="absolute left-0 mt-2 w-64 bg-white shadow-xl rounded-lg py-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50">
-              <a href="./Maternity&Brith Servecises.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">Maternity & Birth Services</a>
-              <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">Emergency Care</a>
-              <a href="./veccination.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">Vaccination Programs</a>
-              <a href="./mentalhealth.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">Mental Health Support</a>
-              <a href="./NCD.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">Chronic Disease Care</a>
-              <a href="./Health Education.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">Health Awareness & Education</a>
-              <a href="./Disability.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">Disability Care</a>
+    </header>
+
+  <!-- Sign Up Modal -->
+  <div id="signup-modal" class="fixed inset-0 hidden items-center justify-center z-50">
+    <div class="absolute inset-0 bg-black/50"></div>
+    <div class="auth-modal relative z-10 w-11/12 sm:max-w-md mx-auto rounded-xl shadow-2xl overflow-hidden">
+      <div class="bg-white p-6 sm:p-8">
+        <!-- Header -->
+        <div class="flex justify-between items-center mb-6">
+          <h2 class="text-2xl font-bold text-blue-700">Create Account</h2>
+          <button id="signup-close" class="text-gray-500 hover:text-gray-700 text-xl">&times;</button>
+        </div>
+
+        <!-- Form -->
+        <form id="signup-form" class="space-y-4">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label for="signup-firstname" class="block text-sm font-medium text-gray-700 mb-1">First Name</label>
+              <input type="text" id="signup-firstname" name="firstname" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" required>
+            </div>
+            <div>
+              <label for="signup-lastname" class="block text-sm font-medium text-gray-700 mb-1">Last Name</label>
+              <input type="text" id="signup-lastname" name="lastname" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" required>
             </div>
           </div>
-          
-          <a href="#" class="text-gray-700 hover:text-blue-600 transition duration-300">Doctors</a>
-          <a href="#" class="text-gray-700 hover:text-blue-600 transition duration-300">Programs</a>
-          <a href="#contact" class="text-gray-700 hover:text-blue-600 transition duration-300">Contact</a>
-          <a href="#help" class="text-gray-700 hover:text-blue-600 transition duration-300">Help</a>
-        </nav>
-        
-        <!-- Actions -->
-        <div class="hidden md:flex items-center space-x-4">
-          <select class="border border-gray-300 rounded px-3 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
-            <option value="en">English</option>
-            <option value="ar">العربية</option>
-            <option value="rw">Kinyarwanda</option>
-          </select>
-          <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition duration-300">Sign Up</button>
-          <button class="border border-blue-600 text-blue-600 px-4 py-2 rounded hover:bg-blue-600 hover:text-white transition duration-300">Log In</button>
-        </div>
-      </div>
-      
-      <!-- Mobile Menu -->
-      <div id="mobile-menu" class="hidden md:hidden py-4 border-t border-gray-200">
-        <div class="flex flex-col space-y-4">
-          <a href="#home" class="text-gray-700 hover:text-blue-600">Home</a>
-          <a href="#about" class="text-gray-700 hover:text-blue-600">About</a>
-          
-          <!-- Mobile Services Dropdown -->
-          <div class="relative">
-            <button id="mobile-services-toggle" class="flex items-center text-gray-700 hover:text-blue-600 w-full justify-between">
-              Services <i class="fas fa-chevron-down"></i>
-            </button>
-            <div id="mobile-services-menu" class="hidden pl-4 mt-2 space-y-2">
-              <a href="#" class="block text-gray-700 hover:text-blue-600">Maternity & Birth Services</a>
-              <a href="#" class="block text-gray-700 hover:text-blue-600">Emergency Care</a>
-              <a href="#" class="block text-gray-700 hover:text-blue-600">Vaccination Programs</a>
-              <a href="#" class="block text-gray-700 hover:text-blue-600">Mental Health Support</a>
-              <a href="#" class="block text-gray-700 hover:text-blue-600">Chronic Disease Care</a>
-              <a href="#" class="block text-gray-700 hover:text-blue-600">Health Awareness & Education</a>
-              <a href="#" class="block text-gray-700 hover:text-blue-600">Disability Care</a>
-            </div>
+
+          <div>
+            <label for="signup-email" class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
+            <input type="email" id="signup-email" name="email" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" required>
           </div>
-          
-          <a href="#" class="text-gray-700 hover:text-blue-600">Doctors</a>
-          <a href="#" class="text-gray-700 hover:text-blue-600">Programs</a>
-          <a href="#contact" class="text-gray-700 hover:text-blue-600">Contact</a>
-          <a href="#help" class="text-gray-700 hover:text-blue-600">Help</a>
-          
-          <div class="pt-4 border-t border-gray-200">
-            <select class="w-full border border-gray-300 rounded px-3 py-2 text-sm mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500">
-              <option value="en">English</option>
-              <option value="ar">العربية</option>
-              <option value="rw">Kinyarwanda</option>
-            </select>
-            <div class="flex space-x-2">
-              <button class="flex-1 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition duration-300">Sign Up</button>
-              <button class="flex-1 border border-blue-600 text-blue-600 px-4 py-2 rounded hover:bg-blue-600 hover:text-white transition duration-300">Log In</button>
-            </div>
+
+          <div>
+            <label for="signup-phone" class="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>
+            <input type="tel" id="signup-phone" name="phone" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
           </div>
-        </div>
+
+          <div>
+            <label for="signup-password" class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+            <input type="password" id="signup-password" name="password" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" required>
+          </div>
+
+          <div>
+            <label for="signup-confirm-password" class="block text-sm font-medium text-gray-700 mb-1">Confirm Password</label>
+            <input type="password" id="signup-confirm-password" name="confirm-password" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" required>
+          </div>
+
+          <div class="flex items-center">
+            <input type="checkbox" id="signup-terms" name="terms" class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded" required>
+            <label for="signup-terms" class="ml-2 block text-sm text-gray-700">
+              I agree to the <a href="#" class="text-blue-600 hover:text-blue-500">Terms & Conditions</a>
+            </label>
+          </div>
+
+          <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-4 rounded-lg transition duration-300 transform hover:-translate-y-0.5">
+            Create Account
+          </button>
+
+          <div class="text-center text-sm text-gray-600">
+            Already have an account? 
+            <button type="button" id="switch-to-login" class="text-blue-600 hover:text-blue-500 font-semibold">Log In</button>
+          </div>
+        </form>
       </div>
     </div>
-  </header>
+  </div>
+  <!-- Login Modal -->
+  <div id="login-modal" class="fixed inset-0 hidden items-center justify-center z-50">
+    <div class="absolute inset-0 bg-black/50"></div>
+    <div class="auth-modal relative z-10 w-11/12 sm:max-w-md mx-auto rounded-xl shadow-2xl overflow-hidden">
+      <div class="bg-white p-6 sm:p-8">
+        <!-- Header -->
+        <div class="flex justify-between items-center mb-6">
+          <h2 class="text-2xl font-bold text-blue-700">Welcome Back</h2>
+          <button id="login-close" class="text-gray-500 hover:text-gray-700 text-xl">&times;</button>
+        </div>
 
+        <!-- Form -->
+        <form id="login-form" class="space-y-4">
+          <div>
+            <label for="login-email" class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
+            <input type="email" id="login-email" name="email" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" required>
+          </div>
+
+          <div>
+            <label for="login-password" class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+            <input type="password" id="login-password" name="password" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" required>
+          </div>
+
+          <div class="flex items-center justify-between">
+            <div class="flex items-center">
+              <input type="checkbox" id="remember-me" name="remember" class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
+              <label for="remember-me" class="ml-2 block text-sm text-gray-700">Remember me</label>
+            </div>
+            <a href="#" class="text-sm text-blue-600 hover:text-blue-500">Forgot password?</a>
+          </div>
+
+          <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-4 rounded-lg transition duration-300 transform hover:-translate-y-0.5">
+            Sign In
+          </button>
+
+          <div class="text-center text-sm text-gray-600">
+            Don't have an account? 
+            <button type="button" id="switch-to-signup" class="text-blue-600 hover:text-blue-500 font-semibold">Sign Up</button>
+          </div>
+
+          <!-- Social Login -->
+          <div class="mt-6">
+            <div class="relative">
+              <div class="absolute inset-0 flex items-center">
+                <div class="w-full border-t border-gray-300"></div>
+              </div>
+              <div class="relative flex justify-center text-sm">
+                <span class="px-2 bg-white text-gray-500">Or continue with</span>
+              </div>
+            </div>
+
+            <div class="mt-4 grid grid-cols-2 gap-3">
+              <button type="button" class="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 transition duration-300">
+                <i class="fab fa-google text-red-500"></i>
+                <span class="ml-2">Google</span>
+              </button>
+              <button type="button" class="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 transition duration-300">
+                <i class="fab fa-facebook text-blue-600"></i>
+                <span class="ml-2">Facebook</span>
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
 
     <!-- Hero Section -->
       <section id="home" class="relative h-screen flex items-center justify-center overflow-hidden">
@@ -138,11 +273,11 @@
                 of the refugee camp. Stay protected from preventable diseases.</p>
             <div class="flex flex-col sm:flex-row justify-center gap-4">
                 <a href="#register"
-                    class="bg-green-700 hover:bg-green-600 text-white font-bold py-3 px-6 rounded-lg transition-colors duration-300 flex items-center justify-center gap-2">
+                    class="bg-blue-600 hover:bg-blue-700 text-black px-6 py-3 rounded-lg font-semibold transition duration-300 transform hover:-translate-y-1">
                     <i class="fas fa-user-plus"></i> Register for Vaccination
                 </a>
                 <a href="#schedule"
-                    class="bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 px-6 rounded-lg transition-colors duration-300 flex items-center justify-center gap-2">
+                    class="border border-white hover:bg-white hover:text-blue-600 text-black px-6 py-3 rounded-lg font-semibold transition duration-300 transform hover:-translate-y-1 text-center">
                     <i class="fas fa-calendar-alt"></i> View Vaccination Schedule
                 </a>
             </div>
@@ -153,7 +288,7 @@
     <section id="schedule" class="py-16 bg-white">
         <div class="container mx-auto px-4">
             <div class="text-center mb-12">
-                <h2 class="text-3xl md:text-4xl font-bold text-primary-dark mb-4">Vaccination Schedule</h2>
+                <h2 class="text-3xl md:text-4xl font-bold text-blue-600 mb-4">Vaccination Schedule</h2>
                 <p class="text-xl text-gray-600 max-w-2xl mx-auto">Recommended vaccination timeline for different age
                     groups</p>
             </div>
@@ -190,7 +325,7 @@
                             </li>
                         </ul>
                         <a href="#"
-                            class="block w-full bg-primary hover:bg-primary-dark text-white text-center py-3 rounded-lg transition-colors duration-300">
+                            class="block w-full bg-blue-600 hover:bg-primary-dark text-white text-center py-3 rounded-lg transition-colors duration-300">
                             Download Schedule
                         </a>
                     </div>
@@ -227,7 +362,7 @@
                             </li>
                         </ul>
                         <a href="#"
-                            class="block w-full bg-primary hover:bg-primary-dark text-white text-center py-3 rounded-lg transition-colors duration-300">
+                            class="block w-full bg-blue-600 hover:bg-primary-dark text-white text-center py-3 rounded-lg transition-colors duration-300">
                             Download Schedule
                         </a>
                     </div>
@@ -236,7 +371,7 @@
                 <!-- Adults Card -->
                 <div
                     class="bg-white rounded-xl shadow-lg overflow-hidden transition-transform duration-300 hover:-translate-y-2">
-                    <div class="bg-[url(/img/infant.png)] bg-no-repeat bg-cover text-black py-6 text-center">
+                    <div class="bg-[url(/img/adult.png)] bg-no-repeat bg-cover text-black py-6 text-center">
                         <h3 class="text-2xl font-bold mb-2">Adults & Special Groups</h3>
                         <p class="opacity-90">Ongoing protection</p>
                     </div>
@@ -264,7 +399,7 @@
                             </li>
                         </ul>
                         <a href="#"
-                            class="block w-full bg-primary hover:bg-primary-dark text-white text-center py-3 rounded-lg transition-colors duration-300">
+                            class="block w-full bg-blue-500 hover:bg-primary-dark text-white text-center py-3 rounded-lg transition-colors duration-300">
                             Download Schedule
                         </a>
                     </div>
@@ -277,7 +412,7 @@
     <section id="vaccines" class="py-16 bg-gray-50">
         <div class="container mx-auto px-4">
             <div class="text-center mb-12">
-                <h2 class="text-3xl md:text-4xl font-bold text-primary-dark mb-4">Vaccine Information</h2>
+                <h2 class="text-3xl md:text-4xl font-bold text-blue-600 mb-4">Vaccine Information</h2>
                 <p class="text-xl text-gray-600 max-w-2xl mx-auto">Learn about the vaccines available in our program</p>
             </div>
 
@@ -288,11 +423,11 @@
                         
                     </div>
                     <div class="p-6">
-                        <h3 class="text-xl font-bold text-primary-dark mb-3">Pentavalent Vaccine</h3>
+                        <h3 class="text-xl font-bold text-gray-800 mb-3">Pentavalent Vaccine</h3>
                         <p class="text-gray-600 mb-4">Protects against five deadly diseases: Diphtheria, Tetanus,
                             Pertussis, Hepatitis B, and Haemophilus influenzae type B.</p>
                         <div class="bg-gray-100 p-4 rounded-lg">
-                            <h4 class="font-bold text-primary-dark mb-2">Dosage Schedule:</h4>
+                            <h4 class="font-bold text-gray-800 mb-2">Dosage Schedule:</h4>
                             <ul class="list-disc pl-5 text-gray-600">
                                 <li>First dose: 6 weeks</li>
                                 <li>Second dose: 10 weeks</li>
@@ -307,11 +442,11 @@
                     <div class="bg-[url(/img/pcv.png)] bg-no-repeat bg-cover h-32 flex items-center justify-center text-white">
                     </div>
                     <div class="p-6">
-                        <h3 class="text-xl font-bold text-primary-dark mb-3">Pneumococcal Vaccine (PCV)</h3>
+                        <h3 class="text-xl font-bold text-gray-800 mb-3">Pneumococcal Vaccine (PCV)</h3>
                         <p class="text-gray-600 mb-4">Protects against pneumonia, meningitis, and other infections
                             caused by Streptococcus pneumoniae bacteria.</p>
                         <div class="bg-gray-100 p-4 rounded-lg">
-                            <h4 class="font-bold text-primary-dark mb-2">Dosage Schedule:</h4>
+                            <h4 class="font-bold text-gray-800 mb-2">Dosage Schedule:</h4>
                             <ul class="list-disc pl-5 text-gray-600">
                                 <li>First dose: 6 weeks</li>
                                 <li>Second dose: 10 weeks</li>
@@ -323,15 +458,14 @@
 
                 <!-- Vaccine Card 3 -->
                 <div class="bg-white rounded-xl shadow-md overflow-hidden">
-                    <div class="bg-primary-light h-32 flex items-center justify-center text-white">
-                        <i class="fas fa-virus text-5xl"></i>
+                    <div class="bg-[url(/img/opv.png)] bg-no-repeat bg-cover  h-32 flex items-center justify-center text-white">
                     </div>
                     <div class="p-6">
-                        <h3 class="text-xl font-bold text-primary-dark mb-3">Oral Polio Vaccine (OPV)</h3>
+                        <h3 class="text-xl font-bold text-gray-800 mb-3">Oral Polio Vaccine (OPV)</h3>
                         <p class="text-gray-600 mb-4">Protects against poliomyelitis, a highly infectious viral disease
                             that can lead to permanent paralysis.</p>
                         <div class="bg-gray-100 p-4 rounded-lg">
-                            <h4 class="font-bold text-primary-dark mb-2">Dosage Schedule:</h4>
+                            <h4 class="font-bold text-gray-800 mb-2">Dosage Schedule:</h4>
                             <ul class="list-disc pl-5 text-gray-600">
                                 <li>At birth</li>
                                 <li>6 weeks</li>
@@ -344,15 +478,15 @@
 
                 <!-- Vaccine Card 4 -->
                 <div class="bg-white rounded-xl shadow-md overflow-hidden">
-                    <div class="bg-primary-light h-32 flex items-center justify-center text-white">
-                        <i class="fas fa-temperature-high text-5xl"></i>
+                    <div class="bg-[url(/img/mmv.png)] bg-no-repeat bg-cover  h-32 flex items-center justify-center text-white">
+                      
                     </div>
                     <div class="p-6">
-                        <h3 class="text-xl font-bold text-primary-dark mb-3">Measles Vaccine</h3>
+                        <h3 class="text-xl font-bold text-gray-800 mb-3">Measles Vaccine</h3>
                         <p class="text-gray-600 mb-4">Protects against measles, a highly contagious viral disease that
                             can cause severe complications, especially in children.</p>
                         <div class="bg-gray-100 p-4 rounded-lg">
-                            <h4 class="font-bold text-primary-dark mb-2">Dosage Schedule:</h4>
+                            <h4 class="font-bold text-gray-800  mb-2">Dosage Schedule:</h4>
                             <ul class="list-disc pl-5 text-gray-600">
                                 <li>First dose: 9 months</li>
                                 <li>Second dose: 15-18 months</li>
@@ -363,15 +497,15 @@
 
                 <!-- Vaccine Card 5 -->
                 <div class="bg-white rounded-xl shadow-md overflow-hidden">
-                    <div class="bg-primary-light h-32 flex items-center justify-center text-white">
-                        <i class="fas fa-head-side-mask text-5xl"></i>
+                    <div class="bg-[url(/img/c19v.png)] bg-no-repeat bg-cover  h-32 flex items-center justify-center text-white">
+                     
                     </div>
                     <div class="p-6">
-                        <h3 class="text-xl font-bold text-primary-dark mb-3">COVID-19 Vaccine</h3>
+                        <h3 class="text-xl font-bold text-gray-800  mb-3">COVID-19 Vaccine</h3>
                         <p class="text-gray-600 mb-4">Protects against COVID-19, reducing severe illness,
                             hospitalization, and death from the virus.</p>
                         <div class="bg-gray-100 p-4 rounded-lg">
-                            <h4 class="font-bold text-primary-dark mb-2">Available Vaccines:</h4>
+                            <h4 class="font-bold text-gray-800  mb-2">Available Vaccines:</h4>
                             <ul class="list-disc pl-5 text-gray-600">
                                 <li>Pfizer-BioNTech</li>
                                 <li>Moderna</li>
@@ -384,15 +518,15 @@
 
                 <!-- Vaccine Card 6 -->
                 <div class="bg-white rounded-xl shadow-md overflow-hidden">
-                    <div class="bg-primary-light h-32 flex items-center justify-center text-white">
-                        <i class="fas fa-bacteria text-5xl"></i>
+                    <div class="bg-[url(/img/cv.png)] bg-no-repeat bg-cover  h-32 flex items-center justify-center text-white">
+                      
                     </div>
                     <div class="p-6">
-                        <h3 class="text-xl font-bold text-primary-dark mb-3">Cholera Vaccine</h3>
+                        <h3 class="text-xl font-bold text-gray-800  mb-3">Cholera Vaccine</h3>
                         <p class="text-gray-600 mb-4">Protects against cholera, a waterborne disease that can cause
                             severe diarrhea and dehydration.</p>
                         <div class="bg-gray-100 p-4 rounded-lg">
-                            <h4 class="font-bold text-primary-dark mb-2">Dosage Schedule:</h4>
+                            <h4 class="font-bold text-gray-800  mb-2">Dosage Schedule:</h4>
                             <ul class="list-disc pl-5 text-gray-600">
                                 <li>Two doses, 2 weeks apart</li>
                                 <li>Protection lasts about 3 years</li>
@@ -417,7 +551,7 @@
                 <div
                     class="bg-white rounded-xl shadow-lg overflow-hidden transition-transform duration-300 hover:-translate-y-1">
                     <div class="bg-secondary text-white py-5 px-6">
-                        <h3 class="text-xl font-bold mb-2">Main Health Center</h3>
+                        <h3 class="text-xl font-bold mb-2">Mahama one Health Center</h3>
                         <p class="opacity-90">Central Camp Area</p>
                     </div>
                     <div class="p-6">
@@ -516,98 +650,14 @@
     </section>
 
     <!-- FAQ Section -->
-    <section id="faq" class="py-16 bg-gray-50">
-        <div class="container mx-auto px-4">
-            <div class="text-center">
-                <h2 class="text-3xl md:text-4xl font-bold text-primary-dark mb-4">Frequently Asked Questions</h2>
-                <p class="text-xl text-gray-600 max-w-2xl mx-auto">Common questions about vaccination in refugee
-                    settings</p>
-            </div>
-
-            <div class="max-w-3xl mx-auto">
-                <!-- FAQ Item 1 -->
-                <div class="bg-white rounded-lg shadow-md mb-4 overflow-hidden">
-                    <button
-                        class="faq-question w-full text-left p-6 flex justify-between items-center hover:bg-red-50 transition-colors duration-300">
-                        <span class="font-bold text-lg">Are vaccines safe for my children?</span>
-                    </button>
-                    <div class="faq-answer px-6 pb-6 hover:bg-red-50">
-                        <p class="text-gray-600 ">Yes, vaccines are thoroughly tested for safety before being approved
-                            for use. All vaccines provided in our program meet international safety standards and are
-                            approved by the World Health Organization. Side effects are usually mild (like a sore arm or
-                            low-grade fever) and go away within a few days.</p>
-                    </div>
-                </div>
-
-                <!-- FAQ Item 2 -->
-                <div class="bg-white rounded-lg shadow-md mb-4 overflow-hidden">
-                    <button
-                        class="faq-question w-full text-left p-6 flex justify-between items-center hover:bg-gray-50 transition-colors duration-300">
-                        <span class="font-bold text-lg">Why are vaccines important in refugee camps?</span>
-                    </button>
-                    <div class="faq-answer px-6 pb-6 hover:bg-red-50">
-                        <p class="text-gray-600">In crowded living conditions like refugee camps, diseases can spread
-                            quickly. Vaccination protects individuals and creates community immunity, making it harder
-                            for diseases to spread. This is especially important for vulnerable groups like children,
-                            pregnant women, and the elderly.</p>
-                    </div>
-                </div>
-
-                <!-- FAQ Item 3 -->
-                <div class="bg-white rounded-lg shadow-md mb-4 overflow-hidden">
-                    <button
-                        class="faq-question w-full text-left p-6 flex justify-between items-center hover:bg-gray-50 transition-colors duration-300">
-                        <span class="font-bold text-lg">What documents do I need to bring for vaccination?</span>
-                    </button>
-                    <div class="faq-answer px-6 pb-6 hover:bg-red-50">
-                        <p class="text-gray-600">Please bring any existing vaccination records if available. If this is
-                            your first visit, no documents are required. All residents of the camp are eligible for free
-                            vaccination regardless of documentation status.</p>
-                    </div>
-                </div>
-
-                <!-- FAQ Item 4 -->
-                <div class="bg-white rounded-lg shadow-md mb-4 overflow-hidden">
-                    <button
-                        class="faq-question w-full text-left p-6 flex justify-between items-center hover:bg-gray-50 transition-colors duration-300">
-                        <span class="font-bold text-lg">Can pregnant women receive vaccines?</span>
-                    </button>
-                    <div class="faq-answer px-6 pb-6 hover:bg-red-50">
-                        <p class="text-gray-600">Yes, some vaccines are especially important during pregnancy. Tetanus
-                            vaccine protects both mother and newborn, and flu vaccine is recommended. Some vaccines
-                            (like MMR) should be given before pregnancy or after delivery. Our health workers can advise
-                            you on which vaccines are safe during pregnancy.</p>
-                    </div>
-                </div>
-
-                <!-- FAQ Item 5 -->
-                <div class="bg-white rounded-lg shadow-md mb-4 overflow-hidden">
-                    <button
-                        class="faq-question w-full text-left p-6 flex justify-between items-center hover:bg-gray-50 transition-colors duration-300">
-                        <span class="font-bold text-lg">What if my child missed some vaccines?</span>
-                    </button>
-                    <div class="faq-answer px-6 pb-6  hover:bg-gray-100 transition-colors duration-300">
-                        <p class="text-gray-600">It's never too late to catch up on missed vaccines! Our health workers
-                            can create a catch-up schedule for your child. Bring any vaccination records you have, and
-                            we'll determine which vaccines are needed.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Registration -->
-    <section id="register" class="py-16 bg-white">
-        <div class="container mx-auto px-4">
-            <div class="text-center mb-12">
-                <h2 class="text-3xl md:text-4xl font-bold text-primary-dark mb-4">Register for Vaccination</h2>
-                <p class="text-xl text-gray-600 max-w-2xl mx-auto">Pre-register for vaccination to reduce waiting time
-                </p>
-            </div>
-
-            <div class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12">
-                <!-- Registration Info -->
-                <div>
+   <!-- Registration -->
+<section id="register" class="py-16 bg-gray-50">
+  <div class="container mx-auto px-4">
+    <div class="text-center mb-12">
+      <h2 class="text-3xl md:text-4xl font-bold text-blue-600 mb-4">Register for Vaccination</h2>
+      <p class="text-gray-600 max-w-2xl mx-auto">Pre-register for vaccination to reduce waiting time</p>
+    </div>
+   <div>
                     <h3 class="text-2xl font-bold text-primary-dark mb-6">Why Pre-register?</h3>
                     <p class="text-gray-600 mb-6">Pre-registration helps us prepare for your visit and reduces waiting
                         times at vaccination sites.</p>
@@ -631,17 +681,13 @@
                         </li>
                     </ul>
 
-                    <div class="bg-yellow-50 p-6 rounded-lg border-l-4 border-yellow-500">
-                        <h4 class="font-bold text-lg mb-2">Need Immediate Assistance?</h4>
-                        <p class="text-gray-700">Visit any vaccination location during operating hours - no appointment
-                            needed for routine vaccines.</p>
-                    </div>
+                  
                 </div>
-
-                <!-- Registration Form -->
-                <div class="bg-gray-50 p-8 rounded-xl shadow-md">
-                    <h3 class="text-2xl font-bold text-primary-dark mb-6">Vaccination Registration Form</h3>
-                    <form id="vaccination-form">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 flex">
+      <!-- Contact Form -->
+      <div class="bg-gray-200 rounded-xl shadow-lg p-9 ">
+        <h3 class="text-2xl font-bold text-gray-800 mb-6">Vaccination Registration Form</h3>
+      <form id="vaccination-form">
                         <div class="mb-6">
                             <label for="full-name" class="block text-gray-700 font-medium mb-2">Full Name *</label>
                             <input type="text" id="full-name"
@@ -700,91 +746,148 @@
                                 placeholder="Phone number or other contact method">
                         </div>
 
-                        <button type="submit"
-                            class="w-full bg-success hover:bg-green-600 text-white font-bold py-3 px-4 rounded-lg transition-colors duration-300">
-                            Submit Registration
-                        </button>
-                    </form>
-                </div>
+                         <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition duration-300 transform hover:-translate-y-1">
+         Submit Registration
+          </button>
+                    </form>   
+    </div>
+     
+      <!-- Contact Information & Map -->
+      <div class="space-y-8">
+        <!-- Contact Info Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="bg-white rounded-xl shadow-lg p-6 flex items-start">
+            <div class="bg-blue-100 p-3 rounded-lg mr-4">
+              <i class="fas fa-map-marker-alt text-blue-600 text-xl"></i>
             </div>
+            <div>
+              <h4 class="font-bold text-gray-800 mb-1">Our Location</h4>
+              <p class="text-gray-600">Mahama Refugee Camp, Kirehe District, Rwanda</p>
+            </div>
+          </div>
+         
+          <div class="bg-white rounded-xl shadow-lg p-6 flex items-start">
+            <div class="bg-blue-100 p-3 rounded-lg mr-4">
+              <i class="fas fa-phone text-blue-600 text-xl"></i>
+            </div>
+            <div>
+              <h4 class="font-bold text-gray-800 mb-1">Phone Number</h4>
+              <p class="text-gray-600">+250 000 000</p>
+            </div>
+          </div>
+         
+          <div class="bg-white rounded-xl shadow-lg p-6 flex items-start">
+            <div class="bg-blue-100 p-3 rounded-lg mr-4">
+              <i class="fas fa-envelope text-blue-600 text-xl"></i>
+            </div>
+            <div>
+              <h4 class="font-bold text-gray-800 mb-1">Email Address</h4>
+              <p class="text-gray-600">info@hopecare.com</p>
+            </div>
+          </div>
+         
+          <div class="bg-white rounded-xl shadow-lg p-6 flex items-start">
+            <div class="bg-blue-100 p-3 rounded-lg mr-4">
+              <i class="fas fa-clock text-blue-600 text-xl"></i>
+            </div>
+            <div>
+              <h4 class="font-bold text-gray-800 mb-1">Working Hours</h4>
+              <p class="text-gray-600">24/7 Emergency Services</p>
+              <p class="text-gray-600">Mon-Fri: 8am-6pm</p>
+            </div>
+          </div>
         </div>
-    </section>
+        <!-- Google Map for Mahama Refugee Camp -->
+<div class="bg-white rounded-xl shadow-lg overflow-hidden">
+  <div class="h-96">
+    <iframe 
+      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1334.760614585555!2d30.642434783637935!3d-2.2630583877293016!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x19c4c500078c5f45%3A0xc3605c2533855d6b!2sMahama%20refugee%20camp!5e0!3m2!1sen!2sus!4v1762760708457!5m2!1sen!2sus" 
+      width="100%" 
+      height="100%" 
+      style="border:0;" 
+      allowfullscreen="" 
+      loading="lazy" 
+      referrerpolicy="no-referrer-when-downgrade"
+      title="Mahamacare Hospital Location at Mahama Refugee Camp">
+    </iframe>
+  </div>
+</div>
+       
+        <!-- Emergency Notice -->
+       
+                    <div class="bg-yellow-50 p-6 rounded-lg border-l-4 border-yellow-500">
+                        <h4 class="font-bold text-lg mb-2">Need Immediate Assistance?</h4>
+                        <p class="text-gray-700">Visit any vaccination location during operating hours - no appointment
+                            needed for routine vaccines.</p>
+                    </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+  
 
     <!-- Footer -->
-    <footer class="bg-primary-dark text-white py-12">
-        <div class="container mx-auto px-4">
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
-                <!-- Column 1 -->
-                <div>
-                    <h3 class="text-xl font-bold mb-4">Refugee Vaccination Program</h3>
-                    <p class="text-gray-300 mb-4">Providing free, accessible vaccination services to protect the health
-                        of our refugee community.</p>
-                    <a href="#register"
-                        class="inline-block bg-primary hover:bg-primary-light text-white font-medium py-2 px-4 rounded-lg transition-colors duration-300">
-                        Register Now
-                    </a>
-                </div>
-
-                <!-- Column 2 -->
-                <div>
-                    <h3 class="text-xl font-bold mb-4">Quick Links</h3>
-                    <ul class="space-y-2">
-                        <li><a href="#home"
-                                class="text-gray-300 hover:text-white transition-colors duration-300">Home</a></li>
-                        <li><a href="#schedule"
-                                class="text-gray-300 hover:text-white transition-colors duration-300">Vaccination
-                                Schedule</a></li>
-                        <li><a href="#vaccines"
-                                class="text-gray-300 hover:text-white transition-colors duration-300">Vaccine
-                                Information</a></li>
-                        <li><a href="#locations"
-                                class="text-gray-300 hover:text-white transition-colors duration-300">Vaccination
-                                Locations</a></li>
-                        <li><a href="#faq" class="text-gray-300 hover:text-white transition-colors duration-300">FAQ</a>
-                        </li>
-                    </ul>
-                </div>
-
-                <!-- Column 3 -->
-                <div>
-                    <h3 class="text-xl font-bold mb-4">Vaccination Services</h3>
-                    <ul class="space-y-2">
-                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors duration-300">Childhood
-                                Immunization</a></li>
-                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors duration-300">COVID-19
-                                Vaccination</a></li>
-                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors duration-300">Travel
-                                Vaccines</a></li>
-                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors duration-300">Pregnancy
-                                Vaccination</a></li>
-                        <li><a href="#"
-                                class="text-gray-300 hover:text-white transition-colors duration-300">Vaccination
-                                Records</a></li>
-                    </ul>
-                </div>
-
-                <!-- Column 4 -->
-                <div>
-                    <h3 class="text-xl font-bold mb-4">Partners</h3>
-                    <ul class="space-y-2">
-                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors duration-300">UNHCR</a>
-                        </li>
-                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors duration-300">World
-                                Health Organization</a></li>
-                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors duration-300">UNICEF</a>
-                        </li>
-                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors duration-300">Red
-                                Cross/Crescent</a></li>
-                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors duration-300">Ministry
-                                of Health</a></li>
-                    </ul>
-                </div>
-            </div>
-
-
+     <footer class="bg-gray-900 text-white py-12">
+    <div class="container mx-auto px-4">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <!-- Column 1 -->
+        <div>
+          <h3 class="text-xl font-bold mb-4">MahamaCare Hospital</h3>
+          <p class="text-gray-400">Providing high quality healthcare for over 20 years.</p>
         </div>
-    </footer>
-
+        
+        <!-- Column 2 -->
+        <div>
+          <h4 class="text-lg font-semibold mb-4">Quick Links</h4>
+          <ul class="space-y-2">
+            <li><a href="#home" class="text-gray-400 hover:text-white transition duration-300">Home</a></li>
+            <li><a href="#about" class="text-gray-400 hover:text-white transition duration-300">About</a></li>
+            <li><a href="#services" class="text-gray-400 hover:text-white transition duration-300">Services</a></li>
+            <li><a href="#doctors" class="text-gray-400 hover:text-white transition duration-300">Doctors</a></li>
+            <li><a href="#faq" id="footer-faq-link" class="text-gray-400 hover:text-white transition duration-300">FAQ</a></li>
+            <li><a href="#contact" class="text-gray-400 hover:text-white transition duration-300">Contact</a></li>
+          </ul>
+        </div>
+        
+        <!-- Column 3 -->
+        <div>
+          <h4 class="text-lg font-semibold mb-4">Contact Info</h4>
+          <div class="space-y-2 text-gray-400">
+            <p><i class="fas fa-envelope mr-2"></i> info@hopecare.com</p>
+            <p><i class="fas fa-phone mr-2"></i> +250 000 000</p>
+            <p><i class="fas fa-map-marker-alt mr-2"></i> Mahama Refugee Camp, Rwanda</p>
+          </div>
+        </div>
+        
+        <!-- Column 4 -->
+        <div>
+          <h4 class="text-lg font-semibold mb-4">Follow Us</h4>
+          <div class="flex space-x-4">
+            <a href="#" class="text-gray-400 hover:text-white transition duration-300">
+              <i class="fab fa-facebook-f text-xl"></i>
+            </a>
+            <a href="#" class="text-gray-400 hover:text-white transition duration-300">
+              <i class="fab fa-twitter text-xl"></i>
+            </a>
+            <a href="#" class="text-gray-400 hover:text-white transition duration-300">
+              <i class="fab fa-instagram text-xl"></i>
+            </a>
+            <a href="#" class="text-gray-400 hover:text-white transition duration-300">
+              <i class="fab fa-linkedin-in text-xl"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+      
+      <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-500">
+        <p>&copy; 2025 MahamaCare Hospital. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+<script src="../JavaScript-Files/index.js"></script>
 </body>
 
 </html>

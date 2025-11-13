@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MediCare Excellence Hospital | Patient History</title>
+    <title>Chronic Disease Care</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script>
@@ -170,9 +170,110 @@
         }
     </style>
 </head>
-<body class="font-sans bg-gray-50">
+<body class="font-serif bg-gray-50">
     <!-- Header -->
-    <header class="bg-white shadow-md sticky top-0 z-50">
+       <header class="bg-white shadow-md sticky top-0 z-50">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-between items-center py-4">
+                <!-- Logo -->
+                <div class="flex items-center">
+                    <span class="text-2xl font-bold text-blue-600"><a href="../index.html">🏥 MCH</a></span>
+                </div>
+                
+                <!-- Mobile menu button -->
+                <button id="mobile-menu-button" class="md:hidden text-gray-600 focus:outline-none">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+                
+                <!-- Navigation Links -->
+                <nav id="nav-links" class="hidden md:flex items-center space-x-6">
+                    <a href="../index.html" class="text-gray-700 hover:text-blue-600 transition duration-300">Home</a>
+                    <a href="../index.html#about" class="text-gray-700 hover:text-blue-600 transition duration-300">About</a>
+                    
+                    <!-- Services Dropdown -->
+                    <div class="relative group">
+                        <button class="flex items-center text-gray-700 hover:text-blue-600 transition duration-300">
+                            Services <i class="fas fa-chevron-down ml-1 text-xs"></i>
+                        </button>
+                        <div class="absolute left-0 mt-2 w-64 bg-white shadow-xl rounded-lg py-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50">
+                            <a href="../Servscies/Maternity&Brith Servecises.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">Maternity & Birth Services</a>
+                            <a href="../Servscies/paitents-Servecises.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">Patient Services</a>
+                            <a href="../Emergency.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">Emergency Care</a>
+                            <a href="../Servscies/veccination.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">Vaccination Programs</a>
+                            <a href="../Servscies/mentalhealth.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">Mental Health Support</a>
+                            <a href="../Servscies/NCD.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">Chronic Disease Care</a>
+                            <a href="../Servscies/Health Education.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">Health Awareness & Education</a>
+                            <a href="../Servscies/Disability.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">Disability Care</a>
+                        </div>
+                    </div>
+                    
+                    <a href="/doctors.html" class="text-gray-700 hover:text-blue-600 transition duration-300">Doctors</a>
+                    <a href="/Dashboard.html" class="text-gray-700 hover:text-blue-600 transition duration-300">Dashdoard</a>
+                    <a href="#contact" class="text-gray-700 hover:text-blue-600 transition duration-300">Contact</a>
+                    <a href="#faq" id="faq-nav-link" class="text-gray-700 hover:text-blue-600 transition duration-300">FAQ</a>
+                </nav>
+                
+                <!-- Actions -->
+                <div class="hidden md:flex items-center space-x-4">
+                    <select class="border border-gray-300 rounded px-3 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <option value="en">English</option>
+                        <option value="ar">العربية</option>
+                        <option value="rw">Kinyarwanda</option>
+                    </select>
+                    <button id="desktop-signup-btn" class="bg-blue-600 text-white px-4 py-2 rounded...">Sign Up</button>
+                    <button id="desktop-login-btn" class="border border-blue-600 text-blue-600 px-4 py-2 rounded...">Log In</button>
+                </div>
+            </div>
+            
+            <!-- Mobile Menu -->
+            <div id="mobile-menu" class="hidden md:hidden py-4 border-t border-gray-200">
+                <div class="flex flex-col space-y-4">
+                    <div class="flex space-x-2">
+                        <button id="mobile-signup-btn" class="flex-1 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition duration-300">Sign Up</button>
+                        <button id="mobile-login-btn" class="flex-1 border border-blue-600 text-blue-600 px-4 py-2 rounded hover:bg-blue-600 hover:text-white transition duration-300">Log In</button>
+                    </div>
+                    <a href="#home" class="text-gray-700 hover:text-blue-600">Home</a>
+                    <a href="#about" class="text-gray-700 hover:text-blue-600">About</a>
+                    
+                    <!-- Mobile Services Dropdown -->
+                    <div class="relative">
+                        <button id="mobile-services-toggle" class="flex items-center text-gray-700 hover:text-blue-600 w-full justify-between">
+                            Services <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div id="mobile-services-menu" class="hidden pl-4 mt-2 space-y-2">
+                            <a href="../Servscies/Maternity&Brith Servecises.html" class="block text-gray-700 hover:text-blue-600">Maternity & Birth Services</a>
+                            <a href="../Servscies/paitents-Servecises.html" class="block text-gray-700 hover:text-blue-600">Patient Services</a>
+                            <a href="../Emergency.html" class="block text-gray-700 hover:text-blue-600">Emergency Care</a>
+                            <a href="../Servscies/veccination.html" class="block text-gray-700 hover:text-blue-600">Vaccination Programs</a>
+                            <a href="../Servscies/mentalhealth.html" class="block text-gray-700 hover:text-blue-600">Mental Health Support</a>
+                            <a href="../Servscies/NCD.html" class="block text-gray-700 hover:text-blue-600">Chronic Disease Care</a>
+                            <a href="../Servscies/Health Education.html" class="block text-gray-700 hover:text-blue-600">Health Awareness & Education</a>
+                            <a href="../Servscies/Disability.html" class="block text-gray-700 hover:text-blue-600">Disability Care</a>
+                        </div>
+                    </div>
+                    
+                    <a href="/doctors.html" class="text-gray-700 hover:text-blue-600">Doctors</a>
+                    <a href="/Dashboard.html" class="text-gray-700 hover:text-blue-600">Dashdoard</a>
+                    <a href="#contact" class="text-gray-700 hover:text-blue-600">Contact</a>
+                    <a href="#faq" id="mobile-faq-link" class="text-gray-700 hover:text-blue-600">FAQ</a>
+                    
+                    <div class="pt-4 border-t border-gray-200">
+                        <select class="w-full border border-gray-300 rounded px-3 py-2 text-sm mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <option value="en">English</option>
+                            <option value="ar">العربية</option>
+                            <option value="rw">Kinyarwanda</option>
+                        </select>
+                        <div class="flex space-x-2">
+                            <button id="signup-btn" class="flex-1 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition duration-300">Sign Up</button>
+                            <button id="login-btn" class="flex-1 border border-blue-600 text-blue-600 px-4 py-2 rounded hover:bg-blue-600 hover:text-white transition duration-300">Log In</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <header class="bg-white shadow-md sticky top-0 z-50 hidden">
         <div class="container mx-auto px-4">
             <div class="flex justify-between items-center py-4">
                 <div class="flex items-center space-x-3">
@@ -217,9 +318,22 @@
             </nav>
         </div>
     </header>
-
+    
+     <!-- Hero Section -->
+      
+    <section id="home" class="bg-[url(/img/ncd.png)] bg-no-repeat bg-cover text-black py-19 md:py-36">
+        <div class="container mx-auto px-4 text-center">
+            <h1 class="hero-title text-3xl md:text-6xl font-serif font-bold mb-4 md:mb-6">Exceptional Healthcare for Every Patient</h1>
+            <p class="hero-subtitle text-lg md:text-2xl mb-6 md:mb-8 max-w-2xl mx-auto">Comprehensive medical services with cutting-edge technology and compassionate care for all your health needs.</p>
+            <div class="flex flex-col md:flex-row justify-center gap-4">
+              <button id="openPatientHistoryHero" class="bg-blue-600 text-black px-8 py-3 rounded-lg font-semibold text-center hover:bg-gray-100 transition-colors">Patient History Form</button>
+                    <a href="#ncd" class="border-2 border-white text-black px-8 py-3 rounded-lg font-semibold text-center hover:bg-white hover:text-primary transition-colors">NCD Care</a>
+            </div>
+            
+        </div>
+    </section>
     <!-- Hero Section -->
-    <section class="gradient-bg text-white py-20 md:py-28 relative overflow-hidden">
+    <!-- <section class="bg-[url(/img/ncd.png)] bg-no-repeat bg-cover text-black text-center py-20 md:py-28 relative overflow-hidden">
         <div class="absolute inset-0 bg-white opacity-10" style="clip-path: polygon(0 0, 100% 0, 100% 100%, 0 80%);"></div>
         <div class="container mx-auto px-4 relative z-10">
             <div class="max-w-2xl">
@@ -231,7 +345,7 @@
                 </div>
             </div>
         </div>
-    </section>
+    </section> -->
 
     <!-- Stats Section -->
     <section class="bg-white py-16">
@@ -256,9 +370,52 @@
             </div>
         </div>
     </section>
+   <!-- NCD Section -->
+     <section id="ncd" class="py-12 md:py-16 bg-gray-50">
+      <div class="container mx-auto px-4">
+        <div>
+        <h2 class="text-2xl md:text-4xl font-bold text-center text-blue-600 mb-4 md:mb-8">Non-Communicable Diseases Care</h2>
+        
+                <p class="text-xl text-gray-600 max-w-2xl mx-auto mb-8 md:mb-12">Comprehensive management and treatment for chronic conditions</p>
+        
+                    <h3 class="text-2xl md:text-4xl font-bold text-center text-blue-600 mb-4 md:mb-8">Specialized NCD Management</h3>
+                    <p class="text-xl text-gray-600 max-w-2xl mx-auto mb-8 md:mb-12">Our comprehensive Non-Communicable Diseases program provides personalized care for chronic conditions that require long-term management and specialized treatment approaches.</p>
+                    </div>
 
-    <!-- NCD Section -->
-    <section class="py-16 bg-gradient-to-r from-blue-50 to-indigo-50" id="ncd">
+        <div class="emergency-cards grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
+          <!-- ncd Card 1 -->
+          <div class="ncd-card bg-white rounded-xl shadow-lg p-4 md:p-6 transition-all duration-300 hover:-translate-y-2 hover:shadow-xl">
+            <img src="../img/c.png" alt="Fire Emergency" class="w-full h-40 md:h-48 object-cover rounded-lg mb-4">
+            <h3 class="text-lg md:text-xl font-bold text-gray-800 mb-2">Cardiovascular Diseases</h3>
+            <p class="text-sm md:text-base text-gray-600 mb-4">Hypertension, coronary artery disease, heart failure management.</p>
+          </div>
+          
+          <!-- ncd Card 2 -->
+          <div class="ncd bg-white rounded-xl shadow-lg p-4 md:p-6 transition-all duration-300 hover:-translate-y-2 hover:shadow-xl">
+            <img src="../img/di.png" alt="Medical Emergency" class="w-full h-40 md:h-48 object-cover rounded-lg mb-4">
+            <h3 class="text-lg md:text-xl font-bold text-gray-800 mb-2">Diabetes Care</h3>
+            <p class="text-sm md:text-base text-gray-600 mb-4">Type 1 & 2 diabetes management, insulin therapy, lifestyle coaching.</p>
+          </div>
+          
+          <!-- ncd Card 3 -->
+          <div class="ncd-card bg-white rounded-xl shadow-lg p-4 md:p-6 transition-all duration-300 hover:-translate-y-2 hover:shadow-xl">
+            <img src="../img/ris.png" alt="Natural Disaster" class="w-full h-40 md:h-48 object-cover rounded-lg mb-4">
+            <h3 class="text-lg md:text-xl font-bold text-gray-800 mb-2">Respiratory Conditions</h3>
+            <p class="text-sm md:text-base text-gray-600 mb-4">COPD, asthma, chronic bronchitis management and rehabilitation.</p>
+          </div>
+          
+          <!-- ncd Card 4 -->
+          <div class="ncd-card bg-white rounded-xl shadow-lg p-4 md:p-6 transition-all duration-300 hover:-translate-y-2 hover:shadow-xl">
+            <img src="../img/ni.png" alt="Traffic Accident" class="w-full h-40 md:h-48 object-cover rounded-lg mb-4">
+            <h3 class="text-lg md:text-xl font-bold text-gray-800 mb-2">
+Neurological Disorders</h3>
+            <p class="text-sm md:text-base text-gray-600 mb-4">Stroke, epilepsy, Parkinson's disease, and dementia care.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  
+    <!-- <section class="py-16 bg-gradient-to-r from-blue-50 to-indigo-50" id="ncd">
         <div class="container mx-auto px-4">
             <div class="text-center mb-12">
                 <h2 class="text-3xl font-bold text-gray-800 mb-4 relative section-title inline-block">Non-Communicable Diseases Care</h2>
@@ -318,13 +475,13 @@
                 </div>
             </div>
         </div>
-    </section>
+    </section> -->
 
     <!-- Our Services Section -->
     <section class="py-16 bg-white" id="services">
         <div class="container mx-auto px-4">
             <div class="text-center mb-12">
-                <h2 class="text-3xl font-bold text-gray-800 mb-4 relative section-title inline-block">Our Services</h2>
+                <h2 class="text-3xl font-bold text-blue-600 mb-4 relative  inline-block">Our Services</h2>
                 <p class="text-xl text-gray-600 max-w-2xl mx-auto">Comprehensive healthcare services for all your medical needs</p>
             </div>
             
