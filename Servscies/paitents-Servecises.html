@@ -145,21 +145,7 @@
   </div>
 
  <script type="module" src="../JavaScript-Files/Dashboard.js">
-  // === COUNTERS LOGIC ===
-import { onValue } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-database.js";
-
-// Select elements
-const birthRecord = document.getElementById("birthRecord");
-const totalPatient = document.getElementById("totalPatient");
-
-// Listen for Births count in Realtime Database
-const birthsRef = ref(dbase, "Births/");
-onValue(birthsRef, (snapshot) => {
-  const data = snapshot.val();
-  const count = data ? Object.keys(data).length : 0;
-  birthRecord.textContent = count;
-  totalPatient.textContent = count; // assuming total patients = total births for now
-});
+  
 
   </script>
 </body>

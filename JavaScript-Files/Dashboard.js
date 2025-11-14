@@ -1,6 +1,27 @@
 /****************************************************
  * 🔐 AUTHENTICATION SECTION
  ****************************************************/
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-app.js";
+import { getDatabase, ref, set, update, remove, get, child } 
+  from "https://www.gstatic.com/firebasejs/12.5.0/firebase-database.js";
+
+// ---------------------- Firebase Initialization ----------------------
+const firebaseConfig = {
+  apiKey: "AIzaSyCZ774I4-U7CnvJ0R43zJifEfE5sGM48lY",
+  authDomain: "halawani-7126f.firebaseapp.com",
+  databaseURL: "https://halawani-7126f-default-rtdb.firebaseio.com",
+  projectId: "halawani-7126f",
+  storageBucket: "halawani-7126f.firebasestorage.app",
+  messagingSenderId: "1065152267257",
+  appId: "1:1065152267257:web:636940f4c120e4ae927328"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+
+/****************************************************
+ * 🏥 DOM & AUTH LOGIC
+ ****************************************************/
 document.addEventListener('DOMContentLoaded', function() {
   // DOM Elements
   const authModal = document.getElementById('authModal');
@@ -13,45 +34,37 @@ document.addEventListener('DOMContentLoaded', function() {
   const showLogin = document.getElementById('showLogin');
   const logoutBtn = document.getElementById('logoutBtn');
 
-  // Check if user is already logged in
+  // -------------------- Auth functions --------------------
   function checkAuthStatus() {
     const isLoggedIn = localStorage.getItem('isLoggedIn');
-    if (isLoggedIn === 'true') {
-      showDashboard();
-    } else {
-      showAuthModal();
-    }
+    if (isLoggedIn === 'true') showDashboard();
+    else showAuthModal();
   }
 
-  // Show Auth Modal
   function showAuthModal() {
-    authModal.classList.remove('hidden');
-    dashboardContent.classList.add('hidden');
+    authModal?.classList.remove('hidden');
+    dashboardContent?.classList.add('hidden');
   }
 
-  // Show Dashboard
   function showDashboard() {
-    authModal.classList.add('hidden');
-    dashboardContent.classList.remove('hidden');
+    authModal?.classList.add('hidden');
+    dashboardContent?.classList.remove('hidden');
     initializeCharts();
   }
 
-  // Switch to Signup form
-  showSignup.addEventListener('click', e => {
+  showSignup?.addEventListener('click', e => {
     e.preventDefault();
-    loginFormDiv.classList.add('hidden');
-    signupFormDiv.classList.remove('hidden');
+    loginFormDiv?.classList.add('hidden');
+    signupFormDiv?.classList.remove('hidden');
   });
 
-  // Switch to Login form
-  showLogin.addEventListener('click', e => {
+  showLogin?.addEventListener('click', e => {
     e.preventDefault();
-    signupFormDiv.classList.add('hidden');
-    loginFormDiv.classList.remove('hidden');
+    signupFormDiv?.classList.add('hidden');
+    loginFormDiv?.classList.remove('hidden');
   });
 
-  // Handle Login
-  loginForm.addEventListener('submit', e => {
+  loginForm?.addEventListener('submit', e => {
     e.preventDefault();
     const email = document.getElementById('loginEmail').value;
     const password = document.getElementById('loginPassword').value;
@@ -70,8 +83,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   });
 
-  // Handle Signup
-  signupForm.addEventListener('submit', e => {
+  signupForm?.addEventListener('submit', e => {
     e.preventDefault();
     const name = document.getElementById('signupName').value;
     const email = document.getElementById('signupEmail').value;
@@ -82,116 +94,88 @@ document.addEventListener('DOMContentLoaded', function() {
     const users = JSON.parse(localStorage.getItem('users') || '[]');
     if (users.find(u => u.email === email)) return alert('User already exists');
 
-    const newUser = {
-      id: Date.now(),
-      name,
-      email,
-      password,
-      createdAt: new Date().toISOString()
-    };
-
+    const newUser = { id: Date.now(), name, email, password, createdAt: new Date().toISOString() };
     users.push(newUser);
+
     localStorage.setItem('users', JSON.stringify(users));
     localStorage.setItem('isLoggedIn', 'true');
     localStorage.setItem('currentUser', JSON.stringify(newUser));
     showDashboard();
   });
 
-  // Logout
-  logoutBtn.addEventListener('click', () => {
+  logoutBtn?.addEventListener('click', () => {
     localStorage.removeItem('isLoggedIn');
     localStorage.removeItem('currentUser');
     showAuthModal();
-    loginForm.reset();
-    signupForm.reset();
-    loginFormDiv.classList.remove('hidden');
-    signupFormDiv.classList.add('hidden');
+    loginForm?.reset();
+    signupForm?.reset();
+    loginFormDiv?.classList.remove('hidden');
+    signupFormDiv?.classList.add('hidden');
   });
-
-  // Chart initialization
-  function initializeCharts() {
-    const patientsCtx = document.getElementById('patientsChart')?.getContext('2d');
-    if (patientsCtx) {
-      new Chart(patientsCtx, {
-        type: 'bar',
-        data: {
-          labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
-          datasets: [{
-            label: 'Patients',
-            data: [65, 59, 80, 81, 56, 55],
-            backgroundColor: 'rgba(54, 162, 25, 0.5)',
-            borderColor: 'rgba(54, 162, 235, 1)',
-            borderWidth: 1
-          }]
-        },
-        options: { responsive: true, scales: { y: { beginAtZero: true } } }
-      });
-    }
-
-    const birthCtx = document.getElementById('birthChart')?.getContext('2d');
-    if (birthCtx) {
-      new Chart(birthCtx, {
-        type: 'pie',
-        data: {
-          labels: ['Male', 'Female'],
-          datasets: [{
-            data: [55, 45],
-            backgroundColor: ['rgba(54,162,11,0.6)', 'rgba(255,99,132,0.6)']
-          }]
-        },
-        options: { responsive: true }
-      });
-    }
-
-    const trendCtx = document.getElementById('trendChart')?.getContext('2d');
-    if (trendCtx) {
-      new Chart(trendCtx, {
-        type: 'line',
-        data: {
-          labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
-          datasets: [{
-            label: 'Births',
-            data: [12, 19, 15, 17, 14, 16, 18],
-            backgroundColor: 'rgba(12,102,72)',
-            borderColor: 'rgba(12,10,192,1)',
-            tension: 0.4
-          }]
-        },
-        options: { responsive: true, scales: { y: { beginAtZero: true } } }
-      });
-    }
-  }
 
   checkAuthStatus();
 });
 
+/****************************************************
+ * 📊 CHARTS
+ ****************************************************/
+function initializeCharts() {
+  const patientsCtx = document.getElementById('patientsChart')?.getContext('2d');
+  if (patientsCtx) {
+    new Chart(patientsCtx, {
+      type: 'bar',
+      data: {
+        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+        datasets: [{
+          label: 'Patients',
+          data: [65, 59, 80, 81, 56, 55],
+          backgroundColor: 'rgba(54, 162, 25, 0.5)',
+          borderColor: 'rgba(54, 162, 235, 1)',
+          borderWidth: 1
+        }]
+      },
+      options: { responsive: true, scales: { y: { beginAtZero: true } } }
+    });
+  }
 
+  const birthCtx = document.getElementById('birthChart')?.getContext('2d');
+  if (birthCtx) {
+    new Chart(birthCtx, {
+      type: 'pie',
+      data: {
+        labels: ['Male', 'Female'],
+        datasets: [{
+          data: [55, 45],
+          backgroundColor: ['rgba(54,162,11,0.6)', 'rgba(255,99,132,0.6)']
+        }]
+      },
+      options: { responsive: true }
+    });
+  }
 
+  const trendCtx = document.getElementById('trendChart')?.getContext('2d');
+  if (trendCtx) {
+    new Chart(trendCtx, {
+      type: 'line',
+      data: {
+        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
+        datasets: [{
+          label: 'Births',
+          data: [12, 19, 15, 17, 14, 16, 18],
+          backgroundColor: 'rgba(12,102,72,0.3)',
+          borderColor: 'rgba(12,10,192,1)',
+          tension: 0.4
+        }]
+      },
+      options: { responsive: true, scales: { y: { beginAtZero: true } } }
+    });
+  }
+}
 
 /****************************************************
- * 🏥 FIREBASE INITIALIZATION
+ * 👨‍⚕️ PATIENTS SERVICES
  ****************************************************/
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-app.js";
-import { getDatabase, ref, set, update, remove, get, child }
-  from "https://www.gstatic.com/firebasejs/12.5.0/firebase-database.js";
-
-const firebaseConfig = {
-  apiKey: "AIzaSyCZ774I4-U7CnvJ0R43zJifEfE5sGM48lY",
-  authDomain: "halawani-7126f.firebaseapp.com",
-  databaseURL: "https://halawani-7126f-default-rtdb.firebaseio.com",
-  projectId: "halawani-7126f",
-  storageBucket: "halawani-7126f.firebasestorage.app",
-  messagingSenderId: "1065152267257",
-  appId: "1:1065152267257:web:636940f4c120e4ae927328"
-};
-
-const app = initializeApp(firebaseConfig);
-const db = getDatabase(app);
-
-/****************************************************
- * 👨‍⚕️ PATIENTS SERVICES SECTION
- ****************************************************/
-window.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById('patientForm');
   const searchResult = document.getElementById('searchResult');
   const findById = document.getElementById('findById');
@@ -252,8 +236,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
   function findData() {
     if (!findId.value.trim()) return alert("Please enter an ID");
-    const dbRef = ref(db);
-    get(child(dbRef, "Person/" + findId.value))
+    get(child(ref(db), "Person/" + findId.value))
       .then(snapshot => {
         if (snapshot.exists()) {
           const data = snapshot.val();
@@ -263,28 +246,28 @@ window.addEventListener("DOMContentLoaded", () => {
           showDisease.textContent = `Disease: ${data.Disease}`;
           showContact.textContent = `Contact: ${data.Contact}`;
           showAddress.textContent = `Address: ${data.Address}`;
-          form.classList.add("hidden");
-          searchResult.classList.remove("hidden");
+          form?.classList.add("hidden");
+          searchResult?.classList.remove("hidden");
         } else alert("Patient not found");
       })
       .catch(err => alert("❌ " + err.message));
   }
 
-  backBtn.addEventListener("click", () => {
-    searchResult.classList.add("hidden");
-    form.classList.remove("hidden");
+  backBtn?.addEventListener("click", () => {
+    searchResult?.classList.add("hidden");
+    form?.classList.remove("hidden");
   });
 
-  enterBtn.addEventListener("click", enterData);
-  updateBtn.addEventListener("click", updateData);
-  removeBtn.addEventListener("click", removeData);
-  findById.addEventListener("click", findData);
+  enterBtn?.addEventListener("click", enterData);
+  updateBtn?.addEventListener("click", updateData);
+  removeBtn?.addEventListener("click", removeData);
+  findById?.addEventListener("click", findData);
 });
 
 /****************************************************
- * 👶 BIRTH SERVICES SECTION
+ * 👶 BIRTH SERVICES
  ****************************************************/
-window.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById('BirthForm');
   const RearchResult = document.getElementById('RearchResult');
   const FindById = document.getElementById('FindById');
@@ -309,6 +292,23 @@ window.addEventListener("DOMContentLoaded", () => {
   const ShowNotes = document.getElementById('ShowNotes');
   const ShowRegNo = document.getElementById('ShowRegNo');
 
+  // Dashboard counters
+  const birthRecord = document.getElementById('birthRecord');
+  const totalPatient = document.getElementById('totalPatient');
+
+  function updateCounters() {
+    // Count births
+    get(ref(db, "Births")).then(snapshot => {
+      birthRecord.textContent = snapshot.exists() ? Object.keys(snapshot.val()).length : 0;
+    });
+    // Count patients
+    get(ref(db, "Person")).then(snapshot => {
+      totalPatient.textContent = snapshot.exists() ? Object.keys(snapshot.val()).length : 0;
+    });
+  }
+
+  updateCounters();
+
   function InsertData() {
     const reg = RegisterNo.value.trim();
     if (!reg) return alert("Please enter Register No");
@@ -319,8 +319,7 @@ window.addEventListener("DOMContentLoaded", () => {
       MotherName: MotherName.value,
       Notes: Notes.value,
       RegisterNo: reg
-    })
-      .then(() => alert("✅ Birth record added successfully"))
+    }).then(() => { alert("✅ Birth record added successfully"); updateCounters(); })
       .catch(err => alert("❌ " + err.message));
   }
 
@@ -333,8 +332,7 @@ window.addEventListener("DOMContentLoaded", () => {
       Gender: Gender.value,
       MotherName: MotherName.value,
       Notes: Notes.value
-    })
-      .then(() => alert("✅ Record updated successfully"))
+    }).then(() => alert("✅ Record updated successfully"))
       .catch(err => alert("❌ " + err.message));
   }
 
@@ -342,7 +340,7 @@ window.addEventListener("DOMContentLoaded", () => {
     const reg = RegisterNo.value.trim();
     if (!reg) return alert("Please enter Register No");
     remove(ref(db, "Births/" + reg))
-      .then(() => alert("🗑️ Record removed successfully"))
+      .then(() => { alert("🗑️ Record removed successfully"); updateCounters(); })
       .catch(err => alert("❌ " + err.message));
   }
 
@@ -359,20 +357,20 @@ window.addEventListener("DOMContentLoaded", () => {
           ShowMother.textContent = `Mother: ${data.MotherName}`;
           ShowNotes.textContent = `Notes: ${data.Notes}`;
           ShowRegNo.textContent = `Register No: ${data.RegisterNo}`;
-          form.classList.add("hidden");
-          RearchResult.classList.remove("hidden");
+          form?.classList.add("hidden");
+          RearchResult?.classList.remove("hidden");
         } else alert("Record not found");
       })
       .catch(err => alert("❌ " + err.message));
   }
 
-  BackBtn.addEventListener("click", () => {
-    RearchResult.classList.add("hidden");
-    form.classList.remove("hidden");
+  BackBtn?.addEventListener("click", () => {
+    RearchResult?.classList.add("hidden");
+    form?.classList.remove("hidden");
   });
 
-  InsertBtn.addEventListener("click", InsertData);
-  UpdateBtn.addEventListener("click", UpdateData);
-  RemoveBtn.addEventListener("click", RemoveData);
-  FindById.addEventListener("click", FindData);
+  InsertBtn?.addEventListener("click", InsertData);
+  UpdateBtn?.addEventListener("click", UpdateData);
+  RemoveBtn?.addEventListener("click", RemoveData);
+  FindById?.addEventListener("click", FindData);
 });
