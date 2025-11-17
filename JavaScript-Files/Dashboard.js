@@ -1,6 +1,27 @@
 /****************************************************
  * 🔐 AUTHENTICATION SECTION
  ****************************************************/
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-app.js";
+import { getDatabase, ref, set, update, remove, get, child } 
+  from "https://www.gstatic.com/firebasejs/12.5.0/firebase-database.js";
+
+// ---------------------- Firebase Initialization ----------------------
+const firebaseConfig = {
+  apiKey: "AIzaSyCZ774I4-U7CnvJ0R43zJifEfE5sGM48lY",
+  authDomain: "halawani-7126f.firebaseapp.com",
+  databaseURL: "https://halawani-7126f-default-rtdb.firebaseio.com",
+  projectId: "halawani-7126f",
+  storageBucket: "halawani-7126f.firebasestorage.app",
+  messagingSenderId: "1065152267257",
+  appId: "1:1065152267257:web:636940f4c120e4ae927328"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+
+/****************************************************
+ * 🏥 DOM & AUTH LOGIC
+ ****************************************************/
 document.addEventListener('DOMContentLoaded', function() {
   // DOM Elements
   const authModal = document.getElementById('authModal');
@@ -13,45 +34,37 @@ document.addEventListener('DOMContentLoaded', function() {
   const showLogin = document.getElementById('showLogin');
   const logoutBtn = document.getElementById('logoutBtn');
 
-  // Check if user is already logged in
+  // -------------------- Auth functions --------------------
   function checkAuthStatus() {
     const isLoggedIn = localStorage.getItem('isLoggedIn');
-    if (isLoggedIn === 'true') {
-      showDashboard();
-    } else {
-      showAuthModal();
-    }
+    if (isLoggedIn === 'true') showDashboard();
+    else showAuthModal();
   }
 
-  // Show Auth Modal
   function showAuthModal() {
-    authModal.classList.remove('hidden');
-    dashboardContent.classList.add('hidden');
+    authModal?.classList.remove('hidden');
+    dashboardContent?.classList.add('hidden');
   }
 
-  // Show Dashboard
   function showDashboard() {
-    authModal.classList.add('hidden');
-    dashboardContent.classList.remove('hidden');
+    authModal?.classList.add('hidden');
+    dashboardContent?.classList.remove('hidden');
     initializeCharts();
   }
 
-  // Switch to Signup form
-  showSignup.addEventListener('click', e => {
+  showSignup?.addEventListener('click', e => {
     e.preventDefault();
-    loginFormDiv.classList.add('hidden');
-    signupFormDiv.classList.remove('hidden');
+    loginFormDiv?.classList.add('hidden');
+    signupFormDiv?.classList.remove('hidden');
   });
 
-  // Switch to Login form
-  showLogin.addEventListener('click', e => {
+  showLogin?.addEventListener('click', e => {
     e.preventDefault();
-    signupFormDiv.classList.add('hidden');
-    loginFormDiv.classList.remove('hidden');
+    signupFormDiv?.classList.add('hidden');
+    loginFormDiv?.classList.remove('hidden');
   });
 
-  // Handle Login
-  loginForm.addEventListener('submit', e => {
+  loginForm?.addEventListener('submit', e => {
     e.preventDefault();
     const email = document.getElementById('loginEmail').value;
     const password = document.getElementById('loginPassword').value;
@@ -70,8 +83,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   });
 
-  // Handle Signup
-  signupForm.addEventListener('submit', e => {
+  signupForm?.addEventListener('submit', e => {
     e.preventDefault();
     const name = document.getElementById('signupName').value;
     const email = document.getElementById('signupEmail').value;
@@ -82,30 +94,23 @@ document.addEventListener('DOMContentLoaded', function() {
     const users = JSON.parse(localStorage.getItem('users') || '[]');
     if (users.find(u => u.email === email)) return alert('User already exists');
 
-    const newUser = {
-      id: Date.now(),
-      name,
-      email,
-      password,
-      createdAt: new Date().toISOString()
-    };
-
+    const newUser = { id: Date.now(), name, email, password, createdAt: new Date().toISOString() };
     users.push(newUser);
+
     localStorage.setItem('users', JSON.stringify(users));
     localStorage.setItem('isLoggedIn', 'true');
     localStorage.setItem('currentUser', JSON.stringify(newUser));
     showDashboard();
   });
 
-  // Logout
-  logoutBtn.addEventListener('click', () => {
+  logoutBtn?.addEventListener('click', () => {
     localStorage.removeItem('isLoggedIn');
     localStorage.removeItem('currentUser');
     showAuthModal();
-    loginForm.reset();
-    signupForm.reset();
-    loginFormDiv.classList.remove('hidden');
-    signupFormDiv.classList.add('hidden');
+    loginForm?.reset();
+    signupForm?.reset();
+    loginFormDiv?.classList.remove('hidden');
+    signupFormDiv?.classList.add('hidden');
   });
 
   // Chart initialization
