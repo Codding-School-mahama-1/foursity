@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pharmacy Management System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .compact-input {
+            @apply px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500;
+        }
+        .compact-label {
+            @apply block text-gray-700 text-xs font-medium mb-1;
+        }
+        .compact-select {
+            @apply w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Login Page -->
+    <div id="loginPage" class="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-500 to-teal-400 p-4">
+        <div class="bg-white p-8 rounded-2xl shadow-xl w-full max-w-md">
+            <div class="text-center mb-8">
+                <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i class="fas fa-pills text-2xl text-blue-600"></i>
+                </div>
+                <h1 class="text-3xl font-bold text-gray-800">PharmaCare</h1>
+                <p class="text-gray-600 mt-2">Management System</p>
+            </div>
+            
+            <form id="loginForm">
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-medium mb-2">
+                        Username
+                    </label>
+                    <input id="username" type="text" 
+                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                           value="admin" required>
+                </div>
+                
+                <div class="mb-6">
+                    <label class="block text-gray-700 text-sm font-medium mb-2">
+                        Password
+                    </label>
+                    <input id="password" type="password" 
+                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                           value="password" required>
+                </div>
+                
+                <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-4 rounded-lg transition">
+                    Sign In
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Main Dashboard -->
+    <div id="dashboard" class="hidden min-h-screen">
+        <header class="bg-white shadow-sm border-b">
+            <div class="flex justify-between items-center px-6 py-4">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-pills text-blue-600"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-xl font-bold text-gray-800">PharmaCare System</h1>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <button id="logoutBtn" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg transition">
+                        Logout
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <div class="flex">
+            <!-- Sidebar -->
+            <aside class="w-64 bg-white h-screen shadow-md">
+                <nav class="mt-6">
+                    <ul class="space-y-1 p-2">
+                        <li>
+                            <a href="#" id="dashboardLink" class="flex items-center px-4 py-3 text-blue-600 bg-blue-50 border-r-4 border-blue-500">
+                                <i class="fas fa-tachometer-alt mr-3"></i>
+                                Dashboard
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" id="medicinesLink" class="flex items-center px-4 py-3 text-gray-700 hover:bg-gray-100">
+                                <i class="fas fa-pills mr-3"></i>
+                                Medicines
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" id="doctorsLink" class="flex items-center px-4 py-3 text-gray-700 hover:bg-gray-100">
+                                <i class="fas fa-user-md mr-3"></i>
+                                Doctors
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </aside>
+
+            <!-- Main Content -->
+            <main class="flex-1 p-6">
+                <!-- Dashboard Section -->
+                <div id="dashboardSection">
+                    <h2 class="text-2xl font-bold text-gray-800 mb-6">Dashboard</h2>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                        <div class="bg-white rounded-xl shadow p-6">
+                            <div class="flex items-center">
+                                <div class="p-3 rounded-full bg-blue-100 text-blue-500 mr-4">
+                                    <i class="fas fa-pills text-xl"></i>
+                                </div>
+                                <div>
+                                    <p class="text-sm text-gray-500">Total Medicines</p>
+                                    <h3 class="text-2xl font-bold">142</h3>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-white rounded-xl shadow p-6">
+                            <div class="flex items-center">
+                                <div class="p-3 rounded-full bg-green-100 text-green-500 mr-4">
+                                    <i class="fas fa-user-md text-xl"></i>
+                                </div>
+                                <div>
+                                    <p class="text-sm text-gray-500">Doctors</p>
+                                    <h3 class="text-2xl font-bold">24</h3>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-white rounded-xl shadow p-6">
+                            <div class="flex items-center">
+                                <div class="p-3 rounded-full bg-purple-100 text-purple-500 mr-4">
+                                    <i class="fas fa-syringe text-xl"></i>
+                                </div>
+                                <div>
+                                    <p class="text-sm text-gray-500">Low Stock</p>
+                                    <h3 class="text-2xl font-bold">8</h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Medicines Section -->
+                <div id="medicinesSection" class="hidden">
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="text-2xl font-bold text-gray-800">Medicines</h2>
+                        <button id="addMedicineBtn" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition">
+                            Add Medicine
+                        </button>
+                    </div>
+                    
+                    <div class="bg-white rounded-xl shadow overflow-hidden">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Name</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Category</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Stock</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Price</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="medicineList" class="bg-white divide-y divide-gray-200">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Doctors Section -->
+                <div id="doctorsSection" class="hidden">
+                    <!-- Add Doctor Button at Top -->
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="text-2xl font-bold text-gray-800">Doctors</h2>
+                        <button id="addDoctorBtn" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition flex items-center">
+                            <i class="fas fa-plus mr-2"></i> Add Doctors
+                        </button>
+                    </div>
+                    
+                    <!-- Doctors Grid View -->
+                    <div id="doctorsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <!-- Doctor cards will be populated here -->
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Medicine Modal -->
+    <div id="medicineModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+        <div class="bg-white rounded-xl shadow-2xl w-full max-w-md mx-4">
+            <div class="flex justify-between items-center p-6 border-b">
+                <h3 id="medicineModalTitle" class="text-xl font-bold text-gray-800">Add Medicine</h3>
+                <button id="closeMedicineModal" class="text-gray-500 hover:text-gray-700">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            
+            <form id="medicineForm" class="p-6">
+                <div class="mb-3">
+                    <label class="compact-label">
+                        Medicine Name
+                    </label>
+                    <input id="medicineName" type="text" class="w-full compact-input" required>
+                </div>
+                
+                <div class="mb-3">
+                    <label class="compact-label">
+                        Category
+                    </label>
+                    <select id="medicineCategory" class="compact-select">
+                        <option value="Antibiotic">Antibiotic</option>
+                        <option value="Analgesic">Analgesic</option>
+                        <option value="Antihistamine">Antihistamine</option>
+                        <option value="Antacid">Antacid</option>
+                    </select>
+                </div>
+                
+                <div class="grid grid-cols-2 gap-3 mb-4">
+                    <div>
+                        <label class="compact-label">
+                            Stock
+                        </label>
+                        <input id="medicineStock" type="number" class="w-full compact-input" required>
+                    </div>
+                    
+                    <div>
+                        <label class="compact-label">
+                            Price ($)
+                        </label>
+                        <input id="medicinePrice" type="number" step="0.01" class="w-full compact-input" required>
+                    </div>
+                </div>
+                
+                <div class="flex justify-end space-x-3 pt-4">
+                    <button type="button" id="cancelMedicine" class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 text-sm">
+                        Cancel
+                    </button>
+                    <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm">
+                        Save
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Doctor Modal -->
+    <div id="doctorModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+        <div class="bg-white rounded-xl shadow-2xl w-full max-w-md mx-4">
+            <div class="flex justify-between items-center p-4 border-b">
+                <h3 id="doctorModalTitle" class="text-lg font-bold text-gray-800">Add Doctor</h3>
+                <button id="closeDoctorModal" class="text-gray-500 hover:text-gray-700">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <form id="doctorForm" class="p-4 space-y-3">
+                <!-- Profile Picture Upload -->
+                <div class="text-center mb-4">
+                    <div class="relative inline-block">
+                        <img id="doctorPreview" src="https://via.placeholder.com/120" class="w-24 h-24 rounded-full object-cover border-4 border-gray-200 mx-auto">
+                        <input type="file" id="doctorPicture" accept="image/*" class="hidden">
+                        <button type="button" id="uploadPictureBtn" class="absolute bottom-0 right-0 bg-blue-600 text-white p-1 rounded-full text-xs">
+                            <i class="fas fa-camera"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <div>
+                    <label class="compact-label">
+                        Doctor Name
+                    </label>
+                    <input id="doctorName" type="text" class="w-full compact-input" required>
+                </div>
+                
+                <div>
+                    <label class="compact-label">
+                        Email
+                    </label>
+                    <input id="doctorEmail" type="email" class="w-full compact-input" required>
+                </div>
+                
+                <div>
+                    <label class="compact-label">
+                        Phone Number
+                    </label>
+                    <input id="doctorPhone" type="tel" class="w-full compact-input" required>
+                </div>
+                
+                <div>
+                    <label class="compact-label">
+                        Specialization
+                    </label>
+                    <select id="doctorSpecialization" class="compact-select">
+                        <option value="Cardiology">Cardiology</option>
+                        <option value="Dermatology">Dermatology</option>
+                        <option value="Pediatrics">Pediatrics</option>
+                        <option value="Neurology">Neurology</option>
+                        <option value="General Practice">General Practice</option>
+                    </select>
+                </div>
+
+                <!-- Shift Time Section -->
+                <div>
+                    <label class="compact-label">
+                        Shift Time
+                    </label>
+                    <div class="grid grid-cols-2 gap-2">
+                        <div>
+                            <label class="block text-xs text-gray-500 mb-1">Start</label>
+                            <input id="doctorShiftStart" type="time" class="w-full compact-input" required>
+                        </div>
+                        <div>
+                            <label class="block text-xs text-gray-500 mb-1">End</label>
+                            <input id="doctorShiftEnd" type="time" class="w-full compact-input" required>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flex justify-end space-x-2 pt-3">
+                    <button type="button" id="cancelDoctor" class="px-3 py-2 border border-gray-300 rounded-lg text-gray-700 text-sm">
+                        Cancel
+                    </button>
+                    <button type="submit" class="px-3 py-2 bg-blue-600 text-white rounded-lg text-sm">
+                        Save Doctor
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Sample data
+        let medicines = [
+            { id: 1, name: "Paracetamol", category: "Analgesic", stock: 150, price: 5.99 },
+            { id: 2, name: "Amoxicillin", category: "Antibiotic", stock: 75, price: 12.50 },
+            { id: 3, name: "Cetirizine", category: "Antihistamine", stock: 120, price: 8.75 }
+        ];
+        
+        let doctors = [
+            { 
+                id: 1, 
+                name: "Dr. Sarah Johnson", 
+                email: "s.johnson@hospital.com",
+                phone: "+1-555-0101",
+                specialization: "Cardiology",
+                picture: "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=150&h=150&fit=crop&crop=face",
+                shiftStart: "08:00",
+                shiftEnd: "16:00"
+            },
+            { 
+                id: 2, 
+                name: "Dr. Michael Chen", 
+                email: "m.chen@hospital.com",
+                phone: "+1-555-0102",
+                specialization: "Pediatrics",
+                picture: "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=150&h=150&fit=crop&crop=face",
+                shiftStart: "09:00",
+                shiftEnd: "17:00"
+            }
+        ];
+        
+        let currentEditingId = null;
+        let currentDoctorPicture = "https://via.placeholder.com/120";
+        
+        // DOM Elements
+        const loginPage = document.getElementById('loginPage');
+        const dashboard = document.getElementById('dashboard');
+        const loginForm = document.getElementById('loginForm');
+        const logoutBtn = document.getElementById('logoutBtn');
+        
+        // Section elements
+        const dashboardSection = document.getElementById('dashboardSection');
+        const medicinesSection = document.getElementById('medicinesSection');
+        const doctorsSection = document.getElementById('doctorsSection');
+        
+        // Navigation links
+        const dashboardLink = document.getElementById('dashboardLink');
+        const medicinesLink = document.getElementById('medicinesLink');
+        const doctorsLink = document.getElementById('doctorsLink');
+        
+        // Medicine elements
+        const medicineList = document.getElementById('medicineList');
+        const addMedicineBtn = document.getElementById('addMedicineBtn');
+        const medicineModal = document.getElementById('medicineModal');
+        const medicineForm = document.getElementById('medicineForm');
+        const closeMedicineModal = document.getElementById('closeMedicineModal');
+        const cancelMedicine = document.getElementById('cancelMedicine');
+        const medicineModalTitle = document.getElementById('medicineModalTitle');
+        
+        // Doctor elements
+        const doctorsGrid = document.getElementById('doctorsGrid');
+        const addDoctorBtn = document.getElementById('addDoctorBtn');
+        const doctorModal = document.getElementById('doctorModal');
+        const doctorForm = document.getElementById('doctorForm');
+        const closeDoctorModal = document.getElementById('closeDoctorModal');
+        const cancelDoctor = document.getElementById('cancelDoctor');
+        const doctorModalTitle = document.getElementById('doctorModalTitle');
+        const doctorPicture = document.getElementById('doctorPicture');
+        const uploadPictureBtn = document.getElementById('uploadPictureBtn');
+        const doctorPreview = document.getElementById('doctorPreview');
+        
+        // Event Listeners
+        loginForm.addEventListener('submit', handleLogin);
+        logoutBtn.addEventListener('click', handleLogout);
+        
+        // Navigation
+        dashboardLink.addEventListener('click', () => showSection('dashboard'));
+        medicinesLink.addEventListener('click', () => showSection('medicines'));
+        doctorsLink.addEventListener('click', () => showSection('doctors'));
+        
+        // Medicine events
+        addMedicineBtn.addEventListener('click', () => openMedicineModal());
+        closeMedicineModal.addEventListener('click', () => closeMedicineModalFunc());
+        cancelMedicine.addEventListener('click', () => closeMedicineModalFunc());
+        medicineForm.addEventListener('submit', handleMedicineSubmit);
+        
+        // Doctor events
+        addDoctorBtn.addEventListener('click', () => openDoctorModal());
+        closeDoctorModal.addEventListener('click', () => closeDoctorModalFunc());
+        cancelDoctor.addEventListener('click', () => closeDoctorModalFunc());
+        doctorForm.addEventListener('submit', handleDoctorSubmit);
+        
+        // Picture upload events
+        uploadPictureBtn.addEventListener('click', () => doctorPicture.click());
+        doctorPicture.addEventListener('change', handlePictureUpload);
+        
+        // Functions
+        function handleLogin(e) {
+            e.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            if (username === 'admin' && password === 'password') {
+                loginPage.classList.add('hidden');
+                dashboard.classList.remove('hidden');
+                renderMedicines();
+                renderDoctors();
+            } else {
+                alert('Use admin/password');
+            }
+        }
+        
+        function handleLogout() {
+            dashboard.classList.add('hidden');
+            loginPage.classList.remove('hidden');
+        }
+        
+        function showSection(section) {
+            dashboardSection.classList.add('hidden');
+            medicinesSection.classList.add('hidden');
+            doctorsSection.classList.add('hidden');
+            
+            dashboardLink.className = "flex items-center px-4 py-3 text-gray-700 hover:bg-gray-100";
+            medicinesLink.className = "flex items-center px-4 py-3 text-gray-700 hover:bg-gray-100";
+            doctorsLink.className = "flex items-center px-4 py-3 text-gray-700 hover:bg-gray-100";
+            
+            if (section === 'dashboard') {
+                dashboardSection.classList.remove('hidden');
+                dashboardLink.className = "flex items-center px-4 py-3 text-blue-600 bg-blue-50 border-r-4 border-blue-500";
+            } else if (section === 'medicines') {
+                medicinesSection.classList.remove('hidden');
+                medicinesLink.className = "flex items-center px-4 py-3 text-blue-600 bg-blue-50 border-r-4 border-blue-500";
+            } else if (section === 'doctors') {
+                doctorsSection.classList.remove('hidden');
+                doctorsLink.className = "flex items-center px-4 py-3 text-blue-600 bg-blue-50 border-r-4 border-blue-500";
+            }
+        }
+        
+        function renderMedicines() {
+            medicineList.innerHTML = '';
+            medicines.forEach(medicine => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="text-sm font-medium text-gray-900">${medicine.name}</div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="text-sm text-gray-500">${medicine.category}</div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${medicine.stock < 100 ? 'bg-red-100 text-red-800' : 'bg-green-100 text-green-800'}">
+                            ${medicine.stock}
+                        </span>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        $${medicine.price.toFixed(2)}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                        <button class="text-blue-600 hover:text-blue-900 mr-3 edit-medicine" data-id="${medicine.id}">Edit</button>
+                        <button class="text-red-600 hover:text-red-900 delete-medicine" data-id="${medicine.id}">Delete</button>
+                    </td>
+                `;
+                medicineList.appendChild(row);
+            });
+            
+            document.querySelectorAll('.edit-medicine').forEach(button => {
+                button.addEventListener('click', (e) => {
+                    const id = parseInt(e.target.getAttribute('data-id'));
+                    editMedicine(id);
+                });
+            });
+            
+            document.querySelectorAll('.delete-medicine').forEach(button => {
+                button.addEventListener('click', (e) => {
+                    const id = parseInt(e.target.getAttribute('data-id'));
+                    deleteMedicine(id);
+                });
+            });
+        }
+        
+        function renderDoctors() {
+            doctorsGrid.innerHTML = '';
+            doctors.forEach(doctor => {
+                const card = document.createElement('div');
+                card.className = 'bg-white rounded-xl shadow-md overflow-hidden';
+                card.innerHTML = `
+                    <div class="p-6">
+                        <div class="flex items-center mb-4">
+                            <img src="${doctor.picture}" alt="${doctor.name}" class="w-16 h-16 rounded-full object-cover mr-4">
+                            <div>
+                                <h3 class="text-lg font-semibold text-gray-800">${doctor.name}</h3>
+                                <p class="text-sm text-gray-600">${doctor.specialization}</p>
+                            </div>
+                        </div>
+                        <div class="space-y-2 text-sm">
+                            <div class="flex items-center">
+                                <i class="fas fa-envelope text-gray-400 mr-2"></i>
+                                <span class="text-gray-600">${doctor.email}</span>
+                            </div>
+                            <div class="flex items-center">
+                                <i class="fas fa-phone text-gray-400 mr-2"></i>
+                                <span class="text-gray-600">${doctor.phone}</span>
+                            </div>
+                            <div class="flex items-center">
+                                <i class="fas fa-clock text-gray-400 mr-2"></i>
+                                <span class="text-gray-600">${doctor.shiftStart} - ${doctor.shiftEnd}</span>
+                            </div>
+                        </div>
+                        <div class="mt-4 flex justify-end space-x-2">
+                            <button class="text-blue-600 hover:text-blue-900 edit-doctor" data-id="${doctor.id}">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="text-red-600 hover:text-red-900 delete-doctor" data-id="${doctor.id}">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+                doctorsGrid.appendChild(card);
+            });
+            
+            document.querySelectorAll('.edit-doctor').forEach(button => {
+                button.addEventListener('click', (e) => {
+                    const id = parseInt(e.target.closest('button').getAttribute('data-id'));
+                    editDoctor(id);
+                });
+            });
+            
+            document.querySelectorAll('.delete-doctor').forEach(button => {
+                button.addEventListener('click', (e) => {
+                    const id = parseInt(e.target.closest('button').getAttribute('data-id'));
+                    deleteDoctor(id);
+                });
+            });
+        }
+        
+        function openMedicineModal(medicine = null) {
+            currentEditingId = medicine ? medicine.id : null;
+            medicineModalTitle.textContent = medicine ? 'Edit Medicine' : 'Add Medicine';
+            
+            if (medicine) {
+                document.getElementById('medicineName').value = medicine.name;
+                document.getElementById('medicineCategory').value = medicine.category;
+                document.getElementById('medicineStock').value = medicine.stock;
+                document.getElementById('medicinePrice').value = medicine.price;
+            } else {
+                medicineForm.reset();
+            }
+            
+            medicineModal.classList.remove('hidden');
+        }
+        
+        function closeMedicineModalFunc() {
+            medicineModal.classList.add('hidden');
+            currentEditingId = null;
+        }
+        
+        function openDoctorModal(doctor = null) {
+            currentEditingId = doctor ? doctor.id : null;
+            doctorModalTitle.textContent = doctor ? 'Edit Doctor' : 'Add Doctor';
+            currentDoctorPicture = doctor ? doctor.picture : "https://via.placeholder.com/120";
+            
+            if (doctor) {
+                document.getElementById('doctorName').value = doctor.name;
+                document.getElementById('doctorEmail').value = doctor.email;
+                document.getElementById('doctorPhone').value = doctor.phone;
+                document.getElementById('doctorSpecialization').value = doctor.specialization;
+                document.getElementById('doctorShiftStart').value = doctor.shiftStart;
+                document.getElementById('doctorShiftEnd').value = doctor.shiftEnd;
+                doctorPreview.src = doctor.picture;
+            } else {
+                doctorForm.reset();
+                doctorPreview.src = "https://via.placeholder.com/120";
+                // Set default shift times
+                document.getElementById('doctorShiftStart').value = "08:00";
+                document.getElementById('doctorShiftEnd').value = "16:00";
+            }
+            
+            doctorModal.classList.remove('hidden');
+        }
+        
+        function closeDoctorModalFunc() {
+            doctorModal.classList.add('hidden');
+            currentEditingId = null;
+            currentDoctorPicture = "https://via.placeholder.com/120";
+        }
+        
+        function handlePictureUpload(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    doctorPreview.src = e.target.result;
+                    currentDoctorPicture = e.target.result;
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+        
+        function handleMedicineSubmit(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('medicineName').value;
+            const category = document.getElementById('medicineCategory').value;
+            const stock = parseInt(document.getElementById('medicineStock').value);
+            const price = parseFloat(document.getElementById('medicinePrice').value);
+            
+            if (currentEditingId) {
+                const index = medicines.findIndex(m => m.id === currentEditingId);
+                if (index !== -1) {
+                    medicines[index] = { id: currentEditingId, name, category, stock, price };
+                }
+            } else {
+                const newId = medicines.length > 0 ? Math.max(...medicines.map(m => m.id)) + 1 : 1;
+                medicines.push({ id: newId, name, category, stock, price });
+            }
+            
+            renderMedicines();
+            closeMedicineModalFunc();
+        }
+        
+        function handleDoctorSubmit(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('doctorName').value;
+            const email = document.getElementById('doctorEmail').value;
+            const phone = document.getElementById('doctorPhone').value;
+            const specialization = document.getElementById('doctorSpecialization').value;
+            const shiftStart = document.getElementById('doctorShiftStart').value;
+            const shiftEnd = document.getElementById('doctorShiftEnd').value;
+            
+            if (currentEditingId) {
+                const index = doctors.findIndex(d => d.id === currentEditingId);
+                if (index !== -1) {
+                    doctors[index] = { 
+                        id: currentEditingId, 
+                        name, 
+                        email, 
+                        phone, 
+                        specialization,
+                        shiftStart,
+                        shiftEnd,
+                        picture: currentDoctorPicture
+                    };
+                }
+            } else {
+                const newId = doctors.length > 0 ? Math.max(...doctors.map(d => d.id)) + 1 : 1;
+                doctors.push({ 
+                    id: newId, 
+                    name, 
+                    email, 
+                    phone, 
+                    specialization,
+                    shiftStart,
+                    shiftEnd,
+                    picture: currentDoctorPicture
+                });
+            }
+            
+            renderDoctors();
+            closeDoctorModalFunc();
+        }
+        
+        function editMedicine(id) {
+            const medicine = medicines.find(m => m.id === id);
+            if (medicine) {
+                openMedicineModal(medicine);
+            }
+        }
+        
+        function deleteMedicine(id) {
+            if (confirm('Delete this medicine?')) {
+                medicines = medicines.filter(m => m.id !== id);
+                renderMedicines();
+            }
+        }
+        
+        function editDoctor(id) {
+            const doctor = doctors.find(d => d.id === id);
+            if (doctor) {
+                openDoctorModal(doctor);
+            }
+        }
+        
+        function deleteDoctor(id) {
+            if (confirm('Delete this doctor?')) {
+                doctors = doctors.filter(d => d.id !== id);
+                renderDoctors();
+            }
+        }
+        
+        // Initialize
+        renderMedicines();
+        renderDoctors();
+    </script>
+</body>
+</html>

@@ -11,70 +11,136 @@
   <style>
     /* Custom styles for animations */
     
-</style>
+    .service-card {
+      opacity: 0;
+      transform: translateY(40px);
+    }
+    
+    .service-card.show {
+      animation: fadeUp 0.8s ease forwards;
+    }
+    
+    /* Smooth scrolling */
+    html {
+      scroll-behavior: smooth;
+    }
 
-<body>
-    <!-- NAVBAR -->
-    <header>
-        <div class="nav-container">
-            <div class="logo">
-                <span style="display: flex; flex-direction: row;">🏥 HCH</span>
-            </div>
-            <nav class="nav-links">
-                <a href="#home">Home</a>
-                <a href="#about">About</a>
-
-                <!-- Services Dropdown -->
-                <div class="dropdown">
-                    <a href="#">Services <i class="fas fa-chevron-down"></i></a>
-                    <div class="dropdown-content">
-                        <a href="./Servscies/Maternity&Brith Servecises.html">Maternity & Birth Services</a>
-                        <a href="#">Emergency Care</a>
-                        <a href="./Servscies/veccination.html">Vaccination Programs</a>
-                        <a href="./Servscies/mentalhealth.html">Mental Health Support</a>
-                        <a href="#">Chronic Disease Care</a>
-                        <a href="./Servscies/Health Education.html">Health Awareness & Education</a>
-                        <a href="#">Disability Care</a>
-                    </div>
-                </div>
-
-
-                <a href="#">Doctots</a>
-                <a href="./Maternity&Brith Servecises.html">Dashboard &</a>
-                <a href="#contact">Contact</a>
-                <a href="#help">Help</a>
-            </nav>
-            <div class="actions">
-                <select id="languageSwitch" class="lang-select">
-                    <option value="en">English</option>
-                    <option value="ar">العربية</option>
-                    <option value="rw">Kinyarwanda</option>
-                </select>
-                <button id="openSignUp" class="btn signup">Sign Up</button>
-                <button id="openLogIn" class="btn login">Log In</button>
-            </div>
+    /* FAQ Modal Styles */
+    .modal-bg {
+      background: white;
+    }
+    
+    .tab-btn.active {
+      color: #2563eb;
+      border-bottom-color: #2563eb;
+    }
+    
+    .faq-answer {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease;
+    }
+    
+    .faq-item.active .faq-answer {
+      max-height: 500px;
+    }
+    
+    .faq-question::after {
+      content: '+';
+      font-weight: normal;
+    }
+    
+    .faq-item.active .faq-question::after {
+      content: '-';
+    }
+  </style>
+</head>
+<body class="font-serif text-gray-800">
+  <!-- NAVBAR -->
+  <header class="bg-white shadow-md sticky top-0 z-50">
+    <div class="container mx-auto px-4">
+      <div class="flex justify-between items-center py-4">
+        <!-- Logo -->
+        <div class="flex items-center">
+          <span class="text-2xl font-bold text-blue-600">🏥 MCH</span>
         </div>
-    </header>
-
-    <!-- HERO SECTION WITH VIDEO -->
-    <section id="home" class="hero">
-        <!-- Video Background -->
-
-        <!-- Hero Content -->
-        <div class="hero-overlay">
-            <h1 id="hero-title">Welcome to HopeCare Hospital</h1>
-            <p id="hero-text">A practical digital platform for camp healthcare — book appointments, check medicine
-                availability, and keep chronic records.</p>
-            <div class="hero-buttons">
-                <button id="heroBook">Learn more</button>
-                <a href="#pharmacy">Check Pharmacy</a>
+        
+        <!-- Mobile menu button -->
+        <button id="mobile-menu-button" class="md:hidden text-gray-600 focus:outline-none">
+          <i class="fas fa-bars text-xl"></i>
+        </button>
+        
+        <!-- Navigation Links -->
+        <nav id="nav-links" class="hidden md:flex items-center space-x-6">
+          <a href="#home" class="text-gray-700 hover:text-blue-600 transition duration-300">Home</a>
+          <a href="#about" class="text-gray-700 hover:text-blue-600 transition duration-300">About</a>
+          
+          <!-- Services Dropdown -->
+          <div class="relative group">
+            <button class="flex items-center text-gray-700 hover:text-blue-600 transition duration-300">
+              Services <i class="fas fa-chevron-down ml-1 text-xs"></i>
+            </button>
+            <div class="absolute left-0 mt-2 w-64 bg-white shadow-xl rounded-lg py-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50">
+              <a href="./Servscies/Maternity&Brith Servecises.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">Maternity & Birth Services</a>
+             <a href="./Servscies/paitents-Servecises.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">Patient Services</a>
+              <a href="./Emergency.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">Emergency Care</a>
+              <a href="./Servscies/veccination.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">Vaccination Programs</a>
+              <a href="./Servscies/mentalhealth.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">Mental Health Support</a>
+              <a href="./Servscies/NCD.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">Chronic Disease Care</a>
+              <a href="./Servscies/Health Education.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">Health Awareness & Education</a>
+              <a href="./Servscies/Disability.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">Disability Care</a>
+            </div>
+          </div>
+          
+          <a href="/doctors.html" class="text-gray-700 hover:text-blue-600 transition duration-300">Doctors</a>
+          <a href="/Dashboard.html" class="text-gray-700 hover:text-blue-600 transition duration-300">Dashdoard</a>
+          <a href="#contact" class="text-gray-700 hover:text-blue-600 transition duration-300">Contact</a>
+          <a href="#faq" id="faq-nav-link" class="text-gray-700 hover:text-blue-600 transition duration-300">FAQ</a>
+        </nav>
+        
+        <!-- Actions -->
+        <div class="hidden md:flex items-center space-x-4">
+          <select class="border border-gray-300 rounded px-3 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <option value="en">English</option>
+            <option value="ar">العربية</option>
+            <option value="rw">Kinyarwanda</option>
+          </select>
+          <button id="desktop-signup-btn" class="bg-blue-600 text-white px-4 py-2 rounded...">Sign Up</button>
+          <button id="desktop-login-btn" class="border border-blue-600 text-blue-600 px-4 py-2 rounded...">Log In</button>
+        </div>
+      </div>
+      
+      <!-- Mobile Menu -->
+      <div id="mobile-menu" class="hidden md:hidden py-4 border-t border-gray-200">
+        <div class="flex flex-col space-y-4">
+          <div class="flex space-x-2">
+  <button id="mobile-signup-btn" class="flex-1 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition duration-300">Sign Up</button>
+  <button id="mobile-login-btn" class="flex-1 border border-blue-600 text-blue-600 px-4 py-2 rounded hover:bg-blue-600 hover:text-white transition duration-300">Log In</button>
+</div>
+          <a href="#home" class="text-gray-700 hover:text-blue-600">Home</a>
+          <a href="#about" class="text-gray-700 hover:text-blue-600">About</a>
+          
+          <!-- Mobile Services Dropdown -->
+          <div class="relative">
+            <button id="mobile-services-toggle" class="flex items-center text-gray-700 hover:text-blue-600 w-full justify-between">
+              Services <i class="fas fa-chevron-down"></i>
+            </button>
+            <div id="mobile-services-menu" class="hidden pl-4 mt-2 space-y-2">
+              <a href="/Servscies/Maternity&Brith Servecises.html" class="block text-gray-700 hover:text-blue-600">Maternity & Birth Services</a>
+              <a href="./Servscies/paitents-Servecises.html" class="block text-gray-700 hover:text-blue-600">Patient Services</a>
+              <a href="./Emergency.html" class="block text-gray-700 hover:text-blue-600">Emergency Care</a>
+              <a href="./Servscies/veccination.html" class="block text-gray-700 hover:text-blue-600">Vaccination Programs</a>
+              <a href="./Servscies/mentalhealth.html" class="block text-gray-700 hover:text-blue-600">Mental Health Support</a>
+              <a href="./Servscies/NCD.html" class="block text-gray-700 hover:text-blue-600">Chronic Disease Care</a>
+              <a href="/Servscies/Health Education.html" class="block text-gray-700 hover:text-blue-600">Health Awareness & Education</a>
+              <a href="/Servscies/Disability.html" class="block text-gray-700 hover:text-blue-600">Disability Care</a>
             </div>
           </div>
           
           <a href="/doctors.html" class="text-gray-700 hover:text-blue-600">Doctors</a>
           <a href="/Dashboard.html" class="text-gray-700 hover:text-blue-600">Dashdoard</a>
           <a href="#contact" class="text-gray-700 hover:text-blue-600">Contact</a>
-          <a href="#help" class="text-gray-700 hover:text-blue-600">Help</a>
+          <a href="#faq" id="mobile-faq-link" class="text-gray-700 hover:text-blue-600">FAQ</a>
           
           <div class="pt-4 border-t border-gray-200">
             <select class="w-full border border-gray-300 rounded px-3 py-2 text-sm mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500">
@@ -83,14 +149,147 @@
               <option value="rw">Kinyarwanda</option>
             </select>
             <div class="flex space-x-2">
-              <button class="flex-1 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition duration-300">Sign Up</button>
-              <button class="flex-1 border border-blue-600 text-blue-600 px-4 py-2 rounded hover:bg-blue-600 hover:text-white transition duration-300">Log In</button>
+              <button  id="signup-btn" class="flex-1 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition duration-300">Sign Up</button>
+              <button  id="login-btn" class="flex-1 border border-blue-600 text-blue-600 px-4 py-2 rounded hover:bg-blue-600 hover:text-white transition duration-300">Log In</button>
             </div>
           </div>
         </div>
       </div>
     </div>
   </header>
+  <!-- Sign Up Modal -->
+  <div id="signup-modal" class="fixed inset-0 hidden items-center justify-center z-50">
+    <div class="absolute inset-0 bg-black/50"></div>
+    <div class="auth-modal relative z-10 w-11/12 sm:max-w-md mx-auto rounded-xl shadow-2xl overflow-hidden">
+      <div class="bg-white p-6 sm:p-8">
+        <!-- Header -->
+        <div class="flex justify-between items-center mb-6">
+          <h2 class="text-2xl font-bold text-blue-700">Create Account</h2>
+          <button id="signup-close" class="text-gray-500 hover:text-gray-700 text-xl">&times;</button>
+        </div>
+
+        <!-- Form -->
+        <form id="signup-form" class="space-y-4">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label for="signup-firstname" class="block text-sm font-medium text-gray-700 mb-1">First Name</label>
+              <input type="text" id="signup-firstname" name="firstname" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" required>
+            </div>
+            <div>
+              <label for="signup-lastname" class="block text-sm font-medium text-gray-700 mb-1">Last Name</label>
+              <input type="text" id="signup-lastname" name="lastname" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" required>
+            </div>
+          </div>
+
+          <div>
+            <label for="signup-email" class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
+            <input type="email" id="signup-email" name="email" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" required>
+          </div>
+
+          <div>
+            <label for="signup-phone" class="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>
+            <input type="tel" id="signup-phone" name="phone" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+          </div>
+
+          <div>
+            <label for="signup-password" class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+            <input type="password" id="signup-password" name="password" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" required>
+          </div>
+
+          <div>
+            <label for="signup-confirm-password" class="block text-sm font-medium text-gray-700 mb-1">Confirm Password</label>
+            <input type="password" id="signup-confirm-password" name="confirm-password" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" required>
+          </div>
+
+          <div class="flex items-center">
+            <input type="checkbox" id="signup-terms" name="terms" class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded" required>
+            <label for="signup-terms" class="ml-2 block text-sm text-gray-700">
+              I agree to the <a href="#" class="text-blue-600 hover:text-blue-500">Terms & Conditions</a>
+            </label>
+          </div>
+
+          <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-4 rounded-lg transition duration-300 transform hover:-translate-y-0.5">
+            Create Account
+          </button>
+
+          <div class="text-center text-sm text-gray-600">
+            Already have an account? 
+            <button type="button" id="switch-to-login" class="text-blue-600 hover:text-blue-500 font-semibold">Log In</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <!-- Login Modal -->
+  <div id="login-modal" class="fixed inset-0 hidden items-center justify-center z-50">
+    <div class="absolute inset-0 bg-black/50"></div>
+    <div class="auth-modal relative z-10 w-11/12 sm:max-w-md mx-auto rounded-xl shadow-2xl overflow-hidden">
+      <div class="bg-white p-6 sm:p-8">
+        <!-- Header -->
+        <div class="flex justify-between items-center mb-6">
+          <h2 class="text-2xl font-bold text-blue-700">Welcome Back</h2>
+          <button id="login-close" class="text-gray-500 hover:text-gray-700 text-xl">&times;</button>
+        </div>
+
+        <!-- Form -->
+        <form id="login-form" class="space-y-4">
+          <div>
+            <label for="login-email" class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
+            <input type="email" id="login-email" name="email" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" required>
+          </div>
+
+          <div>
+            <label for="login-password" class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+            <input type="password" id="login-password" name="password" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" required>
+          </div>
+
+          <div class="flex items-center justify-between">
+            <div class="flex items-center">
+              <input type="checkbox" id="remember-me" name="remember" class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
+              <label for="remember-me" class="ml-2 block text-sm text-gray-700">Remember me</label>
+            </div>
+            <a href="#" class="text-sm text-blue-600 hover:text-blue-500">Forgot password?</a>
+          </div>
+
+          <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-4 rounded-lg transition duration-300 transform hover:-translate-y-0.5">
+            Sign In
+          </button>
+
+          <div class="text-center text-sm text-gray-600">
+            Don't have an account? 
+            <button type="button" id="switch-to-signup" class="text-blue-600 hover:text-blue-500 font-semibold">Sign Up</button>
+          </div>
+
+          <!-- Social Login -->
+          <div class="mt-6">
+            <div class="relative">
+              <div class="absolute inset-0 flex items-center">
+                <div class="w-full border-t border-gray-300"></div>
+              </div>
+              <div class="relative flex justify-center text-sm">
+                <span class="px-2 bg-white text-gray-500">Or continue with</span>
+              </div>
+            </div>
+
+            <div class="mt-4 grid grid-cols-2 gap-3">
+              <button type="button" class="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 transition duration-300">
+                <i class="fab fa-google text-red-500"></i>
+                <span class="ml-2">Google</span>
+              </button>
+              <button type="button" class="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 transition duration-300">
+                <i class="fab fa-facebook text-blue-600"></i>
+                <span class="ml-2">Facebook</span>
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  
+
+
 
   <!-- HERO SECTION -->
   <section id="home" class="relative h-screen flex items-center justify-center overflow-hidden">
@@ -115,8 +314,8 @@
         <button class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition duration-300 transform hover:-translate-y-1"> <a href="#services">Learn more</a></button>
         <a href="#pharmacy" class="border border-white hover:bg-white hover:text-blue-600 text-white px-6 py-3 rounded-lg font-semibold transition duration-300 transform hover:-translate-y-1 text-center">Check Pharmacy</a>
       </div>
-      <div class="bg-red-600/80 inline-block px-6 py-3 rounded-lg">
-        Emergency? Call <strong class="text-xl">+250 000 000</strong>
+      <div class="bg-red-600/80 inline-block px-6 py-3 rounded-lg hover:bg-danger-600 text-white font-bold rounded-xl shadow-lg transition-all duration-300 transform hover:scale-105 animate-emergency-pulse">
+         🚨 Emergency Call: 911 <strong class="text-xl"></strong>
       </div>
     </div>
   </section>
@@ -156,6 +355,349 @@
       </div>
     </div>
   </section>
+  
+
+  <!-- FAQ Modal -->
+  <div id="faq-modal" class="fixed inset-0 hidden items-center justify-center z-50">
+    <div class="absolute inset-0 bg-black/50"></div>
+    <div class="modal-bg relative z-10 w-11/12 sm:max-w-xl md:max-w-2xl lg:max-w-4xl mx-auto rounded-xl shadow-2xl overflow-hidden">
+
+      <!-- Header -->
+      <div class="flex justify-between items-center p-4 sm:p-6 border-b border-gray-300">
+        <h2 class="text-2xl font-bold text-blue-700">Frequently Asked Questions</h2>
+        <button id="faq-close" class="text-gray-700 hover:text-gray-900 text-2xl">&times;</button>
+      </div>
+
+      <!-- Tabs -->
+      <div class="flex flex-wrap border-b border-gray-300 bg-white text-sm sm:text-base">
+        <button class="tab-btn px-4 py-2 font-medium text-blue-600 border-b-2 border-blue-600 focus:outline-none active" data-tab="general">General</button>
+        <button class="tab-btn px-4 py-2 font-medium text-gray-600 hover:text-blue-600 border-b-2 border-transparent" data-tab="emergency">Emergency</button>
+        <button class="tab-btn px-4 py-2 font-medium text-gray-600 hover:text-blue-600 border-b-2 border-transparent" data-tab="mental">Mental Health</button>
+        <button class="tab-btn px-4 py-2 font-medium text-gray-600 hover:text-blue-600 border-b-2 border-transparent" data-tab="chronic">Chronic Diseases</button>
+        <button class="tab-btn px-4 py-2 font-medium text-gray-600 hover:text-blue-600 border-b-2 border-transparent" data-tab="disability">Disability</button>
+        <button class="tab-btn px-4 py-2 font-medium text-gray-600 hover:text-blue-600 border-b-2 border-transparent" data-tab="doctors">Doctors</button>
+        <button class="tab-btn px-4 py-2 font-medium text-gray-600 hover:text-blue-600 border-b-2 border-transparent" data-tab="vaccination">Vaccination</button>
+      </div>
+      <!-- Content -->
+      <div class="p-4 sm:p-6 max-h-[80vh] sm:max-h-[70vh] overflow-y-auto space-y-4">
+        <!-- General -->
+        <div class="tab-content" id="general">
+          <div class="faq-item">
+            <button class="faq-question w-full text-left py-2 font-semibold flex justify-between items-center">
+              What are your working hours?
+            </button>
+            <div class="faq-answer pl-4 text-gray-700">
+              We are open 24/7 for emergencies and 8 AM - 8 PM for regular appointments.
+            </div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question w-full text-left py-2 font-semibold flex justify-between items-center">
+              How can I book an appointment?
+            </button>
+            <div class="faq-answer pl-4 text-gray-700">
+              You can book via our website, by phone, or at the hospital reception.
+            </div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question w-full text-left py-2 font-semibold flex justify-between items-center">
+              Do you accept insurance?
+            </button>
+            <div class="faq-answer pl-4 text-gray-700">
+              Yes, we accept most local and international insurance providers.
+            </div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question w-full text-left py-2 font-semibold flex justify-between items-center">
+              Where is the hospital located?
+            </button>
+            <div class="faq-answer pl-4 text-gray-700">
+              Mahama Refugee Camp, Kirehe District, Rwanda. See map on the contact page for directions.
+            </div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question w-full text-left py-2 font-semibold flex justify-between items-center">
+              Is parking available?
+            </button>
+            <div class="faq-answer pl-4 text-gray-700">
+              Yes, free parking is available for patients and visitors.
+            </div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question w-full text-left py-2 font-semibold flex justify-between items-center">
+              What should I bring for my first visit?
+            </button>
+            <div class="faq-answer pl-4 text-gray-700">
+              Bring ID, insurance info, and any previous medical records.
+            </div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question w-full text-left py-2 font-semibold flex justify-between items-center">
+              Do you offer home visits or telemedicine services?
+            </button>
+            <div class="faq-answer pl-4 text-gray-700">
+              Yes, we offer both home visits and telemedicine consultations where applicable.
+            </div>
+          </div>
+        </div>
+
+        <!-- Emergency -->
+        <div class="tab-content hidden" id="emergency">
+          <div class="faq-item">
+            <button class="faq-question w-full text-left py-2 font-semibold flex justify-between items-center">
+              Is the emergency department open 24/7?
+            </button>
+            <div class="faq-answer pl-4 text-gray-700">
+              Yes, emergency services are available 24/7.
+            </div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question w-full text-left py-2 font-semibold flex justify-between items-center">
+              What should I do in case of a medical emergency?
+            </button>
+            <div class="faq-answer pl-4 text-gray-700">
+              Call our emergency number or go directly to the emergency department.
+            </div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question w-full text-left py-2 font-semibold flex justify-between items-center">
+              Do I need to book an appointment for the emergency department?
+            </button>
+            <div class="faq-answer pl-4 text-gray-700">
+              No, walk-ins are accepted at all times for emergencies.
+            </div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question w-full text-left py-2 font-semibold flex justify-between items-center">
+              Are ambulances available for patient transport?
+            </button>
+            <div class="faq-answer pl-4 text-gray-700">
+              Yes, ambulances are available for urgent patient transport.
+            </div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question w-full text-left py-2 font-semibold flex justify-between items-center">
+              How long is the average waiting time in the emergency room?
+            </button>
+            <div class="faq-answer pl-4 text-gray-700">
+              Average waiting time is 15-30 minutes depending on severity.
+            </div>
+          </div>
+        </div>
+
+        <!-- Mental Health -->
+        <div class="tab-content hidden" id="mental">
+          <div class="faq-item">
+            <button class="faq-question w-full text-left py-2 font-semibold flex justify-between items-center">
+              Do you provide counseling or therapy sessions?
+            </button>
+            <div class="faq-answer pl-4 text-gray-700">
+              Yes, we offer individual and group counseling sessions.
+            </div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question w-full text-left py-2 font-semibold flex justify-between items-center">
+              Are mental health services confidential?
+            </button>
+            <div class="faq-answer pl-4 text-gray-700">
+              Absolutely, all mental health consultations are strictly confidential.
+            </div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question w-full text-left py-2 font-semibold flex justify-between items-center">
+              Can I get support for stress, anxiety, or depression?
+            </button>
+            <div class="faq-answer pl-4 text-gray-700">
+              Yes, our mental health professionals provide support for stress, anxiety, depression, and other conditions.
+            </div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question w-full text-left py-2 font-semibold flex justify-between items-center">
+              Do you offer mental health support for refugees and families?
+            </button>
+            <div class="faq-answer pl-4 text-gray-700">
+              Yes, we provide dedicated mental health support for refugees and their families.
+            </div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question w-full text-left py-2 font-semibold flex justify-between items-center">
+              How can I refer someone who needs mental health care?
+            </button>
+            <div class="faq-answer pl-4 text-gray-700">
+              You can refer someone by contacting our mental health department directly.
+            </div>
+          </div>
+        </div>
+
+        <!-- Chronic Diseases -->
+        <div class="tab-content hidden" id="chronic">
+          <div class="faq-item">
+            <button class="faq-question w-full text-left py-2 font-semibold flex justify-between items-center">
+              What types of chronic diseases do you manage?
+            </button>
+            <div class="faq-answer pl-4 text-gray-700">
+              We manage diabetes, hypertension, asthma, cardiovascular diseases, and more.
+            </div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question w-full text-left py-2 font-semibold flex justify-between items-center">
+              How often should chronic patients come for check-ups?
+            </button>
+            <div class="faq-answer pl-4 text-gray-700">
+              Check-ups are usually every 1-3 months, depending on the condition.
+            </div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question w-full text-left py-2 font-semibold flex justify-between items-center">
+              Do you offer medication follow-up or refill services?
+            </button>
+            <div class="faq-answer pl-4 text-gray-700">
+              Yes, we provide regular medication follow-ups and refill services.
+            </div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question w-full text-left py-2 font-semibold flex justify-between items-center">
+              Is there a support group for chronic patients?
+            </button>
+            <div class="faq-answer pl-4 text-gray-700">
+              Yes, we organize support groups for patients with chronic diseases.
+            </div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question w-full text-left py-2 font-semibold flex justify-between items-center">
+              Can I access my medical history online?
+            </button>
+            <div class="faq-answer pl-4 text-gray-700">
+              Yes, patients can access their records through our secure online portal.
+            </div>
+          </div>
+        </div>
+
+        <!-- Disability -->
+        <div class="tab-content hidden" id="disability">
+          <div class="faq-item">
+            <button class="faq-question w-full text-left py-2 font-semibold flex justify-between items-center">
+              Do you provide physical therapy or rehabilitation?
+            </button>
+            <div class="faq-answer pl-4 text-gray-700">
+              Yes, we have a full rehabilitation and physiotherapy department.
+            </div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question w-full text-left py-2 font-semibold flex justify-between items-center">
+              What services are available for people with disabilities?
+            </button>
+            <div class="faq-answer pl-4 text-gray-700">
+              We provide rehabilitation, assistive devices, counseling, and specialized care.
+            </div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question w-full text-left py-2 font-semibold flex justify-between items-center">
+              Do you offer assistive devices (wheelchairs, crutches, etc.)?
+            </button>
+            <div class="faq-answer pl-4 text-gray-700">
+              Yes, we provide necessary assistive devices for patients.
+            </div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question w-full text-left py-2 font-semibold flex justify-between items-center">
+              Is there a special unit for children with disabilities?
+            </button>
+            <div class="faq-answer pl-4 text-gray-700">
+              Yes, we have a dedicated pediatric disability unit.
+            </div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question w-full text-left py-2 font-semibold flex justify-between items-center">
+              Are your facilities accessible for wheelchair users?
+            </button>
+            <div class="faq-answer pl-4 text-gray-700">
+              Yes, all our facilities are fully accessible.
+            </div>
+          </div>
+        </div>
+
+        <!-- Doctors -->
+        <div class="tab-content hidden" id="doctors">
+          <div class="faq-item">
+            <button class="faq-question w-full text-left py-2 font-semibold flex justify-between items-center">
+              How qualified are your doctors?
+            </button>
+            <div class="faq-answer pl-4 text-gray-700">
+              All our doctors are fully certified and experienced in their respective fields.
+            </div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question w-full text-left py-2 font-semibold flex justify-between items-center">
+              Can I choose a specific doctor for my appointment?
+            </button>
+            <div class="faq-answer pl-4 text-gray-700">
+              Yes, patients can request a preferred doctor when booking appointments.
+            </div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question w-full text-left py-2 font-semibold flex justify-between items-center">
+              Do your doctors speak multiple languages?
+            </button>
+            <div class="faq-answer pl-4 text-gray-700">
+              Yes, our staff can communicate in English, Arabic, Kinyarwanda, and other languages.
+            </div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question w-full text-left py-2 font-semibold flex justify-between items-center">
+              How can I check a doctor's specialization?
+            </button>
+            <div class="faq-answer pl-4 text-gray-700">
+              Specializations are listed on our website and at reception.
+            </div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question w-full text-left py-2 font-semibold flex justify-between items-center">
+              Are female doctors available for women's consultations?
+            </button>
+            <div class="faq-answer pl-4 text-gray-700">
+              Yes, female doctors are available for all women's consultations.
+            </div>
+          </div>
+        </div>
+
+        <!-- Vaccination -->
+        <div class="tab-content hidden" id="vaccination">
+          <div class="faq-item">
+            <button class="faq-question w-full text-left py-2 font-semibold flex justify-between items-center">
+              Are vaccines safe for children?
+            </button>
+            <div class="faq-answer pl-4 text-gray-700">
+              Yes, all vaccines administered are safe and approved.
+            </div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question w-full text-left py-2 font-semibold flex justify-between items-center">
+              Why are vaccines important in refugee camps?
+            </button>
+            <div class="faq-answer pl-4 text-gray-700">
+              Vaccines prevent outbreaks and protect vulnerable populations.
+            </div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question w-full text-left py-2 font-semibold flex justify-between items-center">
+              Do you offer vaccination for adults as well?
+            </button>
+            <div class="faq-answer pl-4 text-gray-700">
+              Yes, we provide adult vaccinations according to health guidelines.
+            </div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question w-full text-left py-2 font-semibold flex justify-between items-center">
+              How can I get information about upcoming vaccination programs?
+            </button>
+            <div class="faq-answer pl-4 text-gray-700">
+              Check our website, contact the hospital, or follow our social media for schedules.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- SERVICES SECTION -->
   <section id="services" class="py-16 bg-white">
@@ -164,7 +706,7 @@
       
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         <!-- Service Card 1 -->
-        <div class="service-card bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl shadow-lg p-6 transition-all duration-300 hover:-translate-y-2 hover:shadow-xl">
+        <div class="service-card bg-white rounded-xl shadow-lg p-6 transition-all duration-300 hover:-translate-y-2 hover:shadow-xl">
           <img src="./img/baby-1531059_1280.jpg" alt="Maternity" class="w-full h-48 object-cover rounded-lg mb-4">
           <h3 class="text-xl font-bold text-gray-800 mb-2">Maternity & Birth Services</h3>
           <p class="text-gray-600 mb-4">Providing prenatal care, safe deliveries, and postnatal support for mothers and newborns.</p>
@@ -172,15 +714,15 @@
         </div>
         
         <!-- Service Card 2 -->
-        <div class="service-card bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl shadow-lg p-6 transition-all duration-300 hover:-translate-y-2 hover:shadow-xl">
+        <div class="service-card bg-white rounded-xl shadow-lg p-6 transition-all duration-300 hover:-translate-y-2 hover:shadow-xl">
           <img src="./img/emer.png" alt="Emergency" class="w-full h-48 object-cover rounded-lg mb-4">
           <h3 class="text-xl font-bold text-gray-800 mb-2">Emergency Care</h3>
           <p class="text-gray-600 mb-4">Immediate attention for urgent medical conditions with trained staff available 24/7.</p>
-          <button class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition duration-300">Learn More</button>
+          <button class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition duration-300"><a href="./Emergency.html">Learn More</a></button>
         </div>
         
         <!-- Service Card 3 -->
-        <div class="service-card bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl shadow-lg p-6 transition-all duration-300 hover:-translate-y-2 hover:shadow-xl">
+        <div class="service-card bg-white rounded-xl shadow-lg p-6 transition-all duration-300 hover:-translate-y-2 hover:shadow-xl">
           <img src="./img/vac.jpg" alt="Vaccination" class="w-full h-48 object-cover rounded-lg mb-4">
           <h3 class="text-xl font-bold text-gray-800 mb-2">Vaccination Programs</h3>
           <p class="text-gray-600 mb-4">Regular vaccination campaigns for children and adults to prevent infectious diseases.</p>
@@ -188,7 +730,7 @@
         </div>
         
         <!-- Service Card 4 -->
-        <div class="service-card bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl shadow-lg p-6 transition-all duration-300 hover:-translate-y-2 hover:shadow-xl">
+        <div class="service-card bg-white rounded-xl shadow-lg p-6 transition-all duration-300 hover:-translate-y-2 hover:shadow-xl">
           <img src="./img/mentl.jpg" alt="Mental Health" class="w-full h-48 object-cover rounded-lg mb-4">
           <h3 class="text-xl font-bold text-gray-800 mb-2">Mental Health Support</h3>
           <p class="text-gray-600 mb-4">Counseling and support services for mental well-being and trauma recovery.</p>
@@ -196,7 +738,7 @@
         </div>
         
         <!-- Service Card 5 -->
-        <div class="service-card bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl shadow-lg p-6 transition-all duration-300 hover:-translate-y-2 hover:shadow-xl">
+        <div class="service-card bg-white rounded-xl shadow-lg p-6 transition-all duration-300 hover:-translate-y-2 hover:shadow-xl">
           <img src="./img/chro.jpg" alt="Chronic Care" class="w-full h-48 object-cover rounded-lg mb-4">
           <h3 class="text-xl font-bold text-gray-800 mb-2">Chronic Disease Care</h3>
           <p class="text-gray-600 mb-4">Management and monitoring of chronic diseases like diabetes, hypertension, TB, and HIV.</p>
@@ -204,7 +746,7 @@
         </div>
         
         <!-- Service Card 6 -->
-        <div class="service-card bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl shadow-lg p-6 transition-all duration-300 hover:-translate-y-2 hover:shadow-xl">
+        <div class="service-card bg-white rounded-xl shadow-lg p-6 transition-all duration-300 hover:-translate-y-2 hover:shadow-xl">
           <img src="/img/awernees.png" alt="Health Education" class="w-full h-48 object-cover rounded-lg mb-4">
           <h3 class="text-xl font-bold text-gray-800 mb-2">Health Awareness & Education</h3>
           <p class="text-gray-600 mb-4">Educational resources about hygiene, nutrition, pregnancy, child care, and disease prevention.</p>
@@ -223,7 +765,7 @@
    
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
       <!-- Contact Form -->
-      <div class="bg-white rounded-xl shadow-lg p-8">
+      <div class="bg-gray-200 rounded-xl shadow-lg p-8">
         <h3 class="text-2xl font-bold text-gray-800 mb-6">Send us a Message</h3>
         <form id="contact-form" class="space-y-6">
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -280,7 +822,7 @@
             </div>
             <div>
               <h4 class="font-bold text-gray-800 mb-1">Our Location</h4>
-              <p class="text-gray-600">123 Health Street, Medical District, City</p>
+              <p class="text-gray-600">Mahama Refugee Camp, Kirehe District, Rwanda</p>
             </div>
           </div>
          
@@ -315,16 +857,21 @@
             </div>
           </div>
         </div>
-       
-        <!-- Map Placeholder -->
-        <div class="bg-white rounded-xl shadow-lg overflow-hidden">
-          <div class="h-64 bg-gray-200 flex items-center justify-center">
-            <div class="text-center">
-              <i class="fas fa-map text-gray-400 text-4xl mb-2"></i>
-              <p class="text-gray-500">Interactive Map Location</p>
-            </div>
-          </div>
-        </div>
+        <!-- Google Map for Mahama Refugee Camp -->
+<div class="bg-white rounded-xl shadow-lg overflow-hidden">
+  <div class="h-96">
+    <iframe 
+      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1334.760614585555!2d30.642434783637935!3d-2.2630583877293016!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x19c4c500078c5f45%3A0xc3605c2533855d6b!2sMahama%20refugee%20camp!5e0!3m2!1sen!2sus!4v1762760708457!5m2!1sen!2sus" 
+      width="100%" 
+      height="100%" 
+      style="border:0;" 
+      allowfullscreen="" 
+      loading="lazy" 
+      referrerpolicy="no-referrer-when-downgrade"
+      title="Mahamacare Hospital Location at Mahama Refugee Camp">
+    </iframe>
+  </div>
+</div>
        
         <!-- Emergency Notice -->
         <div class="bg-red-50 border border-red-200 rounded-xl p-6">
@@ -361,7 +908,7 @@
             <li><a href="#about" class="text-gray-400 hover:text-white transition duration-300">About</a></li>
             <li><a href="#services" class="text-gray-400 hover:text-white transition duration-300">Services</a></li>
             <li><a href="#doctors" class="text-gray-400 hover:text-white transition duration-300">Doctors</a></li>
-            <li><a href="#faq" class="text-gray-400 hover:text-white transition duration-300">FAQ</a></li>
+            <li><a href="#faq" id="footer-faq-link" class="text-gray-400 hover:text-white transition duration-300">FAQ</a></li>
             <li><a href="#contact" class="text-gray-400 hover:text-white transition duration-300">Contact</a></li>
           </ul>
         </div>
@@ -371,8 +918,8 @@
           <h4 class="text-lg font-semibold mb-4">Contact Info</h4>
           <div class="space-y-2 text-gray-400">
             <p><i class="fas fa-envelope mr-2"></i> info@hopecare.com</p>
-            <p><i class="fas fa-phone mr-2"></i> +123456789</p>
-            <p><i class="fas fa-map-marker-alt mr-2"></i> 123 Health St, City</p>
+            <p><i class="fas fa-phone mr-2"></i> +250 000 000</p>
+            <p><i class="fas fa-map-marker-alt mr-2"></i> Mahama Refugee Camp, Rwanda</p>
           </div>
         </div>
         
@@ -401,35 +948,6 @@
       </div>
     </div>
   </footer>
-
-  <script>
-    // Mobile menu toggle
-    document.getElementById('mobile-menu-button').addEventListener('click', function() {
-      const mobileMenu = document.getElementById('mobile-menu');
-      mobileMenu.classList.toggle('hidden');
-    });
-    
-    // Mobile services dropdown toggle
-    document.getElementById('mobile-services-toggle').addEventListener('click', function() {
-      const mobileServicesMenu = document.getElementById('mobile-services-menu');
-      mobileServicesMenu.classList.toggle('hidden');
-    });
-    
-    // Scroll animation for service cards
-    const cards = document.querySelectorAll('.service-card');
-    
-    const revealCards = () => {
-      const triggerBottom = window.innerHeight * 0.85;
-      cards.forEach(card => {
-        const cardTop = card.getBoundingClientRect().top;
-        if (cardTop < triggerBottom) {
-          card.classList.add('show');
-        }
-      });
-    };
-    
-    window.addEventListener('scroll', revealCards);
-    window.addEventListener('load', revealCards);
-  </script>
+  <script src="/JavaScript-Files/index.js"></script>
 </body>
 </html>
