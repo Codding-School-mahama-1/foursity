@@ -10,37 +10,90 @@
       const mobileServicesMenu = document.getElementById('mobile-services-menu');
       mobileServicesMenu.classList.toggle('hidden');
     });
-    // Scroll animation for service cards - IMPROVED VERSION
+
+
+//  SERVICE CARDS DATA 
+const servicesData = [
+  {
+    img: "./img/baby-1531059_1280.jpg",
+    alt: "Maternity",
+    title: "Maternity & Birth Services",
+    text: "Providing prenatal care, safe deliveries, and postnatal support for mothers and newborns.",
+    link: "./Servscies/Maternity&Brith Servecises.html"
+  },
+  {
+    img: "./img/emer.png",
+    alt: "Emergency",
+    title: "Emergency Care",
+    text: "Immediate attention for urgent medical conditions with trained staff available 24/7.",
+    link: "./Emergency.html"
+  },
+  {
+    img: "./img/vac.jpg",
+    alt: "Vaccination",
+    title: "Vaccination Programs",
+    text: "Regular vaccination campaigns for children and adults to prevent infectious diseases.",
+    link: "/Servscies/veccination.html"
+  },
+  {
+    img: "./img/mentl.jpg",
+    alt: "Mental Health",
+    title: "Mental Health Support",
+    text: "Counseling and support services for mental well-being and trauma recovery.",
+    link: "/Servscies/mentalhealth.html"
+  },
+  {
+    img: "./img/chro.jpg",
+    alt: "Chronic Care",
+    title: "Chronic Disease Care",
+    text: "Management and monitoring of chronic diseases like diabetes, hypertension, TB, and HIV.",
+    link: "/Servscies/NCD.html"
+  },
+  {
+    img: "/img/awernees.png",
+    alt: "Health Education",
+    title: "Health Awareness & Education",
+    text: "Educational resources about hygiene, nutrition, pregnancy, child care, and disease prevention.",
+    link: "/Servscies/Health Education.html"
+  }
+];
+
+//  RENDER CARDS USING .map() 
+const servicesContainer = document.getElementById("services-container");
+
+servicesContainer.innerHTML = servicesData
+  .map(service => `
+    <div class="service-card bg-white rounded-xl shadow-lg p-6 transition-all duration-300 hover:-translate-y-2 hover:shadow-xl">
+      <img src="${service.img}" alt="${service.alt}" class="w-full h-48 object-cover rounded-lg mb-4">
+      <h3 class="text-xl font-bold text-gray-800 mb-2">${service.title}</h3>
+      <p class="text-gray-600 mb-4">${service.text}</p>
+      <button class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition duration-300">
+        <a href="${service.link}">Learn More</a>
+      </button>
+    </div>
+  `)
+  .join("");
+
+// ANIMATION (your original code) 
 const cards = document.querySelectorAll('.service-card');
 
 const revealCards = () => {
-  const triggerBottom = window.innerHeight * 0.8; // Reduced from 0.85 to 0.8
-  
+  const triggerBottom = window.innerHeight * 0.8;
+
   cards.forEach(card => {
     const cardTop = card.getBoundingClientRect().top;
-    
+
     if (cardTop < triggerBottom) {
-      card.style.opacity = '1';
-      card.style.transform = 'translateY(0)';
       card.classList.add('show');
     }
   });
 };
 
-// Initialize cards as visible but ready for animation
-cards.forEach(card => {
-  card.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
-});
-
 window.addEventListener('scroll', revealCards);
 window.addEventListener('load', revealCards);
-// Also check on resize
 window.addEventListener('resize', revealCards);
-
-// Initial check
 revealCards();
-    
-   
+ 
 
     // FAQ Modal Functionality
     const faqModal = document.getElementById('faq-modal');
@@ -266,7 +319,7 @@ document.getElementById('contact-form').addEventListener('submit', (e) => {
   // Save to localStorage
   localStorage.setItem('contacts', JSON.stringify(existingContacts));
   
-  alert('Message sent successfully!');
+ 
   
   // Reset form
   document.getElementById('contact-form').reset();
