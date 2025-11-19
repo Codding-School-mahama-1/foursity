@@ -306,6 +306,18 @@ document.addEventListener("DOMContentLoaded", () => {
   const UpdateBtn = document.getElementById('updateBtn');
   const RemoveBtn = document.getElementById('removeBtn');
 
+
+
+  console.log(BabyName)
+    console.log(Dob)
+       console.log(Gender)
+          console.log(MotherName)
+             console.log(Notes)
+                console.log(RegisterNo)
+
+   
+
+
   const ShowName = document.getElementById('showName');
   const ShowDOB = document.getElementById('showDOB');
   const ShowGender = document.getElementById('showGender');
