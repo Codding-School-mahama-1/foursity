@@ -10,20 +10,32 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     /* Custom styles for animations */
-    
-    .service-card {
-      opacity: 0;
-      transform: translateY(40px);
-    }
-    
-    .service-card.show {
-      animation: fadeUp 0.8s ease forwards;
-    }
-    
-    /* Smooth scrolling */
-    html {
-      scroll-behavior: smooth;
-    }
+.service-card {
+  opacity: 0;
+  transform: translateY(40px);
+}
+
+/* Class added when card becomes visible */
+.service-card.show {
+  animation: fadeUp 0.8s ease forwards;
+}
+
+/* Animation keyframes */
+@keyframes fadeUp {
+  0% {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
 
     /* FAQ Modal Styles */
     .modal-bg {
@@ -700,61 +712,18 @@
   </div>
 
   <!-- SERVICES SECTION -->
-  <section id="services" class="py-16 bg-white">
-    <div class="container mx-auto px-4">
-      <h2 class="text-3xl md:text-4xl font-bold text-center text-blue-600 mb-12">Our Services</h2>
-      
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        <!-- Service Card 1 -->
-        <div class="service-card bg-white rounded-xl shadow-lg p-6 transition-all duration-300 hover:-translate-y-2 hover:shadow-xl">
-          <img src="./img/baby-1531059_1280.webp" alt="Maternity" class="w-full h-48 object-cover rounded-lg mb-4">
-          <h3 class="text-xl font-bold text-gray-800 mb-2">Maternity & Birth Services</h3>
-          <p class="text-gray-600 mb-4">Providing prenatal care, safe deliveries, and postnatal support for mothers and newborns.</p>
-          <button class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition duration-300"><a href="./Servscies/Maternity&Brith Servecises.html">Learn More</a></button>
-        </div>
-        
-        <!-- Service Card 2 -->
-        <div class="service-card bg-white rounded-xl shadow-lg p-6 transition-all duration-300 hover:-translate-y-2 hover:shadow-xl">
-          <img src="./img/emer.webp" alt="Emergency" class="w-full h-48 object-cover rounded-lg mb-4">
-          <h3 class="text-xl font-bold text-gray-800 mb-2">Emergency Care</h3>
-          <p class="text-gray-600 mb-4">Immediate attention for urgent medical conditions with trained staff available 24/7.</p>
-          <button class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition duration-300"><a href="./Emergency.html">Learn More</a></button>
-        </div>
-        
-        <!-- Service Card 3 -->
-        <div class="service-card bg-white rounded-xl shadow-lg p-6 transition-all duration-300 hover:-translate-y-2 hover:shadow-xl">
-          <img src="./img/vac.webp" alt="Vaccination" class="w-full h-48 object-cover rounded-lg mb-4">
-          <h3 class="text-xl font-bold text-gray-800 mb-2">Vaccination Programs</h3>
-          <p class="text-gray-600 mb-4">Regular vaccination campaigns for children and adults to prevent infectious diseases.</p>
-          <button class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition duration-300"><a href="/Servscies/veccination.html">Learn More</a></button>
-        </div>
-        
-        <!-- Service Card 4 -->
-        <div class="service-card bg-white rounded-xl shadow-lg p-6 transition-all duration-300 hover:-translate-y-2 hover:shadow-xl">
-          <img src="./img/mentl.webp" alt="Mental Health" class="w-full h-48 object-cover rounded-lg mb-4">
-          <h3 class="text-xl font-bold text-gray-800 mb-2">Mental Health Support</h3>
-          <p class="text-gray-600 mb-4">Counseling and support services for mental well-being and trauma recovery.</p>
-          <button class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition duration-300"><a href="/Servscies/mentalhealth.html">Learn More</a></button>
-        </div>
-        
-        <!-- Service Card 5 -->
-        <div class="service-card bg-white rounded-xl shadow-lg p-6 transition-all duration-300 hover:-translate-y-2 hover:shadow-xl">
-          <img src="./img/chro.webp" alt="Chronic Care" class="w-full h-48 object-cover rounded-lg mb-4">
-          <h3 class="text-xl font-bold text-gray-800 mb-2">Chronic Disease Care</h3>
-          <p class="text-gray-600 mb-4">Management and monitoring of chronic diseases like diabetes, hypertension, TB, and HIV.</p>
-          <button class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition duration-300"><a href="/Servscies/NCD.html">Learn More</a></button>
-        </div>
-        
-        <!-- Service Card 6 -->
-        <div class="service-card bg-white rounded-xl shadow-lg p-6 transition-all duration-300 hover:-translate-y-2 hover:shadow-xl">
-          <img src="/img/awernees.webp" alt="Health Education" class="w-full h-48 object-cover rounded-lg mb-4">
-          <h3 class="text-xl font-bold text-gray-800 mb-2">Health Awareness & Education</h3>
-          <p class="text-gray-600 mb-4">Educational resources about hygiene, nutrition, pregnancy, child care, and disease prevention.</p>
-          <button class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition duration-300"><a href="/Servscies/Health Education.html">Learn More</a></button>
-        </div>
-      </div>
+<section id="services" class="py-16 bg-white">
+  <div class="container mx-auto px-4">
+    <h2 class="text-3xl md:text-4xl font-bold text-center text-blue-600 mb-12">
+      Our Services
+    </h2>
+
+    <!-- Cards created by JS -->
+    <div id="services-container"
+         class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
     </div>
-  </section>
+  </div>
+</section>
 <!-- CONTACT SECTION -->
 <section id="contact" class="py-16 bg-gray-50">
   <div class="container mx-auto px-4">
