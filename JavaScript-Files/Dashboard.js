@@ -23,7 +23,6 @@ const db = getDatabase(app);
  * 🏥 DOM & AUTH LOGIC
  ****************************************************/
 document.addEventListener('DOMContentLoaded', function() {
-  // DOM Elements
   const authModal = document.getElementById('authModal');
   const dashboardContent = document.getElementById('dashboardContent');
   const loginFormDiv = document.getElementById('loginFormDiv');
@@ -34,7 +33,6 @@ document.addEventListener('DOMContentLoaded', function() {
   const showLogin = document.getElementById('showLogin');
   const logoutBtn = document.getElementById('logoutBtn');
 
-  // -------------------- Auth functions --------------------
   function checkAuthStatus() {
     const isLoggedIn = localStorage.getItem('isLoggedIn');
     if (isLoggedIn === 'true') showDashboard();
@@ -68,7 +66,6 @@ document.addEventListener('DOMContentLoaded', function() {
     e.preventDefault();
     const email = document.getElementById('loginEmail').value;
     const password = document.getElementById('loginPassword').value;
-
     if (!email || !password) return alert('Please fill in all fields');
 
     const users = JSON.parse(localStorage.getItem('users') || '[]');
@@ -78,9 +75,7 @@ document.addEventListener('DOMContentLoaded', function() {
       localStorage.setItem('isLoggedIn', 'true');
       localStorage.setItem('currentUser', JSON.stringify(user));
       showDashboard();
-    } else {
-      alert('Invalid email or password');
-    }
+    } else alert('Invalid email or password');
   });
 
   signupForm?.addEventListener('submit', e => {
@@ -88,7 +83,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const name = document.getElementById('signupName').value;
     const email = document.getElementById('signupEmail').value;
     const password = document.getElementById('signupPassword').value;
-
     if (!name || !email || !password) return alert('Please fill in all fields');
 
     const users = JSON.parse(localStorage.getItem('users') || '[]');
@@ -173,6 +167,19 @@ function initializeCharts() {
 }
 
 /****************************************************
+ * ✅ CLEAR INPUTS
+ ****************************************************/
+// ✅ Clear all fields in a form
+function clearFields(container) {
+  if (!container) return;
+  container.querySelectorAll('input').forEach(input => input.value = '');
+  container.querySelectorAll('textarea').forEach(textarea => textarea.value = '');
+  container.querySelectorAll('select').forEach(select => select.selectedIndex = 0);
+  container.querySelectorAll('.outputField').forEach(el => el.textContent = '');
+}
+
+
+/****************************************************
  * 👨‍⚕️ PATIENTS SERVICES
  ****************************************************/
 document.addEventListener("DOMContentLoaded", () => {
@@ -210,8 +217,13 @@ document.addEventListener("DOMContentLoaded", () => {
       Disease: EnterDisease.value,
       Contact: EnterContact.value,
       Address: EnterAddress.value
-    }).then(() => alert("✅ Data added successfully"))
-      .catch(err => alert("❌ " + err.message));
+    })
+  .then(() => {
+  alert("✅ Data added successfully");
+  clearFields(form); 
+})
+
+    .catch(err => alert("❌ " + err.message));
   }
 
   function updateData() {
@@ -223,14 +235,23 @@ document.addEventListener("DOMContentLoaded", () => {
       Disease: EnterDisease.value,
       Contact: EnterContact.value,
       Address: EnterAddress.value
-    }).then(() => alert("✅ Data updated successfully"))
-      .catch(err => alert("❌ " + err.message));
+    })
+  .then(() => {
+  alert("✅ Data added successfully");
+  clearFields(form);
+})
+
+    .catch(err => alert("❌ " + err.message));
   }
 
   function removeData() {
     if (!EnterId.value.trim()) return alert("Please enter an ID");
     remove(ref(db, "Person/" + EnterId.value))
-      .then(() => alert("🗑️ Data removed successfully"))
+    .then(() => {
+  alert("✅ Data added successfully");
+  clearFields(form); 
+})
+
       .catch(err => alert("❌ " + err.message));
   }
 
@@ -268,11 +289,11 @@ document.addEventListener("DOMContentLoaded", () => {
  * 👶 BIRTH SERVICES
  ****************************************************/
 document.addEventListener("DOMContentLoaded", () => {
-  const form = document.getElementById('BirthForm');
-  const RearchResult = document.getElementById('RearchResult');
-  const FindById = document.getElementById('FindById');
-  const BackBtn = document.getElementById('BackBtn');
-  const FindId = document.getElementById('FindId');
+  const form = document.getElementById('birthForm');
+  const RearchResult = document.getElementById('searchResult');
+  const FindById = document.getElementById('findById');
+  const BackBtn = document.getElementById('backBtn');
+  const FindId = document.getElementById('findId');
 
   const BabyName = document.getElementById('BabyName');
   const Dob = document.getElementById('Dob');
@@ -281,33 +302,28 @@ document.addEventListener("DOMContentLoaded", () => {
   const Notes = document.getElementById('Notes');
   const RegisterNo = document.getElementById('RegisterNo');
 
-  const InsertBtn = document.getElementById('InsertBtn');
-  const UpdateBtn = document.getElementById('UpdateBtn');
-  const RemoveBtn = document.getElementById('RemoveBtn');
+  const InsertBtn = document.getElementById('insertBtn');
+  const UpdateBtn = document.getElementById('updateBtn');
+  const RemoveBtn = document.getElementById('removeBtn');
 
-  const ShowName = document.getElementById('ShowName');
-  const ShowDOB = document.getElementById('ShowDOB');
-  const ShowGender = document.getElementById('ShowGender');
-  const ShowMother = document.getElementById('ShowMother');
-  const ShowNotes = document.getElementById('ShowNotes');
-  const ShowRegNo = document.getElementById('ShowRegNo');
 
-  // Dashboard counters
-  const birthRecord = document.getElementById('birthRecord');
-  const totalPatient = document.getElementById('totalPatient');
 
-  function updateCounters() {
-    // Count births
-    get(ref(db, "Births")).then(snapshot => {
-      birthRecord.textContent = snapshot.exists() ? Object.keys(snapshot.val()).length : 0;
-    });
-    // Count patients
-    get(ref(db, "Person")).then(snapshot => {
-      totalPatient.textContent = snapshot.exists() ? Object.keys(snapshot.val()).length : 0;
-    });
-  }
+  console.log(BabyName)
+    console.log(Dob)
+       console.log(Gender)
+          console.log(MotherName)
+             console.log(Notes)
+                console.log(RegisterNo)
 
-  updateCounters();
+   
+
+
+  const ShowName = document.getElementById('showName');
+  const ShowDOB = document.getElementById('showDOB');
+  const ShowGender = document.getElementById('showGender');
+  const ShowMother = document.getElementById('showMother');
+  const ShowNotes = document.getElementById('showNotes');
+  const ShowRegNo = document.getElementById('showRegNo');
 
   function InsertData() {
     const reg = RegisterNo.value.trim();
@@ -319,8 +335,13 @@ document.addEventListener("DOMContentLoaded", () => {
       MotherName: MotherName.value,
       Notes: Notes.value,
       RegisterNo: reg
-    }).then(() => { alert("✅ Birth record added successfully"); updateCounters(); })
-      .catch(err => alert("❌ " + err.message));
+    })
+   .then(() => {
+  alert("✅ Data added successfully");
+  clearFields(form); // clears all input, textarea, select, and output fields
+})
+
+    .catch(err => alert(err.message));
   }
 
   function UpdateData() {
@@ -332,21 +353,31 @@ document.addEventListener("DOMContentLoaded", () => {
       Gender: Gender.value,
       MotherName: MotherName.value,
       Notes: Notes.value
-    }).then(() => alert("✅ Record updated successfully"))
-      .catch(err => alert("❌ " + err.message));
+    })
+.then(() => {
+  alert("✅ Data added successfully");
+  clearFields(form); // clears all input, textarea, select, and output fields
+})
+
+    .catch(err => alert(err.message));
   }
 
   function RemoveData() {
     const reg = RegisterNo.value.trim();
     if (!reg) return alert("Please enter Register No");
     remove(ref(db, "Births/" + reg))
-      .then(() => { alert("🗑️ Record removed successfully"); updateCounters(); })
-      .catch(err => alert("❌ " + err.message));
+     .then(() => {
+  alert("✅ Data added successfully");
+  clearFields(form); 
+})
+
+      .catch(err => alert(err.message));
   }
 
   function FindData() {
     const id = FindId.value.trim();
     if (!id) return alert("Please enter Register No");
+
     get(ref(db, "Births/" + id))
       .then(snapshot => {
         if (snapshot.exists()) {
@@ -357,20 +388,23 @@ document.addEventListener("DOMContentLoaded", () => {
           ShowMother.textContent = `Mother: ${data.MotherName}`;
           ShowNotes.textContent = `Notes: ${data.Notes}`;
           ShowRegNo.textContent = `Register No: ${data.RegisterNo}`;
-          form?.classList.add("hidden");
-          RearchResult?.classList.remove("hidden");
-        } else alert("Record not found");
+
+          form.classList.add("hidden");
+          RearchResult.classList.remove("hidden");
+        } else {
+          alert("Record not found");
+        }
       })
-      .catch(err => alert("❌ " + err.message));
+      .catch(err => alert(err.message));
   }
 
-  BackBtn?.addEventListener("click", () => {
-    RearchResult?.classList.add("hidden");
-    form?.classList.remove("hidden");
+  BackBtn.addEventListener("click", () => {
+    RearchResult.classList.add("hidden");
+    form.classList.remove("hidden");
   });
 
-  InsertBtn?.addEventListener("click", InsertData);
-  UpdateBtn?.addEventListener("click", UpdateData);
-  RemoveBtn?.addEventListener("click", RemoveData);
-  FindById?.addEventListener("click", FindData);
+  InsertBtn.addEventListener("click", InsertData);
+  UpdateBtn.addEventListener("click", UpdateData);
+  RemoveBtn.addEventListener("click", RemoveData);
+  FindById.addEventListener("click", FindData);
 });
