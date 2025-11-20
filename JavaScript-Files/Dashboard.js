@@ -1,21 +1,22 @@
+
 /****************************************************
  * 🔐 AUTHENTICATION SECTION
  ****************************************************/
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-app.js";
+ import { initializeApp } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-app.js";
 import { getDatabase, ref, set, update, remove, get, child } 
-  from "https://www.gstatic.com/firebasejs/12.5.0/firebase-database.js";
+  from "https://www.gstatic.com/firebasejs/12.6.0/firebase-database.js";
 
 // ---------------------- Firebase Initialization ----------------------
-const firebaseConfig = {
-  apiKey: "AIzaSyCZ774I4-U7CnvJ0R43zJifEfE5sGM48lY",
-  authDomain: "halawani-7126f.firebaseapp.com",
-  databaseURL: "https://halawani-7126f-default-rtdb.firebaseio.com",
-  projectId: "halawani-7126f",
-  storageBucket: "halawani-7126f.firebasestorage.app",
-  messagingSenderId: "1065152267257",
-  appId: "1:1065152267257:web:636940f4c120e4ae927328"
-};
 
+  const firebaseConfig = {
+    apiKey: "AIzaSyDt4vs7S3nckO8xxfp1_axHZ76J0cz2qdg",
+    authDomain: "mahamahospital.firebaseapp.com",
+    databaseURL: "https://mahamahospital-default-rtdb.firebaseio.com",
+    projectId: "mahamahospital",
+    storageBucket: "mahamahospital.firebasestorage.app",
+    messagingSenderId: "256305692002",
+    appId: "1:256305692002:web:cfef26992264204be9803b"
+  };
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
@@ -210,7 +211,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function enterData() {
     if (!EnterId.value.trim()) return alert("Please enter an ID");
-    set(ref(db, "Person/" + EnterId.value), {
+    set(ref(db, "Paitents/" + EnterId.value), {
       Name: EnterName.value,
       Age: EnterAge.value,
       Gender: EnterGender.value,
@@ -228,7 +229,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function updateData() {
     if (!EnterId.value.trim()) return alert("Please enter an ID");
-    update(ref(db, "Person/" + EnterId.value), {
+    update(ref(db, "Paitents/" + EnterId.value), {
       Name: EnterName.value,
       Age: EnterAge.value,
       Gender: EnterGender.value,
@@ -246,7 +247,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function removeData() {
     if (!EnterId.value.trim()) return alert("Please enter an ID");
-    remove(ref(db, "Person/" + EnterId.value))
+    remove(ref(db, "Paitents/" + EnterId.value))
     .then(() => {
   alert("✅ Data added successfully");
   clearFields(form); 
@@ -257,7 +258,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function findData() {
     if (!findId.value.trim()) return alert("Please enter an ID");
-    get(child(ref(db), "Person/" + findId.value))
+    get(child(ref(db), "Paitents/" + findId.value))
       .then(snapshot => {
         if (snapshot.exists()) {
           const data = snapshot.val();
