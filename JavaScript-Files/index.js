@@ -15,42 +15,42 @@
 //  SERVICE CARDS DATA 
 const servicesData = [
   {
-    img: "./img/baby-1531059_1280.jpg",
+    img: "./img/baby-1531059_1280.webp",
     alt: "Maternity",
     title: "Maternity & Birth Services",
     text: "Providing prenatal care, safe deliveries, and postnatal support for mothers and newborns.",
     link: "./Servscies/Maternity&Brith Servecises.html"
   },
   {
-    img: "./img/emer.png",
+    img: "./img/emer.webp",
     alt: "Emergency",
     title: "Emergency Care",
     text: "Immediate attention for urgent medical conditions with trained staff available 24/7.",
     link: "./Emergency.html"
   },
   {
-    img: "./img/vac.jpg",
+    img: "./img/vac.webp",
     alt: "Vaccination",
     title: "Vaccination Programs",
     text: "Regular vaccination campaigns for children and adults to prevent infectious diseases.",
     link: "/Servscies/veccination.html"
   },
   {
-    img: "./img/mentl.jpg",
+    img: "./img/mentl.webp",
     alt: "Mental Health",
     title: "Mental Health Support",
     text: "Counseling and support services for mental well-being and trauma recovery.",
     link: "/Servscies/mentalhealth.html"
   },
   {
-    img: "./img/chro.jpg",
+    img: "./img/chro.webp",
     alt: "Chronic Care",
     title: "Chronic Disease Care",
     text: "Management and monitoring of chronic diseases like diabetes, hypertension, TB, and HIV.",
     link: "/Servscies/NCD.html"
   },
   {
-    img: "/img/awernees.png",
+    img: "/img/awernees.webp",
     alt: "Health Education",
     title: "Health Awareness & Education",
     text: "Educational resources about hygiene, nutrition, pregnancy, child care, and disease prevention.",
