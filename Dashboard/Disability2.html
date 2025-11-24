@@ -72,16 +72,16 @@
         .status-cancelled { background-color: #fee2e2; color: #991b1b; }
     </style>
 </head>
-<body class="bg-gray-50 min-h-screen">
+<body class="bg-gray-50 min-h-screen font-serif">
     
     <!-- Fixed Sidebar -->
     <aside class="sidebar-fixed bg-gradient-to-b from-blue-500 to-blue-600 text-white flex flex-col shadow-xl">
-        <div class="text-xl font-bold p-6 border-b border-blue-400 font-mono bg-blue-600">Hospital Admin</div>
+        <div class="text-xl font-bold p-6 border-b border-blue-400  bg-blue-600">Hospital Admin</div>
         
         <!-- Navigation Menu -->
         <nav class="flex-1 p-5 space-y-3">
             <!-- Logout Button -->
-            <a href="#" id="logoutBtn" class="flex items-center p-3 rounded-xl hover:bg-blue-400 transition-all duration-200 text-red-100 bg-blue-700/30">
+            <a href="/login-andSignUP_to-Dashboard.html" id="logoutBtn" class="flex items-center p-3 rounded-xl hover:bg-blue-400 transition-all duration-200 text-red-100 bg-blue-700/30">
                 <i class="fa-solid fa-right-from-bracket text-xl mr-3"></i>
                 <span class="font-medium">Logout</span>
             </a>
@@ -94,11 +94,12 @@
 
             <!-- Vaccination Care Dashboard -->
             <a href="./vaccination2.html" class="flex items-center p-3 rounded-xl hover:bg-blue-400 transition-all duration-200 bg-white/10">
-                <i class="fa-solid fa-wheelchair text-yellow-400 text-2xl mr-3"></i>
+                <i class="fas fa-syringe text-yellow-400 text-2xl mr-3"></i>
                 <span class="font-medium">Vaccination</span>
             </a>
+        
                 <a href="./Emergency2.html" class="flex items-center p-3 rounded-xl hover:bg-blue-400 transition-all duration-200 bg-white/10">
-                <i class="fa-solid fa-wheelchair text-yellow-400 text-2xl mr-3"></i>
+                 <i class="fas fa-truck-medical mr-2 text-yellow-400 text-2xl"></i>
                 <span class="font-medium">Emergency</span>
             </a>
         </nav>
@@ -118,7 +119,7 @@
             <div class="container mx-auto px-4">
                 <div class="flex justify-between items-center py-4">
                     <div class="flex items-center">
-                        <span class="text-2xl font-bold text-blue-600">🏥 MCH Disability Care Dashboard</span>
+                        <span class="text-2xl font-bold text-blue-600"><a href="/index.html">🏥 MCH </a>Disability Care Dashboard</span>
                     </div>
                     
                     <button id="mobile-menu-button" class="md:hidden text-gray-600 focus:outline-none">
@@ -306,14 +307,14 @@
                         <ul class="space-y-2 text-gray-400">
                             <li><i class="fas fa-map-marker-alt mr-2"></i> Mahama Refugee Camp</li>
                             <li><i class="fas fa-phone mr-2"></i> +250 000 000</li>
-                            <li><i class="fas fa-envelope mr-2"></i> disabilitycare@mch.com</li>
+                            <li><i class="fas fa-envelope mr-2"></i>unitycoders2025@gmail.com</li>
                         </ul>
                     </div>
                     
                     <div>
                         <h4 class="text-lg font-semibold mb-4">Quick Actions</h4>
                         <div class="flex flex-col space-y-2">
-                            <a href="Disability.html" class="text-gray-400 hover:text-white transition duration-300">
+                            <a href="/Servscies/Disability.html" class="text-gray-400 hover:text-white transition duration-300">
                                 <i class="fas fa-wheelchair mr-2"></i> Disability Care Page
                             </a>
                             <button onclick="exportToCSV()" class="text-left text-gray-400 hover:text-white transition duration-300">

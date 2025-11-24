@@ -222,7 +222,7 @@
                 }
             } catch (error) {
                 console.error('Error loading contacts:', error);
-                showNotification('Error loading contact data.', 'error');
+                // showNotification('Error loading contact data.', 'error');
                 document.getElementById('loading-contacts').classList.add('hidden');
             }
         }
