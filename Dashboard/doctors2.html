@@ -1,0 +1,1315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctor Appointment Dashboard - MahamaCare Hospital</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
+    
+    <style>
+        .stat-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        .appointment-row {
+            transition: background-color 0.2s ease;
+        }
+        .appointment-row:hover {
+            background-color: #f8fafc;
+        }
+        .loading-spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #3498db;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .sidebar-fixed {
+            position: fixed;
+            left: 0;
+            top: 0;
+            height: 100vh;
+            width: 14rem;
+            z-index: 40;
+        }
+        .main-content {
+            margin-left: 14rem;
+            min-height: 100vh;
+        }
+        @media (max-width: 768px) {
+            .sidebar-fixed {
+                width: 100%;
+                height: auto;
+                position: relative;
+            }
+            .main-content {
+                margin-left: 0;
+            }
+        }
+        .status-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        .status-pending { background-color: #fef3c7; color: #92400e; }
+        .status-confirmed { background-color: #dbeafe; color: #1e40af; }
+        .status-completed { background-color: #d1fae5; color: #065f46; }
+        .status-cancelled { background-color: #fee2e2; color: #991b1b; }
+        .specialty-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            background-color: #e0e7ff;
+            color: #3730a3;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    
+    <!-- Fixed Sidebar -->
+    <aside class="sidebar-fixed bg-gradient-to-b from-blue-500 to-blue-600 text-white flex flex-col shadow-xl">
+        <div class="text-xl font-bold p-6 border-b border-blue-400 font-mono bg-blue-600">Hospital Admin</div>
+        
+        <!-- Navigation Menu -->
+        <nav class="flex-1 p-5 space-y-3">
+            <!-- Logout Button -->
+            <a href="#" id="logoutBtn" class="flex items-center p-3 rounded-xl hover:bg-blue-400 transition-all duration-200 text-red-100 bg-blue-700/30">
+                <i class="fa-solid fa-right-from-bracket text-xl mr-3"></i>
+                <span class="font-medium">Logout</span>
+            </a>
+            
+            <!-- Register Patient -->
+            <a href="./Servscies/paitents-Servecises.html" class="flex items-center p-3 rounded-xl hover:bg-blue-400 transition-all duration-200 bg-white/10">
+                <i class="fa-solid fa-user text-yellow-400 text-2xl mr-3"></i>
+                <span class="font-medium">Register Patient</span>
+            </a>
+            
+            <!-- Register Birth -->
+            <a href="./Servscies/Briths Servecises.html" class="flex items-center p-3 rounded-xl hover:bg-blue-400 transition-all duration-200 bg-white/10">
+                <i class="fa-solid fa-people-roof text-yellow-400 text-2xl mr-3"></i>
+                <span class="font-medium">Register Birth</span>
+            </a>
+
+            <!-- Doctor Appointment Dashboard -->
+            <a href="#stats" class="flex items-center p-3 rounded-xl hover:bg-blue-400 transition-all duration-200 bg-white/10">
+                <i class="fa-solid fa-user-md text-yellow-400 text-2xl mr-3"></i>
+                <span class="font-medium">Doctor Appointments</span>
+            </a>
+        </nav>
+        
+        <div class="p-4 border-t border-blue-400 bg-blue-600/50 rounded-br-3xl">
+            <div class="text-sm text-blue-100 text-center">
+                <i class="fa-solid fa-shield-heart mr-2"></i>
+                Secure System
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <div class="main-content">
+        <!-- Header -->
+        <header class="bg-white shadow-md sticky top-0 z-30">
+            <div class="container mx-auto px-4">
+                <div class="flex justify-between items-center py-4">
+                    <div class="flex items-center">
+                        <span class="text-2xl font-bold text-blue-600">🏥 MCH Doctor Appointment Dashboard</span>
+                    </div>
+                    
+                    <button id="mobile-menu-button" class="md:hidden text-gray-600 focus:outline-none">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                    
+                    <nav id="nav-links" class="hidden md:flex items-center space-x-6">
+                        <a href="#stats" class="text-gray-700 hover:text-blue-600 transition duration-300">Statistics</a>
+                        <a href="#appointments" class="text-gray-700 hover:text-blue-600 transition duration-300">Appointments</a>
+                        <a href="#doctors" class="text-gray-700 hover:text-blue-600 transition duration-300">Doctors</a>
+                        <a href="#patients" class="text-gray-700 hover:text-blue-600 transition duration-300">Patients</a>
+                        <button onclick="exportToCSV()" class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition duration-300">
+                            <i class="fas fa-download mr-2"></i>Export Data
+                        </button>
+                    </nav>
+                </div>
+                
+                <div id="mobile-menu" class="hidden md:hidden py-4 border-t border-gray-200">
+                    <div class="flex flex-col space-y-4">
+                        <a href="#stats" class="text-gray-700 hover:text-blue-600">Statistics</a>
+                        <a href="#appointments" class="text-gray-700 hover:text-blue-600">Appointments</a>
+                        <a href="#doctors" class="text-gray-700 hover:text-blue-600">Doctors</a>
+                        <a href="#patients" class="text-gray-700 hover:text-blue-600">Patients</a>
+                        <button onclick="exportToCSV()" class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition duration-300 text-left">
+                            <i class="fas fa-download mr-2"></i>Export Data
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="container mx-auto px-4 py-8">
+            <!-- Statistics Section -->
+            <section id="stats" class="mb-12">
+                <h2 class="text-3xl font-bold text-gray-800 mb-6">Appointment Statistics</h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                    <div class="stat-card bg-white rounded-xl shadow-lg p-6 text-center">
+                        <div class="text-3xl font-bold text-blue-600 mb-2" id="total-appointments">0</div>
+                        <div class="text-gray-600">Total Appointments</div>
+                        <div class="text-sm text-green-600 mt-2" id="appointments-change">+0 today</div>
+                    </div>
+                    
+                    <div class="stat-card bg-white rounded-xl shadow-lg p-6 text-center">
+                        <div class="text-3xl font-bold text-green-600 mb-2" id="today-appointments">0</div>
+                        <div class="text-gray-600">Today's Appointments</div>
+                        <div class="text-sm text-gray-500 mt-2" id="today-date">Loading...</div>
+                    </div>
+                    
+                    <div class="stat-card bg-white rounded-xl shadow-lg p-6 text-center">
+                        <div class="text-3xl font-bold text-purple-600 mb-2" id="pending-appointments">0</div>
+                        <div class="text-gray-600">Pending Appointments</div>
+                        <div class="text-sm text-gray-500 mt-2" id="pending-percent">0% of total</div>
+                    </div>
+                    
+                    <div class="stat-card bg-white rounded-xl shadow-lg p-6 text-center">
+                        <div class="text-3xl font-bold text-orange-600 mb-2" id="confirmed-appointments">0</div>
+                        <div class="text-gray-600">Confirmed Appointments</div>
+                        <div class="text-sm text-gray-500 mt-2" id="confirmed-percent">0% of total</div>
+                    </div>
+                </div>
+
+                <!-- Specialty Distribution -->
+                <div class="bg-white rounded-xl shadow-lg p-6 mb-8">
+                    <h3 class="text-xl font-bold text-gray-800 mb-4">Appointments by Specialty</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4" id="specialty-stats">
+                        <!-- Specialty statistics will be populated here -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- Appointments Section -->
+            <section id="appointments" class="mb-12">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
+                    <h2 class="text-3xl font-bold text-gray-800">Appointment Management</h2>
+                    <div class="flex gap-2">
+                        <button id="refresh-data" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition duration-300">
+                            <i class="fas fa-sync-alt mr-2"></i>Refresh
+                        </button>
+                        <button onclick="addNewAppointment()" class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition duration-300">
+                            <i class="fas fa-plus mr-2"></i>Add Appointment
+                        </button>
+                        <div class="relative">
+                            <input type="text" id="search-appointments" placeholder="Search appointments..." class="border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="w-full border-collapse">
+                            <thead>
+                                <tr class="bg-gray-100">
+                                    <th class="border-b border-gray-300 px-4 py-3 text-left font-semibold text-gray-700">Patient</th>
+                                    <th class="border-b border-gray-300 px-4 py-3 text-left font-semibold text-gray-700">Doctor</th>
+                                    <th class="border-b border-gray-300 px-4 py-3 text-left font-semibold text-gray-700">Specialty</th>
+                                    <th class="border-b border-gray-300 px-4 py-3 text-left font-semibold text-gray-700">Date & Time</th>
+                                    <th class="border-b border-gray-300 px-4 py-3 text-left font-semibold text-gray-700">Status</th>
+                                    <th class="border-b border-gray-300 px-4 py-3 text-left font-semibold text-gray-700">Reason</th>
+                                    <th class="border-b border-gray-300 px-4 py-3 text-left font-semibold text-gray-700">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="appointments-body">
+                                <!-- Data will be populated by JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div id="no-appointments-message" class="text-center py-8 text-gray-500">
+                        <i class="fas fa-calendar-times text-4xl mb-4"></i>
+                        <p>No appointment data available yet.</p>
+                        <p class="text-sm mt-2">Appointments will appear here once booked through the doctor appointment system.</p>
+                    </div>
+                    
+                    <div id="loading-appointments" class="hidden">
+                        <div class="loading-spinner"></div>
+                        <p class="text-center text-gray-500 mb-8">Loading appointment data...</p>
+                    </div>
+                </div>
+                
+                <div class="mt-4 flex justify-between items-center">
+                    <div class="text-sm text-gray-600" id="appointments-pagination-info">Showing 0 appointments</div>
+                    <div class="flex gap-2">
+                        <button id="prev-appointments-page" class="bg-gray-200 text-gray-700 px-3 py-1 rounded disabled:opacity-50" disabled>Previous</button>
+                        <button id="next-appointments-page" class="bg-gray-200 text-gray-700 px-3 py-1 rounded disabled:opacity-50" disabled>Next</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Doctors Section -->
+            <section id="doctors" class="mb-12">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
+                    <h2 class="text-3xl font-bold text-gray-800">Doctor Management</h2>
+                    <div class="flex gap-2">
+                        <button id="refresh-doctors" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition duration-300">
+                            <i class="fas fa-sync-alt mr-2"></i>Refresh
+                        </button>
+                        <button onclick="addNewDoctor()" class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition duration-300">
+                            <i class="fas fa-user-md mr-2"></i>Add Doctor
+                        </button>
+                        <div class="relative">
+                            <input type="text" id="search-doctors" placeholder="Search doctors..." class="border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="w-full border-collapse">
+                            <thead>
+                                <tr class="bg-gray-100">
+                                    <th class="border-b border-gray-300 px-4 py-3 text-left font-semibold text-gray-700">Doctor Name</th>
+                                    <th class="border-b border-gray-300 px-4 py-3 text-left font-semibold text-gray-700">Specialty</th>
+                                    <th class="border-b border-gray-300 px-4 py-3 text-left font-semibold text-gray-700">Qualification</th>
+                                    <th class="border-b border-gray-300 px-4 py-3 text-left font-semibold text-gray-700">Experience</th>
+                                    <th class="border-b border-gray-300 px-4 py-3 text-left font-semibold text-gray-700">Appointments</th>
+                                    <th class="border-b border-gray-300 px-4 py-3 text-left font-semibold text-gray-700">Status</th>
+                                    <th class="border-b border-gray-300 px-4 py-3 text-left font-semibold text-gray-700">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="doctors-body">
+                                <!-- Data will be populated by JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div id="no-doctors-message" class="text-center py-8 text-gray-500">
+                        <i class="fas fa-user-md text-4xl mb-4"></i>
+                        <p>No doctor data available yet.</p>
+                        <p class="text-sm mt-2">Doctors will appear here once added to the system.</p>
+                    </div>
+                    
+                    <div id="loading-doctors" class="hidden">
+                        <div class="loading-spinner"></div>
+                        <p class="text-center text-gray-500 mb-8">Loading doctor data...</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Patients Section -->
+            <section id="patients" class="mb-12">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
+                    <h2 class="text-3xl font-bold text-gray-800">Patient Management</h2>
+                    <div class="flex gap-2">
+                        <button id="refresh-patients" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition duration-300">
+                            <i class="fas fa-sync-alt mr-2"></i>Refresh
+                        </button>
+                        <div class="relative">
+                            <input type="text" id="search-patients" placeholder="Search patients..." class="border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="w-full border-collapse">
+                            <thead>
+                                <tr class="bg-gray-100">
+                                    <th class="border-b border-gray-300 px-4 py-3 text-left font-semibold text-gray-700">Patient Name</th>
+                                    <th class="border-b border-gray-300 px-4 py-3 text-left font-semibold text-gray-700">Email</th>
+                                    <th class="border-b border-gray-300 px-4 py-3 text-left font-semibold text-gray-700">Phone</th>
+                                    <th class="border-b border-gray-300 px-4 py-3 text-left font-semibold text-gray-700">Age</th>
+                                    <th class="border-b border-gray-300 px-4 py-3 text-left font-semibold text-gray-700">Appointments</th>
+                                    <th class="border-b border-gray-300 px-4 py-3 text-left font-semibold text-gray-700">Last Visit</th>
+                                    <th class="border-b border-gray-300 px-4 py-3 text-left font-semibold text-gray-700">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="patients-body">
+                                <!-- Data will be populated by JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div id="no-patients-message" class="text-center py-8 text-gray-500">
+                        <i class="fas fa-users text-4xl mb-4"></i>
+                        <p>No patient data available yet.</p>
+                        <p class="text-sm mt-2">Patients will appear here once they book appointments.</p>
+                    </div>
+                    
+                    <div id="loading-patients" class="hidden">
+                        <div class="loading-spinner"></div>
+                        <p class="text-center text-gray-500 mb-8">Loading patient data...</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Resources Section -->
+            <section id="resources" class="mb-12">
+                <h2 class="text-3xl font-bold text-gray-800 mb-6">System Resources</h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                    <div class="bg-white rounded-xl shadow-lg p-6">
+                        <h3 class="text-xl font-bold text-gray-800 mb-4">Quick Actions</h3>
+                        <div class="space-y-3">
+                            <button onclick="exportToCSV()" class="w-full bg-green-600 text-white px-4 py-3 rounded-lg hover:bg-green-700 transition duration-300 text-left">
+                                <i class="fas fa-download mr-2"></i>Export All Data
+                            </button>
+                            <button onclick="clearAllData()" class="w-full bg-red-600 text-white px-4 py-3 rounded-lg hover:bg-red-700 transition duration-300 text-left">
+                                <i class="fas fa-trash mr-2"></i>Clear All Data
+                            </button>
+                            <button onclick="generateReport()" class="w-full bg-blue-600 text-white px-4 py-3 rounded-lg hover:bg-blue-700 transition duration-300 text-left">
+                                <i class="fas fa-chart-bar mr-2"></i>Generate Report
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white rounded-xl shadow-lg p-6 md:col-span-2">
+                        <h3 class="text-xl font-bold text-gray-800 mb-4">System Metrics</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="bg-gray-50 p-4 rounded-lg">
+                                <div class="text-lg font-bold text-blue-600" id="total-patients">0</div>
+                                <div class="text-sm text-gray-600">Total Patients</div>
+                            </div>
+                            <div class="bg-gray-50 p-4 rounded-lg">
+                                <div class="text-lg font-bold text-green-600" id="total-doctors">0</div>
+                                <div class="text-sm text-gray-600">Total Doctors</div>
+                            </div>
+                            <div class="bg-gray-50 p-4 rounded-lg">
+                                <div class="text-lg font-bold text-purple-600" id="avg-appointments">0</div>
+                                <div class="text-sm text-gray-600">Avg. Appointments per Day</div>
+                            </div>
+                            <div class="bg-gray-50 p-4 rounded-lg">
+                                <div class="text-lg font-bold text-orange-600" id="popular-specialty">-</div>
+                                <div class="text-sm text-gray-600">Most Popular Specialty</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="bg-gray-800 text-white py-8 mt-12">
+            <div class="container mx-auto px-4">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div>
+                        <h3 class="text-xl font-bold mb-4">MahamaCare Hospital</h3>
+                        <p class="text-gray-400">Providing quality healthcare with professional doctors.</p>
+                    </div>
+                    
+                    <div>
+                        <h4 class="text-lg font-semibold mb-4">Doctor Appointment System</h4>
+                        <ul class="space-y-2 text-gray-400">
+                            <li><i class="fas fa-map-marker-alt mr-2"></i> Mahama Refugee Camp</li>
+                            <li><i class="fas fa-phone mr-2"></i> +250 000 000</li>
+                            <li><i class="fas fa-envelope mr-2"></i> appointments@mch.com</li>
+                        </ul>
+                    </div>
+                    
+                    <div>
+                        <h4 class="text-lg font-semibold mb-4">Quick Actions</h4>
+                        <div class="flex flex-col space-y-2">
+                            <a href="doctors.html" class="text-gray-400 hover:text-white transition duration-300">
+                                <i class="fas fa-user-md mr-2"></i> Doctor Appointment Page
+                            </a>
+                            <button onclick="exportToCSV()" class="text-left text-gray-400 hover:text-white transition duration-300">
+                                <i class="fas fa-download mr-2"></i> Export Data
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-500">
+                    <p>&copy; 2025 MahamaCare Hospital. All rights reserved.</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Firebase Configuration and JavaScript -->
+    <script>
+        // Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyDt4vs7S3nckO8xxfp1_axHZ76J0cz2qdg",
+            authDomain: "mahamahospital.firebaseapp.com",
+            databaseURL: "https://mahamahospital-default-rtdb.firebaseio.com",
+            projectId: "mahamahospital",
+            storageBucket: "mahamahospital.firebasestorage.app",
+            messagingSenderId: "256305692002",
+            appId: "1:256305692002:web:cfef26992264204be9803b"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+
+        // Doctor Appointment Data Management
+        class DoctorAppointmentData {
+            constructor() {
+                this.db = firebase.database();
+                this.appointmentsRef = this.db.ref('doctorAppointments');
+                this.doctorsRef = this.db.ref('doctors');
+                this.patientsRef = this.db.ref('patients');
+                this.appointments = [];
+                this.doctors = [];
+                this.patients = [];
+            }
+
+            async getAllAppointments() {
+                try {
+                    const snapshot = await this.appointmentsRef.once('value');
+                    const appointments = snapshot.val();
+                    
+                    if (!appointments) {
+                        return [];
+                    }
+
+                    return Object.entries(appointments).map(([key, value]) => ({
+                        id: key,
+                        ...value
+                    }));
+                } catch (error) {
+                    console.error('Error fetching appointments:', error);
+                    return [];
+                }
+            }
+
+            async getAllDoctors() {
+                try {
+                    const snapshot = await this.doctorsRef.once('value');
+                    const doctors = snapshot.val();
+                    
+                    if (!doctors) {
+                        return [];
+                    }
+
+                    return Object.entries(doctors).map(([key, value]) => ({
+                        id: key,
+                        ...value
+                    }));
+                } catch (error) {
+                    console.error('Error fetching doctors:', error);
+                    return [];
+                }
+            }
+
+            async getAllPatients() {
+                try {
+                    const snapshot = await this.patientsRef.once('value');
+                    const patients = snapshot.val();
+                    
+                    if (!patients) {
+                        return [];
+                    }
+
+                    return Object.entries(patients).map(([key, value]) => ({
+                        id: key,
+                        ...value
+                    }));
+                } catch (error) {
+                    console.error('Error fetching patients:', error);
+                    return [];
+                }
+            }
+
+            onAppointmentsUpdate(callback) {
+                this.appointmentsRef.on('value', (snapshot) => {
+                    const appointments = snapshot.val();
+                    if (!appointments) {
+                        callback([]);
+                        return;
+                    }
+
+                    const appointmentsArray = Object.entries(appointments).map(([key, value]) => ({
+                        id: key,
+                        ...value
+                    }));
+
+                    callback(appointmentsArray);
+                });
+            }
+
+            onDoctorsUpdate(callback) {
+                this.doctorsRef.on('value', (snapshot) => {
+                    const doctors = snapshot.val();
+                    if (!doctors) {
+                        callback([]);
+                        return;
+                    }
+
+                    const doctorsArray = Object.entries(doctors).map(([key, value]) => ({
+                        id: key,
+                        ...value
+                    }));
+
+                    callback(doctorsArray);
+                });
+            }
+
+            onPatientsUpdate(callback) {
+                this.patientsRef.on('value', (snapshot) => {
+                    const patients = snapshot.val();
+                    if (!patients) {
+                        callback([]);
+                        return;
+                    }
+
+                    const patientsArray = Object.entries(patients).map(([key, value]) => ({
+                        id: key,
+                        ...value
+                    }));
+
+                    callback(patientsArray);
+                });
+            }
+
+            async updateAppointmentStatus(appointmentId, status) {
+                try {
+                    await this.appointmentsRef.child(appointmentId).update({
+                        status: status,
+                        updatedAt: new Date().toISOString()
+                    });
+                    return { success: true };
+                } catch (error) {
+                    console.error('Error updating appointment:', error);
+                    return { success: false, error: error.message };
+                }
+            }
+
+            async deleteAppointment(appointmentId) {
+                try {
+                    await this.appointmentsRef.child(appointmentId).remove();
+                    return { success: true };
+                } catch (error) {
+                    console.error('Error deleting appointment:', error);
+                    return { success: false, error: error.message };
+                }
+            }
+
+            async deleteDoctor(doctorId) {
+                try {
+                    await this.doctorsRef.child(doctorId).remove();
+                    return { success: true };
+                } catch (error) {
+                    console.error('Error deleting doctor:', error);
+                    return { success: false, error: error.message };
+                }
+            }
+
+            async deletePatient(patientId) {
+                try {
+                    await this.patientsRef.child(patientId).remove();
+                    return { success: true };
+                } catch (error) {
+                    console.error('Error deleting patient:', error);
+                    return { success: false, error: error.message };
+                }
+            }
+        }
+
+        // Initialize doctor appointment data manager
+        const doctorAppointmentData = new DoctorAppointmentData();
+
+        // Dashboard State
+        let allAppointments = [];
+        let allDoctors = [];
+        let allPatients = [];
+        let currentAppointmentsPage = 1;
+        const pageSize = 10;
+        let filteredAppointments = [];
+        let filteredDoctors = [];
+        let filteredPatients = [];
+
+        // Utility Functions
+        function escapeHtml(unsafe) {
+            if (!unsafe) return '';
+            return unsafe
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+
+        function formatDate(dateString) {
+            if (!dateString) return 'N/A';
+            const date = new Date(dateString);
+            return date.toLocaleDateString();
+        }
+
+        function formatDateTime(dateTimeString) {
+            if (!dateTimeString) return 'N/A';
+            const date = new Date(dateTimeString);
+            return date.toLocaleDateString() + ' ' + date.toLocaleTimeString();
+        }
+
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.className = `fixed top-4 right-4 p-4 rounded-lg shadow-lg z-50 ${
+                type === 'success' ? 'bg-green-500 text-white' :
+                type === 'error' ? 'bg-red-500 text-white' :
+                'bg-blue-500 text-white'
+            }`;
+            notification.textContent = message;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 5000);
+        }
+
+        // Dashboard Functions
+        async function loadAppointments() {
+            try {
+                document.getElementById('loading-appointments').classList.remove('hidden');
+                document.getElementById('no-appointments-message').classList.add('hidden');
+                
+                allAppointments = await doctorAppointmentData.getAllAppointments();
+                filteredAppointments = [...allAppointments];
+                
+                displayAppointments();
+                updateStatistics();
+                
+                document.getElementById('loading-appointments').classList.add('hidden');
+                
+                if (allAppointments.length === 0) {
+                    document.getElementById('no-appointments-message').classList.remove('hidden');
+                }
+            } catch (error) {
+                console.error('Error loading appointments:', error);
+                showNotification('Error loading appointment data.', 'error');
+                document.getElementById('loading-appointments').classList.add('hidden');
+            }
+        }
+
+        async function loadDoctors() {
+            try {
+                document.getElementById('loading-doctors').classList.remove('hidden');
+                document.getElementById('no-doctors-message').classList.add('hidden');
+                
+                allDoctors = await doctorAppointmentData.getAllDoctors();
+                filteredDoctors = [...allDoctors];
+                
+                displayDoctors();
+                updateStatistics();
+                
+                document.getElementById('loading-doctors').classList.add('hidden');
+                
+                if (allDoctors.length === 0) {
+                    document.getElementById('no-doctors-message').classList.remove('hidden');
+                }
+            } catch (error) {
+                console.error('Error loading doctors:', error);
+                showNotification('Error loading doctor data.', 'error');
+                document.getElementById('loading-doctors').classList.add('hidden');
+            }
+        }
+
+        async function loadPatients() {
+            try {
+                document.getElementById('loading-patients').classList.remove('hidden');
+                document.getElementById('no-patients-message').classList.add('hidden');
+                
+                allPatients = await doctorAppointmentData.getAllPatients();
+                filteredPatients = [...allPatients];
+                
+                displayPatients();
+                updateStatistics();
+                
+                document.getElementById('loading-patients').classList.add('hidden');
+                
+                if (allPatients.length === 0) {
+                    document.getElementById('no-patients-message').classList.remove('hidden');
+                }
+            } catch (error) {
+                console.error('Error loading patients:', error);
+                showNotification('Error loading patient data.', 'error');
+                document.getElementById('loading-patients').classList.add('hidden');
+            }
+        }
+
+        function displayAppointments() {
+            const appointmentsBody = document.getElementById('appointments-body');
+            const noAppointmentsMessage = document.getElementById('no-appointments-message');
+            const paginationInfo = document.getElementById('appointments-pagination-info');
+            const prevButton = document.getElementById('prev-appointments-page');
+            const nextButton = document.getElementById('next-appointments-page');
+
+            if (filteredAppointments.length === 0) {
+                appointmentsBody.innerHTML = '';
+                noAppointmentsMessage.classList.remove('hidden');
+                paginationInfo.textContent = 'Showing 0 appointments';
+                prevButton.disabled = true;
+                nextButton.disabled = true;
+                return;
+            }
+
+            noAppointmentsMessage.classList.add('hidden');
+            
+            // Sort by date, newest first
+            filteredAppointments.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+            
+            // Calculate pagination
+            const totalPages = Math.ceil(filteredAppointments.length / pageSize);
+            const startIndex = (currentAppointmentsPage - 1) * pageSize;
+            const endIndex = Math.min(startIndex + pageSize, filteredAppointments.length);
+            const pageAppointments = filteredAppointments.slice(startIndex, endIndex);
+            
+            appointmentsBody.innerHTML = pageAppointments.map(appointment => {
+                const status = appointment.status || 'pending';
+                const statusClass = `status-${status}`;
+                const statusText = status.charAt(0).toUpperCase() + status.slice(1);
+                
+                return `
+                    <tr class="appointment-row border-b border-gray-200">
+                        <td class="px-4 py-3">${escapeHtml(appointment.patientName)}</td>
+                        <td class="px-4 py-3">${appointment.doctorName}</td>
+                        <td class="px-4 py-3">
+                            <span class="specialty-badge">${appointment.specialty}</span>
+                        </td>
+                        <td class="px-4 py-3">${formatDateTime(appointment.appointmentDateTime)}</td>
+                        <td class="px-4 py-3">
+                            <span class="status-badge ${statusClass}">${statusText}</span>
+                        </td>
+                        <td class="px-4 py-3">${appointment.reason || 'General Consultation'}</td>
+                        <td class="px-4 py-3">
+                            <button onclick="updateAppointmentStatus('${appointment.id}', 'confirmed')" class="bg-blue-500 text-white px-2 py-1 rounded text-xs hover:bg-blue-600 mr-1" title="Confirm Appointment">
+                                <i class="fas fa-check"></i>
+                            </button>
+                            <button onclick="updateAppointmentStatus('${appointment.id}', 'completed')" class="bg-green-500 text-white px-2 py-1 rounded text-xs hover:bg-green-600 mr-1" title="Mark as Completed">
+                                <i class="fas fa-check-double"></i>
+                            </button>
+                            <button onclick="deleteAppointment('${appointment.id}')" class="bg-red-500 text-white px-2 py-1 rounded text-xs hover:bg-red-600" title="Delete Appointment">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+            
+            // Update pagination info
+            paginationInfo.textContent = `Showing ${startIndex + 1}-${endIndex} of ${filteredAppointments.length} appointments`;
+            
+            // Update pagination buttons
+            prevButton.disabled = currentAppointmentsPage === 1;
+            nextButton.disabled = currentAppointmentsPage === totalPages;
+        }
+
+        function displayDoctors() {
+            const doctorsBody = document.getElementById('doctors-body');
+            const noDoctorsMessage = document.getElementById('no-doctors-message');
+
+            if (filteredDoctors.length === 0) {
+                doctorsBody.innerHTML = '';
+                noDoctorsMessage.classList.remove('hidden');
+                return;
+            }
+
+            noDoctorsMessage.classList.add('hidden');
+            
+            doctorsBody.innerHTML = filteredDoctors.map(doctor => {
+                const doctorAppointments = allAppointments.filter(app => app.doctorName === doctor.name);
+                
+                return `
+                    <tr class="appointment-row border-b border-gray-200">
+                        <td class="px-4 py-3">${escapeHtml(doctor.name)}</td>
+                        <td class="px-4 py-3">
+                            <span class="specialty-badge">${doctor.specialty}</span>
+                        </td>
+                        <td class="px-4 py-3">${doctor.qualification}</td>
+                        <td class="px-4 py-3">${doctor.experience} years</td>
+                        <td class="px-4 py-3">${doctorAppointments.length}</td>
+                        <td class="px-4 py-3">
+                            <span class="status-badge status-confirmed">Active</span>
+                        </td>
+                        <td class="px-4 py-3">
+                            <button onclick="viewDoctorDetails('${doctor.id}')" class="bg-blue-500 text-white px-2 py-1 rounded text-xs hover:bg-blue-600 mr-1" title="View Details">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            <button onclick="deleteDoctor('${doctor.id}')" class="bg-red-500 text-white px-2 py-1 rounded text-xs hover:bg-red-600" title="Delete Doctor">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function displayPatients() {
+            const patientsBody = document.getElementById('patients-body');
+            const noPatientsMessage = document.getElementById('no-patients-message');
+
+            if (filteredPatients.length === 0) {
+                patientsBody.innerHTML = '';
+                noPatientsMessage.classList.remove('hidden');
+                return;
+            }
+
+            noPatientsMessage.classList.add('hidden');
+            
+            patientsBody.innerHTML = filteredPatients.map(patient => {
+                const patientAppointments = allAppointments.filter(app => app.patientName === patient.name);
+                const lastAppointment = patientAppointments.length > 0 ? 
+                    patientAppointments[patientAppointments.length - 1] : null;
+                
+                return `
+                    <tr class="appointment-row border-b border-gray-200">
+                        <td class="px-4 py-3">${escapeHtml(patient.name)}</td>
+                        <td class="px-4 py-3">${patient.email}</td>
+                        <td class="px-4 py-3">${patient.phone}</td>
+                        <td class="px-4 py-3">${patient.age}</td>
+                        <td class="px-4 py-3">${patientAppointments.length}</td>
+                        <td class="px-4 py-3">${lastAppointment ? formatDate(lastAppointment.appointmentDateTime) : 'Never'}</td>
+                        <td class="px-4 py-3">
+                            <button onclick="viewPatientDetails('${patient.id}')" class="bg-blue-500 text-white px-2 py-1 rounded text-xs hover:bg-blue-600 mr-1" title="View Details">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            <button onclick="deletePatient('${patient.id}')" class="bg-red-500 text-white px-2 py-1 rounded text-xs hover:bg-red-600" title="Delete Patient">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function updateStatistics() {
+            const today = new Date().toDateString();
+            const todayAppointments = allAppointments.filter(appointment => 
+                new Date(appointment.appointmentDateTime).toDateString() === today
+            );
+            
+            const pendingAppointments = allAppointments.filter(appointment => 
+                appointment.status === 'pending'
+            );
+            const confirmedAppointments = allAppointments.filter(appointment => 
+                appointment.status === 'confirmed'
+            );
+            
+            const appointmentsChange = todayAppointments.length > 0 ? `+${todayAppointments.length} today` : 'No new appointments today';
+            
+            document.getElementById('total-appointments').textContent = allAppointments.length;
+            document.getElementById('today-appointments').textContent = todayAppointments.length;
+            document.getElementById('pending-appointments').textContent = pendingAppointments.length;
+            document.getElementById('confirmed-appointments').textContent = confirmedAppointments.length;
+            document.getElementById('appointments-change').textContent = appointmentsChange;
+            document.getElementById('today-date').textContent = new Date().toLocaleDateString();
+            
+            // Calculate percentages
+            const pendingPercent = allAppointments.length > 0 ? Math.round((pendingAppointments.length / allAppointments.length) * 100) : 0;
+            const confirmedPercent = allAppointments.length > 0 ? Math.round((confirmedAppointments.length / allAppointments.length) * 100) : 0;
+            
+            document.getElementById('pending-percent').textContent = `${pendingPercent}% of total`;
+            document.getElementById('confirmed-percent').textContent = `${confirmedPercent}% of total`;
+            
+            // Update specialty statistics
+            updateSpecialtyStats(allAppointments);
+            
+            // Update system metrics
+            updateSystemMetrics(allAppointments, allDoctors, allPatients);
+        }
+
+        function updateSpecialtyStats(appointments) {
+            const specialtyCounts = {};
+            appointments.forEach(appointment => {
+                const specialty = appointment.specialty || 'General';
+                specialtyCounts[specialty] = (specialtyCounts[specialty] || 0) + 1;
+            });
+            
+            const specialtyStatsContainer = document.getElementById('specialty-stats');
+            specialtyStatsContainer.innerHTML = '';
+            
+            Object.entries(specialtyCounts).forEach(([specialty, count]) => {
+                const percent = Math.round((count / appointments.length) * 100);
+                specialtyStatsContainer.innerHTML += `
+                    <div class="bg-gray-50 p-4 rounded-lg">
+                        <div class="text-lg font-bold text-blue-600">${count}</div>
+                        <div class="text-sm text-gray-600">${specialty}</div>
+                        <div class="text-xs text-gray-500">${percent}% of total</div>
+                    </div>
+                `;
+            });
+        }
+
+        function updateSystemMetrics(appointments, doctors, patients) {
+            document.getElementById('total-patients').textContent = patients.length;
+            document.getElementById('total-doctors').textContent = doctors.length;
+            
+            // Calculate average appointments per day (last 7 days)
+            const sevenDaysAgo = new Date();
+            sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+            
+            const recentAppointments = appointments.filter(app => 
+                new Date(app.appointmentDateTime) > sevenDaysAgo
+            );
+            
+            const avgAppointments = recentAppointments.length > 0 ? 
+                Math.round(recentAppointments.length / 7) : 0;
+            document.getElementById('avg-appointments').textContent = avgAppointments;
+            
+            // Find most popular specialty
+            const specialtyCounts = {};
+            appointments.forEach(appointment => {
+                const specialty = appointment.specialty || 'General';
+                specialtyCounts[specialty] = (specialtyCounts[specialty] || 0) + 1;
+            });
+            
+            let popularSpecialty = '-';
+            let maxCount = 0;
+            Object.entries(specialtyCounts).forEach(([specialty, count]) => {
+                if (count > maxCount) {
+                    maxCount = count;
+                    popularSpecialty = specialty;
+                }
+            });
+            
+            document.getElementById('popular-specialty').textContent = popularSpecialty;
+        }
+
+        async function exportToCSV() {
+            try {
+                // Combine appointments, doctors, and patients data
+                const appointments = await doctorAppointmentData.getAllAppointments();
+                const doctors = await doctorAppointmentData.getAllDoctors();
+                const patients = await doctorAppointmentData.getAllPatients();
+                
+                if (appointments.length === 0 && doctors.length === 0 && patients.length === 0) {
+                    showNotification('No data to export.', 'info');
+                    return;
+                }
+
+                let csvContent = '';
+                
+                // Export appointments
+                if (appointments.length > 0) {
+                    const appointmentHeaders = ['Patient Name', 'Doctor Name', 'Specialty', 'Appointment Date', 'Status', 'Reason', 'Patient Phone', 'Patient Email', 'Created Date'];
+                    const appointmentData = appointments.map(appointment => [
+                        appointment.patientName,
+                        appointment.doctorName,
+                        appointment.specialty,
+                        formatDateTime(appointment.appointmentDateTime),
+                        appointment.status,
+                        appointment.reason,
+                        appointment.patientPhone,
+                        appointment.patientEmail,
+                        formatDateTime(appointment.createdAt)
+                    ]);
+
+                    csvContent += 'DOCTOR APPOINTMENTS\n';
+                    csvContent += appointmentHeaders.join(',') + '\n';
+                    csvContent += appointmentData.map(row => row.map(field => `"${field}"`).join(',')).join('\n');
+                    csvContent += '\n\n';
+                }
+                
+                // Export doctors
+                if (doctors.length > 0) {
+                    const doctorHeaders = ['Name', 'Specialty', 'Qualification', 'Experience', 'Hospital', 'Phone', 'Email'];
+                    const doctorData = doctors.map(doctor => [
+                        doctor.name,
+                        doctor.specialty,
+                        doctor.qualification,
+                        doctor.experience,
+                        doctor.hospital,
+                        doctor.phone,
+                        doctor.email
+                    ]);
+
+                    csvContent += 'DOCTORS\n';
+                    csvContent += doctorHeaders.join(',') + '\n';
+                    csvContent += doctorData.map(row => row.map(field => `"${field}"`).join(',')).join('\n');
+                    csvContent += '\n\n';
+                }
+                
+                // Export patients
+                if (patients.length > 0) {
+                    const patientHeaders = ['Name', 'Email', 'Phone', 'Age', 'Last Appointment'];
+                    const patientData = patients.map(patient => {
+                        const patientAppointments = appointments.filter(app => app.patientName === patient.name);
+                        const lastAppointment = patientAppointments.length > 0 ? 
+                            patientAppointments[patientAppointments.length - 1] : null;
+                        
+                        return [
+                            patient.name,
+                            patient.email,
+                            patient.phone,
+                            patient.age,
+                            lastAppointment ? formatDate(lastAppointment.appointmentDateTime) : 'Never'
+                        ];
+                    });
+
+                    csvContent += 'PATIENTS\n';
+                    csvContent += patientHeaders.join(',') + '\n';
+                    csvContent += patientData.map(row => row.map(field => `"${field}"`).join(',')).join('\n');
+                }
+
+                const blob = new Blob([csvContent], { type: 'text/csv' });
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `doctor-appointments-${new Date().toISOString().split('T')[0]}.csv`;
+                a.click();
+                window.URL.revokeObjectURL(url);
+                
+                showNotification('Data exported successfully!', 'success');
+            } catch (error) {
+                console.error('Error exporting data:', error);
+                showNotification('Error exporting data.', 'error');
+            }
+        }
+
+        // Global functions for buttons
+        window.updateAppointmentStatus = async function(appointmentId, status) {
+            try {
+                const result = await doctorAppointmentData.updateAppointmentStatus(appointmentId, status);
+                if (result.success) {
+                    showNotification(`Appointment marked as ${status}!`, 'success');
+                    loadAppointments();
+                }
+            } catch (error) {
+                showNotification('Error updating appointment.', 'error');
+            }
+        };
+
+        window.deleteAppointment = async function(appointmentId) {
+            if (confirm('Are you sure you want to delete this appointment?')) {
+                try {
+                    const result = await doctorAppointmentData.deleteAppointment(appointmentId);
+                    if (result.success) {
+                        showNotification('Appointment deleted successfully!', 'success');
+                        loadAppointments();
+                    }
+                } catch (error) {
+                    showNotification('Error deleting appointment.', 'error');
+                }
+            }
+        };
+
+        window.deleteDoctor = async function(doctorId) {
+            if (confirm('Are you sure you want to delete this doctor?')) {
+                try {
+                    const result = await doctorAppointmentData.deleteDoctor(doctorId);
+                    if (result.success) {
+                        showNotification('Doctor deleted successfully!', 'success');
+                        loadDoctors();
+                    }
+                } catch (error) {
+                    showNotification('Error deleting doctor.', 'error');
+                }
+            }
+        };
+
+        window.deletePatient = async function(patientId) {
+            if (confirm('Are you sure you want to delete this patient?')) {
+                try {
+                    const result = await doctorAppointmentData.deletePatient(patientId);
+                    if (result.success) {
+                        showNotification('Patient deleted successfully!', 'success');
+                        loadPatients();
+                    }
+                } catch (error) {
+                    showNotification('Error deleting patient.', 'error');
+                }
+            }
+        };
+
+        window.viewDoctorDetails = function(doctorId) {
+            const doctor = allDoctors.find(d => d.id === doctorId);
+            if (doctor) {
+                const details = `
+Name: ${doctor.name}
+Specialty: ${doctor.specialty}
+Qualification: ${doctor.qualification}
+Experience: ${doctor.experience} years
+Hospital: ${doctor.hospital}
+Phone: ${doctor.phone}
+Email: ${doctor.email}
+                `;
+                alert(details);
+            }
+        };
+
+        window.viewPatientDetails = function(patientId) {
+            const patient = allPatients.find(p => p.id === patientId);
+            if (patient) {
+                const patientAppointments = allAppointments.filter(app => app.patientName === patient.name);
+                const details = `
+Name: ${patient.name}
+Email: ${patient.email}
+Phone: ${patient.phone}
+Age: ${patient.age}
+Total Appointments: ${patientAppointments.length}
+Last Appointment: ${patientAppointments.length > 0 ? 
+    formatDateTime(patientAppointments[patientAppointments.length - 1].appointmentDateTime) : 'Never'}
+                `;
+                alert(details);
+            }
+        };
+
+        window.addNewAppointment = function() {
+            showNotification('New appointment functionality would be implemented here.', 'info');
+            // In a real implementation, you would show a form to add a new appointment
+        };
+
+        window.addNewDoctor = function() {
+            showNotification('New doctor functionality would be implemented here.', 'info');
+            // In a real implementation, you would show a form to add a new doctor
+        };
+
+        window.clearAllData = function() {
+            if (confirm('Are you sure you want to clear ALL appointment data? This action cannot be undone.')) {
+                showNotification('Data clearing functionality would be implemented here.', 'info');
+                // In a real implementation, you would call methods to clear the database
+            }
+        };
+
+        window.generateReport = function() {
+            showNotification('Report generation would be implemented here.', 'info');
+            // In a real implementation, you would generate a detailed appointment report
+        };
+
+        // Event Listeners
+        document.addEventListener('DOMContentLoaded', function() {
+            const refreshButton = document.getElementById('refresh-data');
+            const refreshDoctorsButton = document.getElementById('refresh-doctors');
+            const refreshPatientsButton = document.getElementById('refresh-patients');
+            const searchAppointmentsInput = document.getElementById('search-appointments');
+            const searchDoctorsInput = document.getElementById('search-doctors');
+            const searchPatientsInput = document.getElementById('search-patients');
+            const prevAppointmentsButton = document.getElementById('prev-appointments-page');
+            const nextAppointmentsButton = document.getElementById('next-appointments-page');
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+
+            // Refresh buttons
+            if (refreshButton) {
+                refreshButton.addEventListener('click', loadAppointments);
+            }
+            if (refreshDoctorsButton) {
+                refreshDoctorsButton.addEventListener('click', loadDoctors);
+            }
+            if (refreshPatientsButton) {
+                refreshPatientsButton.addEventListener('click', loadPatients);
+            }
+
+            // Search functionality
+            if (searchAppointmentsInput) {
+                searchAppointmentsInput.addEventListener('input', function() {
+                    const searchTerm = this.value.toLowerCase();
+                    if (searchTerm) {
+                        filteredAppointments = allAppointments.filter(appointment => 
+                            appointment.patientName?.toLowerCase().includes(searchTerm) ||
+                            appointment.doctorName?.toLowerCase().includes(searchTerm) ||
+                            appointment.specialty?.toLowerCase().includes(searchTerm) ||
+                            appointment.reason?.toLowerCase().includes(searchTerm)
+                        );
+                    } else {
+                        filteredAppointments = [...allAppointments];
+                    }
+                    currentAppointmentsPage = 1;
+                    displayAppointments();
+                });
+            }
+
+            if (searchDoctorsInput) {
+                searchDoctorsInput.addEventListener('input', function() {
+                    const searchTerm = this.value.toLowerCase();
+                    if (searchTerm) {
+                        filteredDoctors = allDoctors.filter(doctor => 
+                            doctor.name?.toLowerCase().includes(searchTerm) ||
+                            doctor.specialty?.toLowerCase().includes(searchTerm) ||
+                            doctor.qualification?.toLowerCase().includes(searchTerm)
+                        );
+                    } else {
+                        filteredDoctors = [...allDoctors];
+                    }
+                    displayDoctors();
+                });
+            }
+
+            if (searchPatientsInput) {
+                searchPatientsInput.addEventListener('input', function() {
+                    const searchTerm = this.value.toLowerCase();
+                    if (searchTerm) {
+                        filteredPatients = allPatients.filter(patient => 
+                            patient.name?.toLowerCase().includes(searchTerm) ||
+                            patient.email?.toLowerCase().includes(searchTerm) ||
+                            patient.phone?.toLowerCase().includes(searchTerm)
+                        );
+                    } else {
+                        filteredPatients = [...allPatients];
+                    }
+                    displayPatients();
+                });
+            }
+
+            // Pagination
+            if (prevAppointmentsButton) {
+                prevAppointmentsButton.addEventListener('click', function() {
+                    if (currentAppointmentsPage > 1) {
+                        currentAppointmentsPage--;
+                        displayAppointments();
+                    }
+                });
+            }
+
+            if (nextAppointmentsButton) {
+                nextAppointmentsButton.addEventListener('click', function() {
+                    const totalPages = Math.ceil(filteredAppointments.length / pageSize);
+                    if (currentAppointmentsPage < totalPages) {
+                        currentAppointmentsPage++;
+                        displayAppointments();
+                    }
+                });
+            }
+
+            // Mobile menu
+            if (mobileMenuButton && mobileMenu) {
+                mobileMenuButton.addEventListener('click', function() {
+                    mobileMenu.classList.toggle('hidden');
+                });
+            }
+
+            // Initial load
+            loadAppointments();
+            loadDoctors();
+            loadPatients();
+            
+            // Real-time updates
+            doctorAppointmentData.onAppointmentsUpdate((appointments) => {
+                allAppointments = appointments;
+                filteredAppointments = [...allAppointments];
+                displayAppointments();
+                updateStatistics();
+            });
+
+            doctorAppointmentData.onDoctorsUpdate((doctors) => {
+                allDoctors = doctors;
+                filteredDoctors = [...allDoctors];
+                displayDoctors();
+                updateStatistics();
+            });
+
+            doctorAppointmentData.onPatientsUpdate((patients) => {
+                allPatients = patients;
+                filteredPatients = [...allPatients];
+                displayPatients();
+                updateStatistics();
+            });
+        });
+    </script>
+</body>
+</html>
