@@ -62,107 +62,42 @@
 
 <body class="font-serif text-gray-800 select-none">
  <!-- NAVBAR -->
-  <header class="bg-white shadow-md sticky top-0 z-50">
-    <div class="container mx-auto px-4">
-      <div class="flex justify-between items-center py-4">
-        <!-- Logo -->
-        <div class="flex items-center">
-          <span class="text-2xl font-bold text-blue-600"><a href="../index.html">🏥 MCH</a></span>
-        </div>
-        
-        <!-- Mobile menu button -->
-        <button id="mobile-menu-button" class="md:hidden text-gray-600 focus:outline-none">
-          <i class="fas fa-bars text-xl"></i>
-        </button>
-        
-        <!-- Navigation Links -->
-        <nav id="nav-links" class="hidden md:flex items-center space-x-6">
-          <a href="../index.html" class="text-gray-700 hover:text-blue-600 transition duration-300">Home</a>
-          <a href="../index.html#about" class="text-gray-700 hover:text-blue-600 transition duration-300">About</a>
-          
-          <!-- Services Dropdown -->
-          <div class="relative group">
-            <button class="flex items-center text-gray-700 hover:text-blue-600 transition duration-300">
-              Services <i class="fas fa-chevron-down ml-1 text-xs"></i>
-            </button>
-            <div class="absolute left-0 mt-2 w-64 bg-white shadow-xl rounded-lg py-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50">
-              <a href="../Servscies/Maternity&Brith Servecises.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">Maternity & Birth Services</a>
-             <a href="../Servscies/paitents-Servecises.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">Patient Services</a>
-              <a href="../Emergency.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">Emergency Care</a>
-              <a href="../Servscies/veccination.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">Vaccination Programs</a>
-              <a href="../Servscies/mentalhealth.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">Mental Health Support</a>
-              <a href="../Servscies/NCD.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">Chronic Disease Care</a>
-              <a href="../Servscies/Health Education.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">Health Awareness & Education</a>
-              <a href="../Servscies/Disability.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">Disability Care</a>
+ <!-- Header -->
+        <header class="bg-white shadow-md sticky top-0 z-30">
+            <div class="container mx-auto px-4">
+                <div class="flex justify-between items-center py-4">
+                    <div class="flex items-center">
+                        <span class="text-2xl font-bold text-blue-600">Paitent Dashboard</span>
+                    </div>
+                    
+                    <button id="mobile-menu-button" class="md:hidden text-gray-600 focus:outline-none">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                    
+                    <nav id="nav-links" class="hidden md:flex items-center space-x-6">
+                        <a href="#stats" class="text-gray-700 hover:text-blue-600 transition duration-300">Statistics</a>
+                        <a href="#appointments" class="text-gray-700 hover:text-blue-600 transition duration-300">Appointments</a>
+                        <a href="#patients" class="text-gray-700 hover:text-blue-600 transition duration-300">Patients Regestration</a>
+                        <a href="#resources" class="text-gray-700 hover:text-blue-600 transition duration-300">Resources</a>
+                        <button onclick="exportToCSV()" class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition duration-300">
+                            <i class="fas fa-download mr-2"></i>Export Data
+                        </button>
+                    </nav>
+                </div>
+                
+                <div id="mobile-menu" class="hidden md:hidden py-4 border-t border-gray-200">
+                    <div class="flex flex-col space-y-4">
+                        <a href="#stats" class="text-gray-700 hover:text-blue-600">Statistics</a>
+                        <a href="#appointments" class="text-gray-700 hover:text-blue-600">Appointments</a>
+                        <a href="#patients" class="text-gray-700 hover:text-blue-600">Patients</a>
+                        <a href="#resources" class="text-gray-700 hover:text-blue-600">Resources</a>
+                        <button onclick="exportToCSV()" class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition duration-300 text-left">
+                            <i class="fas fa-download mr-2"></i>Export Data
+                        </button>
+                    </div>
+                </div>
             </div>
-          </div>
-          
-          <a href="/doctors.html" class="text-gray-700 hover:text-blue-600 transition duration-300">Doctors</a>
-          <a href="/Dashboard.html" class="text-gray-700 hover:text-blue-600 transition duration-300">Dashdoard</a>
-          <a href="../index.html#contact" class="text-gray-700 hover:text-blue-600 transition duration-300">Contact</a>
-          <a href="#faq" id="faq-nav-link" class="text-gray-700 hover:text-blue-600 transition duration-300">FAQ</a>
-        </nav>
-        
-        <!-- Actions -->
-        <div class="hidden md:flex items-center space-x-4">
-          <select class="border border-gray-300 rounded px-3 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
-            <option value="en">English</option>
-            <option value="ar">العربية</option>
-            <option value="rw">Kinyarwanda</option>
-          </select>
-          <button id="desktop-signup-btn" class="bg-blue-600 text-white px-4 py-2 rounded...">Sign Up</button>
-          <button id="desktop-login-btn" class="border border-blue-600 text-blue-600 px-4 py-2 rounded...">Log In</button>
-        </div>
-      </div>
-      
-      <!-- Mobile Menu -->
-      <div id="mobile-menu" class="hidden md:hidden py-4 border-t border-gray-200">
-        <div class="flex flex-col space-y-4">
-          <div class="flex space-x-2">
-  <button id="mobile-signup-btn" class="flex-1 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition duration-300">Sign Up</button>
-  <button id="mobile-login-btn" class="flex-1 border border-blue-600 text-blue-600 px-4 py-2 rounded hover:bg-blue-600 hover:text-white transition duration-300">Log In</button>
-</div>
-          <a href="../index.html" class="text-gray-700 hover:text-blue-600">Home</a>
-          <a href="../index.html#about" class="text-gray-700 hover:text-blue-600">About</a>
-          
-          <!-- Mobile Services Dropdown -->
-          <div class="relative">
-            <button id="mobile-services-toggle" class="flex items-center text-gray-700 hover:text-blue-600 w-full justify-between">
-              Services <i class="fas fa-chevron-down"></i>
-            </button>
-            <div id="mobile-services-menu" class="hidden pl-4 mt-2 space-y-2">
-              <a href="../Servscies/Maternity&Brith Servecises.html" class="block text-gray-700 hover:text-blue-600">Maternity & Birth Services</a>
-              <a href="../Servscies/paitents-Servecises.html" class="block text-gray-700 hover:text-blue-600">Patient Services</a>
-              <a href="../Servscies/" class="block text-gray-700 hover:text-blue-600">Emergency Care</a>
-              <a href="../Servscies/veccination.html" class="block text-gray-700 hover:text-blue-600">Vaccination Programs</a>
-              <a href="../Servscies/mentalhealth.html" class="block text-gray-700 hover:text-blue-600">Mental Health Support</a>
-              <a href="../Servscies/NCD.html" class="block text-gray-700 hover:text-blue-600">Chronic Disease Care</a>
-              <a href="../Servscies/Health Education.html" class="block text-gray-700 hover:text-blue-600">Health Awareness & Education</a>
-              <a href="../Servscies/Disability.html" class="block text-gray-700 hover:text-blue-600">Disability Care</a>
-            </div>
-          </div>
-          
-          <a href="/doctors.html" class="text-gray-700 hover:text-blue-600">Doctors</a>
-          <a href="/Dashboard.html" class="text-gray-700 hover:text-blue-600">Dashdoard</a>
-          <a href="../index.html#contact" class="text-gray-700 hover:text-blue-600">Contact</a>
-          <a href="#faq" id="mobile-faq-link" class="text-gray-700 hover:text-blue-600">FAQ</a>
-          
-          <div class="pt-4 border-t border-gray-200">
-            <select class="w-full border border-gray-300 rounded px-3 py-2 text-sm mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500">
-              <option value="en">English</option>
-              <option value="ar">العربية</option>
-              <option value="rw">Kinyarwanda</option>
-            </select>
-            <div class="flex space-x-2">
-              <button  id="signup-btn" class="flex-1 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition duration-300">Sign Up</button>
-              <button  id="login-btn" class="flex-1 border border-blue-600 text-blue-600 px-4 py-2 rounded hover:bg-blue-600 hover:text-white transition duration-300">Log In</button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </header>
-  
+        </header>
   <div class="flex min-h-screen bg-gray-50 flex-col md:flex-row">
     <!-- Sidebar -->
     <aside class="sidebar w-full md:w-64 bg-blue-500 text-white flex flex-col">
@@ -175,11 +110,7 @@
           <i class="fa-solid fa-hospital text-yellow-500 text-xl md:text-2xl mr-2"></i>
           <span>Dashboard</span>
         </a>
-        <a href="./Briths Servecises.html"
-          class="font-serif text-lg md:text-xl block p-2 rounded hover:bg-purple-500 flex items-center">
-          <i class="fa-solid fa-people-roof text-gray-400 text-xl md:text-3xl mr-2"></i>
-          <span>Register Birth</span>
-        </a>
+       
       </nav>
     </aside>
 
