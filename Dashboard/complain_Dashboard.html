@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complaints Dashboard - MahamaCare Hospital</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
+    
+    <style>
+        .stat-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        .complaint-row {
+            transition: background-color 0.2s ease;
+        }
+        .complaint-row:hover {
+            background-color: #f8fafc;
+        }
+        .loading-spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #3498db;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .status-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        .status-received { background-color: #dbeafe; color: #1e40af; }
+        .status-in-progress { background-color: #fef3c7; color: #92400e; }
+        .status-resolved { background-color: #d1fae5; color: #065f46; }
+        .status-escalated { background-color: #fee2e2; color: #991b1b; }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <!-- Header -->
+    <header class="bg-white shadow-md">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-between items-center py-4">
+                <div class="flex items-center">
+                    <span class="text-2xl font-bold text-blue-600"><a href="/index.html">🏥 MCH </a>Complaints Dashboard</span>
+                </div>
+                
+                <nav class="flex items-center space-x-6">
+                    <a href="#stats" class="text-gray-700 hover:text-blue-600 transition duration-300">Statistics</a>
+                    <a href="#complaints" class="text-gray-700 hover:text-blue-600 transition duration-300">Complaints</a>
+                    <button onclick="exportToCSV()" class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition duration-300">
+                        <i class="fas fa-download mr-2"></i>Export Data
+                    </button>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-8">
+        <!-- Statistics Section -->
+        <section id="stats" class="mb-12">
+            <h2 class="text-3xl font-bold text-gray-800 mb-6">Complaints Statistics</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                <div class="stat-card bg-white rounded-xl shadow-lg p-6 text-center">
+                    <div class="text-3xl font-bold text-blue-600 mb-2" id="total-complaints">0</div>
+                    <div class="text-gray-600">Total Complaints</div>
+                    <div class="text-sm text-green-600 mt-2" id="complaints-change">+0 today</div>
+                </div>
+                
+                <div class="stat-card bg-white rounded-xl shadow-lg p-6 text-center">
+                    <div class="text-3xl font-bold text-green-600 mb-2" id="today-complaints">0</div>
+                    <div class="text-gray-600">Today's Complaints</div>
+                    <div class="text-sm text-gray-500 mt-2" id="today-date">Loading...</div>
+                </div>
+                
+                <div class="stat-card bg-white rounded-xl shadow-lg p-6 text-center">
+                    <div class="text-3xl font-bold text-purple-600 mb-2" id="pending-complaints">0</div>
+                    <div class="text-gray-600">Pending Complaints</div>
+                    <div class="text-sm text-gray-500 mt-2" id="pending-percent">0% of total</div>
+                </div>
+                
+                <div class="stat-card bg-white rounded-xl shadow-lg p-6 text-center">
+                    <div class="text-3xl font-bold text-orange-600 mb-2" id="resolved-complaints">0</div>
+                    <div class="text-gray-600">Resolved Complaints</div>
+                    <div class="text-sm text-gray-500 mt-2" id="resolved-percent">0% of total</div>
+                </div>
+            </div>
+
+            <!-- Category Distribution -->
+            <div class="bg-white rounded-xl shadow-lg p-6 mb-8">
+                <h3 class="text-xl font-bold text-gray-800 mb-4">Complaint Categories</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4" id="category-stats">
+                    <!-- Category statistics will be populated here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Complaints Section -->
+        <section id="complaints" class="mb-12">
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
+                <h2 class="text-3xl font-bold text-gray-800">Complaint Management</h2>
+                <div class="flex gap-2">
+                    <button id="refresh-data" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition duration-300">
+                        <i class="fas fa-sync-alt mr-2"></i>Refresh
+                    </button>
+                    <div class="relative">
+                        <input type="text" id="search-complaints" placeholder="Search complaints..." class="border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="w-full border-collapse">
+                        <thead>
+                            <tr class="bg-gray-100">
+                                <th class="border-b border-gray-300 px-4 py-3 text-left font-semibold text-gray-700">Reference</th>
+                                <th class="border-b border-gray-300 px-4 py-3 text-left font-semibold text-gray-700">Category</th>
+                                <th class="border-b border-gray-300 px-4 py-3 text-left font-semibold text-gray-700">Subject</th>
+                                <th class="border-b border-gray-300 px-4 py-3 text-left font-semibold text-gray-700">Date</th>
+                                <th class="border-b border-gray-300 px-4 py-3 text-left font-semibold text-gray-700">Status</th>
+                                <th class="border-b border-gray-300 px-4 py-3 text-left font-semibold text-gray-700">Urgent</th>
+                                <th class="border-b border-gray-300 px-4 py-3 text-left font-semibold text-gray-700">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="complaints-body">
+                            <!-- Data will be populated by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div id="no-complaints-message" class="text-center py-8 text-gray-500">
+                    <i class="fas fa-inbox text-4xl mb-4"></i>
+                    <p>No complaints data available yet.</p>
+                    <p class="text-sm mt-2">Complaints will appear here once submitted through the complaints form.</p>
+                </div>
+                
+                <div id="loading-complaints" class="hidden">
+                    <div class="loading-spinner"></div>
+                    <p class="text-center text-gray-500 mb-8">Loading complaints data...</p>
+                </div>
+            </div>
+            
+            <div class="mt-4 flex justify-between items-center">
+                <div class="text-sm text-gray-600" id="complaints-pagination-info">Showing 0 complaints</div>
+                <div class="flex gap-2">
+                    <button id="prev-complaints-page" class="bg-gray-200 text-gray-700 px-3 py-1 rounded disabled:opacity-50" disabled>Previous</button>
+                    <button id="next-complaints-page" class="bg-gray-200 text-gray-700 px-3 py-1 rounded disabled:opacity-50" disabled>Next</button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-8 mt-12">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div>
+                    <h3 class="text-xl font-bold mb-4">MahamaCare Hospital</h3>
+                    <p class="text-gray-400">Providing quality healthcare with compassion and expertise.</p>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Complaints Management</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><i class="fas fa-map-marker-alt mr-2"></i> Mahama Refugee Camp</li>
+                        <li><i class="fas fa-phone mr-2"></i> +250 000 000</li>
+                        <li><i class="fas fa-envelope mr-2"></i>unitycoders2025@gmail.com</li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Quick Actions</h4>
+                    <div class="flex flex-col space-y-2">
+                        <a href="complaints-form.html" class="text-gray-400 hover:text-white transition duration-300">
+                            <i class="fas fa-headset mr-2"></i> Complaints Form
+                        </a>
+                        <button onclick="exportToCSV()" class="text-left text-gray-400 hover:text-white transition duration-300">
+                            <i class="fas fa-download mr-2"></i> Export Data
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-500">
+                <p>&copy; 2025 MahamaCare Hospital. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Firebase Configuration and JavaScript -->
+    <script src="complain_Dashboard.js">
+
+    </script>
+</body>
+</html>
