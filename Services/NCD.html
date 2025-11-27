@@ -1,0 +1,1021 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chronic Disease Care</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#0ea5e9',
+                        'primary-dark': '#0284c7',
+                        secondary: '#6366f1',
+                        accent: '#10b981',
+                    }
+                }
+            }
+        }
+        
+        // Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyDt4vs7S3nckO8xxfp1_axHZ76J0cz2qdg",
+            authDomain: "mahamahospital.firebaseapp.com",
+            databaseURL: "https://mahamahospital-default-rtdb.firebaseio.com",
+            projectId: "mahamahospital",
+            storageBucket: "mahamahospital.firebasestorage.app",
+            messagingSenderId: "256305692002",
+            appId: "1:256305692002:web:cfef26992264204be9803b"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+    </script>
+    
+    <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #0ea5e9 0%, #6366f1 100%);
+        }
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(to right, #0ea5e9, #6366f1);
+            border-radius: 2px;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            overflow-y: auto;
+        }
+        .modal-content {
+            background-color: white;
+            margin: 2% auto;
+            padding: 0;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 800px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+        }
+        .modal-header {
+            padding: 20px 24px;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .modal-body {
+            padding: 24px;
+            max-height: 70vh;
+            overflow-y: auto;
+        }
+        .status-pending {
+            background-color: #fef3c7;
+            color: #d97706;
+        }
+        .status-accepted {
+            background-color: #d1fae5;
+            color: #065f46;
+        }
+        .status-rejected {
+            background-color: #fee2e2;
+            color: #991b1b;
+        }
+    </style>
+</head>
+<body class="font-serif bg-gray-50">
+    <!-- Header -->
+    <header class="bg-white shadow-md sticky top-0 z-50">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-between items-center py-4">
+                <!-- Logo -->
+                <div class="flex items-center">
+                    <span class="text-2xl font-bold text-blue-600"><a href="../index.html">🏥 MCH</a></span>
+                </div>
+                
+                <!-- Mobile menu button -->
+                <button id="mobile-menu-button" class="md:hidden text-gray-600 focus:outline-none">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+                
+                <!-- Navigation Links -->
+                <nav id="nav-links" class="hidden md:flex items-center space-x-6">
+                    <a href="../index.html" class="text-gray-700 hover:text-blue-600 transition duration-300">Home</a>
+                    <a href="../index.html#about" class="text-gray-700 hover:text-blue-600 transition duration-300">About</a>
+                    
+                    <!-- Services Dropdown -->
+                    <div class="relative group">
+                        <button class="flex items-center text-gray-700 hover:text-blue-600 transition duration-300">
+                            Services <i class="fas fa-chevron-down ml-1 text-xs"></i>
+                        </button>
+                        <div class="absolute left-0 mt-2 w-64 bg-white shadow-xl rounded-lg py-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50">
+                            <a href="../Servscies/Maternity&Brith Servecises.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">Maternity & Birth Services</a>
+                            <a href="../Servscies/paitents-Servecises.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">Patient Services</a>
+                            <a href="../Emergency.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">Emergency Care</a>
+                            <a href="../Servscies/veccination.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">Vaccination Programs</a>
+                            <a href="../Servscies/mentalhealth.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">Mental Health Support</a>
+                            <a href="../Servscies/NCD.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">Chronic Disease Care</a>
+                            <a href="../Servscies/Health Education.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">Health Awareness & Education</a>
+                            <a href="../Servscies/Disability.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">Disability Care</a>
+                        </div>
+                    </div>
+                    
+                    <a href="/doctors.html" class="text-gray-700 hover:text-blue-600 transition duration-300">Doctors</a>
+                    <a href="#dashboard" class="text-gray-700 hover:text-blue-600 transition duration-300">Dashboard</a>
+                    <a href="#appointment" class="text-gray-700 hover:text-blue-600 transition duration-300">Appointment</a>
+                </nav>
+                
+                <!-- Actions -->
+                <div class="hidden md:flex items-center space-x-4">
+                    <select class="border border-gray-300 rounded px-3 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <option value="en">English</option>
+                        <option value="ar">العربية</option>
+                        <option value="rw">Kinyarwanda</option>
+                    </select>
+                </div>
+            </div>
+            
+            <!-- Mobile Menu -->
+            <div id="mobile-menu" class="hidden md:hidden py-4 border-t border-gray-200">
+                <div class="flex flex-col space-y-4">
+                    <div class="flex space-x-2">
+                        <button id="mobile-signup-btn" class="flex-1 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition duration-300">Sign Up</button>
+                        <button id="mobile-login-btn" class="flex-1 border border-blue-600 text-blue-600 px-4 py-2 rounded hover:bg-blue-600 hover:text-white transition duration-300">Log In</button>
+                    </div>
+                    <a href="#home" class="text-gray-700 hover:text-blue-600">Home</a>
+                    <a href="#about" class="text-gray-700 hover:text-blue-600">About</a>
+                    
+                    <!-- Mobile Services Dropdown -->
+                    <div class="relative">
+                        <button id="mobile-services-toggle" class="flex items-center text-gray-700 hover:text-blue-600 w-full justify-between">
+                            Services <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div id="mobile-services-menu" class="hidden pl-4 mt-2 space-y-2">
+                            <a href="../Servscies/Maternity&Brith Servecises.html" class="block text-gray-700 hover:text-blue-600">Maternity & Birth Services</a>
+                            <a href="../Servscies/paitents-Servecises.html" class="block text-gray-700 hover:text-blue-600">Patient Services</a>
+                            <a href="../Emergency.html" class="block text-gray-700 hover:text-blue-600">Emergency Care</a>
+                            <a href="../Servscies/veccination.html" class="block text-gray-700 hover:text-blue-600">Vaccination Programs</a>
+                            <a href="../Servscies/mentalhealth.html" class="block text-gray-700 hover:text-blue-600">Mental Health Support</a>
+                            <a href="../Servscies/NCD.html" class="block text-gray-700 hover:text-blue-600">Chronic Disease Care</a>
+                            <a href="../Servscies/Health Education.html" class="block text-gray-700 hover:text-blue-600">Health Awareness & Education</a>
+                            <a href="../Servscies/Disability.html" class="block text-gray-700 hover:text-blue-600">Disability Care</a>
+                        </div>
+                    </div>
+                    
+                    <a href="/doctors.html" class="text-gray-700 hover:text-blue-600">Doctors</a>
+                    <a href="#dashboard" class="text-gray-700 hover:text-blue-600">Dashboard</a>
+                     <a href="#appointment" class="text-gray-700 hover:text-blue-600 transition duration-300">Appointment</a>
+                    
+                    <div class="pt-4 border-t border-gray-200">
+                        <select class="w-full border border-gray-300 rounded px-3 py-2 text-sm mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <option value="en">English</option>
+                            <option value="ar">العربية</option>
+                            <option value="rw">Kinyarwanda</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    
+    <!-- Hero Section -->
+    <section id="home" class="bg-[url(/img/ncd.webp)] bg-no-repeat bg-cover text-black py-20 md:py-40">
+        <div class="container mx-auto px-4 text-center">
+            <h1 class="hero-title text-3xl md:text-6xl font-serif font-bold mb-4 md:mb-6">Exceptional Healthcare for Every Patient</h1>
+            <p class="hero-subtitle text-lg md:text-2xl mb-6 md:mb-8 max-w-2xl mx-auto">Comprehensive medical services with cutting-edge technology and compassionate care for all your health needs.</p>
+            <div class="flex flex-col md:flex-row justify-center gap-4">
+                <button id="openAppointmentModalHero" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition duration-300 transform hover:-translate-y-1"><a href="#appointment">Book Appointment</a></button>
+                <a href="#ncd" class="border border-white hover:bg-white hover:text-blue-600 text-white px-6 py-3 rounded-lg font-semibold transition duration-300 transform hover:-translate-y-1 text-center">NCD Care</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- NCD Section -->
+    <section id="ncd" class="py-12 md:py-16 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <div>
+                <h2 class="text-2xl md:text-4xl font-bold text-center text-blue-600 mb-4 md:mb-8">Non-Communicable Diseases Care</h2>
+                <p class="text-xl text-gray-600 max-w-2xl mx-auto mb-8 md:mb-12">Comprehensive management and treatment for chronic conditions</p>
+                <h3 class="text-2xl md:text-4xl font-bold text-center text-blue-600 mb-4 md:mb-8">Specialized NCD Management</h3>
+                <p class="text-xl text-gray-600 max-w-2xl mx-auto mb-8 md:mb-12">Our comprehensive Non-Communicable Diseases program provides personalized care for chronic conditions that require long-term management and specialized treatment approaches.</p>
+            </div>
+
+            <div class="emergency-cards grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
+                <!-- ncd Card 1 -->
+                <div class="ncd-card bg-white rounded-xl shadow-lg p-4 md:p-6 transition-all duration-300 hover:-translate-y-2 hover:shadow-xl">
+                    <img src="../img/c.webp" alt="Cardiovascular" class="w-full h-40 md:h-48 object-cover rounded-lg mb-4">
+                    <h3 class="text-lg md:text-xl font-bold text-gray-800 mb-2">Cardiovascular Diseases</h3>
+                    <p class="text-sm md:text-base text-gray-600 mb-4">Hypertension, coronary artery disease, heart failure management.</p>
+                </div>
+                
+                <!-- ncd Card 2 -->
+                <div class="ncd bg-white rounded-xl shadow-lg p-4 md:p-6 transition-all duration-300 hover:-translate-y-2 hover:shadow-xl">
+                    <img src="../img/di.webp" alt="Diabetes" class="w-full h-40 md:h-48 object-cover rounded-lg mb-4">
+                    <h3 class="text-lg md:text-xl font-bold text-gray-800 mb-2">Diabetes Care</h3>
+                    <p class="text-sm md:text-base text-gray-600 mb-4">Type 1 & 2 diabetes management, insulin therapy, lifestyle coaching.</p>
+                </div>
+                
+                <!-- ncd Card 3 -->
+                <div class="ncd-card bg-white rounded-xl shadow-lg p-4 md:p-6 transition-all duration-300 hover:-translate-y-2 hover:shadow-xl">
+                    <img src="../img/ris.webp" alt="Respiratory" class="w-full h-40 md:h-48 object-cover rounded-lg mb-4">
+                    <h3 class="text-lg md:text-xl font-bold text-gray-800 mb-2">Respiratory Conditions</h3>
+                    <p class="text-sm md:text-base text-gray-600 mb-4">COPD, asthma, chronic bronchitis management and rehabilitation.</p>
+                </div>
+                
+                <!-- ncd Card 4 -->
+                <div class="ncd-card bg-white rounded-xl shadow-lg p-4 md:p-6 transition-all duration-300 hover:-translate-y-2 hover:shadow-xl">
+                    <img src="../img/ni.webp" alt="Neurological" class="w-full h-40 md:h-48 object-cover rounded-lg mb-4">
+                    <h3 class="text-lg md:text-xl font-bold text-gray-800 mb-2">Neurological Disorders</h3>
+                    <p class="text-sm md:text-base text-gray-600 mb-4">Stroke, epilepsy, Parkinson's disease, and dementia care.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+     <!-- Our Services Section -->
+    <section class="py-16 bg-gray-50" id="services">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-blue-600 mb-4 relative  inline-block">Our Services</h2>
+                <p class="text-xl text-gray-600 max-w-2xl mx-auto">Comprehensive healthcare services for all your medical needs</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-white rounded-xl shadow-md p-8 transition-transform hover:-translate-y-2">
+                    <div class=" flex items-center justify-center mb-6">
+                        <img src="../img/primary.webp" alt="">
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-4">Primary Care</h3>
+                    <p class="text-gray-600 mb-4">Comprehensive primary care services for patients of all ages, including preventive care, health screenings, and chronic disease management.</p>
+                </div>
+                
+                <div class="bg-white rounded-xl shadow-md p-8 transition-transform hover:-translate-y-2">
+                    <div class="flex items-center justify-center mb-6">
+                 <img src="../img/specialy.webp" alt="">
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-4">Specialty Care</h3>
+                    <p class="text-gray-600 mb-4">Access to top specialists in cardiology, neurology, orthopedics, gastroenterology, and more for specialized medical treatment.</p>
+                </div>
+                
+                <div class="bg-white rounded-xl shadow-md p-8 transition-transform hover:-translate-y-2">
+                    <div class=" flex items-center justify-center mb-6">
+                      <img src="../img/EC.webp" alt="">
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-4">Emergency Care</h3>
+                    <p class="text-gray-600 mb-4">24/7 emergency services with state-of-the-art facilities and experienced emergency medicine physicians ready to handle any medical crisis.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Specialties Section -->
+    <section class="py-16 bg-gray-50" id="specialties">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-blue-600 mb-4 relative  inline-block">Our Specialties</h2>
+                <p class="text-xl text-gray-600 max-w-2xl mx-auto">Expert care in specialized medical fields</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="bg-white rounded-lg p-6 shadow-md text-center">
+                    <div class="flex items-center justify-center mx-auto mb-4">
+                       <img src="../img/hart.webp" alt="">
+                    </div>
+                    <h3 class="font-bold text-gray-800 mb-2">Cardiology</h3>
+                    <p class="text-sm text-gray-600">Heart and cardiovascular system care</p>
+                </div>
+                
+                <div class="bg-white rounded-lg p-6 shadow-md text-center">
+                    <div class=" flex items-center justify-center mx-auto mb-4">
+                      <img src="../img/maind.webp" alt="">>
+                    </div>
+                    <h3 class="font-bold text-gray-800 mb-2">Neurology</h3>
+                    <p class="text-sm text-gray-600">Brain and nervous system disorders</p>
+                </div>
+                
+                <div class="bg-white rounded-lg p-6 shadow-md text-center">
+                    <div class=" flex items-center justify-center mx-auto mb-4">
+                 <img src="../img/bond.webp" alt="">
+                    </div>
+                    <h3 class="font-bold text-gray-800 mb-2">Orthopedics</h3>
+                    <p class="text-sm text-gray-600">Musculoskeletal system care</p>
+                </div>
+                
+                <div class="bg-white rounded-lg p-6 shadow-md text-center">
+                    <div class=" flex items-center justify-center mx-auto mb-4">
+                        <img src="../img/pd.webp" alt="">
+                    </div>
+                    <h3 class="font-bold text-gray-800 mb-2">Pediatrics</h3>
+                    <p class="text-sm text-gray-600">Healthcare for infants, children, and adolescents</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why Us Section -->
+    <section class="py-16 bg-white" id="why-us">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-blue-600 mb-4 relative  inline-block">Why Choose Us</h2>
+                <p class="text-xl text-gray-600 max-w-2xl mx-auto">What sets MediCare Excellence apart</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                <div>
+                    <div class="space-y-6">
+                        <div class="flex items-start">
+                            <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mr-4">
+                                <i class="fas fa-user-md text-primary text-xl"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-gray-800 mb-1">Expert Medical Team</h3>
+                                <p class="text-gray-600">Our board-certified physicians and specialists have years of experience and are committed to providing the highest quality care.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start">
+                            <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mr-4">
+                                <i class="fas fa-laptop-medical text-primary text-xl"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-gray-800 mb-1">Advanced Technology</h3>
+                                <p class="text-gray-600">We utilize the latest medical technology and equipment to ensure accurate diagnoses and effective treatments.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start">
+                            <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mr-4">
+                                <i class="fas fa-hand-holding-heart text-primary text-xl"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-gray-800 mb-1">Patient-Centered Care</h3>
+                                <p class="text-gray-600">We prioritize your comfort and well-being, providing personalized care plans tailored to your unique health needs.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div>
+                    <img src="https://images.unsplash.com/photo-1551076805-e1869033e561?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" 
+                         alt="Modern hospital facility" 
+                         class="rounded-xl shadow-lg w-full">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Appointment Form Section -->
+    <section id="appointment" class="py-16 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-blue-600 mb-4">Book Your NCD Appointment</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">Schedule your appointment for specialized chronic disease care and management.</p>
+            </div>
+           
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                <!-- Appointment Form -->
+                <div class="bg-gray-200 rounded-xl shadow-lg p-8">
+                    <h3 class="text-2xl font-bold text-gray-800 mb-6">Appointment Request Form</h3>
+                    <form id="appointmentForm" class="space-y-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label for="firstName" class="block text-gray-700 mb-2">First Name *</label>
+                                <input type="text" id="firstName" name="firstName" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                            </div>
+                            <div>
+                                <label for="lastName" class="block text-gray-700 mb-2">Last Name *</label>
+                                <input type="text" id="lastName" name="lastName" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                            </div>
+                        </div>
+                       
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label for="email" class="block text-gray-700 mb-2">Email Address *</label>
+                                <input type="email" id="email" name="email" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                            </div>
+                            <div>
+                                <label for="phone" class="block text-gray-700 mb-2">Phone Number *</label>
+                                <input type="tel" id="phone" name="phone" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                            </div>
+                        </div>
+                       
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label for="dob" class="block text-gray-700 mb-2">Date of Birth *</label>
+                                <input type="date" id="dob" name="dob" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                            </div>
+                            <div>
+                                <label for="condition" class="block text-gray-700 mb-2">NCD Condition *</label>
+                                <select id="condition" name="condition" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                                    <option value="">Select Condition</option>
+                                    <option value="hypertension">Hypertension</option>
+                                    <option value="diabetes">Diabetes</option>
+                                    <option value="asthma">Asthma</option>
+                                    <option value="copd">COPD</option>
+                                    <option value="heart_disease">Heart Disease</option>
+                                    <option value="arthritis">Arthritis</option>
+                                    <option value="thyroid">Thyroid Disorder</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                        </div>
+                       
+                        <div>
+                            <label for="appointmentDate" class="block text-gray-700 mb-2">Preferred Appointment Date *</label>
+                            <input type="date" id="appointmentDate" name="appointmentDate" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                        </div>
+                       
+                        <div>
+                            <label for="message" class="block text-gray-700 mb-2">Additional Information</label>
+                            <textarea id="message" name="message" rows="4" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Please provide any additional details about your condition or concerns..."></textarea>
+                        </div>
+
+                        <div class="flex items-center">
+                            <input type="checkbox" id="consent" name="consent" class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded" required>
+                            <label for="consent" class="ml-2 block text-sm text-gray-700">
+                                I consent to the collection and processing of my personal data for appointment purposes *
+                            </label>
+                        </div>
+                       
+                        <div id="formMessage" class="hidden p-4 rounded-lg"></div>
+                       
+                        <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition duration-300 transform hover:-translate-y-1">
+                            Book Appointment
+                        </button>
+                    </form>
+                </div>
+               
+                <!-- Contact Information -->
+                <div class="space-y-8">
+                    <!-- Contact Info Cards -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="bg-white rounded-xl shadow-lg p-6 flex items-start">
+                            <div class="bg-blue-100 p-3 rounded-lg mr-4">
+                                <i class="fas fa-map-marker-alt text-blue-600 text-xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-gray-800 mb-1">Our Location</h4>
+                                <p class="text-gray-600">Mahama Refugee Camp, Kirehe District, Rwanda</p>
+                            </div>
+                        </div>
+                       
+                        <div class="bg-white rounded-xl shadow-lg p-6 flex items-start">
+                            <div class="bg-blue-100 p-3 rounded-lg mr-4">
+                                <i class="fas fa-phone text-blue-600 text-xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-gray-800 mb-1">Phone Number</h4>
+                                <p class="text-gray-600">+250 000 000</p>
+                            </div>
+                        </div>
+                       
+                        <div class="bg-white rounded-xl shadow-lg p-6 flex items-start">
+                            <div class="bg-blue-100 p-3 rounded-lg mr-4">
+                                <i class="fas fa-envelope text-blue-600 text-xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-gray-800 mb-1">Email Address</h4>
+                                <p class="text-gray-600">unitycoders2025@gmail.com</p>
+                            </div>
+                        </div>
+                       
+                        <div class="bg-white rounded-xl shadow-lg p-6 flex items-start">
+                            <div class="bg-blue-100 p-3 rounded-lg mr-4">
+                                <i class="fas fa-clock text-blue-600 text-xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-gray-800 mb-1">Working Hours</h4>
+                                <p class="text-gray-600">24/7 Emergency Services</p>
+                                <p class="text-gray-600">Mon-Fri: 8am-6pm</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+
+                    <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+  <div class="h-96">
+    <iframe 
+      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1334.760614585555!2d30.642434783637935!3d-2.2630583877293016!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x19c4c500078c5f45%3A0xc3605c2533855d6b!2sMahama%20refugee%20camp!5e0!3m2!1sen!2sus!4v1762760708457!5m2!1sen!2sus" 
+      width="100%" 
+      height="100%" 
+      style="border:0;" 
+      allowfullscreen="" 
+      loading="lazy" 
+      referrerpolicy="no-referrer-when-downgrade"
+      title="Mahamacare Hospital Location at Mahama Refugee Camp">
+    </iframe>
+  </div>
+</div>
+                    <!-- Emergency Notice -->
+                    <div class="bg-red-50 border border-red-200 rounded-xl p-6">
+                        <div class="flex items-start">
+                            <i class="fas fa-exclamation-triangle text-red-500 text-xl mt-1 mr-4"></i>
+                            <div>
+                                <h4 class="font-bold text-red-700 mb-2">Emergency Contact</h4>
+                                <p class="text-red-600 mb-2">For urgent medical assistance, please call our emergency line immediately.</p>
+                                <a href="tel:+250000000" class="inline-block bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg transition duration-300">
+                                    Call Emergency:112
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <!-- Column 1 -->
+                <div>
+                    <h3 class="text-xl font-bold mb-4">MahamaCare Hospital</h3>
+                    <p class="text-gray-400">Providing high quality healthcare for over 20 years.</p>
+                </div>
+                
+                <!-- Column 2 -->
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Quick Links</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#home" class="text-gray-400 hover:text-white transition duration-300">Home</a></li>
+                        <li><a href="#about" class="text-gray-400 hover:text-white transition duration-300">About</a></li>
+                        <li><a href="#services" class="text-gray-400 hover:text-white transition duration-300">Services</a></li>
+                        <li><a href="/doctors.html" class="text-gray-400 hover:text-white transition duration-300">Doctors</a></li>
+                        <li><a href="/Dashboard.html" class="text-gray-400 hover:text-white transition duration-300">Dashboard</a></li>
+                        <li><a href="#appointment" class="text-gray-400 hover:text-white transition duration-300">Appointment</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Column 3 -->
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Contact Info</h4>
+                    <div class="space-y-2 text-gray-400">
+                        <p><i class="fas fa-envelope mr-2"></i> unitycoders2025@gmail.com</p>
+                        <p><i class="fas fa-phone mr-2"></i> +250 000 000</p>
+                        <p><i class="fas fa-map-marker-alt mr-2"></i> Mahama Refugee Camp, Rwanda</p>
+                    </div>
+                </div>
+                
+                <!-- Column 4 -->
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Follow Us</h4>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-white transition duration-300">
+                            <i class="fab fa-facebook-f text-xl"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white transition duration-300">
+                            <i class="fab fa-twitter text-xl"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white transition duration-300">
+                            <i class="fab fa-instagram text-xl"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white transition duration-300">
+                            <i class="fab fa-linkedin-in text-xl"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-500">
+                <p>&copy; 2025 MahamaCare Hospital. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Dashboard Modal -->
+    <div id="dashboardModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="text-2xl font-bold text-gray-800">NCD Appointments Dashboard</h2>
+                <button id="closeDashboardModal" class="text-gray-500 hover:text-gray-700">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-6">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                        <div class="bg-white p-4 rounded-lg shadow">
+                            <h3 class="text-lg font-semibold text-gray-700">Total Appointments</h3>
+                            <p id="totalAppointments" class="text-3xl font-bold text-blue-600">0</p>
+                        </div>
+                        <div class="bg-white p-4 rounded-lg shadow">
+                            <h3 class="text-lg font-semibold text-gray-700">Pending</h3>
+                            <p id="pendingAppointments" class="text-3xl font-bold text-yellow-600">0</p>
+                        </div>
+                        <div class="bg-white p-4 rounded-lg shadow">
+                            <h3 class="text-lg font-semibold text-gray-700">Accepted</h3>
+                            <p id="acceptedAppointments" class="text-3xl font-bold text-green-600">0</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-xl font-semibold">Appointment List</h3>
+                        <button id="refreshDashboard" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+                            <i class="fas fa-sync-alt mr-2"></i>Refresh
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="overflow-x-auto">
+                    <table class="min-w-full bg-white rounded-lg overflow-hidden">
+                        <thead class="bg-gray-100">
+                            <tr>
+                                <th class="py-3 px-4 text-left">Patient Name</th>
+                                <th class="py-3 px-4 text-left">Condition</th>
+                                <th class="py-3 px-4 text-left">Appointment Date</th>
+                                <th class="py-3 px-4 text-left">Status</th>
+                                <th class="py-3 px-4 text-left">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="appointmentsTableBody" class="divide-y divide-gray-200">
+                            <!-- Appointments will be populated here -->
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div id="noAppointmentsMessage" class="text-center py-8 hidden">
+                    <i class="fas fa-calendar-times text-4xl text-gray-400 mb-4"></i>
+                    <p class="text-gray-500 text-lg">No appointments found</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Firebase Configuration and Initialization
+        // (Already included in the head section)
+        
+        // Form submission handler
+        document.getElementById('appointmentForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Get form values
+            const firstName = document.getElementById('firstName').value;
+            const lastName = document.getElementById('lastName').value;
+            const email = document.getElementById('email').value;
+            const phone = document.getElementById('phone').value;
+            const dob = document.getElementById('dob').value;
+            const condition = document.getElementById('condition').value;
+            const appointmentDate = document.getElementById('appointmentDate').value;
+            const message = document.getElementById('message').value;
+            
+            // Create appointment object
+            const appointment = {
+                firstName: firstName,
+                lastName: lastName,
+                email: email,
+                phone: phone,
+                dob: dob,
+                condition: condition,
+                appointmentDate: appointmentDate,
+                message: message,
+                status: 'pending', // Default status
+                createdAt: new Date().toISOString(),
+                updatedAt: new Date().toISOString()
+            };
+            
+            // Show loading state
+            const submitButton = document.querySelector('#appointmentForm button[type="submit"]');
+            const originalText = submitButton.textContent;
+            submitButton.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Booking...';
+            submitButton.disabled = true;
+            
+            // Save to Firebase
+            database.ref('appointments').push(appointment)
+                .then(() => {
+                    // Show success message
+                    showFormMessage('Appointment booked successfully! We will contact you soon.', 'success');
+                    
+                    // Reset form
+                    document.getElementById('appointmentForm').reset();
+                })
+                .catch((error) => {
+                    console.error('Error saving appointment:', error);
+                    showFormMessage('Sorry, there was an error booking your appointment. Please try again.', 'error');
+                })
+                .finally(() => {
+                    // Restore button state
+                    submitButton.textContent = originalText;
+                    submitButton.disabled = false;
+                });
+        });
+        
+        // Function to show form messages
+        function showFormMessage(message, type) {
+            const messageDiv = document.getElementById('formMessage');
+            messageDiv.textContent = message;
+            messageDiv.className = type === 'success' ? 
+                'bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative' :
+                'bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative';
+            messageDiv.classList.remove('hidden');
+            
+            // Auto-hide after 5 seconds
+            setTimeout(() => {
+                messageDiv.classList.add('hidden');
+            }, 5000);
+        }
+        
+        // Set minimum date for appointment to today
+        document.getElementById('appointmentDate').min = new Date().toISOString().split('T')[0];
+        
+        // Set maximum date for DOB to today
+        document.getElementById('dob').max = new Date().toISOString().split('T')[0];
+        
+        // Dashboard functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            // Dashboard modal elements
+            const dashboardModal = document.getElementById('dashboardModal');
+            const closeDashboardModal = document.getElementById('closeDashboardModal');
+            const refreshDashboard = document.getElementById('refreshDashboard');
+            
+            // Open dashboard modal when clicking dashboard link
+            document.querySelector('a[href="#dashboard"]').addEventListener('click', function(e) {
+                e.preventDefault();
+                dashboardModal.style.display = 'block';
+                loadAppointments();
+            });
+            
+            // Close dashboard modal
+            closeDashboardModal.addEventListener('click', function() {
+                dashboardModal.style.display = 'none';
+            });
+            
+            // Refresh dashboard
+            refreshDashboard.addEventListener('click', function() {
+                loadAppointments();
+            });
+            
+            // Close modal when clicking outside
+            window.addEventListener('click', function(e) {
+                if (e.target === dashboardModal) {
+                    dashboardModal.style.display = 'none';
+                }
+            });
+        });
+        
+        // Load appointments from Firebase
+        function loadAppointments() {
+            const appointmentsRef = database.ref('appointments');
+            
+            appointmentsRef.on('value', (snapshot) => {
+                const appointments = snapshot.val();
+                const appointmentsTableBody = document.getElementById('appointmentsTableBody');
+                const noAppointmentsMessage = document.getElementById('noAppointmentsMessage');
+                
+                // Clear table
+                appointmentsTableBody.innerHTML = '';
+                
+                if (appointments) {
+                    // Show table
+                    appointmentsTableBody.parentElement.parentElement.classList.remove('hidden');
+                    noAppointmentsMessage.classList.add('hidden');
+                    
+                    let totalCount = 0;
+                    let pendingCount = 0;
+                    let acceptedCount = 0;
+                    
+                    // Loop through appointments and add to table
+                    Object.keys(appointments).forEach(key => {
+                        const appointment = appointments[key];
+                        totalCount++;
+                        
+                        if (appointment.status === 'pending') pendingCount++;
+                        if (appointment.status === 'accepted') acceptedCount++;
+                        
+                        const row = document.createElement('tr');
+                        row.className = 'hover:bg-gray-50';
+                        
+                        row.innerHTML = `
+                            <td class="py-3 px-4">${appointment.firstName} ${appointment.lastName}</td>
+                            <td class="py-3 px-4">${formatCondition(appointment.condition)}</td>
+                            <td class="py-3 px-4">${formatDate(appointment.appointmentDate)}</td>
+                            <td class="py-3 px-4">
+                                <span class="px-2 py-1 rounded-full text-xs font-semibold ${getStatusClass(appointment.status)}">
+                                    ${appointment.status.charAt(0).toUpperCase() + appointment.status.slice(1)}
+                                </span>
+                            </td>
+                            <td class="py-3 px-4">
+                                <div class="flex space-x-2">
+                                    <button onclick="updateAppointmentStatus('${key}', 'accepted')" class="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded text-sm">
+                                        Accept
+                                    </button>
+                                    <button onclick="updateAppointmentStatus('${key}', 'rejected')" class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-sm">
+                                        Reject
+                                    </button>
+                                    <button onclick="viewAppointmentDetails('${key}')" class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded text-sm">
+                                        View
+                                    </button>
+                                </div>
+                            </td>
+                        `;
+                        
+                        appointmentsTableBody.appendChild(row);
+                    });
+                    
+                    // Update counters
+                    document.getElementById('totalAppointments').textContent = totalCount;
+                    document.getElementById('pendingAppointments').textContent = pendingCount;
+                    document.getElementById('acceptedAppointments').textContent = acceptedCount;
+                } else {
+                    // Show no appointments message
+                    appointmentsTableBody.parentElement.parentElement.classList.add('hidden');
+                    noAppointmentsMessage.classList.remove('hidden');
+                    
+                    // Reset counters
+                    document.getElementById('totalAppointments').textContent = '0';
+                    document.getElementById('pendingAppointments').textContent = '0';
+                    document.getElementById('acceptedAppointments').textContent = '0';
+                }
+            });
+        }
+        
+        // Update appointment status
+        function updateAppointmentStatus(appointmentId, status) {
+            database.ref('appointments/' + appointmentId).update({
+                status: status,
+                updatedAt: new Date().toISOString()
+            })
+            .then(() => {
+                showToast(`Appointment ${status} successfully`, 'success');
+            })
+            .catch((error) => {
+                console.error('Error updating appointment:', error);
+                showToast('Error updating appointment', 'error');
+            });
+        }
+        
+        // View appointment details
+        function viewAppointmentDetails(appointmentId) {
+            database.ref('appointments/' + appointmentId).once('value')
+            .then((snapshot) => {
+                const appointment = snapshot.val();
+                
+                // Create and show details modal
+                const detailsModal = document.createElement('div');
+                detailsModal.className = 'modal';
+                detailsModal.innerHTML = `
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h2 class="text-2xl font-bold text-gray-800">Appointment Details</h2>
+                            <button onclick="this.parentElement.parentElement.parentElement.remove()" class="text-gray-500 hover:text-gray-700">
+                                <i class="fas fa-times text-xl"></i>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="space-y-4">
+                                <div class="grid grid-cols-2 gap-4">
+                                    <div>
+                                        <p class="font-semibold">Patient Name:</p>
+                                        <p>${appointment.firstName} ${appointment.lastName}</p>
+                                    </div>
+                                    <div>
+                                        <p class="font-semibold">Email:</p>
+                                        <p>${appointment.email}</p>
+                                    </div>
+                                </div>
+                                <div class="grid grid-cols-2 gap-4">
+                                    <div>
+                                        <p class="font-semibold">Phone:</p>
+                                        <p>${appointment.phone}</p>
+                                    </div>
+                                    <div>
+                                        <p class="font-semibold">Date of Birth:</p>
+                                        <p>${formatDate(appointment.dob)}</p>
+                                    </div>
+                                </div>
+                                <div class="grid grid-cols-2 gap-4">
+                                    <div>
+                                        <p class="font-semibold">Condition:</p>
+                                        <p>${formatCondition(appointment.condition)}</p>
+                                    </div>
+                                    <div>
+                                        <p class="font-semibold">Appointment Date:</p>
+                                        <p>${formatDate(appointment.appointmentDate)}</p>
+                                    </div>
+                                </div>
+                                <div>
+                                    <p class="font-semibold">Status:</p>
+                                    <span class="px-2 py-1 rounded-full text-xs font-semibold ${getStatusClass(appointment.status)}">
+                                        ${appointment.status.charAt(0).toUpperCase() + appointment.status.slice(1)}
+                                    </span>
+                                </div>
+                                <div>
+                                    <p class="font-semibold">Additional Information:</p>
+                                    <p class="mt-1">${appointment.message || 'No additional information provided.'}</p>
+                                </div>
+                                <div class="grid grid-cols-2 gap-4">
+                                    <div>
+                                        <p class="font-semibold">Created:</p>
+                                        <p>${formatDateTime(appointment.createdAt)}</p>
+                                    </div>
+                                    <div>
+                                        <p class="font-semibold">Last Updated:</p>
+                                        <p>${formatDateTime(appointment.updatedAt)}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                document.body.appendChild(detailsModal);
+                detailsModal.style.display = 'block';
+                
+                // Close modal when clicking outside
+                detailsModal.addEventListener('click', function(e) {
+                    if (e.target === detailsModal) {
+                        detailsModal.remove();
+                    }
+                });
+            })
+            .catch((error) => {
+                console.error('Error fetching appointment details:', error);
+                showToast('Error loading appointment details', 'error');
+            });
+        }
+        
+        // Helper functions
+        function formatCondition(condition) {
+            const conditionMap = {
+                'hypertension': 'Hypertension',
+                'diabetes': 'Diabetes',
+                'asthma': 'Asthma',
+                'copd': 'COPD',
+                'heart_disease': 'Heart Disease',
+                'arthritis': 'Arthritis',
+                'thyroid': 'Thyroid Disorder',
+                'other': 'Other'
+            };
+            
+            return conditionMap[condition] || condition;
+        }
+        
+        function formatDate(dateString) {
+            if (!dateString) return 'N/A';
+            const date = new Date(dateString);
+            return date.toLocaleDateString('en-US', { 
+                year: 'numeric', 
+                month: 'short', 
+                day: 'numeric' 
+            });
+        }
+        
+        function formatDateTime(dateTimeString) {
+            if (!dateTimeString) return 'N/A';
+            const date = new Date(dateTimeString);
+            return date.toLocaleString('en-US', { 
+                year: 'numeric', 
+                month: 'short', 
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+        }
+        
+        function getStatusClass(status) {
+            switch(status) {
+                case 'pending': return 'status-pending';
+                case 'accepted': return 'status-accepted';
+                case 'rejected': return 'status-rejected';
+                default: return 'bg-gray-200 text-gray-800';
+            }
+        }
+        
+        function showToast(message, type) {
+            // Create toast element
+            const toast = document.createElement('div');
+            toast.className = `fixed top-4 right-4 z-50 px-6 py-3 rounded-lg shadow-lg text-white font-semibold ${
+                type === 'success' ? 'bg-green-500' : 'bg-red-500'
+            }`;
+            toast.textContent = message;
+            
+            document.body.appendChild(toast);
+            
+            // Remove toast after 3 seconds
+            setTimeout(() => {
+                toast.remove();
+            }, 3000);
+        }
+    </script>
+</body>
+</html>

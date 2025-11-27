@@ -10,623 +10,776 @@
   
   <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
 </head>
-<body class="bg-gray-100 text-gray-800 select-none">
- <header class="bg-white shadow-md sticky top-0 z-30">
-            <div class="container mx-auto px-4">
-                <div class="flex justify-between items-center py-4">
-                    <div class="flex items-center">
-                        <span class="text-2xl font-bold text-blue-600">Paitent Dashboard</span>
-                    </div>
-                    
-                    <button id="mobile-menu-button" class="md:hidden text-gray-600 focus:outline-none">
-                        <i class="fas fa-bars text-xl"></i>
-                    </button>
-                    
-                    <nav id="nav-links" class="hidden md:flex items-center space-x-6">
-                        <a href="#stats" class="text-gray-700 hover:text-blue-600 transition duration-300">Statistics</a>
-                        <a href="#appointments" class="text-gray-700 hover:text-blue-600 transition duration-300">Appointments</a>
-                        <a href="Servscies/paitents-Servecises.html" class="text-gray-700 hover:text-blue-600 transition duration-300">Patients Regestration</a>
-                        <a href="Servscies/Briths Servecises.html" class="text-gray-700 hover:text-blue-600 transition duration-300">Birth Regestration</a>
-                        <a href="#resources" class="text-gray-700 hover:text-blue-600 transition duration-300">Resources</a>
-                        <button onclick="exportToCSV()" class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition duration-300">
-                            <i class="fas fa-download mr-2"></i>Export Data
-                        </button>
-                    </nav>
-                </div>
-                
-                <div id="mobile-menu" class="hidden md:hidden py-4 border-t border-gray-200">
-                    <div class="flex flex-col space-y-4">
-                        <a href="#stats" class="text-gray-700 hover:text-blue-600">Statistics</a>
-                        <a href="#appointments" class="text-gray-700 hover:text-blue-600">Appointments</a>
-                        <a href="#patients" class="text-gray-700 hover:text-blue-600">Patients</a>
-                        <a href="#resources" class="text-gray-700 hover:text-blue-600">Resources</a>
-                        <button onclick="exportToCSV()" class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition duration-300 text-left">
-                            <i class="fas fa-download mr-2"></i>Export Data
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </header>
-<!-- Login/Signup Modal -->
-<div id="authModal" class="fixed inset-0 bg-gray-800 bg-opacity-70 flex items-center justify-center z-50">
-  <div class="bg-white rounded-2xl shadow-lg p-8 w-96 relative">
-    <div id="loginFormDiv">
-      <h2 class="text-2xl font-bold mb-6 text-center">Login</h2>
-      <form id="loginForm" class="space-y-4">
-        <div>
-          <label class="block mb-1 font-semibold">Email</label>
-          <input type="email" id="loginEmail" required placeholder="Email"
-          class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-        </div>
-        <div>
-          <label class="block mb-1 font-semibold">Password</label>
-          <input type="password" id="loginPassword" required placeholder="Password"
-          class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-        </div>
-        <button type="submit" class="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600">Login</button>
-      </form>
-      <p class="mt-4 text-center text-gray-600">
-        Don't have an account? 
-        <a href="#" id="showSignup" class="text-blue-600 font-semibold hover:underline">Sign Up</a>
-      </p>
-    </div>
+<body class="bg-gray-100 text-gray-800 select-none font-serif">
+  <!-- Login/Signup Modal - Shown by default -->
+  <div id="authModal" class="fixed inset-0 bg-gray-800 bg-opacity-70 flex items-center justify-center z-50">
+    <div class="bg-white rounded-2xl shadow-lg p-8 w-96 relative">
+      <div id="loginFormDiv">
+        <h2 class="text-2xl font-bold mb-6 text-center">Login</h2>
+        <form id="loginForm" class="space-y-4">
+          <div>
+            <label class="block mb-1 font-semibold">Email</label>
+            <input type="email" id="loginEmail" required placeholder="Email"
+            class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+          </div>
+          <div>
+            <label class="block mb-1 font-semibold">Password</label>
+            <input type="password" id="loginPassword" required placeholder="Password"
+            class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+          </div>
+          <button type="submit" class="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600">Login</button>
+        </form>
+        <p class="mt-4 text-center text-gray-600 hidden">
+          Don't have an account? 
+          <a href="#" id="showSignup" class="text-blue-600 font-semibold hover:underline">Sign Up</a>
+        </p>
+      </div>
 
-    <div id="signupFormDiv" class="hidden">
-      <h2 class="text-2xl font-bold mb-6 text-center">Sign Up</h2>
-      <form id="signupForm" class="space-y-4">
-        <div>
-          <label class="block mb-1 font-semibold">Full Name</label>
-          <input type="text" id="signupName" required placeholder="Full name"
-          class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500">
-        </div>
-        <div>
-          <label class="block mb-1 font-semibold">Email</label>
-          <input type="email" id="signupEmail" required placeholder="Email"
-          class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500">
-        </div>
-        <div>
-          <label class="block mb-1 font-semibold">Password</label>
-          <input type="password" id="signupPassword" required placeholder="Password"
-          class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500">
-        </div>
-        <button type="submit" class="w-full bg-green-500 text-white py-2 rounded-lg hover:bg-green-600">Sign Up</button>
-      </form>
-      <p class="mt-4 text-center text-gray-600">
-        Already have an account? 
-        <a href="#" id="showLogin" class="text-green-600 font-semibold hover:underline">Login</a>
-      </p>
+      <div id="signupFormDiv" class="hidden">
+        <h2 class="text-2xl font-bold mb-6 text-center">Sign Up</h2>
+        <form id="signupForm" class="space-y-4">
+          <div>
+            <label class="block mb-1 font-semibold">Full Name</label>
+            <input type="text" id="signupName" required placeholder="Full name"
+            class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500">
+          </div>
+          <div>
+            <label class="block mb-1 font-semibold">Email</label>
+            <input type="email" id="signupEmail" required placeholder="Email"
+            class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500">
+          </div>
+          <div>
+            <label class="block mb-1 font-semibold">Password</label>
+            <input type="password" id="signupPassword" required placeholder="Password"
+            class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500">
+          </div>
+          <button type="submit" class="w-full bg-green-500 text-white py-2 rounded-lg hover:bg-green-600">Sign Up</button>
+        </form>
+        <p class="mt-4 text-center text-gray-600">
+          Already have an account? 
+          <a href="#" id="showLogin" class="text-green-600 font-semibold hover:underline">Login</a>
+        </p>
+      </div>
     </div>
   </div>
-</div>
 
-<div id="dashboardContent" class="flex hidden">
-  <!-- Sidebar -->
-  <aside class="w-56 bg-gradient-to-b from-blue-500 to-blue-600 text-white flex flex-col fixed h-full shadow-xl">
-    <div class="text-xl font-bold p-6 border-b border-blue-400 font-mono bg-blue-600">Hospital Admin</div>
-    
-    <!-- Navigation Menu -->
-    <nav class="flex-1 p-5 space-y-3">
-      <!-- Logout Button -->
-      <a href="#" id="logoutBtn" class="flex items-center p-3 rounded-xl hover:bg-blue-400 transition-all duration-200 text-red-100 bg-blue-700/30">
-        <i class="fa-solid fa-right-from-bracket text-xl mr-3"></i>
-        <span class="font-medium">Logout</span>
-      </a>
-      
-      <!-- Register Patient -->
-      
-
-
-      <a href="./Dashboard/vaccination2.html" class="flex items-center p-3 rounded-xl hover:bg-blue-400 transition-all duration-200 bg-white/10">
-        <i class="fa-solid fa-syringe text-yellow-400 text-2xl mr-3"></i>
-        <span class="font-medium">Vaccination</span>
-      </a>
-      <a href="./Dashboard/Emergency2.html" class="flex items-center p-3 rounded-xl hover:bg-blue-400 transition-all duration-200 bg-white/10">
-        <i class="fa-solid fa-syringe text-yellow-400 text-2xl mr-3"></i>
-        <span class="font-medium">Emergency</span>
-      </a>
-      <a href="./Dashboard/Disability2.html" class="flex items-center p-3 rounded-xl hover:bg-blue-400 transition-all duration-200 bg-white/10">
-        <i class="fa-solid fa-syringe text-yellow-400 text-2xl mr-3"></i>
-        <span class="font-medium">Disability</span>
-      </a>
-     
-    </nav>
-    
-    <div class="p-4 border-t border-blue-400 bg-blue-600/50 rounded-br-3xl">
-      <div class="text-sm text-blue-100 text-center">
-        <i class="fa-solid fa-shield-heart mr-2"></i>
-        Secure System
-      </div>
-    </div>
-  </aside>
-  
-
-  <!-- Main Content -->
-  <main class="ml-56 flex-1 p-6 space-y-8 bg-blue-50 min-h-screen">
-    <section id="dashboard">
-      <h1 class="text-3xl font-bold mb-6 text-blue-800">Dashboard Overview</h1>
-
-      <!-- Stats Cards - Now with Live Data -->
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        <div class="bg-white rounded-2xl shadow-lg p-6 text-center border-l-4 border-blue-500">
-          <h2 class="text-gray-500 font-semibold">Total Patients</h2>
-          <p id="totalPatients" class="text-4xl font-bold text-blue-700 mt-2">0</p>
-          <p class="text-sm text-gray-500 mt-1">Registered in system</p>
-        </div>
-        
-        <div class="bg-white rounded-2xl shadow-lg p-6 text-center border-l-4 border-green-500">
-          <h2 class="text-gray-500 font-semibold">Birth Records</h2>
-          <p id="totalBirths" class="text-4xl font-bold text-green-600 mt-2">0</p>
-          <p class="text-sm text-gray-500 mt-1">Births registered</p>
-        </div>
-        
-        <div class="bg-white rounded-2xl shadow-lg p-6 text-center border-l-4 border-indigo-500">
-          <h2 class="text-gray-500 font-semibold">Male Patients</h2>
-          <p id="malePatients" class="text-4xl font-bold text-indigo-600 mt-2">0</p>
-          <p class="text-sm text-gray-500 mt-1"><span id="malePercent">0%</span> of total</p>
-        </div>
-        
-        <div class="bg-white rounded-2xl shadow-lg p-6 text-center border-l-4 border-pink-500">
-          <h2 class="text-gray-500 font-semibold">Female Patients</h2>
-          <p id="femalePatients" class="text-4xl font-bold text-pink-600 mt-2">0</p>
-          <p class="text-sm text-gray-500 mt-1"><span id="femalePercent">0%</span> of total</p>
-        </div>
-      </div>
-
-      <!-- Recent Activity -->
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-8">
-        <div class="bg-white rounded-2xl shadow-lg p-6">
-          <div class="flex justify-between items-center mb-4">
-            <h2 class="text-xl font-semibold text-gray-800">Recent Patients</h2>
-            <span class="bg-blue-100 text-blue-800 text-sm px-3 py-1 rounded-full" id="recentPatientsCount">0</span>
+  <!-- Dashboard Content - Hidden by default until authentication -->
+  <div id="dashboardContent" class="hidden">
+    <header class="bg-white shadow-md sticky top-0 z-30">
+      <div class="container mx-auto px-4">
+        <div class="flex justify-between items-center py-4">
+          <div class="flex items-center">
+            <span class="text-2xl font-bold text-blue-600"> <a href="/index.html">🏥 MCH</a>  Patients and BirthsDashboard</span>
           </div>
-          <div id="recentPatients" class="space-y-3 max-h-80 overflow-y-auto">
-            <!-- Recent patients will be loaded here -->
+          
+          <button id="mobile-menu-button" class="md:hidden text-gray-600 focus:outline-none">
+            <i class="fas fa-bars text-xl"></i>
+          </button>
+          
+          <nav id="nav-links" class="hidden md:flex items-center space-x-6">
+            <a href="#Statistic" class="text-gray-700 hover:text-blue-600 transition duration-300">Statistics</a>
+            <a href="Servscies/paitents-Servecises.html" class="text-gray-700 hover:text-blue-600 transition duration-300">Patients Registration</a>
+            <a href="Servscies/Briths Servecises.html" class="text-gray-700 hover:text-blue-600 transition duration-300">Birth Registration</a>
+          </nav>
+        </div>
+        
+        <div id="mobile-menu" class="hidden md:hidden py-4 border-t border-gray-200">
+          <div class="flex flex-col space-y-4">
+            <a href="#Statistic" class="text-gray-700 hover:text-blue-600">Statistics</a>
+            <a href="Servscies/paitents-Servecises.html" class="text-gray-700 hover:text-blue-600 transition duration-300">Patients Registration</a>
+            <a href="Servscies/Briths Servecises.html" class="text-gray-700 hover:text-blue-600 transition duration-300">Birth Registration</a>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div class="flex">
+      <!-- Sidebar -->
+      <aside class="w-56 bg-gradient-to-b from-blue-500 to-blue-600 text-white flex flex-col fixed h-full shadow-xl">
+        <div class="text-xl font-bold p-6 border-b border-blue-400 font-mono bg-blue-600">Hospital Admin</div>
+        
+        <!-- Navigation Menu -->
+        <nav class="flex-1 p-5 space-y-3">
+          <!-- Logout Button -->
+          <a href="#" id="logoutBtn" class="flex items-center p-3 rounded-xl hover:bg-blue-400 transition-all duration-200 text-red-100 bg-blue-700/30">
+            <i class="fa-solid fa-right-from-bracket text-xl mr-3"></i>
+            <span class="font-medium">Logout</span>
+          </a>
+          
+          <!-- Patient Registration -->
+          <a href="Servscies/paitents-Servecises.html" class="flex items-center p-3 rounded-xl hover:bg-blue-400 transition-all duration-200 bg-white/10">
+            <i class="fa-solid fa-user-injured text-yellow-400 text-2xl mr-3"></i>
+            <span class="font-medium">Patient Registration</span>
+          </a>
+
+          <!-- Birth Registration -->
+          <a href="Servscies/Briths Servecises.html" class="flex items-center p-3 rounded-xl hover:bg-blue-400 transition-all duration-200 bg-white/10">
+            <i class="fa-solid fa-baby text-yellow-400 text-2xl mr-3"></i>
+            <span class="font-medium">Birth Registration</span>
+          </a>
+    <a href="/Dashboard/maternity.html" class="flex items-center p-3 rounded-xl hover:bg-blue-400 transition-all duration-200 bg-white/10">
+            <i class="fa-solid fa-user-injured text-yellow-400 text-2xl mr-3"></i>
+            <span class="font-medium">Maternity</span>
+          </a>
+          <!-- Vaccination -->
+          <a href="./Dashboard/vaccination2.html" class="flex items-center p-3 rounded-xl hover:bg-blue-400 transition-all duration-200 bg-white/10">
+            <i class="fa-solid fa-syringe text-yellow-400 text-2xl mr-3"></i>
+            <span class="font-medium">Vaccination</span>
+          </a>
+
+          <!-- Emergency -->
+          <a href="./Dashboard/Emergency2.html" class="flex items-center p-3 rounded-xl hover:bg-blue-400 transition-all duration-200 bg-white/10">
+            <i class="fa-solid fa-truck-medical text-yellow-400 text-2xl mr-3"></i>
+            <span class="font-medium">Emergency</span>
+          </a>
+
+          <!-- Disability -->
+          <a href="./Dashboard/Disability2.html" class="flex items-center p-3 rounded-xl hover:bg-blue-400 transition-all duration-200 bg-white/10">
+            <i class="fa-solid fa-wheelchair text-yellow-400 text-2xl mr-3"></i>
+            <span class="font-medium">Disability</span>
+          </a>
+        </nav>
+        
+        <div class="p-4 border-t border-blue-400 bg-blue-600/50 rounded-br-3xl">
+          <div class="text-sm text-blue-100 text-center">
+            <i class="fa-solid fa-shield-heart mr-2"></i>
+            Secure System
+          </div>
+        </div>
+      </aside>
+      
+
+      <!-- Main Content -->
+      <main class="ml-56 flex-1 p-6 space-y-8 bg-blue-50 min-h-screen">
+        <section id="dashboard">
+          <h1 class="text-3xl font-bold mb-6 text-blue-800">Dashboard Overview</h1>
+
+          <!-- Stats Cards - Now with Live Data -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div class="bg-white rounded-2xl shadow-lg p-6 text-center ">
+              <h2 class="text-gray-500 font-semibold">Total Patients</h2>
+              <p id="totalPatients" class="text-4xl font-bold text-blue-700 mt-2">0</p>
+              <p class="text-sm text-gray-500 mt-1">Registered in system</p>
+            </div>
+            
+            <div class="bg-white rounded-2xl shadow-lg p-6 text-center ">
+              <h2 class="text-gray-500 font-semibold">Birth Records</h2>
+              <p id="totalBirths" class="text-4xl font-bold text-green-600 mt-2">0</p>
+              <p class="text-sm text-gray-500 mt-1">Births registered</p>
+            </div>
+            
+            <div class="bg-white rounded-2xl shadow-lg p-6 text-center ">
+              <h2 class="text-gray-500 font-semibold">Male Patients</h2>
+              <p id="malePatients" class="text-4xl font-bold text-indigo-600 mt-2">0</p>
+              <p class="text-sm text-gray-500 mt-1"><span id="malePercent">0%</span> of total</p>
+            </div>
+            
+            <div class="bg-white rounded-2xl shadow-lg p-6 text-center ">
+              <h2 class="text-gray-500 font-semibold">Female Patients</h2>
+              <p id="femalePatients" class="text-4xl font-bold text-pink-600 mt-2">0</p>
+              <p class="text-sm text-gray-500 mt-1"><span id="femalePercent">0%</span> of total</p>
+            </div>
+          </div>
+
+          <!-- Recent Activity -->
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-8">
+            <div class="bg-white rounded-2xl shadow-lg p-6">
+              <div class="flex justify-between items-center mb-4">
+                <h2 class="text-xl font-semibold text-gray-800">Recent Patients</h2>
+                <span class="bg-blue-100 text-blue-800 text-sm px-3 py-1 rounded-full" id="recentPatientsCount">0</span>
+              </div>
+              <div id="recentPatients" class="space-y-3 max-h-80 overflow-y-auto">
+                <!-- Recent patients will be loaded here -->
+                <div class="text-center text-gray-500 py-8">
+                  <i class="fas fa-users text-4xl mb-2 opacity-50"></i>
+                  <p>No patients registered yet</p>
+                </div>
+              </div>
+            </div>
+            
+            <div class="bg-white rounded-2xl shadow-lg p-6">
+              <div class="flex justify-between items-center mb-4">
+                <h2 class="text-xl font-semibold text-gray-800">Recent Births</h2>
+                <span class="bg-green-100 text-green-800 text-sm px-3 py-1 rounded-full" id="recentBirthsCount">0</span>
+              </div>
+              <div id="recentBirths" class="space-y-3 max-h-80 overflow-y-auto">
+                <!-- Recent births will be loaded here -->
+                <div class="text-center text-gray-500 py-8">
+                  <i class="fas fa-baby text-4xl mb-2 opacity-50"></i>
+                  <p>No births registered yet</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Charts -->
+          <div id="Statistic" class="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-8">
+            <div class="bg-white rounded-2xl shadow-lg p-6">
+              <h2 class="text-lg font-semibold mb-4 text-gray-800">Patients by Gender</h2>
+              <canvas id="genderChart" height="250"></canvas>
+            </div>
+            
+            <div class="bg-white rounded-2xl shadow-lg p-6">
+              <h2 class="text-lg font-semibold mb-4 text-gray-800">Birth Gender Ratio</h2>
+              <canvas id="birthChart" height="250"></canvas>
+            </div>
+            
+            <div class="bg-white rounded-2xl shadow-lg p-6 lg:col-span-2">
+              <h2 class="text-lg font-semibold mb-4 text-gray-800">Monthly Registration Trends</h2>
+              <canvas id="trendChart" height="120"></canvas>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <!-- Firebase Configuration and Dashboard Script -->
+  <script>
+    // Firebase Configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyDt4vs7S3nckO8xxfp1_axHZ76J0cz2qdg",
+      authDomain: "mahamahospital.firebaseapp.com",
+      databaseURL: "https://mahamahospital-default-rtdb.firebaseio.com",
+      projectId: "mahamahospital",
+      storageBucket: "mahamahospital.firebasestorage.app",
+      messagingSenderId: "256305692002",
+      appId: "1:256305692002:web:cfef26992264204be9803b"
+    };
+
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const database = firebase.database();
+
+    // Chart instances
+    let genderChart, birthChart, trendChart;
+
+    // Dashboard Functions
+    class DashboardManager {
+      constructor() {
+        this.patientsRef = database.ref('patients');
+        this.birthsRef = database.ref('births');
+        this.patients = [];
+        this.births = [];
+      }
+
+      // Load all data
+      async loadAllData() {
+        await this.loadPatients();
+        await this.loadBirths();
+        this.updateDashboard();
+        this.setupRealTimeListeners();
+      }
+
+      // Load patients data
+      async loadPatients() {
+        try {
+          const snapshot = await this.patientsRef.once('value');
+          const patientsData = snapshot.val();
+          
+          if (patientsData) {
+            // Convert object to array and add IDs
+            this.patients = Object.entries(patientsData).map(([id, patient]) => ({
+              id,
+              ...patient
+            }));
+          } else {
+            this.patients = [];
+          }
+        } catch (error) {
+          console.error('Error loading patients:', error);
+          this.patients = [];
+        }
+      }
+
+      // Load births data
+      async loadBirths() {
+        try {
+          const snapshot = await this.birthsRef.once('value');
+          const birthsData = snapshot.val();
+          
+          if (birthsData) {
+            // Convert object to array and add IDs
+            this.births = Object.entries(birthsData).map(([id, birth]) => ({
+              id,
+              ...birth
+            }));
+          } else {
+            this.births = [];
+          }
+        } catch (error) {
+          console.error('Error loading births:', error);
+          this.births = [];
+        }
+      }
+
+      // Setup real-time listeners
+      setupRealTimeListeners() {
+        // Real-time patient updates
+        this.patientsRef.on('value', (snapshot) => {
+          const patientsData = snapshot.val();
+          this.patients = patientsData ? Object.entries(patientsData).map(([id, patient]) => ({
+            id,
+            ...patient
+          })) : [];
+          this.updateDashboard();
+        });
+
+        // Real-time birth updates
+        this.birthsRef.on('value', (snapshot) => {
+          const birthsData = snapshot.val();
+          this.births = birthsData ? Object.entries(birthsData).map(([id, birth]) => ({
+            id,
+            ...birth
+          })) : [];
+          this.updateDashboard();
+        });
+      }
+
+      // Update dashboard with current data
+      updateDashboard() {
+        this.updateStatistics();
+        this.updateRecentActivity();
+        this.updateCharts();
+      }
+
+      // Update statistics cards
+      updateStatistics() {
+        const totalPatients = this.patients.length;
+        const totalBirths = this.births.length;
+        
+        // Gender counts for patients - handle both field name formats
+        const malePatients = this.patients.filter(p => 
+          (p.gender && p.gender.toLowerCase() === 'male') || 
+          (p.Gender && p.Gender.toLowerCase() === 'male')
+        ).length;
+        
+        const femalePatients = this.patients.filter(p => 
+          (p.gender && p.gender.toLowerCase() === 'female') || 
+          (p.Gender && p.Gender.toLowerCase() === 'female')
+        ).length;
+        
+        // Calculate percentages
+        const malePercent = totalPatients > 0 ? Math.round((malePatients / totalPatients) * 100) : 0;
+        const femalePercent = totalPatients > 0 ? Math.round((femalePatients / totalPatients) * 100) : 0;
+
+        // Update DOM elements
+        document.getElementById('totalPatients').textContent = totalPatients;
+        document.getElementById('totalBirths').textContent = totalBirths;
+        document.getElementById('malePatients').textContent = malePatients;
+        document.getElementById('femalePatients').textContent = femalePatients;
+        document.getElementById('malePercent').textContent = `${malePercent}%`;
+        document.getElementById('femalePercent').textContent = `${femalePercent}%`;
+      }
+
+      // Update recent activity sections
+      updateRecentActivity() {
+        this.updateRecentPatients();
+        this.updateRecentBirths();
+      }
+
+      updateRecentPatients() {
+        const container = document.getElementById('recentPatients');
+        const countElement = document.getElementById('recentPatientsCount');
+        
+        // Get recent patients (last 5)
+        const recentPatients = [...this.patients]
+          .sort((a, b) => {
+            const dateA = a.createdAt ? new Date(a.createdAt) : new Date(0);
+            const dateB = b.createdAt ? new Date(b.createdAt) : new Date(0);
+            return dateB - dateA;
+          })
+          .slice(0, 5);
+
+        countElement.textContent = recentPatients.length;
+
+        if (recentPatients.length === 0) {
+          container.innerHTML = `
             <div class="text-center text-gray-500 py-8">
               <i class="fas fa-users text-4xl mb-2 opacity-50"></i>
               <p>No patients registered yet</p>
             </div>
+          `;
+          return;
+        }
+
+        container.innerHTML = recentPatients.map(patient => {
+          const name = patient.name || patient.Name || 'Unknown';
+          const age = patient.age || patient.Age || 'Unknown';
+          const gender = patient.gender || patient.Gender || 'Unknown';
+          const createdAt = patient.createdAt || 'N/A';
+          
+          return `
+          <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-blue-50 transition duration-200">
+            <div class="flex items-center">
+              <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center mr-3">
+                <i class="fas fa-user text-blue-600"></i>
+              </div>
+              <div>
+                <p class="font-semibold text-gray-800">${name}</p>
+                <p class="text-sm text-gray-600">${age} years • ${gender}</p>
+              </div>
+            </div>
+            <span class="text-xs text-gray-500">${this.formatDate(createdAt)}</span>
           </div>
-        </div>
+        `}).join('');
+      }
+
+      updateRecentBirths() {
+        const container = document.getElementById('recentBirths');
+        const countElement = document.getElementById('recentBirthsCount');
         
-        <div class="bg-white rounded-2xl shadow-lg p-6">
-          <div class="flex justify-between items-center mb-4">
-            <h2 class="text-xl font-semibold text-gray-800">Recent Births</h2>
-            <span class="bg-green-100 text-green-800 text-sm px-3 py-1 rounded-full" id="recentBirthsCount">0</span>
-          </div>
-          <div id="recentBirths" class="space-y-3 max-h-80 overflow-y-auto">
-            <!-- Recent births will be loaded here -->
+        // Get recent births (last 5)
+        const recentBirths = [...this.births]
+          .sort((a, b) => {
+            const dateA = a.createdAt ? new Date(a.createdAt) : new Date(0);
+            const dateB = b.createdAt ? new Date(b.createdAt) : new Date(0);
+            return dateB - dateA;
+          })
+          .slice(0, 5);
+
+        countElement.textContent = recentBirths.length;
+
+        if (recentBirths.length === 0) {
+          container.innerHTML = `
             <div class="text-center text-gray-500 py-8">
               <i class="fas fa-baby text-4xl mb-2 opacity-50"></i>
               <p>No births registered yet</p>
             </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Charts -->
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-8">
-        <div class="bg-white rounded-2xl shadow-lg p-6">
-          <h2 class="text-lg font-semibold mb-4 text-gray-800">Patients by Gender</h2>
-          <canvas id="genderChart" height="250"></canvas>
-        </div>
-        
-        <div class="bg-white rounded-2xl shadow-lg p-6">
-          <h2 class="text-lg font-semibold mb-4 text-gray-800">Birth Gender Ratio</h2>
-          <canvas id="birthChart" height="250"></canvas>
-        </div>
-        
-        <div class="bg-white rounded-2xl shadow-lg p-6 lg:col-span-2">
-          <h2 class="text-lg font-semibold mb-4 text-gray-800">Monthly Registration Trends</h2>
-          <canvas id="trendChart" height="120"></canvas>
-        </div>
-      </div>
-    </section>
-  </main>
-</div>
-
-<!-- Firebase Configuration and Dashboard Script -->
-<script>
-  // Firebase Configuration
-  const firebaseConfig = {
-    apiKey: "AIzaSyDt4vs7S3nckO8xxfp1_axHZ76J0cz2qdg",
-    authDomain: "mahamahospital.firebaseapp.com",
-    databaseURL: "https://mahamahospital-default-rtdb.firebaseio.com",
-    projectId: "mahamahospital",
-    storageBucket: "mahamahospital.firebasestorage.app",
-    messagingSenderId: "256305692002",
-    appId: "1:256305692002:web:cfef26992264204be9803b"
-  };
-
-  // Initialize Firebase
-  firebase.initializeApp(firebaseConfig);
-  const database = firebase.database();
-
-  // Chart instances
-  let genderChart, birthChart, trendChart;
-
-  // Dashboard Functions
-  class DashboardManager {
-    constructor() {
-      this.patientsRef = database.ref('patients');
-      this.birthsRef = database.ref('births');
-      this.patients = [];
-      this.births = [];
-    }
-
-    // Load all data
-    async loadAllData() {
-      await this.loadPatients();
-      await this.loadBirths();
-      this.updateDashboard();
-      this.setupRealTimeListeners();
-    }
-
-    // Load patients data
-    async loadPatients() {
-      try {
-        const snapshot = await this.patientsRef.once('value');
-        const patientsData = snapshot.val();
-        
-        if (patientsData) {
-          this.patients = Object.values(patientsData);
-        } else {
-          this.patients = [];
+          `;
+          return;
         }
-      } catch (error) {
-        console.error('Error loading patients:', error);
-        this.patients = [];
-      }
-    }
 
-    // Load births data
-    async loadBirths() {
-      try {
-        const snapshot = await this.birthsRef.once('value');
-        const birthsData = snapshot.val();
-        
-        if (birthsData) {
-          this.births = Object.values(birthsData);
-        } else {
-          this.births = [];
-        }
-      } catch (error) {
-        console.error('Error loading births:', error);
-        this.births = [];
-      }
-    }
-
-    // Setup real-time listeners
-    setupRealTimeListeners() {
-      // Real-time patient updates
-      this.patientsRef.on('value', (snapshot) => {
-        const patientsData = snapshot.val();
-        this.patients = patientsData ? Object.values(patientsData) : [];
-        this.updateDashboard();
-      });
-
-      // Real-time birth updates
-      this.birthsRef.on('value', (snapshot) => {
-        const birthsData = snapshot.val();
-        this.births = birthsData ? Object.values(birthsData) : [];
-        this.updateDashboard();
-      });
-    }
-
-    // Update dashboard with current data
-    updateDashboard() {
-      this.updateStatistics();
-      this.updateRecentActivity();
-      this.updateCharts();
-    }
-
-    // Update statistics cards
-    updateStatistics() {
-      const totalPatients = this.patients.length;
-      const totalBirths = this.births.length;
-      
-      // Gender counts for patients
-      const malePatients = this.patients.filter(p => p.gender === 'Male').length;
-      const femalePatients = this.patients.filter(p => p.gender === 'Female').length;
-      
-      // Calculate percentages
-      const malePercent = totalPatients > 0 ? Math.round((malePatients / totalPatients) * 100) : 0;
-      const femalePercent = totalPatients > 0 ? Math.round((femalePatients / totalPatients) * 100) : 0;
-
-      // Update DOM elements
-      document.getElementById('totalPatients').textContent = totalPatients;
-      document.getElementById('totalBirths').textContent = totalBirths;
-      document.getElementById('malePatients').textContent = malePatients;
-      document.getElementById('femalePatients').textContent = femalePatients;
-      document.getElementById('malePercent').textContent = `${malePercent}%`;
-      document.getElementById('femalePercent').textContent = `${femalePercent}%`;
-    }
-
-    // Update recent activity sections
-    updateRecentActivity() {
-      this.updateRecentPatients();
-      this.updateRecentBirths();
-    }
-
-    updateRecentPatients() {
-      const container = document.getElementById('recentPatients');
-      const countElement = document.getElementById('recentPatientsCount');
-      
-      // Get recent patients (last 5)
-      const recentPatients = [...this.patients]
-        .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
-        .slice(0, 5);
-
-      countElement.textContent = recentPatients.length;
-
-      if (recentPatients.length === 0) {
-        container.innerHTML = `
-          <div class="text-center text-gray-500 py-8">
-            <i class="fas fa-users text-4xl mb-2 opacity-50"></i>
-            <p>No patients registered yet</p>
-          </div>
-        `;
-        return;
-      }
-
-      container.innerHTML = recentPatients.map(patient => `
-        <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-blue-50 transition duration-200">
-          <div class="flex items-center">
-            <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center mr-3">
-              <i class="fas fa-user text-blue-600"></i>
+        container.innerHTML = recentBirths.map(birth => {
+          const babyName = birth.BabyName || birth.babyName || 'Unknown';
+          const gender = birth.Gender || birth.gender || 'Unknown';
+          const motherName = birth.MotherName || birth.motherName || 'Unknown';
+          const createdAt = birth.createdAt || 'N/A';
+          
+          return `
+          <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-green-50 transition duration-200">
+            <div class="flex items-center">
+              <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center mr-3">
+                <i class="fas fa-baby text-green-600"></i>
+              </div>
+              <div>
+                <p class="font-semibold text-gray-800">${babyName}</p>
+                <p class="text-sm text-gray-600">${gender} • Mother: ${motherName}</p>
+              </div>
             </div>
-            <div>
-              <p class="font-semibold text-gray-800">${patient.name}</p>
-              <p class="text-sm text-gray-600">${patient.age} years • ${patient.gender}</p>
-            </div>
+            <span class="text-xs text-gray-500">${this.formatDate(createdAt)}</span>
           </div>
-          <span class="text-xs text-gray-500">${this.formatDate(patient.createdAt)}</span>
-        </div>
-      `).join('');
-    }
-
-    updateRecentBirths() {
-      const container = document.getElementById('recentBirths');
-      const countElement = document.getElementById('recentBirthsCount');
-      
-      // Get recent births (last 5)
-      const recentBirths = [...this.births]
-        .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
-        .slice(0, 5);
-
-      countElement.textContent = recentBirths.length;
-
-      if (recentBirths.length === 0) {
-        container.innerHTML = `
-          <div class="text-center text-gray-500 py-8">
-            <i class="fas fa-baby text-4xl mb-2 opacity-50"></i>
-            <p>No births registered yet</p>
-          </div>
-        `;
-        return;
+        `}).join('');
       }
 
-      container.innerHTML = recentBirths.map(birth => `
-        <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-green-50 transition duration-200">
-          <div class="flex items-center">
-            <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center mr-3">
-              <i class="fas fa-baby text-green-600"></i>
-            </div>
-            <div>
-              <p class="font-semibold text-gray-800">${birth.babyName}</p>
-              <p class="text-sm text-gray-600">${birth.gender} • Mother: ${birth.motherName}</p>
-            </div>
-          </div>
-          <span class="text-xs text-gray-500">${this.formatDate(birth.createdAt)}</span>
-        </div>
-      `).join('');
-    }
-
-    // Update charts
-    updateCharts() {
-      this.updateGenderChart();
-      this.updateBirthChart();
-      this.updateTrendChart();
-    }
-
-    updateGenderChart() {
-      const ctx = document.getElementById('genderChart').getContext('2d');
-      
-      // Destroy existing chart if it exists
-      if (genderChart) {
-        genderChart.destroy();
+      // Update charts
+      updateCharts() {
+        this.updateGenderChart();
+        this.updateBirthChart();
+        this.updateTrendChart();
       }
 
-      const maleCount = this.patients.filter(p => p.gender === 'Male').length;
-      const femaleCount = this.patients.filter(p => p.gender === 'Female').length;
-      const otherCount = this.patients.filter(p => p.gender === 'Other').length;
-
-      genderChart = new Chart(ctx, {
-        type: 'doughnut',
-        data: {
-          labels: ['Male', 'Female', 'Other'],
-          datasets: [{
-            data: [maleCount, femaleCount, otherCount],
-            backgroundColor: ['#4f46e5', '#ec4899', '#6b7280'],
-            borderWidth: 2,
-            borderColor: '#ffffff'
-          }]
-        },
-        options: {
-          responsive: true,
-          plugins: {
-            legend: {
-              position: 'bottom'
-            }
-          }
+      updateGenderChart() {
+        const ctx = document.getElementById('genderChart').getContext('2d');
+        
+        // Destroy existing chart if it exists
+        if (genderChart) {
+          genderChart.destroy();
         }
-      });
-    }
 
-    updateBirthChart() {
-      const ctx = document.getElementById('birthChart').getContext('2d');
-      
-      if (birthChart) {
-        birthChart.destroy();
-      }
-
-      const maleBirths = this.births.filter(b => b.gender === 'Male').length;
-      const femaleBirths = this.births.filter(b => b.gender === 'Female').length;
-
-      birthChart = new Chart(ctx, {
-        type: 'pie',
-        data: {
-          labels: ['Male', 'Female'],
-          datasets: [{
-            data: [maleBirths, femaleBirths],
-            backgroundColor: ['#60a5fa', '#f472b6'],
-            borderWidth: 2,
-            borderColor: '#ffffff'
-          }]
-        },
-        options: {
-          responsive: true,
-          plugins: {
-            legend: {
-              position: 'bottom'
-            }
-          }
-        }
-      });
-    }
-
-    updateTrendChart() {
-      const ctx = document.getElementById('trendChart').getContext('2d');
-      
-      if (trendChart) {
-        trendChart.destroy();
-      }
-
-      // Get last 6 months data
-      const months = this.getLast6Months();
-      const patientTrends = this.getMonthlyData(this.patients, months);
-      const birthTrends = this.getMonthlyData(this.births, months);
-
-      trendChart = new Chart(ctx, {
-        type: 'line',
-        data: {
-          labels: months,
-          datasets: [
-            {
-              label: 'Patients',
-              data: patientTrends,
-              borderColor: '#3b82f6',
-              backgroundColor: 'rgba(59, 130, 246, 0.1)',
-              tension: 0.4,
-              fill: true
-            },
-            {
-              label: 'Births',
-              data: birthTrends,
-              borderColor: '#10b981',
-              backgroundColor: 'rgba(16, 185, 129, 0.1)',
-              tension: 0.4,
-              fill: true
-            }
-          ]
-        },
-        options: {
-          responsive: true,
-          plugins: {
-            legend: {
-              position: 'top'
-            }
-          },
-          scales: {
-            y: {
-              beginAtZero: true
-            }
-          }
-        }
-      });
-    }
-
-    // Utility functions
-    getLast6Months() {
-      const months = [];
-      for (let i = 5; i >= 0; i--) {
-        const date = new Date();
-        date.setMonth(date.getMonth() - i);
-        months.push(date.toLocaleString('default', { month: 'short' }));
-      }
-      return months;
-    }
-
-    getMonthlyData(data, months) {
-      const currentYear = new Date().getFullYear();
-      return months.map(month => {
-        return data.filter(item => {
-          const itemDate = new Date(item.createdAt);
-          return itemDate.getFullYear() === currentYear && 
-                 itemDate.toLocaleString('default', { month: 'short' }) === month;
+        // Handle both field name formats for patients
+        const maleCount = this.patients.filter(p => 
+          (p.gender && p.gender.toLowerCase() === 'male') || 
+          (p.Gender && p.Gender.toLowerCase() === 'male')
+        ).length;
+        
+        const femaleCount = this.patients.filter(p => 
+          (p.gender && p.gender.toLowerCase() === 'female') || 
+          (p.Gender && p.Gender.toLowerCase() === 'female')
+        ).length;
+        
+        const otherCount = this.patients.filter(p => {
+          const gender = (p.gender || p.Gender || '').toLowerCase();
+          return gender && gender !== 'male' && gender !== 'female';
         }).length;
-      });
+
+        genderChart = new Chart(ctx, {
+          type: 'doughnut',
+          data: {
+            labels: ['Male', 'Female', 'Other'],
+            datasets: [{
+              data: [maleCount, femaleCount, otherCount],
+              backgroundColor: ['#4f46e5', '#ec4899', '#6b7280'],
+              borderWidth: 2,
+              borderColor: '#ffffff'
+            }]
+          },
+          options: {
+            responsive: true,
+            plugins: {
+              legend: {
+                position: 'bottom'
+              }
+            }
+          }
+        });
+      }
+
+      updateBirthChart() {
+        const ctx = document.getElementById('birthChart').getContext('2d');
+        
+        if (birthChart) {
+          birthChart.destroy();
+        }
+
+        // Handle both field name formats for births
+        const maleBirths = this.births.filter(b => 
+          (b.gender && b.gender.toLowerCase() === 'male') || 
+          (b.Gender && b.Gender.toLowerCase() === 'male')
+        ).length;
+        
+        const femaleBirths = this.births.filter(b => 
+          (b.gender && b.gender.toLowerCase() === 'female') || 
+          (b.Gender && b.Gender.toLowerCase() === 'female')
+        ).length;
+
+        birthChart = new Chart(ctx, {
+          type: 'pie',
+          data: {
+            labels: ['Male', 'Female'],
+            datasets: [{
+              data: [maleBirths, femaleBirths],
+              backgroundColor: ['#60a5fa', '#f472b6'],
+              borderWidth: 2,
+              borderColor: '#ffffff'
+            }]
+          },
+          options: {
+            responsive: true,
+            plugins: {
+              legend: {
+                position: 'bottom'
+              }
+            }
+          }
+        });
+      }
+
+      updateTrendChart() {
+        const ctx = document.getElementById('trendChart').getContext('2d');
+        
+        if (trendChart) {
+          trendChart.destroy();
+        }
+
+        // Get last 6 months data
+        const months = this.getLast6Months();
+        const patientTrends = this.getMonthlyData(this.patients, months);
+        const birthTrends = this.getMonthlyData(this.births, months);
+
+        trendChart = new Chart(ctx, {
+          type: 'line',
+          data: {
+            labels: months,
+            datasets: [
+              {
+                label: 'Patients',
+                data: patientTrends,
+                borderColor: '#3b82f6',
+                backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                tension: 0.4,
+                fill: true
+              },
+              {
+                label: 'Births',
+                data: birthTrends,
+                borderColor: '#10b981',
+                backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                tension: 0.4,
+                fill: true
+              }
+            ]
+          },
+          options: {
+            responsive: true,
+            plugins: {
+              legend: {
+                position: 'top'
+              }
+            },
+            scales: {
+              y: {
+                beginAtZero: true
+              }
+            }
+          }
+        });
+      }
+
+      // Utility functions
+      getLast6Months() {
+        const months = [];
+        for (let i = 5; i >= 0; i--) {
+          const date = new Date();
+          date.setMonth(date.getMonth() - i);
+          months.push(date.toLocaleString('default', { month: 'short' }));
+        }
+        return months;
+      }
+
+      getMonthlyData(data, months) {
+        const currentYear = new Date().getFullYear();
+        return months.map(month => {
+          return data.filter(item => {
+            const itemDate = new Date(item.createdAt || 0);
+            return itemDate.getFullYear() === currentYear && 
+                   itemDate.toLocaleString('default', { month: 'short' }) === month;
+          }).length;
+        });
+      }
+
+      formatDate(dateString) {
+        if (!dateString || dateString === 'N/A') return 'N/A';
+        try {
+          const date = new Date(dateString);
+          return date.toLocaleDateString();
+        } catch (e) {
+          return 'N/A';
+        }
+      }
     }
 
-    formatDate(dateString) {
-      if (!dateString) return 'N/A';
-      const date = new Date(dateString);
-      return date.toLocaleDateString();
+    // Authentication Functions
+    class AuthManager {
+      constructor() {
+        this.auth = auth;
+        this.database = database;
+        this.dashboardManager = new DashboardManager();
+        this.initAuthListeners();
+      }
+
+      initAuthListeners() {
+        // Check auth state on page load
+        this.auth.onAuthStateChanged((user) => {
+          if (user) {
+            this.showDashboard();
+          } else {
+            this.showLogin();
+          }
+        });
+
+        // Login form handler
+        document.getElementById('loginForm').addEventListener('submit', (e) => {
+          e.preventDefault();
+          this.handleLogin();
+        });
+
+        // Signup form handler
+        document.getElementById('signupForm').addEventListener('submit', (e) => {
+          e.preventDefault();
+          this.handleSignup();
+        });
+
+        // Switch between login/signup
+        document.getElementById('showSignup').addEventListener('click', (e) => {
+          e.preventDefault();
+          document.getElementById('loginFormDiv').classList.add('hidden');
+          document.getElementById('signupFormDiv').classList.remove('hidden');
+        });
+
+        document.getElementById('showLogin').addEventListener('click', (e) => {
+          e.preventDefault();
+          document.getElementById('signupFormDiv').classList.add('hidden');
+          document.getElementById('loginFormDiv').classList.remove('hidden');
+        });
+
+        // Logout functionality
+        document.getElementById('logoutBtn').addEventListener('click', (e) => {
+          e.preventDefault();
+          this.handleLogout();
+        });
+      }
+
+      async handleLogin() {
+        const email = document.getElementById('loginEmail').value;
+        const password = document.getElementById('loginPassword').value;
+
+        try {
+          await this.auth.signInWithEmailAndPassword(email, password);
+          // Auth state listener will handle the UI change
+        } catch (error) {
+          alert('Login failed: ' + error.message);
+        }
+      }
+
+      async handleSignup() {
+        const name = document.getElementById('signupName').value;
+        const email = document.getElementById('signupEmail').value;
+        const password = document.getElementById('signupPassword').value;
+
+        try {
+          const userCredential = await this.auth.createUserWithEmailAndPassword(email, password);
+          // Save user profile data
+          await this.database.ref('users/' + userCredential.user.uid).set({
+            name: name,
+            email: email,
+            createdAt: new Date().toISOString()
+          });
+          // Auth state listener will handle the UI change
+        } catch (error) {
+          alert('Signup failed: ' + error.message);
+        }
+      }
+
+      async handleLogout() {
+        try {
+          await this.auth.signOut();
+        } catch (error) {
+          console.error('Logout error:', error);
+        }
+      }
+
+      showDashboard() {
+        document.getElementById('authModal').classList.add('hidden');
+        document.getElementById('dashboardContent').classList.remove('hidden');
+        this.dashboardManager.loadAllData();
+      }
+
+      showLogin() {
+        document.getElementById('authModal').classList.remove('hidden');
+        document.getElementById('dashboardContent').classList.add('hidden');
+        // Reset forms
+        document.getElementById('loginForm').reset();
+        document.getElementById('signupForm').reset();
+        document.getElementById('signupFormDiv').classList.add('hidden');
+        document.getElementById('loginFormDiv').classList.remove('hidden');
+      }
     }
-  }
 
-  // Initialize dashboard when DOM is loaded
-  document.addEventListener('DOMContentLoaded', function() {
-    const dashboardManager = new DashboardManager();
-    
-    // Simple auth simulation (you can replace with real auth)
-    const authModal = document.getElementById('authModal');
-    const dashboardContent = document.getElementById('dashboardContent');
-    
-    // Show dashboard by default for demo (remove this in production)
-    authModal.classList.add('hidden');
-    dashboardContent.classList.remove('hidden');
-    
-    // Load dashboard data
-    dashboardManager.loadAllData();
-    
-    // Auth form handlers (simplified)
-    document.getElementById('loginForm').addEventListener('submit', function(e) {
-      e.preventDefault();
-      authModal.classList.add('hidden');
-      dashboardContent.classList.remove('hidden');
-      dashboardManager.loadAllData();
-    });
-    
-    document.getElementById('signupForm').addEventListener('submit', function(e) {
-      e.preventDefault();
-      authModal.classList.add('hidden');
-      dashboardContent.classList.remove('hidden');
-      dashboardManager.loadAllData();
-    });
-    
-    // Switch between login/signup
-    document.getElementById('showSignup').addEventListener('click', function(e) {
-      e.preventDefault();
-      document.getElementById('loginFormDiv').classList.add('hidden');
-      document.getElementById('signupFormDiv').classList.remove('hidden');
-    });
-    
-    document.getElementById('showLogin').addEventListener('click', function(e) {
-      e.preventDefault();
-      document.getElementById('signupFormDiv').classList.add('hidden');
-      document.getElementById('loginFormDiv').classList.remove('hidden');
-    });
-    
-    // Logout
-    document.getElementById('logoutBtn').addEventListener('click', function(e) {
-      e.preventDefault();
-      dashboardContent.classList.add('hidden');
-      authModal.classList.remove('hidden');
-    });
-  });
-</script>
+    // Initialize everything when DOM is loaded
+    document.addEventListener('DOMContentLoaded', function() {
+      // Initialize authentication manager
+      const authManager = new AuthManager();
 
+      // Mobile menu functionality
+      const mobileMenuButton = document.getElementById('mobile-menu-button');
+      const mobileMenu = document.getElementById('mobile-menu');
+      
+      if (mobileMenuButton && mobileMenu) {
+        mobileMenuButton.addEventListener('click', () => {
+          mobileMenu.classList.toggle('hidden');
+        });
+      }
+    });
+
+    // Export to CSV function
+    function exportToCSV() {
+      alert('Export functionality would be implemented here');
+    }
+  </script>
 </body>
 </html>

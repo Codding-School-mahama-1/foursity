@@ -359,6 +359,7 @@ function updateBirthsChart(birthsData) {
 /****************************************************
  * ✅ CLEAR INPUTS
  ****************************************************/
+
 function clearFields(container) {
     if (!container) return;
     container.querySelectorAll('input').forEach(input => input.value = '');
@@ -366,6 +367,25 @@ function clearFields(container) {
     container.querySelectorAll('select').forEach(select => select.selectedIndex = 0);
     container.querySelectorAll('.outputField').forEach(el => el.textContent = '');
 }
+
+
+
+// show notifications
+  function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.className = `fixed top-4 right-4 p-4 rounded-lg shadow-lg z-50 ${
+                type === 'success' ? 'bg-green-500 text-white' :
+                type === 'error' ? 'bg-red-500 text-white' :
+                'bg-blue-500 text-white'
+            }`;
+            notification.textContent = message;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 5000);
+        }
 
 /****************************************************
  * 👨‍⚕️ PATIENTS SERVICES
@@ -411,7 +431,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         set(ref(db, "patients/" + EnterId.value), patientData)
             .then(() => {
-                alert("✅ Patient data added successfully");
+              showNotification('Data exported successfully!', 'success');
                 clearFields(form);
             })
             .catch(err => alert("❌ " + err.message));
@@ -432,7 +452,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
         update(ref(db, "patients/" + EnterId.value), patientData)
             .then(() => {
-                alert("✅ Patient data updated successfully");
+              
+                  showNotification('✅ Patient data updated successfully', 'success');
                 clearFields(form);
             })
             .catch(err => alert("❌ " + err.message));
@@ -443,7 +464,8 @@ document.addEventListener("DOMContentLoaded", () => {
         
         remove(ref(db, "patients/" + EnterId.value))
             .then(() => {
-                alert("✅ Patient data removed successfully");
+                
+                 showNotification('✅ Patient data removed successfully', 'success');
                 clearFields(form);
             })
             .catch(err => alert("❌ " + err.message));
@@ -527,6 +549,7 @@ document.addEventListener("DOMContentLoaded", () => {
         set(ref(db, "births/" + reg), birthData)
             .then(() => {
                 alert("✅ Birth record added successfully");
+                
                 clearFields(form);
             })
             .catch(err => alert("❌ " + err.message));
@@ -547,7 +570,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
         update(ref(db, "births/" + reg), birthData)
             .then(() => {
-                alert("✅ Birth record updated successfully");
+              
+                   showNotification('✅ Birth record updated successfully', 'success');
                 clearFields(form);
             })
             .catch(err => alert("❌ " + err.message));
@@ -559,7 +583,8 @@ document.addEventListener("DOMContentLoaded", () => {
         
         remove(ref(db, "births/" + reg))
             .then(() => {
-                alert("✅ Birth record removed successfully");
+                alert("");
+                   showNotification('✅Birth record removed successfully', 'success');
                 clearFields(form);
             })
             .catch(err => alert("❌ " + err.message));

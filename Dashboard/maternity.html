@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maternity Care Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
+    
+    <style>
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            width: 14rem;
+            z-index: 20;
+            overflow-y: auto;
+        }
+        
+        .main-content {
+            margin-left: 14rem;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                position: relative;
+                width: 100%;
+                height: auto;
+            }
+            
+            .main-content {
+                margin-left: 0;
+            }
+        }
+        
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 20px;
+            border-radius: 8px;
+            color: white;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            max-width: 400px;
+            animation: slideIn 0.3s ease-out;
+        }
+        
+        .notification.success {
+            background-color: #10b981;
+        }
+        
+        .notification.error {
+            background-color: #ef4444;
+        }
+        
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        
+        .pregnancy-progress {
+            background: linear-gradient(90deg, #ec4899 var(--progress), #e5e7eb var(--progress));
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800 select-none font-serif">
+    <!-- Header -->
+    <header class="bg-white shadow-md sticky top-0 z-30">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-between items-center py-4">
+                <div class="flex items-center">
+                    <span class="text-2xl font-bold text-blue-600"><a href="/index.html">🏥 MCH</a>Maternity Care Dashboard</span>
+                </div>
+                
+                <button id="mobile-menu-button" class="md:hidden text-gray-600 focus:outline-none">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+                
+                <nav id="nav-links" class="hidden md:flex items-center space-x-6">
+                    <a href="../Dashboard.html" class="text-gray-700 hover:text-blue-600 transition duration-300">Main Dashboard</a>
+                    <a href="../Servscies/Maternity&Brith%20Servecises.html" class="text-gray-700 hover:text-blue-600 transition duration-300">Maternity Services</a>
+                    <a href="../Servscies/Briths%20Servecises.html" class="text-gray-700 hover:text-blue-600 transition duration-300">Birth Registration</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <div class="flex min-h-screen">
+        <!-- Fixed Sidebar -->
+        <aside class="w-56 bg-gradient-to-b from-blue-500 to-blue-600 text-white flex flex-col fixed h-full shadow-xl">
+        <div class="text-xl font-bold p-6 border-b border-blue-400  bg-blue-600">Hospital Admin</div>
+        
+        <!-- Navigation Menu -->
+        <nav class="flex-1 p-5 space-y-3">
+          <!-- Logout Button -->
+          <!-- <a href="" id="logoutBtn" class="flex items-center p-3 rounded-xl hover:bg-blue-400 transition-all duration-200 text-red-100 bg-blue-700/30">
+            <i class="fa-solid fa-right-from-bracket text-xl mr-3"></i>
+            <span class="font-medium">Logout</span>
+          </a> -->
+           <a href="/Dashboard.html" class="flex items-center p-3 rounded-xl hover:bg-blue-400 transition-all duration-200 bg-white/10">
+                <i class="fa-solid fa-hospital text-yellow-500 text-xl md:text-2xl mr-2"></i>
+          <span class="font-medium">Dashboard</span>
+        </a>
+          
+          <!-- Patient Registration -->
+          <a href="Servscies/paitents-Servecises.html" class="flex items-center p-3 rounded-xl hover:bg-blue-400 transition-all duration-200 bg-white/10">
+            <i class="fa-solid fa-user-injured text-yellow-400 text-2xl mr-3"></i>
+            <span class="font-medium">Patient Registration</span>
+          </a>
+
+          <!-- Birth Registration -->
+          <a href="Servscies/Briths Servecises.html" class="flex items-center p-3 rounded-xl hover:bg-blue-400 transition-all duration-200 bg-white/10">
+            <i class="fa-solid fa-baby text-yellow-400 text-2xl mr-3"></i>
+            <span class="font-medium">Birth Registration</span>
+          </a>
+
+          <!-- Vaccination -->
+          <a href="/Dashboard/vaccination2.html" class="flex items-center p-3 rounded-xl hover:bg-blue-400 transition-all duration-200 bg-white/10">
+            <i class="fa-solid fa-syringe text-yellow-400 text-2xl mr-3"></i>
+            <span class="font-medium">Vaccination</span>
+          </a>
+
+          <!-- Emergency -->
+          <a href="/Dashboard/Emergency2.html" class="flex items-center p-3 rounded-xl hover:bg-blue-400 transition-all duration-200 bg-white/10">
+            <i class="fa-solid fa-truck-medical text-yellow-400 text-2xl mr-3"></i>
+            <span class="font-medium">Emergency</span>
+          </a>
+
+          <!-- Disability -->
+          <a href="/Dashboard/Disability2.html" class="flex items-center p-3 rounded-xl hover:bg-blue-400 transition-all duration-200 bg-white/10">
+            <i class="fa-solid fa-wheelchair text-yellow-400 text-2xl mr-3"></i>
+            <span class="font-medium">Disability</span>
+          </a>
+           <a href="./NCD_Dashboard.html" class="flex items-center p-3 rounded-xl hover:bg-blue-400 transition-all duration-200 bg-white/10">
+            <i class="fa-solid fa-wheelchair text-yellow-400 text-2xl mr-3"></i>
+            <span class="font-medium">NCD</span>
+          </a>
+        </nav>
+        
+        <div class="p-4 border-t border-blue-400 bg-blue-600/50 rounded-br-3xl">
+          <div class="text-sm text-blue-100 text-center">
+            <i class="fa-solid fa-shield-heart mr-2"></i>
+            Secure System
+          </div>
+        </div>
+      </aside>
+
+        <!-- Main Content -->
+        <main class="main-content flex-1 p-6 space-y-8 bg-blue-50 min-h-screen">
+            <section id="dashboard">
+                <h1 class="text-3xl font-bold mb-6 text-blue-800">Maternity Care Overview</h1>
+
+                <!-- Stats Cards -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div class="bg-white rounded-2xl shadow-lg p-6 text-center border-l-4 border-pink-500">
+                        <h2 class="text-gray-500 font-semibold">Maternity Appointments</h2>
+                        <p id="totalAppointments" class="text-4xl font-bold text-pink-600 mt-2">0</p>
+                        <p class="text-sm text-gray-500 mt-1">Total bookings</p>
+                    </div>
+                    
+                    <div class="bg-white rounded-2xl shadow-lg p-6 text-center border-l-4 border-green-500">
+                        <h2 class="text-gray-500 font-semibold">Active Pregnancies</h2>
+                        <p id="activePregnancies" class="text-4xl font-bold text-green-600 mt-2">0</p>
+                        <p class="text-sm text-gray-500 mt-1">Currently monitoring</p>
+                    </div>
+                    
+                    <div class="bg-white rounded-2xl shadow-lg p-6 text-center border-l-4 border-purple-500">
+                        <h2 class="text-gray-500 font-semibold">This Week's Appointments</h2>
+                        <p id="weeklyAppointments" class="text-4xl font-bold text-purple-600 mt-2">0</p>
+                        <p class="text-sm text-gray-500 mt-1">Scheduled visits</p>
+                    </div>
+                    
+                    <div class="bg-white rounded-2xl shadow-lg p-6 text-center border-l-4 border-blue-500">
+                        <h2 class="text-gray-500 font-semibold">Service Distribution</h2>
+                        <p id="serviceDistribution" class="text-4xl font-bold text-blue-600 mt-2">0</p>
+                        <p class="text-sm text-gray-500 mt-1">Different services</p>
+                    </div>
+                </div>
+
+                <!-- Pregnancy Progress Overview -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-8">
+                    <div class="bg-white rounded-2xl shadow-lg p-6">
+                        <h2 class="text-xl font-semibold mb-4 text-gray-800">Pregnancy Week Distribution</h2>
+                        <div id="pregnancyWeeks" class="space-y-3 max-h-80 overflow-y-auto">
+                            <div class="text-center text-gray-500 py-8">
+                                <i class="fas fa-baby text-4xl mb-2 opacity-50"></i>
+                                <p>No pregnancy data available</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white rounded-2xl shadow-lg p-6">
+                        <h2 class="text-xl font-semibold mb-4 text-gray-800">Service Type Breakdown</h2>
+                        <canvas id="servicesChart" height="250"></canvas>
+                    </div>
+                </div>
+
+                <!-- Recent Activity -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-8">
+                    <div class="bg-white rounded-2xl shadow-lg p-6">
+                        <div class="flex justify-between items-center mb-4">
+                            <h2 class="text-xl font-semibold text-gray-800">Recent Appointments</h2>
+                            <span class="bg-pink-100 text-pink-800 text-sm px-3 py-1 rounded-full" id="recentAppointmentsCount">0</span>
+                        </div>
+                        <div id="recentAppointments" class="space-y-3 max-h-80 overflow-y-auto">
+                            <div class="text-center text-gray-500 py-8">
+                                <i class="fas fa-calendar text-4xl mb-2 opacity-50"></i>
+                                <p>No recent appointments</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white rounded-2xl shadow-lg p-6">
+                        <div class="flex justify-between items-center mb-4">
+                            <h2 class="text-xl font-semibold text-gray-800">Upcoming Appointments</h2>
+                            <span class="bg-green-100 text-green-800 text-sm px-3 py-1 rounded-full" id="upcomingAppointmentsCount">0</span>
+                        </div>
+                        <div id="upcomingAppointments" class="space-y-3 max-h-80 overflow-y-auto">
+                            <div class="text-center text-gray-500 py-8">
+                                <i class="fas fa-clock text-4xl mb-2 opacity-50"></i>
+                                <p>No upcoming appointments</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Charts -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-8">
+                    <div class="bg-white rounded-2xl shadow-lg p-6">
+                        <h2 class="text-lg font-semibold mb-4 text-gray-800">Monthly Appointments Trend</h2>
+                        <canvas id="monthlyTrendChart" height="250"></canvas>
+                    </div>
+                    
+                    <div class="bg-white rounded-2xl shadow-lg p-6">
+                        <h2 class="text-lg font-semibold mb-4 text-gray-800">Pregnancy Stage Distribution</h2>
+                        <canvas id="pregnancyStageChart" height="250"></canvas>
+                    </div>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="bg-white rounded-2xl shadow-lg p-6 mt-8">
+                    <h2 class="text-xl font-semibold mb-4 text-gray-800">Quick Actions</h2>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                        <a href="../Servscies/Maternity&Brith%20Servecises.html#contact" class="bg-pink-500 hover:bg-pink-600 text-white p-4 rounded-lg text-center transition duration-300 transform hover:-translate-y-1">
+                            <i class="fas fa-calendar-plus text-2xl mb-2"></i>
+                            <p class="font-semibold">Book Appointment</p>
+                        </a>
+                        <a href="../Servscies/Briths%20Servecises.html" class="bg-green-500 hover:bg-green-600 text-white p-4 rounded-lg text-center transition duration-300 transform hover:-translate-y-1">
+                            <i class="fas fa-baby text-2xl mb-2"></i>
+                            <p class="font-semibold">Register Birth</p>
+                        </a>
+                        <a href="../Servscies/paitents-Servecises.html" class="bg-blue-500 hover:bg-blue-600 text-white p-4 rounded-lg text-center transition duration-300 transform hover:-translate-y-1">
+                            <i class="fas fa-user-plus text-2xl mb-2"></i>
+                            <p class="font-semibold">Register Patient</p>
+                        </a>
+                        <button onclick="exportMaternityData()" class="bg-purple-500 hover:bg-purple-600 text-white p-4 rounded-lg text-center transition duration-300 transform hover:-translate-y-1">
+                            <i class="fas fa-download text-2xl mb-2"></i>
+                            <p class="font-semibold">Export Data</p>
+                        </button>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Firebase Configuration and Dashboard Script -->
+    <script>
+        // Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyDt4vs7S3nckO8xxfp1_axHZ76J0cz2qdg",
+            authDomain: "mahamahospital.firebaseapp.com",
+            databaseURL: "https://mahamahospital-default-rtdb.firebaseio.com",
+            projectId: "mahamahospital",
+            storageBucket: "mahamahospital.firebasestorage.app",
+            messagingSenderId: "256305692002",
+            appId: "1:256305692002:web:cfef26992264204be9803b"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+
+        // Chart instances
+        let servicesChart, monthlyTrendChart, pregnancyStageChart;
+
+        // Dashboard Functions
+        class MaternityDashboard {
+            constructor() {
+                this.appointmentsRef = database.ref('maternity-appointments');
+                this.patientsRef = database.ref('patients');
+                this.birthsRef = database.ref('births');
+                this.appointments = [];
+                this.patients = [];
+                this.births = [];
+            }
+
+            // Load all data
+            async loadAllData() {
+                await this.loadAppointments();
+                await this.loadPatients();
+                await this.loadBirths();
+                this.updateDashboard();
+                this.setupRealTimeListeners();
+            }
+
+            // Load maternity appointments
+            async loadAppointments() {
+                try {
+                    const snapshot = await this.appointmentsRef.once('value');
+                    const appointmentsData = snapshot.val();
+                    
+                    if (appointmentsData) {
+                        this.appointments = Object.entries(appointmentsData).map(([id, appointment]) => ({
+                            id,
+                            ...appointment
+                        }));
+                    } else {
+                        this.appointments = [];
+                    }
+                } catch (error) {
+                    console.error('Error loading appointments:', error);
+                    this.appointments = [];
+                }
+            }
+
+            // Load patients data
+            async loadPatients() {
+                try {
+                    const snapshot = await this.patientsRef.once('value');
+                    const patientsData = snapshot.val();
+                    
+                    if (patientsData) {
+                        this.patients = Object.entries(patientsData).map(([id, patient]) => ({
+                            id,
+                            ...patient
+                        }));
+                    } else {
+                        this.patients = [];
+                    }
+                } catch (error) {
+                    console.error('Error loading patients:', error);
+                    this.patients = [];
+                }
+            }
+
+            // Load births data
+            async loadBirths() {
+                try {
+                    const snapshot = await this.birthsRef.once('value');
+                    const birthsData = snapshot.val();
+                    
+                    if (birthsData) {
+                        this.births = Object.entries(birthsData).map(([id, birth]) => ({
+                            id,
+                            ...birth
+                        }));
+                    } else {
+                        this.births = [];
+                    }
+                } catch (error) {
+                    console.error('Error loading births:', error);
+                    this.births = [];
+                }
+            }
+
+            // Setup real-time listeners
+            setupRealTimeListeners() {
+                this.appointmentsRef.on('value', (snapshot) => {
+                    const appointmentsData = snapshot.val();
+                    this.appointments = appointmentsData ? Object.entries(appointmentsData).map(([id, appointment]) => ({
+                        id,
+                        ...appointment
+                    })) : [];
+                    this.updateDashboard();
+                });
+
+                this.patientsRef.on('value', (snapshot) => {
+                    const patientsData = snapshot.val();
+                    this.patients = patientsData ? Object.entries(patientsData).map(([id, patient]) => ({
+                        id,
+                        ...patient
+                    })) : [];
+                    this.updateDashboard();
+                });
+
+                this.birthsRef.on('value', (snapshot) => {
+                    const birthsData = snapshot.val();
+                    this.births = birthsData ? Object.entries(birthsData).map(([id, birth]) => ({
+                        id,
+                        ...birth
+                    })) : [];
+                    this.updateDashboard();
+                });
+            }
+
+            // Update dashboard with current data
+            updateDashboard() {
+                this.updateStatistics();
+                this.updateRecentActivity();
+                this.updatePregnancyOverview();
+                this.updateCharts();
+            }
+
+            // Update statistics cards
+            updateStatistics() {
+                const totalAppointments = this.appointments.length;
+                
+                // Count active pregnancies (patients with pregnancy week data)
+                const activePregnancies = this.appointments.filter(apt => 
+                    apt.pregnancyWeek && apt.pregnancyWeek > 0
+                ).length;
+
+                // Count this week's appointments
+                const oneWeekFromNow = new Date();
+                oneWeekFromNow.setDate(oneWeekFromNow.getDate() + 7);
+                const weeklyAppointments = this.appointments.filter(apt => {
+                    if (!apt.preferredDate) return false;
+                    const aptDate = new Date(apt.preferredDate);
+                    return aptDate <= oneWeekFromNow && aptDate >= new Date();
+                }).length;
+
+                // Count different service types
+                const serviceTypes = new Set(this.appointments.map(apt => apt.serviceType).filter(Boolean));
+                const serviceDistribution = serviceTypes.size;
+
+                // Update DOM elements
+                document.getElementById('totalAppointments').textContent = totalAppointments;
+                document.getElementById('activePregnancies').textContent = activePregnancies;
+                document.getElementById('weeklyAppointments').textContent = weeklyAppointments;
+                document.getElementById('serviceDistribution').textContent = serviceDistribution;
+            }
+
+            // Update recent activity sections
+            updateRecentActivity() {
+                this.updateRecentAppointments();
+                this.updateUpcomingAppointments();
+            }
+
+            updateRecentAppointments() {
+                const container = document.getElementById('recentAppointments');
+                const countElement = document.getElementById('recentAppointmentsCount');
+                
+                // Get recent appointments (last 5)
+                const recentAppointments = [...this.appointments]
+                    .sort((a, b) => {
+                        const dateA = a.createdAt ? new Date(a.createdAt) : new Date(0);
+                        const dateB = b.createdAt ? new Date(b.createdAt) : new Date(0);
+                        return dateB - dateA;
+                    })
+                    .slice(0, 5);
+
+                countElement.textContent = recentAppointments.length;
+
+                if (recentAppointments.length === 0) {
+                    container.innerHTML = `
+                        <div class="text-center text-gray-500 py-8">
+                            <i class="fas fa-calendar text-4xl mb-2 opacity-50"></i>
+                            <p>No recent appointments</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                container.innerHTML = recentAppointments.map(apt => {
+                    const name = `${apt.firstName || ''} ${apt.lastName || ''}`.trim() || 'Unknown';
+                    const service = apt.serviceType || 'General Consultation';
+                    const pregnancyWeek = apt.pregnancyWeek ? `Week ${apt.pregnancyWeek}` : 'Not specified';
+                    const createdAt = apt.createdAt || 'N/A';
+                    
+                    return `
+                    <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-pink-50 transition duration-200">
+                        <div class="flex items-center">
+                            <div class="w-10 h-10 bg-pink-100 rounded-full flex items-center justify-center mr-3">
+                                <i class="fas fa-female text-pink-600"></i>
+                            </div>
+                            <div>
+                                <p class="font-semibold text-gray-800">${name}</p>
+                                <p class="text-sm text-gray-600">${service} • ${pregnancyWeek}</p>
+                            </div>
+                        </div>
+                        <span class="text-xs text-gray-500">${this.formatDate(createdAt)}</span>
+                    </div>
+                `}).join('');
+            }
+
+            updateUpcomingAppointments() {
+                const container = document.getElementById('upcomingAppointments');
+                const countElement = document.getElementById('upcomingAppointmentsCount');
+                
+                // Get upcoming appointments (next 7 days)
+                const oneWeekFromNow = new Date();
+                oneWeekFromNow.setDate(oneWeekFromNow.getDate() + 7);
+                
+                const upcomingAppointments = this.appointments
+                    .filter(apt => {
+                        if (!apt.preferredDate) return false;
+                        const aptDate = new Date(apt.preferredDate);
+                        return aptDate <= oneWeekFromNow && aptDate >= new Date();
+                    })
+                    .sort((a, b) => new Date(a.preferredDate) - new Date(b.preferredDate))
+                    .slice(0, 5);
+
+                countElement.textContent = upcomingAppointments.length;
+
+                if (upcomingAppointments.length === 0) {
+                    container.innerHTML = `
+                        <div class="text-center text-gray-500 py-8">
+                            <i class="fas fa-clock text-4xl mb-2 opacity-50"></i>
+                            <p>No upcoming appointments</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                container.innerHTML = upcomingAppointments.map(apt => {
+                    const name = `${apt.firstName || ''} ${apt.lastName || ''}`.trim() || 'Unknown';
+                    const service = apt.serviceType || 'General Consultation';
+                    const date = apt.preferredDate ? this.formatDate(apt.preferredDate) : 'Not scheduled';
+                    
+                    return `
+                    <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-green-50 transition duration-200">
+                        <div class="flex items-center">
+                            <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center mr-3">
+                                <i class="fas fa-calendar-check text-green-600"></i>
+                            </div>
+                            <div>
+                                <p class="font-semibold text-gray-800">${name}</p>
+                                <p class="text-sm text-gray-600">${service}</p>
+                            </div>
+                        </div>
+                        <span class="text-xs text-gray-500">${date}</span>
+                    </div>
+                `}).join('');
+            }
+
+            // Update pregnancy overview
+            updatePregnancyOverview() {
+                const container = document.getElementById('pregnancyWeeks');
+                
+                // Group by pregnancy week
+                const weekGroups = {};
+                this.appointments.forEach(apt => {
+                    if (apt.pregnancyWeek) {
+                        const week = apt.pregnancyWeek;
+                        if (!weekGroups[week]) {
+                            weekGroups[week] = 0;
+                        }
+                        weekGroups[week]++;
+                    }
+                });
+
+                const weeks = Object.keys(weekGroups).sort((a, b) => a - b);
+
+                if (weeks.length === 0) {
+                    container.innerHTML = `
+                        <div class="text-center text-gray-500 py-8">
+                            <i class="fas fa-baby text-4xl mb-2 opacity-50"></i>
+                            <p>No pregnancy data available</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                container.innerHTML = weeks.map(week => {
+                    const count = weekGroups[week];
+                    const progress = (week / 42) * 100; // 42 weeks max pregnancy
+                    
+                    return `
+                    <div class="space-y-2">
+                        <div class="flex justify-between text-sm">
+                            <span class="font-medium">Week ${week}</span>
+                            <span class="text-gray-600">${count} patient(s)</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-2">
+                            <div class="pregnancy-progress h-2 rounded-full" style="--progress: ${progress}%"></div>
+                        </div>
+                    </div>
+                    `;
+                }).join('');
+            }
+
+            // Update charts
+            updateCharts() {
+                this.updateServicesChart();
+                this.updateMonthlyTrendChart();
+                this.updatePregnancyStageChart();
+            }
+
+            updateServicesChart() {
+                const ctx = document.getElementById('servicesChart').getContext('2d');
+                
+                if (servicesChart) {
+                    servicesChart.destroy();
+                }
+
+                // Count service types
+                const serviceCounts = {};
+                this.appointments.forEach(apt => {
+                    const service = apt.serviceType || 'Unknown';
+                    if (!serviceCounts[service]) {
+                        serviceCounts[service] = 0;
+                    }
+                    serviceCounts[service]++;
+                });
+
+                servicesChart = new Chart(ctx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: Object.keys(serviceCounts),
+                        datasets: [{
+                            data: Object.values(serviceCounts),
+                            backgroundColor: [
+                                '#ec4899', '#f59e0b', '#10b981', '#3b82f6', 
+                                '#8b5cf6', '#06b6d4', '#84cc16', '#f97316'
+                            ],
+                            borderWidth: 2,
+                            borderColor: '#ffffff'
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: {
+                                position: 'bottom'
+                            }
+                        }
+                    }
+                });
+            }
+
+            updateMonthlyTrendChart() {
+                const ctx = document.getElementById('monthlyTrendChart').getContext('2d');
+                
+                if (monthlyTrendChart) {
+                    monthlyTrendChart.destroy();
+                }
+
+                // Get last 6 months data
+                const months = this.getLast6Months();
+                const monthlyData = this.getMonthlyAppointmentData(months);
+
+                monthlyTrendChart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: months,
+                        datasets: [{
+                            label: 'Maternity Appointments',
+                            data: monthlyData,
+                            borderColor: '#ec4899',
+                            backgroundColor: 'rgba(236, 72, 153, 0.1)',
+                            tension: 0.4,
+                            fill: true
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: {
+                                position: 'top'
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+            }
+
+            updatePregnancyStageChart() {
+                const ctx = document.getElementById('pregnancyStageChart').getContext('2d');
+                
+                if (pregnancyStageChart) {
+                    pregnancyStageChart.destroy();
+                }
+
+                // Group by pregnancy stage
+                const stages = {
+                    'First Trimester (1-12)': 0,
+                    'Second Trimester (13-27)': 0,
+                    'Third Trimester (28-42)': 0
+                };
+
+                this.appointments.forEach(apt => {
+                    if (apt.pregnancyWeek) {
+                        const week = parseInt(apt.pregnancyWeek);
+                        if (week >= 1 && week <= 12) {
+                            stages['First Trimester (1-12)']++;
+                        } else if (week >= 13 && week <= 27) {
+                            stages['Second Trimester (13-27)']++;
+                        } else if (week >= 28 && week <= 42) {
+                            stages['Third Trimester (28-42)']++;
+                        }
+                    }
+                });
+
+                pregnancyStageChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: Object.keys(stages),
+                        datasets: [{
+                            label: 'Patients',
+                            data: Object.values(stages),
+                            backgroundColor: ['#93c5fd', '#60a5fa', '#3b82f6'],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: {
+                                display: false
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+            }
+
+            // Utility functions
+            getLast6Months() {
+                const months = [];
+                for (let i = 5; i >= 0; i--) {
+                    const date = new Date();
+                    date.setMonth(date.getMonth() - i);
+                    months.push(date.toLocaleString('default', { month: 'short' }));
+                }
+                return months;
+            }
+
+            getMonthlyAppointmentData(months) {
+                const currentYear = new Date().getFullYear();
+                return months.map(month => {
+                    return this.appointments.filter(apt => {
+                        const aptDate = new Date(apt.createdAt || 0);
+                        return aptDate.getFullYear() === currentYear && 
+                               aptDate.toLocaleString('default', { month: 'short' }) === month;
+                    }).length;
+                });
+            }
+
+            formatDate(dateString) {
+                if (!dateString || dateString === 'N/A') return 'N/A';
+                try {
+                    const date = new Date(dateString);
+                    return date.toLocaleDateString();
+                } catch (e) {
+                    return 'N/A';
+                }
+            }
+        }
+
+        // Initialize dashboard when DOM is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            const maternityDashboard = new MaternityDashboard();
+            
+            // Load dashboard data
+            maternityDashboard.loadAllData();
+            
+            // Logout functionality - absolute path approach
+document.getElementById('logoutBtn').addEventListener('click', function(e) {
+    e.preventDefault();
+    
+    // Get the absolute root path
+    const rootPath = window.location.protocol + '//' + window.location.host;
+    
+    // Redirect to root index.html
+    window.location.href = rootPath + '/index.html';
+});
+
+            // Mobile menu functionality
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            
+            if (mobileMenuButton && mobileMenu) {
+                mobileMenuButton.addEventListener('click', () => {
+                    mobileMenu.classList.toggle('hidden');
+                });
+            }
+        });
+
+        // Export function
+        function exportMaternityData() {
+            alert('Maternity data export functionality would be implemented here');
+        }
+
+        // Notification function
+        function showNotification(message, type = 'success') {
+            const existingNotifications = document.querySelectorAll('.notification');
+            existingNotifications.forEach(notification => notification.remove());
+            
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            
+            const icon = type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle';
+            notification.innerHTML = `
+                <i class="fas ${icon}"></i>
+                <span>${message}</span>
+            `;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    notification.parentNode.removeChild(notification);
+                }
+            }, 5000);
+        }
+    </script>
+</body>
+</html>

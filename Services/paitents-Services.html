@@ -1,0 +1,1438 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Registration - Hospital Admin</title>
+  <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
+  
+  <style>
+    /* Fixed sidebar styles */
+    .sidebar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 100vh;
+      width: 14rem; /* w-56 equivalent */
+      z-index: 20;
+      overflow-y: auto;
+    }
+    
+    .main-content {
+      margin-left: 14rem; /* Match sidebar width */
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      .sidebar {
+        position: relative;
+        width: 100%;
+        height: auto;
+      }
+      
+      .main-content {
+        margin-left: 0;
+      }
+      
+      .form-container {
+        width: 100%;
+        max-width: 100%;
+        padding: 1rem;
+      }
+      
+      .search-container {
+        width: 100%;
+        max-width: 100%;
+      }
+      
+      .grid-cols-3 {
+        grid-template-columns: 1fr;
+      }
+    }
+    
+    @media (max-width: 640px) {
+      .button-group {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+      
+      .button-group button {
+        width: 100%;
+      }
+      
+      .search-input-group {
+        flex-direction: column;
+      }
+      
+      .search-input-group input,
+      .search-input-group button {
+        border-radius: 0.5rem !important;
+        width: 100%;
+      }
+    }
+    
+    /* Notification styles */
+    .notification {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      padding: 15px 20px;
+      border-radius: 8px;
+      color: white;
+      z-index: 1000;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      max-width: 400px;
+      animation: slideIn 0.3s ease-out;
+    }
+    
+    .notification.success {
+      background-color: #10b981;
+    }
+    
+    .notification.error {
+      background-color: #ef4444;
+    }
+    
+    @keyframes slideIn {
+      from {
+        transform: translateX(100%);
+        opacity: 0;
+      }
+      to {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+    
+    /* Transfer System Styles */
+    .status-pending { background-color: #fef3c7; color: #d97706; }
+    .status-accepted { background-color: #d1fae5; color: #065f46; }
+    .status-rejected { background-color: #fee2e2; color: #b91c1c; }
+    .status-completed { background-color: #dbeafe; color: #1e40af; }
+    
+    .toast {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      padding: 12px 20px;
+      background-color: #10b981;
+      color: white;
+      border-radius: 4px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      z-index: 1001;
+      display: none;
+    }
+
+    /* Notification Panel Styles */
+    .notification-panel {
+      position: fixed;
+      top: 80px;
+      right: 20px;
+      width: 350px;
+      max-height: 500px;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      z-index: 1000;
+      display: none;
+      overflow: hidden;
+    }
+
+    .notification-header {
+      background: #3b82f6;
+      color: white;
+      padding: 15px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .notification-badge {
+      position: absolute;
+      top: -5px;
+      right: -5px;
+      background: #ef4444;
+      color: white;
+      border-radius: 50%;
+      width: 20px;
+      height: 20px;
+      font-size: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .notification-list {
+      max-height: 400px;
+      overflow-y: auto;
+    }
+
+    .notification-item {
+      padding: 12px 15px;
+      border-bottom: 1px solid #e5e7eb;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+
+    .notification-item:hover {
+      background-color: #f9fafb;
+    }
+
+    .notification-item.unread {
+      background-color: #f0f9ff;
+    }
+
+    .notification-title {
+      font-weight: 600;
+      color: #1f2937;
+      margin-bottom: 4px;
+    }
+
+    .notification-message {
+      color: #6b7280;
+      font-size: 14px;
+      margin-bottom: 4px;
+    }
+
+    .notification-time {
+      color: #9ca3af;
+      font-size: 12px;
+    }
+
+    .notification-actions {
+      padding: 10px 15px;
+      border-top: 1px solid #e5e7eb;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    /* Message Modal Styles */
+    .message-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1002;
+    }
+
+    .message-content {
+      background: white;
+      border-radius: 8px;
+      width: 90%;
+      max-width: 500px;
+      max-height: 80vh;
+      overflow-y: auto;
+    }
+    
+    /* Section visibility control */
+    .section {
+      display: none;
+    }
+    
+    .section.active {
+      display: block;
+    }
+  </style>
+</head>
+
+<body class="font-serif text-gray-800 select-none">
+ <!-- NAVBAR -->
+ <!-- Header -->
+        <header class="bg-white shadow-md sticky top-0 z-30">
+            <div class="container mx-auto px-4">
+                <div class="flex justify-between items-center py-4">
+                    <div class="flex items-center">
+                        <span class="text-2xl font-bold text-blue-600"><a href="/index.html">🏥 MCH</a> Patient  Registration</span>
+                    </div>
+                    
+                    <div class="flex items-center space-x-4">
+                      <!-- Notification Bell -->
+                      <div class="relative">
+                          <button id="notificationBell" class="text-gray-600 hover:text-blue-600 relative">
+                            <i class="fas fa-bell text-xl"></i>
+                            <span class="notification-badge" id="notificationCount">0</span>
+                          </button>
+                      </div>
+                      
+                      <button id="mobile-menu-button" class="md:hidden text-gray-600 focus:outline-none">
+                          <i class="fas fa-bars text-xl"></i>
+                      </button>
+                    </div>
+                    
+                    <nav id="nav-links" class="hidden md:flex items-center space-x-6">
+                        <a href="../Dashboard.html#Statistic" class="text-gray-700 hover:text-blue-600 transition duration-300">Statistics</a>
+                        <a href="./Briths Servecises.html" class="text-gray-700 hover:text-blue-600 transition duration-300">Birth Registration</a>
+                    </nav>
+                </div>
+                
+                <div id="mobile-menu" class="hidden md:hidden py-4 border-t border-gray-200">
+                    <div class="flex flex-col space-y-4">
+                        <a href="../Dashboard.html#Statistic" class="text-gray-700 hover:text-blue-600">Statistics</a>
+                        <a href="./paitents-Servecises.html" class="text-gray-700 hover:text-blue-600">Patients Registration</a>
+                        <a href="./Briths Servecises.html" class="text-gray-700 hover:text-blue-600">Birth Registration</a>
+                    </div>
+                </div>
+            </div>
+        </header>
+  
+  <div class="flex min-h-screen bg-gray-50">
+    <!-- Fixed Sidebar -->
+      <aside class="w-56 bg-gradient-to-b from-blue-500 to-blue-600 text-white flex flex-col fixed h-full shadow-xl">
+      <div class="text-xl font-bold p-6 border-b border-blue-400  bg-blue-600">Hospital Admin</div>
+      
+      <!-- Navigation Menu -->
+      <nav class="flex-1 p-5 space-y-3">
+        <!-- Logout Button -->
+        
+        <!-- Register Patient -->
+        <a href="/Dashboard.html" class="flex items-center p-3 rounded-xl hover:bg-blue-400 transition-all duration-200 bg-white/10">
+                <i class="fa-solid fa-hospital text-yellow-500 text-xl md:text-2xl mr-2"></i>
+          <span class="font-medium">Dashboard</span>
+        </a>
+        
+        <!-- Patient Registration -->
+        <a href="#" id="registration-tab" class="flex items-center p-3 rounded-xl hover:bg-blue-400 transition-all duration-200 bg-white/10">
+          <i class="fa-solid fa-user-plus text-yellow-500 text-xl md:text-2xl mr-2"></i>
+          <span class="font-medium">Patient Registration</span>
+        </a>
+        
+        <!-- Transfer System -->
+        <a href="#" id="transfer-tab" class="flex items-center p-3 rounded-xl hover:bg-blue-400 transition-all duration-200">
+          <i class="fas fa-ambulance mr-2 text-yellow-500 text-xl md:text-2xl mr-2"></i>
+          <span class="font-medium">Transfer System</span>
+        </a>
+        
+        <!-- Messaging -->
+        <a href="#" id="messaging-tab" class=" hidden flex items-center p-3 rounded-xl hover:bg-blue-400 transition-all duration-200">
+          <i class="fa-solid fa-envelope text-pink-500 text-xl md:text-2xl mr-2"></i>
+          <span class="font-medium">Messaging</span>
+        </a>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content flex-1 p-4 md:p-6 space-y-6 md:space-y-8 overflow-y-auto bg-gray-50">
+      <!-- Toast Notification -->
+      <div class="toast" id="toast">
+        Operation completed successfully!
+      </div>
+
+      <!-- Notification Panel -->
+      <div class="notification-panel" id="notificationPanel">
+        <div class="notification-header">
+          <h3 class="font-semibold">Notifications</h3>
+          <button id="closeNotifications" class="text-white hover:text-gray-200">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+        <div class="notification-list" id="notificationList">
+          <!-- Notifications will be loaded here -->
+        </div>
+        <div class="notification-actions">
+          <button id="markAllRead" class="text-blue-600 hover:text-blue-800 text-sm">
+            Mark all as read
+          </button>
+          <button id="clearNotifications" class="text-red-600 hover:text-red-800 text-sm">
+            Clear all
+          </button>
+        </div>
+      </div>
+
+      <!-- Send Message Modal -->
+      <div class="message-modal" id="messageModal">
+        <div class="message-content">
+          <div class="bg-blue-600 text-white p-4 rounded-t-lg">
+            <h3 class="text-lg font-semibold">Send Message to Patient</h3>
+          </div>
+          <div class="p-4">
+            <div class="mb-4">
+              <label class="block text-sm font-medium text-gray-700 mb-2">Patient Information</label>
+              <div id="patientInfo" class="text-sm text-gray-600"></div>
+            </div>
+            <div class="mb-4">
+              <label class="block text-sm font-medium text-gray-700 mb-2">Message Type</label>
+              <select id="messageType" class="w-full border border-gray-300 rounded-lg p-2">
+                <option value="transfer_update">Transfer Update</option>
+                <option value="appointment">Appointment Reminder</option>
+                <option value="test_results">Test Results</option>
+                <option value="general">General Information</option>
+                <option value="emergency">Emergency Alert</option>
+              </select>
+            </div>
+            <div class="mb-4">
+              <label class="block text-sm font-medium text-gray-700 mb-2">Message</label>
+              <textarea id="messageContent" class="w-full border border-gray-300 rounded-lg p-2" rows="4" placeholder="Type your message here..."></textarea>
+            </div>
+            <div class="mb-4">
+              <label class="flex items-center">
+                <input type="checkbox" id="sendSMS" class="mr-2">
+                <span class="text-sm text-gray-700">Send as SMS</span>
+              </label>
+              <label class="flex items-center mt-2">
+                <input type="checkbox" id="sendEmail" class="mr-2">
+                <span class="text-sm text-gray-700">Send as Email</span>
+              </label>
+            </div>
+          </div>
+          <div class="flex justify-end space-x-3 p-4 border-t border-gray-200">
+            <button id="cancelMessage" class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50">
+              Cancel
+            </button>
+            <button id="sendMessage" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+              <i class="fas fa-paper-plane mr-2"></i>Send Message
+            </button>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Patient Registration Section -->
+      <section id="register-patient" class="section active">
+        <div class="min-h-screen flex flex-col items-center justify-center py-4">
+          <h2 class="text-2xl md:text-3xl font-serif mb-4 text-center">Register New Patient</h2>
+
+          <!-- Search box -->
+          <div id="findPatient" class="search-container p-2 m-4 w-full md:w-96 text-center font-sans">
+            <div class="search-input-group flex flex-col md:flex-row">
+              <input id="findId" type="text" placeholder="Find patient details by ID"
+                class="border border-orange-400 bg-slate-200 p-2 rounded-t-2xl md:rounded-l-2xl md:rounded-t-none flex-grow">
+              <button id="findById"
+                class="bg-green-400 text-white p-2 rounded-b-2xl md:rounded-r-2xl md:rounded-b-none">Search</button>
+            </div>
+          </div>
+
+          <!-- Form section -->
+          <form id="patientForm"
+            class="form-container bg-gray-400 shadow rounded-2xl p-4 md:p-6 space-y-4 w-full max-w-[790px]">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label for="EnterName" class="block text-sm font-medium mb-1">Full
+                  Name</label>
+                <input id="EnterName" type="text"
+                  class="w-full border rounded-lg p-2 focus:ring-2 focus:ring-blue-500"
+                  placeholder="Patient Name" required>
+              </div>
+
+              <div>
+                <label for="EnterAge" class="block text-sm font-medium mb-1">Age</label>
+                <input id="EnterAge" type="number"
+                  class="w-full border rounded-lg p-2 focus:ring-2 focus:ring-blue-500"
+                  placeholder="Age" required>
+              </div>
+
+              <div>
+                <label for="EnterGender"
+                  class="block text-sm font-serif mb-1">Gender</label>
+                <select id="EnterGender"
+                  class="w-full border rounded-lg p-2 focus:ring-2 focus:ring-blue-500"
+                  required>
+                  <option value="">Select</option>
+                  <option>Male</option>
+                  <option>Female</option>
+                  <option>Other</option>
+                </select>
+              </div>
+
+              <div>
+                <label for="EnterDisease"
+                  class="block text-sm font-medium mb-1">Type of Disease</label>
+                <input id="EnterDisease" type="text"
+                  class="w-full border rounded-lg p-2 focus:ring-2 focus:ring-blue-500"
+                  placeholder="Type of Disease">
+              </div>
+
+              <div>
+                <label for="EnterId" class="block text-sm font-medium mb-1">ID</label>
+                <input id="EnterId" type="text"
+                  class="w-full border rounded-lg p-2 focus:ring-2 focus:ring-blue-500"
+                  placeholder="Patient ID" required>
+              </div>
+
+              <div>
+                <label for="EnterContact"
+                  class="block text-sm font-medium mb-1">Contact</label>
+                <input id="EnterContact" type="text"
+                  class="w-full border rounded-lg p-2 focus:ring-2 focus:ring-blue-500"
+                  placeholder="Phone number">
+              </div>
+              
+              <div>
+                <label for="EnterEmail"
+                  class="block text-sm font-medium mb-1">Email</label>
+                <input id="EnterEmail" type="email"
+                  class="w-full border rounded-lg p-2 focus:ring-2 focus:ring-blue-500"
+                  placeholder="Email address">
+              </div>
+            </div>
+
+            <div>
+              <label for="EnterAddress"
+                class="block text-sm font-medium mb-1">Address</label>
+              <textarea id="EnterAddress"
+                class="w-full border rounded-lg p-2 focus:ring-2 focus:ring-blue-500"
+                rows="3" placeholder="Address"></textarea>
+            </div>
+
+            <!-- Buttons -->
+            <div class="button-group space-y-2 md:space-y-0 md:space-x-2">
+              <button id="enterBtn" type="button"
+                class="bg-green-500 text-white px-6 py-2 rounded-xl hover:bg-green-700 w-full md:w-auto">INSERT</button>
+              <button id="updateBtn" type="button"
+                class="bg-blue-500 text-white px-6 py-2 rounded-xl hover:bg-blue-700 w-full md:w-auto">UPDATE</button>
+              <button id="removeBtn" type="button"
+                class="bg-red-500 text-white px-6 py-2 rounded-xl hover:bg-red-700 w-full md:w-auto">REMOVE</button>
+              <button id="transferBtn" type="button"
+                class="bg-purple-500 text-white px-6 py-2 rounded-xl hover:bg-purple-700 w-full md:w-auto">
+                <i class="fas fa-ambulance mr-2"></i>TRANSFER
+              </button>
+            </div>
+          </form>
+
+          <!-- Search Results -->
+          <div id="searchResult"
+            class="form-container bg-gray-200 shadow rounded-2xl p-4 md:p-6 mt-6 w-full max-w-[790px] hidden">
+            <h3 class="text-xl text-center font-bold mb-4 text-blue-700">Patient
+              Details</h3>
+              <div class="text-center grid grid-cols-1 md:grid-cols-3 gap-4 m-4">
+                <div><strong>Name:</strong> <p id="showName"></p></div>
+                <div><strong>Age:</strong> <p id="showAge"></p></div>
+                <div><strong>Gender:</strong> <p id="showGender"></p></div>
+                <div><strong>Disease:</strong> <p id="showDisease"></p></div>
+                <div><strong>Contact:</strong> <p id="showContact"></p></div>
+                <div><strong>Email:</strong> <p id="showEmail"></p></div>
+                <div><strong>Address:</strong> <p id="showAddress"></p></div>
+              </div>
+            <div class="mt-4 text-center">
+              <button id="backBtn"
+                class="bg-blue-500 text-white px-6 py-2 rounded-xl hover:bg-blue-700 w-full md:w-auto">Back
+                to Form</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Transfer Management Section -->
+      <section id="transfer-management" class="section">
+        <div class="bg-white rounded-lg shadow p-6">
+          <h2 class="text-2xl md:text-3xl font-serif mb-6 text-center">Patient Transfer Request</h2>
+          
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+            <div>
+              <h3 class="text-lg font-semibold mb-4">Patient Information</h3>
+              <div class="space-y-3">
+                <div><strong>Name:</strong> <span id="transfer-patient-name">-</span></div>
+                <div><strong>Age:</strong> <span id="transfer-patient-age">-</span></div>
+                <div><strong>Condition:</strong> <span id="transfer-patient-condition">-</span></div>
+                <div><strong>Contact:</strong> <span id="transfer-patient-contact">-</span></div>
+                <div><strong>Email:</strong> <span id="transfer-patient-email">-</span></div>
+              </div>
+            </div>
+            
+            <div>
+              <h3 class="text-lg font-semibold mb-4">Transfer Details</h3>
+              <div class="space-y-4">
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-2">From Hospital</label>
+                  <input type="text" id="from-hospital" class="w-full p-3 border border-gray-300 rounded-lg bg-gray-100" value="Current Hospital" readonly>
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-2">To Hospital</label>
+                  <select id="to-hospital" class="w-full p-3 border border-gray-300 rounded-lg" required>
+                    <option value="">Select Receiving Hospital</option>
+                    <option value="Specialist Hospital">Specialist Hospital</option>
+                    <option value="Hope Hospital">Hope Hospital</option>
+                    <option value="Bone Hospital">Bone Hospital</option>
+                    <option value="Light Hospital">Light Hospital</option>
+                    <option value="Nerve Hospital">Nerve Hospital</option>
+                    <option value="Maternity Hospital">Maternity Hospital</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-2">Transfer Reason</label>
+                  <textarea id="transfer-reason" class="w-full p-3 border border-gray-300 rounded-lg" rows="3" placeholder="Please provide the reason for this transfer..." required></textarea>
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-2">Urgency Level</label>
+                  <select id="urgency-level" class="w-full p-3 border border-gray-300 rounded-lg">
+                    <option value="routine">Routine</option>
+                    <option value="urgent">Urgent</option>
+                    <option value="emergency">Emergency</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="flex justify-end space-x-4">
+            <button id="cancel-transfer" class="px-6 py-3 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50">Cancel</button>
+            <button id="send-message-transfer" class="px-6 py-3 bg-green-500 text-white rounded-lg hover:bg-green-700">
+              <i class="fas fa-paper-plane mr-2"></i>Send Message
+            </button>
+            <button id="submit-transfer" class="px-6 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-700">Submit Transfer Request</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Transfers List Section -->
+      <section id="transfers-list" class="section">
+        <div class="bg-white rounded-lg shadow">
+          <div class="p-4 border-b border-gray-200 flex justify-between items-center">
+            <h3 class="text-lg font-semibold">All Transfer Requests</h3>
+            <div class="flex space-x-2">
+              <input type="text" id="search-transfers" placeholder="Search transfers..." class="border border-gray-300 rounded-lg px-3 py-1 text-sm">
+              <select id="status-filter" class="border border-gray-300 rounded-lg px-3 py-1 text-sm">
+                <option value="">All Status</option>
+                <option value="pending">Pending</option>
+                <option value="accepted">Accepted</option>
+                <option value="rejected">Rejected</option>
+                <option value="completed">Completed</option>
+              </select>
+            </div>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="min-w-full divide-y divide-gray-200">
+              <thead class="bg-gray-50">
+                <tr>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Transfer ID</th>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Patient Name</th>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">From Hospital</th>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">To Hospital</th>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date Requested</th>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                </tr>
+              </thead>
+              <tbody class="bg-white divide-y divide-gray-200" id="transfers-table-body">
+                <!-- Transfers will be loaded here -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Firebase Configuration and Form Script -->
+  <script>
+    // Firebase Configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyDt4vs7S3nckO8xxfp1_axHZ76J0cz2qdg",
+      authDomain: "mahamahospital.firebaseapp.com",
+      databaseURL: "https://mahamahospital-default-rtdb.firebaseio.com",
+      projectId: "mahamahospital",
+      storageBucket: "mahamahospital.firebasestorage.app",
+      messagingSenderId: "256305692002",
+      appId: "1:256305692002:web:cfef26992264204be9803b"
+    };
+
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+    
+    // Application Data
+    const appData = {
+      currentUser: {
+        name: "Dr. Smith",
+        hospital: "Current Hospital",
+        role: "Doctor"
+      },
+      patients: [],
+      transfers: [],
+      notifications: [],
+      hospitals: [
+        "Specialist Hospital",
+        "Hope Hospital", 
+        "Bone Hospital",
+        "Light Hospital",
+        "Nerve Hospital",
+        "Maternity Hospital"
+      ]
+    };
+    
+    // DOM Elements
+    let currentPatient = null;
+    let currentTransfer = null;
+    
+    // Notification function
+    function showNotification(message, type = 'success') {
+      // Remove existing notifications
+      const existingNotifications = document.querySelectorAll('.notification');
+      existingNotifications.forEach(notification => notification.remove());
+      
+      // Create new notification
+      const notification = document.createElement('div');
+      notification.className = `notification ${type}`;
+      
+      // Add icon based on type
+      const icon = type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle';
+      notification.innerHTML = `
+        <i class="fas ${icon}"></i>
+        <span>${message}</span>
+      `;
+      
+      document.body.appendChild(notification);
+      
+      // Auto remove after 5 seconds
+      setTimeout(() => {
+        if (notification.parentNode) {
+          notification.parentNode.removeChild(notification);
+        }
+      }, 5000);
+    }
+    
+    // Clear form fields
+    function clearFields(form) {
+      const inputs = form.querySelectorAll('input, textarea, select');
+      inputs.forEach(input => {
+        if (input.type !== 'button' && input.type !== 'submit') {
+          input.value = '';
+        }
+      });
+    }
+    
+    // Tab switching functionality
+    function switchTab(tabName) {
+      // Hide all sections
+      document.querySelectorAll('.section').forEach(section => {
+        section.classList.remove('active');
+      });
+      
+      // Remove active class from all tabs
+      document.getElementById('registration-tab').classList.remove('bg-white/10');
+      document.getElementById('transfer-tab').classList.remove('bg-white/10');
+      document.getElementById('messaging-tab').classList.remove('bg-white/10');
+      
+      // Show selected section and activate tab
+      document.getElementById(tabName).classList.add('active');
+      if (tabName === 'register-patient') {
+        document.getElementById('registration-tab').classList.add('bg-white/10');
+      } else if (tabName === 'transfer-management') {
+        document.getElementById('transfer-tab').classList.add('bg-white/10');
+      } else if (tabName === 'transfers-list') {
+        document.getElementById('transfer-tab').classList.add('bg-white/10');
+        loadTransfers();
+      }
+    }
+    
+    // Notification Functions
+    function loadNotifications() {
+      const savedNotifications = localStorage.getItem('hospitalNotifications');
+      if (savedNotifications) {
+        appData.notifications = JSON.parse(savedNotifications);
+      }
+      updateNotificationBadge();
+      renderNotifications();
+    }
+
+    function saveNotifications() {
+      localStorage.setItem('hospitalNotifications', JSON.stringify(appData.notifications));
+      updateNotificationBadge();
+      renderNotifications();
+    }
+
+    function addNotification(title, message, type = 'info') {
+      const notification = {
+        id: Date.now().toString(),
+        title: title,
+        message: message,
+        type: type,
+        timestamp: new Date().toISOString(),
+        read: false
+      };
+      
+      appData.notifications.unshift(notification);
+      saveNotifications();
+      
+      if (type === 'emergency' || type === 'transfer') {
+        showToast(`New notification: ${title}`);
+      }
+    }
+
+    function updateNotificationBadge() {
+      const unreadCount = appData.notifications.filter(n => !n.read).length;
+      const badge = document.getElementById('notificationCount');
+      if (badge) {
+        badge.textContent = unreadCount;
+        badge.style.display = unreadCount > 0 ? 'flex' : 'none';
+      }
+    }
+
+    function renderNotifications() {
+      const notificationList = document.getElementById('notificationList');
+      if (!notificationList) return;
+
+      notificationList.innerHTML = '';
+
+      if (appData.notifications.length === 0) {
+        notificationList.innerHTML = `
+          <div class="p-4 text-center text-gray-500">
+            No notifications
+          </div>
+        `;
+        return;
+      }
+
+      appData.notifications.forEach(notification => {
+        const notificationElement = document.createElement('div');
+        notificationElement.className = `notification-item ${!notification.read ? 'unread' : ''}`;
+        notificationElement.innerHTML = `
+          <div class="notification-title">${notification.title}</div>
+          <div class="notification-message">${notification.message}</div>
+          <div class="notification-time">${formatTime(notification.timestamp)}</div>
+        `;
+        
+        notificationElement.addEventListener('click', () => {
+          markNotificationAsRead(notification.id);
+        });
+        
+        notificationList.appendChild(notificationElement);
+      });
+    }
+
+    function markNotificationAsRead(notificationId) {
+      const notification = appData.notifications.find(n => n.id === notificationId);
+      if (notification && !notification.read) {
+        notification.read = true;
+        saveNotifications();
+      }
+    }
+
+    function markAllNotificationsRead() {
+      appData.notifications.forEach(notification => {
+        notification.read = true;
+      });
+      saveNotifications();
+    }
+
+    function clearAllNotifications() {
+      if (confirm('Are you sure you want to clear all notifications?')) {
+        appData.notifications = [];
+        saveNotifications();
+      }
+    }
+
+    function toggleNotifications() {
+      const notificationPanel = document.getElementById('notificationPanel');
+      if (notificationPanel.style.display === 'block') {
+        notificationPanel.style.display = 'none';
+      } else {
+        notificationPanel.style.display = 'block';
+      }
+    }
+
+    function closeNotifications() {
+      const notificationPanel = document.getElementById('notificationPanel');
+      notificationPanel.style.display = 'none';
+    }
+
+    // Message Functions
+    function openMessageModal(patient, transfer) {
+      const modal = document.getElementById('messageModal');
+      const patientInfo = document.getElementById('patientInfo');
+      
+      if (!modal || !patientInfo) return;
+      
+      if (patient) {
+        patientInfo.innerHTML = `
+          <div><strong>Name:</strong> ${patient.name}</div>
+          <div><strong>Contact:</strong> ${patient.contact || 'N/A'}</div>
+          <div><strong>Email:</strong> ${patient.email || 'N/A'}</div>
+        `;
+        currentPatient = patient;
+      } else if (transfer) {
+        patientInfo.innerHTML = `
+          <div><strong>Name:</strong> ${transfer.patientName}</div>
+          <div><strong>Contact:</strong> ${transfer.patientContact || 'N/A'}</div>
+          <div><strong>Transfer To:</strong> ${transfer.toHospital}</div>
+          <div><strong>Status:</strong> ${transfer.status}</div>
+        `;
+        currentTransfer = transfer;
+      }
+      
+      modal.style.display = 'flex';
+    }
+
+    function closeMessageModal() {
+      const modal = document.getElementById('messageModal');
+      const messageContent = document.getElementById('messageContent');
+      if (modal) modal.style.display = 'none';
+      if (messageContent) messageContent.value = '';
+    }
+
+    function sendMessageToPatient() {
+      const messageType = document.getElementById('messageType');
+      const messageContent = document.getElementById('messageContent');
+      const sendSMS = document.getElementById('sendSMS');
+      const sendEmail = document.getElementById('sendEmail');
+
+      if (!messageContent || !messageContent.value.trim()) {
+        showToast('Please enter a message');
+        return;
+      }
+
+      const patient = currentPatient || (currentTransfer ? {
+        name: currentTransfer.patientName,
+        contact: currentTransfer.patientContact,
+        email: currentTransfer.patientEmail
+      } : null);
+
+      if (patient) {
+        console.log('Sending message to:', patient.name);
+        console.log('Message:', messageContent.value);
+        
+        addNotification(
+          'Message Sent',
+          `Message sent to ${patient.name}`,
+          'info'
+        );
+        
+        showToast('Message sent successfully!');
+        closeMessageModal();
+      } else {
+        showToast('No patient selected');
+      }
+    }
+    
+    // Transfer Management Functions
+    function initiateTransfer() {
+      if (!currentPatient) {
+        showToast('Please search for a patient first');
+        return;
+      }
+
+      // Populate transfer form with patient data
+      document.getElementById('transfer-patient-name').textContent = currentPatient.name;
+      document.getElementById('transfer-patient-age').textContent = currentPatient.age;
+      document.getElementById('transfer-patient-condition').textContent = currentPatient.disease;
+      document.getElementById('transfer-patient-contact').textContent = currentPatient.contact;
+      document.getElementById('transfer-patient-email').textContent = currentPatient.email;
+
+      // Show transfer section
+      switchTab('transfer-management');
+    }
+
+    function cancelTransfer() {
+      switchTab('register-patient');
+    }
+
+    function submitTransferRequest() {
+      console.log("Submit transfer button clicked");
+      
+      const toHospital = document.getElementById('to-hospital').value;
+      const transferReason = document.getElementById('transfer-reason').value;
+      const urgencyLevel = document.getElementById('urgency-level').value;
+
+      if (!toHospital || !transferReason) {
+        showToast('Please fill in all transfer details');
+        return;
+      }
+
+      if (!currentPatient) {
+        showToast('No patient selected for transfer');
+        return;
+      }
+
+      const transferData = {
+        patientId: currentPatient.patientId,
+        patientName: currentPatient.name,
+        patientAge: currentPatient.age,
+        patientCondition: currentPatient.disease,
+        patientContact: currentPatient.contact,
+        patientEmail: currentPatient.email,
+        fromHospital: appData.currentUser.hospital,
+        toHospital: toHospital,
+        reason: transferReason,
+        urgency: urgencyLevel,
+        status: "pending",
+        dateRequested: new Date().toISOString().split('T')[0],
+        requestedBy: appData.currentUser.name,
+        timestamp: new Date().toISOString()
+      };
+
+      // Generate a unique ID for the transfer
+      const transferId = 'transfer_' + new Date().getTime();
+      
+      console.log("Submitting transfer:", transferData);
+      
+      db.ref("transfers/" + transferId).set(transferData)
+        .then(() => {
+          console.log("Transfer submitted successfully");
+          showToast('Transfer request submitted successfully!');
+          
+          addNotification(
+            'New Transfer Request',
+            `Transfer requested for ${currentPatient.name} to ${toHospital}`,
+            'transfer'
+          );
+          
+          // Reset form and go back to patient registration
+          document.getElementById('to-hospital').value = '';
+          document.getElementById('transfer-reason').value = '';
+          document.getElementById('urgency-level').value = 'routine';
+          
+          switchTab('register-patient');
+        })
+        .catch(err => {
+          console.error("Error submitting transfer:", err);
+          showToast('Error submitting transfer request. Please try again.');
+        });
+    }
+
+    function loadTransfers() {
+      db.ref("transfers").once('value').then(snapshot => {
+        const transfers = snapshot.val();
+        appData.transfers = transfers ? Object.entries(transfers).map(([id, data]) => ({ id, ...data })) : [];
+        updateTransfersList();
+      }).catch(err => {
+        console.error("Error loading transfers:", err);
+        showToast('Error loading transfers');
+      });
+    }
+
+    function updateTransfersList() {
+      const tableBody = document.getElementById('transfers-table-body');
+      if (!tableBody) return;
+
+      tableBody.innerHTML = '';
+
+      if (appData.transfers.length === 0) {
+        tableBody.innerHTML = `
+          <tr>
+            <td colspan="7" class="px-6 py-4 text-center text-sm text-gray-500">
+              No transfer requests found
+            </td>
+          </tr>
+        `;
+        return;
+      }
+
+      appData.transfers.forEach(transfer => {
+        let statusClass = '';
+        let statusText = '';
+        
+        switch(transfer.status) {
+          case 'pending':
+            statusClass = 'status-pending';
+            statusText = 'Pending';
+            break;
+          case 'accepted':
+            statusClass = 'status-accepted';
+            statusText = 'Accepted';
+            break;
+          case 'rejected':
+            statusClass = 'status-rejected';
+            statusText = 'Rejected';
+            break;
+          case 'completed':
+            statusClass = 'status-completed';
+            statusText = 'Completed';
+            break;
+          default:
+            statusClass = 'status-pending';
+            statusText = 'Pending';
+        }
+
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${transfer.id}</td>
+          <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${transfer.patientName}</td>
+          <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${transfer.fromHospital}</td>
+          <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${transfer.toHospital}</td>
+          <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${transfer.dateRequested}</td>
+          <td class="px-6 py-4 whitespace-nowrap">
+            <span class="px-2 py-1 text-xs rounded-full ${statusClass}">${statusText}</span>
+          </td>
+          <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+            <button class="text-blue-600 hover:text-blue-800 mr-3 view-transfer" data-id="${transfer.id}">
+              <i class="fas fa-eye"></i>
+            </button>
+            <button class="text-green-600 hover:text-green-800 send-message-transfer" data-id="${transfer.id}">
+              <i class="fas fa-paper-plane"></i>
+            </button>
+          </td>
+        `;
+        tableBody.appendChild(row);
+      });
+
+      // Add event listeners to transfer actions
+      document.querySelectorAll('.view-transfer').forEach(button => {
+        button.addEventListener('click', function() {
+          const transferId = this.getAttribute('data-id');
+          showTransferDetails(transferId);
+        });
+      });
+
+      document.querySelectorAll('.send-message-transfer').forEach(button => {
+        button.addEventListener('click', function() {
+          const transferId = this.getAttribute('data-id');
+          const transfer = appData.transfers.find(t => t.id === transferId);
+          if (transfer) {
+            openMessageModal(null, transfer);
+          }
+        });
+      });
+    }
+
+    function filterTransfers() {
+      const searchTerm = document.getElementById('search-transfers').value.toLowerCase();
+      const statusFilter = document.getElementById('status-filter').value;
+      const tableBody = document.getElementById('transfers-table-body');
+      
+      if (!tableBody) return;
+      
+      const filteredTransfers = appData.transfers.filter(transfer => {
+        const matchesSearch = transfer.patientName.toLowerCase().includes(searchTerm) ||
+                            transfer.id.toLowerCase().includes(searchTerm) ||
+                            transfer.toHospital.toLowerCase().includes(searchTerm);
+        const matchesStatus = statusFilter ? transfer.status === statusFilter : true;
+        
+        return matchesSearch && matchesStatus;
+      });
+      
+      tableBody.innerHTML = '';
+
+      if (filteredTransfers.length === 0) {
+        tableBody.innerHTML = `
+          <tr>
+            <td colspan="7" class="px-6 py-4 text-center text-sm text-gray-500">
+              No matching transfers found
+            </td>
+          </tr>
+        `;
+        return;
+      }
+
+      filteredTransfers.forEach(transfer => {
+        let statusClass = '';
+        let statusText = '';
+        
+        switch(transfer.status) {
+          case 'pending':
+            statusClass = 'status-pending';
+            statusText = 'Pending';
+            break;
+          case 'accepted':
+            statusClass = 'status-accepted';
+            statusText = 'Accepted';
+            break;
+          case 'rejected':
+            statusClass = 'status-rejected';
+            statusText = 'Rejected';
+            break;
+          case 'completed':
+            statusClass = 'status-completed';
+            statusText = 'Completed';
+            break;
+          default:
+            statusClass = 'status-pending';
+            statusText = 'Pending';
+        }
+
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${transfer.id}</td>
+          <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${transfer.patientName}</td>
+          <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${transfer.fromHospital}</td>
+          <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${transfer.toHospital}</td>
+          <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${transfer.dateRequested}</td>
+          <td class="px-6 py-4 whitespace-nowrap">
+            <span class="px-2 py-1 text-xs rounded-full ${statusClass}">${statusText}</span>
+          </td>
+          <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+            <button class="text-blue-600 hover:text-blue-800 mr-3 view-transfer" data-id="${transfer.id}">
+              <i class="fas fa-eye"></i>
+            </button>
+            <button class="text-green-600 hover:text-green-800 send-message-transfer" data-id="${transfer.id}">
+              <i class="fas fa-paper-plane"></i>
+            </button>
+          </td>
+        `;
+        tableBody.appendChild(row);
+      });
+
+      // Re-attach event listeners
+      document.querySelectorAll('.view-transfer').forEach(button => {
+        button.addEventListener('click', function() {
+          const transferId = this.getAttribute('data-id');
+          showTransferDetails(transferId);
+        });
+      });
+
+      document.querySelectorAll('.send-message-transfer').forEach(button => {
+        button.addEventListener('click', function() {
+          const transferId = this.getAttribute('data-id');
+          const transfer = appData.transfers.find(t => t.id === transferId);
+          if (transfer) {
+            openMessageModal(null, transfer);
+          }
+        });
+      });
+    }
+
+    function showTransferDetails(transferId) {
+      const transfer = appData.transfers.find(t => t.id === transferId);
+      if (!transfer) return;
+
+      currentTransfer = transfer;
+      // For now, we'll just show an alert with the details
+      alert(`Transfer Details:\n
+        ID: ${transfer.id}\n
+        Patient: ${transfer.patientName}\n
+        From: ${transfer.fromHospital}\n
+        To: ${transfer.toHospital}\n
+        Status: ${transfer.status}\n
+        Reason: ${transfer.reason}\n
+        Urgency: ${transfer.urgency}\n
+        Date: ${transfer.dateRequested}
+      `);
+    }
+
+    // Utility Functions
+    function showToast(message) {
+      const toast = document.getElementById('toast');
+      if (!toast) return;
+      toast.textContent = message;
+      toast.style.display = 'block';
+      setTimeout(() => {
+        toast.style.display = 'none';
+      }, 3000);
+    }
+
+    function formatTime(timestamp) {
+      const date = new Date(timestamp);
+      return date.toLocaleString();
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      // Initialize notifications
+      loadNotifications();
+      
+      // Tab switching event listeners
+      document.getElementById('registration-tab').addEventListener('click', (e) => {
+        e.preventDefault();
+        switchTab('register-patient');
+      });
+      
+      document.getElementById('transfer-tab').addEventListener('click', (e) => {
+        e.preventDefault();
+        switchTab('transfers-list');
+      });
+      
+      // Patient registration form elements
+      const form = document.getElementById('patientForm');
+      const searchResult = document.getElementById('searchResult');
+      const findById = document.getElementById('findById');
+      const backBtn = document.getElementById('backBtn');
+      const findId = document.getElementById('findId');
+
+      const EnterName = document.getElementById('EnterName');
+      const EnterAge = document.getElementById('EnterAge');
+      const EnterGender = document.getElementById('EnterGender');
+      const EnterDisease = document.getElementById('EnterDisease');
+      const EnterContact = document.getElementById('EnterContact');
+      const EnterEmail = document.getElementById('EnterEmail');
+      const EnterAddress = document.getElementById('EnterAddress');
+      const EnterId = document.getElementById('EnterId');
+
+      const enterBtn = document.getElementById('enterBtn');
+      const updateBtn = document.getElementById('updateBtn');
+      const removeBtn = document.getElementById('removeBtn');
+      const transferBtn = document.getElementById('transferBtn');
+
+      const showName = document.getElementById('showName');
+      const showAge = document.getElementById('showAge');
+      const showGender = document.getElementById('showGender');
+      const showDisease = document.getElementById('showDisease');
+      const showContact = document.getElementById('showContact');
+      const showEmail = document.getElementById('showEmail');
+      const showAddress = document.getElementById('showAddress');
+
+      // Patient registration functions
+      function enterData() {
+        if (!EnterId.value.trim()) return alert("Please enter an ID");
+        
+        const patientData = {
+          name: EnterName.value,
+          age: EnterAge.value,
+          gender: EnterGender.value,
+          disease: EnterDisease.value,
+          contact: EnterContact.value,
+          email: EnterEmail.value,
+          address: EnterAddress.value,
+          createdAt: new Date().toISOString()
+        };
+
+        firebase.database().ref("patients/" + EnterId.value).set(patientData)
+          .then(() => {
+            showNotification('✅ Patient data added successfully', 'success');
+            clearFields(form);
+            // Store current patient for transfer
+            currentPatient = { patientId: EnterId.value, ...patientData };
+          })
+          .catch(err => {
+            console.error("Error:", err);
+            showNotification('❌ Error adding patient data', 'error');
+          });
+      }
+
+      function updateData() {
+        if (!EnterId.value.trim()) return alert("Please enter an ID");
+        
+        const patientData = {
+          name: EnterName.value,
+          age: EnterAge.value,
+          gender: EnterGender.value,
+          disease: EnterDisease.value,
+          contact: EnterContact.value,
+          email: EnterEmail.value,
+          address: EnterAddress.value,
+          updatedAt: new Date().toISOString()
+        };
+
+        firebase.database().ref("patients/" + EnterId.value).update(patientData)
+          .then(() => {
+            showNotification('✅ Patient data updated successfully', 'success');
+            clearFields(form);
+            // Update current patient for transfer
+            currentPatient = { patientId: EnterId.value, ...patientData };
+          })
+          .catch(err => {
+            console.error("Error:", err);
+            showNotification('❌ Error updating patient data', 'error');
+          });
+      }
+
+      function removeData() {
+        if (!EnterId.value.trim()) return alert("Please enter an ID");
+        
+        firebase.database().ref("patients/" + EnterId.value).remove()
+          .then(() => {
+            showNotification('✅ Patient data removed successfully', 'success');
+            clearFields(form);
+            currentPatient = null;
+          })
+          .catch(err => {
+            console.error("Error:", err);
+            showNotification('❌ Error removing patient data', 'error');
+          });
+      }
+
+      function findData() {
+        if (!findId.value.trim()) return alert("Please enter an ID");
+        
+        firebase.database().ref("patients/" + findId.value).get()
+          .then(snapshot => {
+            if (snapshot.exists()) {
+              const data = snapshot.val();
+              showName.textContent = data.name || 'N/A';
+              showAge.textContent = data.age || 'N/A';
+              showGender.textContent = data.gender || 'N/A';
+              showDisease.textContent = data.disease || 'N/A';
+              showContact.textContent = data.contact || 'N/A';
+              showEmail.textContent = data.email || 'N/A';
+              showAddress.textContent = data.address || 'N/A';
+              
+              // Store current patient for transfer
+              currentPatient = { patientId: findId.value, ...data };
+              
+              form.classList.add("hidden");
+              searchResult.classList.remove("hidden");
+            } else {
+              alert("Patient not found");
+            }
+          })
+          .catch(err => {
+            console.error("Error:", err);
+            alert("❌ Error finding patient");
+          });
+      }
+
+      // Transfer buttons - FIXED: Added proper event listeners
+      const cancelTransferBtn = document.getElementById('cancel-transfer');
+      const submitTransferBtn = document.getElementById('submit-transfer');
+      const sendMessageTransferBtn = document.getElementById('send-message-transfer');
+
+      if (cancelTransferBtn) {
+        cancelTransferBtn.addEventListener('click', cancelTransfer);
+      }
+      
+      if (submitTransferBtn) {
+        submitTransferBtn.addEventListener('click', submitTransferRequest);
+      }
+      
+      if (sendMessageTransferBtn) {
+        sendMessageTransferBtn.addEventListener('click', () => openMessageModal(currentPatient, null));
+      }
+
+      // Notification buttons
+      document.getElementById('notificationBell').addEventListener('click', toggleNotifications);
+      document.getElementById('closeNotifications').addEventListener('click', closeNotifications);
+      document.getElementById('markAllRead').addEventListener('click', markAllNotificationsRead);
+      document.getElementById('clearNotifications').addEventListener('click', clearAllNotifications);
+
+      // Message modal buttons
+      document.getElementById('cancelMessage').addEventListener('click', closeMessageModal);
+      document.getElementById('sendMessage').addEventListener('click', sendMessageToPatient);
+
+      // Transfer filters
+      const searchTransfers = document.getElementById('search-transfers');
+      const statusFilter = document.getElementById('status-filter');
+      
+      if (searchTransfers) {
+        searchTransfers.addEventListener('input', filterTransfers);
+      }
+      if (statusFilter) {
+        statusFilter.addEventListener('change', filterTransfers);
+      }
+
+      // Event listeners for patient registration
+      backBtn.addEventListener("click", () => {
+        searchResult.classList.add("hidden");
+        form.classList.remove("hidden");
+      });
+
+      enterBtn.addEventListener("click", enterData);
+      updateBtn.addEventListener("click", updateData);
+      removeBtn.addEventListener("click", removeData);
+      findById.addEventListener("click", findData);
+      transferBtn.addEventListener("click", initiateTransfer);
+      
+      // Mobile menu functionality
+      const mobileMenuButton = document.getElementById('mobile-menu-button');
+      const mobileMenu = document.getElementById('mobile-menu');
+      
+      if (mobileMenuButton && mobileMenu) {
+        mobileMenuButton.addEventListener('click', () => {
+          mobileMenu.classList.toggle('hidden');
+        });
+      }
+      
+      // Close notifications when clicking outside
+      document.addEventListener('click', function(event) {
+        const notificationBell = document.getElementById('notificationBell');
+        const notificationPanel = document.getElementById('notificationPanel');
+        if (notificationPanel && notificationBell) {
+          if (!notificationPanel.contains(event.target) && !notificationBell.contains(event.target)) {
+            closeNotifications();
+          }
+        }
+      });
+    });
+  </script>
+</body>
+</html>
