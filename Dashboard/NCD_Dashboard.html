@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Disability Care Dashboard - MahamaCare Hospital</title>
+    <title>NCD Care Dashboard - MahamaCare Hospital</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
@@ -91,25 +91,30 @@
                 <i class="fa-solid fa-user text-yellow-400 text-2xl mr-3"></i>
                 <span class="font-medium">Birth & Patient</span>
             </a>
+            
             <!-- Maternity -->
-<a href="/Dashboard/maternity.html" class="flex items-center p-3 rounded-xl hover:bg-blue-400 transition-all duration-200 bg-white/10">
-            <i class="fa-solid fa-user-injured text-yellow-400 text-2xl mr-3"></i>
-            <span class="font-medium">Maternity</span>
-          </a>
+            <a href="/Dashboard/maternity.html" class="flex items-center p-3 rounded-xl hover:bg-blue-400 transition-all duration-200 bg-white/10">
+                <i class="fa-solid fa-user-injured text-yellow-400 text-2xl mr-3"></i>
+                <span class="font-medium">Maternity</span>
+            </a>
+            
             <!-- Vaccination Care Dashboard -->
             <a href="./vaccination2.html" class="flex items-center p-3 rounded-xl hover:bg-blue-400 transition-all duration-200 bg-white/10">
                 <i class="fas fa-syringe text-yellow-400 text-2xl mr-3"></i>
                 <span class="font-medium">Vaccination</span>
             </a>
-        
-                <a href="./Emergency2.html" class="flex items-center p-3 rounded-xl hover:bg-blue-400 transition-all duration-200 bg-white/10">
-                 <i class="fas fa-truck-medical mr-2 text-yellow-400 text-2xl"></i>
+            
+            <!-- Emergency -->
+            <a href="./Emergency2.html" class="flex items-center p-3 rounded-xl hover:bg-blue-400 transition-all duration-200 bg-white/10">
+                <i class="fas fa-truck-medical mr-2 text-yellow-400 text-2xl"></i>
                 <span class="font-medium">Emergency</span>
             </a>
-             <a href="./NCD_Dashboard.html" class="flex items-center p-3 rounded-xl hover:bg-blue-400 transition-all duration-200 bg-white/10">
-            <i class="fa-solid fa-wheelchair text-yellow-400 text-2xl mr-3"></i>
-            <span class="font-medium">NCD</span>
-          </a>
+            
+            <!-- Disability Care -->
+            <a href="./Disability2.html" class="flex items-center p-3 rounded-xl hover:bg-blue-400 transition-all duration-200 bg-white/10">
+                <i class="fas fa-wheelchair text-yellow-400 text-2xl mr-3"></i>
+                <span class="font-medium">Disability Care</span>
+            </a>
         </nav>
         
         <div class="p-4 border-t border-blue-400 bg-blue-600/50 rounded-br-3xl">
@@ -127,7 +132,7 @@
             <div class="container mx-auto px-4">
                 <div class="flex justify-between items-center py-4">
                     <div class="flex items-center">
-                        <span class="text-2xl font-bold text-blue-600"><a href="/index.html">🏥 MCH </a>Disability Care Dashboard</span>
+                        <span class="text-2xl font-bold text-blue-600"><a href="/index.html">🏥 MCH </a>NCD Care Dashboard</span>
                     </div>
                     
                     <button id="mobile-menu-button" class="md:hidden text-gray-600 focus:outline-none">
@@ -163,7 +168,7 @@
         <main class="container mx-auto px-4 py-8">
             <!-- Statistics Section -->
             <section id="stats" class="mb-12">
-                <h2 class="text-3xl font-bold text-gray-800 mb-6">Disability Care Statistics</h2>
+                <h2 class="text-3xl font-bold text-gray-800 mb-6">NCD Care Statistics</h2>
                 
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
                     <div class="stat-card bg-white rounded-xl shadow-lg p-6 text-center">
@@ -191,11 +196,11 @@
                     </div>
                 </div>
 
-                <!-- Service Distribution -->
+                <!-- Condition Distribution -->
                 <div class="bg-white rounded-xl shadow-lg p-6 mb-8">
-                    <h3 class="text-xl font-bold text-gray-800 mb-4">Service Distribution</h3>
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4" id="service-stats">
-                        <!-- Service statistics will be populated here -->
+                    <h3 class="text-xl font-bold text-gray-800 mb-4">Condition Distribution</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4" id="condition-stats">
+                        <!-- Condition statistics will be populated here -->
                     </div>
                 </div>
             </section>
@@ -220,7 +225,7 @@
                             <thead>
                                 <tr class="bg-gray-100">
                                     <th class="border-b border-gray-300 px-4 py-3 text-left font-semibold text-gray-700">Patient Name</th>
-                                    <th class="border-b border-gray-300 px-4 py-3 text-left font-semibold text-gray-700">Service</th>
+                                    <th class="border-b border-gray-300 px-4 py-3 text-left font-semibold text-gray-700">Condition</th>
                                     <th class="border-b border-gray-300 px-4 py-3 text-left font-semibold text-gray-700">Date</th>
                                     <th class="border-b border-gray-300 px-4 py-3 text-left font-semibold text-gray-700">Time</th>
                                     <th class="border-b border-gray-300 px-4 py-3 text-left font-semibold text-gray-700">Contact</th>
@@ -237,7 +242,7 @@
                     <div id="no-appointments-message" class="text-center py-8 text-gray-500">
                         <i class="fas fa-calendar-times text-4xl mb-4"></i>
                         <p>No appointment data available yet.</p>
-                        <p class="text-sm mt-2">Appointments will appear here once booked through the disability care form.</p>
+                        <p class="text-sm mt-2">Appointments will appear here once booked through the NCD care form.</p>
                     </div>
                     
                     <div id="loading-appointments" class="hidden">
@@ -255,7 +260,6 @@
                 </div>
             </section>
 
-           
             <!-- Resources Section -->
             <section id="resources" class="mb-12">
                 <h2 class="text-3xl font-bold text-gray-800 mb-6">Resource Management</h2>
@@ -292,8 +296,8 @@
                                 <div class="text-sm text-gray-600">Appointment Response Rate</div>
                             </div>
                             <div class="bg-gray-50 p-4 rounded-lg">
-                                <div class="text-lg font-bold text-orange-600" id="popular-service">-</div>
-                                <div class="text-sm text-gray-600">Most Requested Service</div>
+                                <div class="text-lg font-bold text-orange-600" id="popular-condition">-</div>
+                                <div class="text-sm text-gray-600">Most Common Condition</div>
                             </div>
                         </div>
                     </div>
@@ -307,11 +311,11 @@
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                     <div>
                         <h3 class="text-xl font-bold mb-4">MahamaCare Hospital</h3>
-                        <p class="text-gray-400">Providing specialized disability care with compassion and expertise.</p>
+                        <p class="text-gray-400">Providing specialized NCD care with compassion and expertise.</p>
                     </div>
                     
                     <div>
-                        <h4 class="text-lg font-semibold mb-4">Disability Care Program</h4>
+                        <h4 class="text-lg font-semibold mb-4">NCD Care Program</h4>
                         <ul class="space-y-2 text-gray-400">
                             <li><i class="fas fa-map-marker-alt mr-2"></i> Mahama Refugee Camp</li>
                             <li><i class="fas fa-phone mr-2"></i> +250 000 000</li>
@@ -322,8 +326,8 @@
                     <div>
                         <h4 class="text-lg font-semibold mb-4">Quick Actions</h4>
                         <div class="flex flex-col space-y-2">
-                            <a href="/Servscies/Disability.html" class="text-gray-400 hover:text-white transition duration-300">
-                                <i class="fas fa-wheelchair mr-2"></i> Disability Care Page
+                            <a href="/Servscies/NCD.html" class="text-gray-400 hover:text-white transition duration-300">
+                                <i class="fas fa-heartbeat mr-2"></i> NCD Care Page
                             </a>
                             <button onclick="exportToCSV()" class="text-left text-gray-400 hover:text-white transition duration-300">
                                 <i class="fas fa-download mr-2"></i> Export Data
@@ -340,6 +344,8 @@
     </div>
 
     <!-- Firebase Configuration and JavaScript -->
-   <script src="Disability2.js"></script>
+  <script src="NCD_Dashboard .js">
+
+  </script>
 </body>
 </html>
