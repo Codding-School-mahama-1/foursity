@@ -12,6 +12,48 @@
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
+  
+  <style>
+    /* Responsive sidebar styles */
+    .sidebar-fixed {
+      position: fixed;
+      left: 0;
+      top: 0;
+      height: 100vh;
+      width: 14rem;
+      z-index: 40;
+      transition: transform 0.3s ease;
+    }
+    .main-content {
+      margin-left: 14rem;
+      min-height: 100vh;
+      transition: margin-left 0.3s ease;
+    }
+    @media (max-width: 768px) {
+      .sidebar-fixed {
+        transform: translateX(-100%);
+      }
+      .sidebar-fixed.mobile-visible {
+        transform: translateX(0);
+      }
+      .main-content {
+        margin-left: 0;
+      }
+      .sidebar-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 39;
+      }
+      .sidebar-overlay.active {
+        display: block;
+      }
+    }
+  </style>
 </head>
 <body class="bg-gray-100 text-gray-800 select-none font-serif">
   <!-- Login/Signup Modal - Shown by default -->
@@ -68,37 +110,12 @@
 
   <!-- Dashboard Content - Hidden by default until authentication -->
   <div id="dashboardContent" class="hidden">
-    <header class="bg-white shadow-md sticky top-0 z-30">
-      <div class="container mx-auto px-4">
-        <div class="flex justify-between items-center py-4">
-          <div class="flex items-center">
-            <span class="text-2xl font-bold text-blue-600"> <a href="/index.html">🏥 MCH</a>  Patients and BirthsDashboard</span>
-          </div>
-          
-          <button id="mobile-menu-button" class="md:hidden text-gray-600 focus:outline-none">
-            <i class="fas fa-bars text-xl"></i>
-          </button>
-          
-          <nav id="nav-links" class="hidden md:flex items-center space-x-6">
-            <a href="#Statistic" class="text-gray-700 hover:text-blue-600 transition duration-300">Statistics</a>
-            <a href="Servscies/paitents-Servecises.html" class="text-gray-700 hover:text-blue-600 transition duration-300">Patients Registration</a>
-            <a href="Servscies/Briths Servecises.html" class="text-gray-700 hover:text-blue-600 transition duration-300">Birth Registration</a>
-          </nav>
-        </div>
-        
-        <div id="mobile-menu" class="hidden md:hidden py-4 border-t border-gray-200">
-          <div class="flex flex-col space-y-4">
-            <a href="#Statistic" class="text-gray-700 hover:text-blue-600">Statistics</a>
-            <a href="Servscies/paitents-Servecises.html" class="text-gray-700 hover:text-blue-600 transition duration-300">Patients Registration</a>
-            <a href="Servscies/Briths Servecises.html" class="text-gray-700 hover:text-blue-600 transition duration-300">Birth Registration</a>
-          </div>
-        </div>
-      </div>
-    </header>
+    <!-- Sidebar overlay for mobile -->
+    <div id="sidebar-overlay" class="sidebar-overlay"></div>
 
     <div class="flex">
       <!-- Sidebar -->
-      <aside class="w-56 bg-gradient-to-b from-blue-500 to-blue-600 text-white flex flex-col fixed h-full shadow-xl">
+      <aside id="sidebar" class="sidebar-fixed bg-gradient-to-b from-blue-500 to-blue-600 text-white flex flex-col shadow-xl">
         <div class="text-xl font-bold p-6 border-b border-blue-400 font-mono bg-blue-600">Hospital Admin</div>
         
         <!-- Navigation Menu -->
@@ -109,38 +126,38 @@
             <span class="font-medium">Logout</span>
           </a>
           
-          <!-- Patient Registration -->
-          <a href="Servscies/paitents-Servecises.html" class="flex items-center p-3 rounded-xl hover:bg-blue-400 transition-all duration-200 bg-white/10">
-            <i class="fa-solid fa-user-injured text-yellow-400 text-2xl mr-3"></i>
-            <span class="font-medium">Patient Registration</span>
-          </a>
-
-          <!-- Birth Registration -->
-          <a href="Servscies/Briths Servecises.html" class="flex items-center p-3 rounded-xl hover:bg-blue-400 transition-all duration-200 bg-white/10">
-            <i class="fa-solid fa-baby text-yellow-400 text-2xl mr-3"></i>
-            <span class="font-medium">Birth Registration</span>
-          </a>
-    <a href="/Dashboard/maternity.html" class="flex items-center p-3 rounded-xl hover:bg-blue-400 transition-all duration-200 bg-white/10">
+          <a href="/Dashboard/maternity.html" class="flex items-center p-3 rounded-xl hover:bg-blue-400 transition-all duration-200 bg-white/10">
             <i class="fa-solid fa-user-injured text-yellow-400 text-2xl mr-3"></i>
             <span class="font-medium">Maternity</span>
           </a>
-          <!-- Vaccination -->
-          <a href="./Dashboard/vaccination2.html" class="flex items-center p-3 rounded-xl hover:bg-blue-400 transition-all duration-200 bg-white/10">
-            <i class="fa-solid fa-syringe text-yellow-400 text-2xl mr-3"></i>
-            <span class="font-medium">Vaccination</span>
-          </a>
 
-          <!-- Emergency -->
+              <!-- Emergency -->
           <a href="./Dashboard/Emergency2.html" class="flex items-center p-3 rounded-xl hover:bg-blue-400 transition-all duration-200 bg-white/10">
             <i class="fa-solid fa-truck-medical text-yellow-400 text-2xl mr-3"></i>
             <span class="font-medium">Emergency</span>
           </a>
 
+          <!-- Vaccination -->
+          <a href="./Dashboard/vaccination2.html" class="flex items-center p-3 rounded-xl hover:bg-blue-400 transition-all duration-200 bg-white/10">
+            <i class="fa-solid fa-syringe text-yellow-400 text-2xl mr-3"></i>
+            <span class="font-medium">Vaccination</span>
+          </a>
+           <!-- mental -->
+         <a href="/Dashboard/maternity.html" class="flex items-center p-3 rounded-xl hover:bg-blue-400 transition-all duration-200 bg-white/10">
+            <i class="fa-solid fa-wheelchair text-yellow-400 text-2xl mr-3"></i>
+            <span class="font-medium">Mental Health</span>
+          </a>
+                <!-- NCD -->
+          <a href="./NCD_Dashboard.html" class="flex items-center p-3 rounded-xl hover:bg-blue-400 transition-all duration-200 bg-white/10">
+            <i class="fa-solid fa-wheelchair text-yellow-400 text-2xl mr-3"></i>
+            <span class="font-medium">NCD</span>
+          </a>
           <!-- Disability -->
           <a href="./Dashboard/Disability2.html" class="flex items-center p-3 rounded-xl hover:bg-blue-400 transition-all duration-200 bg-white/10">
             <i class="fa-solid fa-wheelchair text-yellow-400 text-2xl mr-3"></i>
             <span class="font-medium">Disability</span>
           </a>
+    
         </nav>
         
         <div class="p-4 border-t border-blue-400 bg-blue-600/50 rounded-br-3xl">
@@ -153,7 +170,39 @@
       
 
       <!-- Main Content -->
-      <main class="ml-56 flex-1 p-6 space-y-8 bg-blue-50 min-h-screen">
+      <main class="main-content flex-1 p-6 space-y-8 bg-blue-50 min-h-screen">
+        <header class="bg-white shadow-md sticky top-0 z-30">
+          <div class="container mx-auto px-4">
+            <div class="flex justify-between items-center py-4">
+              <div class="flex items-center">
+                <!-- Sidebar toggle button for mobile -->
+                <button id="sidebar-toggle" class="md:hidden text-gray-600 focus:outline-none mr-4">
+                  <i class="fas fa-bars text-xl"></i>
+                </button>
+                <span class="text-2xl font-bold text-blue-600"> <a href="/index.html">🏥 MCH</a>  Patients and BirthsDashboard</span>
+              </div>
+              
+              <button id="mobile-menu-button" class="md:hidden text-gray-600 focus:outline-none">
+                <i class="fas fa-ellipsis-v text-xl"></i>
+              </button>
+              
+              <nav id="nav-links" class="hidden md:flex items-center space-x-6">
+                <a href="#Statistic" class="text-gray-700 hover:text-blue-600 transition duration-300">Statistics</a>
+                <a href="Servscies/paitents-Servecises.html" class="text-gray-700 hover:text-blue-600 transition duration-300">Patients Registration</a>
+                <a href="Servscies/Briths Servecises.html" class="text-gray-700 hover:text-blue-600 transition duration-300">Birth Registration</a>
+              </nav>
+            </div>
+            
+            <div id="mobile-menu" class="hidden md:hidden py-4 border-t border-gray-200">
+              <div class="flex flex-col space-y-4">
+                <a href="#Statistic" class="text-gray-700 hover:text-blue-600">Statistics</a>
+                <a href="Servscies/paitents-Servecises.html" class="text-gray-700 hover:text-blue-600 transition duration-300">Patients Registration</a>
+                <a href="Servscies/Briths Servecises.html" class="text-gray-700 hover:text-blue-600 transition duration-300">Birth Registration</a>
+              </div>
+            </div>
+          </div>
+        </header>
+
         <section id="dashboard">
           <h1 class="text-3xl font-bold mb-6 text-blue-800">Dashboard Overview</h1>
 
@@ -772,6 +821,35 @@
       if (mobileMenuButton && mobileMenu) {
         mobileMenuButton.addEventListener('click', () => {
           mobileMenu.classList.toggle('hidden');
+        });
+      }
+
+      // Sidebar toggle functionality for mobile
+      const sidebarToggle = document.getElementById('sidebar-toggle');
+      const sidebar = document.getElementById('sidebar');
+      const sidebarOverlay = document.getElementById('sidebar-overlay');
+      
+      if (sidebarToggle && sidebar && sidebarOverlay) {
+        sidebarToggle.addEventListener('click', () => {
+          sidebar.classList.toggle('mobile-visible');
+          sidebarOverlay.classList.toggle('active');
+        });
+
+        // Close sidebar when clicking on overlay
+        sidebarOverlay.addEventListener('click', () => {
+          sidebar.classList.remove('mobile-visible');
+          sidebarOverlay.classList.remove('active');
+        });
+
+        // Close sidebar when clicking on a link (for mobile)
+        const sidebarLinks = sidebar.querySelectorAll('a');
+        sidebarLinks.forEach(link => {
+          link.addEventListener('click', () => {
+            if (window.innerWidth < 768) {
+              sidebar.classList.remove('mobile-visible');
+              sidebarOverlay.classList.remove('active');
+            }
+          });
         });
       }
     });
