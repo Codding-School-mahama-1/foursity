@@ -104,14 +104,75 @@
     <div id="sidebar-overlay" class="sidebar-overlay"></div>
 
     <!-- Header -->
-    <header class="bg-white shadow-md sticky top-0 z-30">
+   
+
+    <div class="flex">
+        <!-- Fixed Sidebar -->
+        <aside id="sidebar" class="sidebar-fixed bg-gradient-to-b from-blue-500 to-blue-600 text-white flex flex-col shadow-xl">
+            <div class="text-xl font-bold p-6 border-b border-blue-400 bg-blue-600">Hospital Admin</div>
+            
+            <!-- Navigation Menu -->
+            <nav class="flex-1 p-5 space-y-3">
+          <!-- Logout Button -->
+          <a href="#" id="logoutBtn" class="flex items-center p-3 rounded-xl hover:bg-blue-400 transition-all duration-200 text-red-100 bg-blue-700/30">
+            <i class="fa-solid fa-right-from-bracket text-xl mr-3"></i>
+            <span class="font-medium">Logout</span>
+          </a>
+               <a href="../Dashboard.html" class="flex items-center p-3 rounded-xl hover:bg-blue-400 transition-all duration-200 bg-white/10">
+                <i class="fa-solid fa-user text-yellow-400 text-2xl mr-3"></i>
+                <span class="font-medium">Birth & Patient</span>
+            </a>
+   
+
+              <!-- Emergency -->
+          <a href="/Dashboard/Emergency2.html" class="flex items-center p-3 rounded-xl hover:bg-blue-400 transition-all duration-200 bg-white/10">
+            <i class="fa-solid fa-truck-medical text-yellow-400 text-2xl mr-3"></i>
+            <span class="font-medium">Emergency</span>
+          </a>
+
+          <!-- Vaccination -->
+          <a href="/Dashboard/vaccination2.html" class="flex items-center p-3 rounded-xl hover:bg-blue-400 transition-all duration-200 bg-white/10">
+            <i class="fa-solid fa-syringe text-yellow-400 text-2xl mr-3"></i>
+            <span class="font-medium">Vaccination</span>
+          </a>
+           <!-- mental -->
+         <a href="/Dashboard/mental heath.html" class="flex items-center p-3 rounded-xl hover:bg-blue-400 transition-all duration-200 bg-white/10">
+              <i class="fa-solid fa-head-side-brain mr-2 text-yellow-400 text-2x"></i>
+            <span class="font-medium">Mental Health</span>
+          </a>
+                <!-- NCD -->
+          <a href="/Dashboard/NCD_Dashboard.html" class="flex items-center p-3 rounded-xl hover:bg-blue-400 transition-all duration-200 bg-white/10">
+            <i class="fas fa-heartbeat mr-2 text-yellow-400 text-2xl"></i> 
+            <span class="font-medium">NCD</span>
+          </a>
+          <!-- Disability -->
+          <a href="/Dashboard/Disability2.html" class="flex items-center p-3 rounded-xl hover:bg-blue-400 transition-all duration-200 bg-white/10">
+            <i class="fa-solid fa-wheelchair text-yellow-400 text-2xl mr-3"></i>
+            <span class="font-medium">Disability</span>
+          </a>
+    <!-- Complain -->
+                <a href="/Dashboard/complain_Dashboard.html" class="flex items-center p-3 rounded-xl hover:bg-blue-400 transition-all duration-200 bg-white/10">
+                 <i class="fas fa-headset mr-2 text-yellow-400 text-2xl"></i>
+            <span class="font-medium">Complain</span>
+          </a>
+        </nav>
+            
+            <div class="p-4 border-t border-blue-400 bg-blue-600/50 rounded-br-3xl">
+                <div class="text-sm text-blue-100 text-center">
+                <i class="fa-solid fa-shield-heart mr-2"></i>
+                Secure System
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content w-full">
+             <header class="bg-white shadow-md sticky top-0 z-30 ">
         <div class="container mx-auto px-4">
             <div class="flex justify-between items-center py-4">
                 <div class="flex items-center">
                     <!-- Sidebar toggle button for mobile -->
-                    <button id="sidebar-toggle" class="md:hidden text-gray-600 focus:outline-none mr-4">
-                        <i class="fas fa-bars text-xl"></i>
-                    </button>
+                  
                     <span class="text-2xl font-bold text-blue-600"> <a href="/index.html">🏥 MCH</a>   Maternity Care Dashboard</span>
                 </div>
                 
@@ -121,8 +182,7 @@
                 
                 <nav id="nav-links" class="hidden md:flex items-center space-x-6">
                     <a href="../Dashboard.html" class="text-gray-700 hover:text-blue-600 transition duration-300">Main Dashboard</a>
-                    <a href="../Servscies/Maternity&Brith%20Servecises.html" class="text-gray-700 hover:text-blue-600 transition duration-300">Maternity Services</a>
-                    <a href="../Servscies/Briths%20Servecises.html" class="text-gray-700 hover:text-blue-600 transition duration-300">Birth Registration</a>
+                    <a href="/Services/Briths Services.html" class="text-gray-700 hover:text-blue-600 transition duration-300">Birth Registration</a>
                 </nav>
             </div>
             
@@ -135,70 +195,11 @@
             </div>
         </div>
     </header>
-
-    <div class="flex">
-        <!-- Fixed Sidebar -->
-        <aside id="sidebar" class="sidebar-fixed bg-gradient-to-b from-blue-500 to-blue-600 text-white flex flex-col shadow-xl">
-            <div class="text-xl font-bold p-6 border-b border-blue-400 bg-blue-600">Hospital Admin</div>
-            
-            <!-- Navigation Menu -->
-            <nav class="flex-1 p-5 space-y-3">
-            
-                <a href="/Dashboard.html" class="flex items-center p-3 rounded-xl hover:bg-blue-400 transition-all duration-200 bg-white/10">
-                    <i class="fa-solid fa-hospital text-yellow-500 text-xl md:text-2xl mr-2"></i>
-                <span class="font-medium">Dashboard</span>
-                </a>
-                
-                <!-- Patient Registration -->
-                <a href="Servscies/paitents-Servecises.html" class="flex items-center p-3 rounded-xl hover:bg-blue-400 transition-all duration-200 bg-white/10">
-                <i class="fa-solid fa-user-injured text-yellow-400 text-2xl mr-3"></i>
-                <span class="font-medium">Patient Registration</span>
-                </a>
-
-                <!-- Birth Registration -->
-                <a href="Servscies/Briths Servecises.html" class="flex items-center p-3 rounded-xl hover:bg-blue-400 transition-all duration-200 bg-white/10">
-                <i class="fa-solid fa-baby text-yellow-400 text-2xl mr-3"></i>
-                <span class="font-medium">Birth Registration</span>
-                </a>
-
-                <!-- Vaccination -->
-                <a href="/Dashboard/vaccination2.html" class="flex items-center p-3 rounded-xl hover:bg-blue-400 transition-all duration-200 bg-white/10">
-                <i class="fa-solid fa-syringe text-yellow-400 text-2xl mr-3"></i>
-                <span class="font-medium">Vaccination</span>
-                </a>
-
-                <!-- Emergency -->
-                <a href="/Dashboard/Emergency2.html" class="flex items-center p-3 rounded-xl hover:bg-blue-400 transition-all duration-200 bg-white/10">
-                <i class="fa-solid fa-truck-medical text-yellow-400 text-2xl mr-3"></i>
-                <span class="font-medium">Emergency</span>
-                </a>
-
-                <!-- Disability -->
-                <a href="/Dashboard/Disability2.html" class="flex items-center p-3 rounded-xl hover:bg-blue-400 transition-all duration-200 bg-white/10">
-                <i class="fa-solid fa-wheelchair text-yellow-400 text-2xl mr-3"></i>
-                <span class="font-medium">Disability</span>
-                </a>
-                <a href="./NCD_Dashboard.html" class="flex items-center p-3 rounded-xl hover:bg-blue-400 transition-all duration-200 bg-white/10">
-                <i class="fa-solid fa-wheelchair text-yellow-400 text-2xl mr-3"></i>
-                <span class="font-medium">NCD</span>
-                </a>
-            </nav>
-            
-            <div class="p-4 border-t border-blue-400 bg-blue-600/50 rounded-br-3xl">
-                <div class="text-sm text-blue-100 text-center">
-                <i class="fa-solid fa-shield-heart mr-2"></i>
-                Secure System
-                </div>
-            </div>
-        </aside>
-
-        <!-- Main Content -->
-        <main class="main-content flex-1 p-6 space-y-8 bg-blue-50 min-h-screen">
             <section id="dashboard">
-                <h1 class="text-3xl font-bold mb-6 text-blue-800">Maternity Care Overview</h1>
+                <h1 class="text-3xl font-bold mb-6 text-blue-800 m-8">Maternity Care Overview</h1>
 
                 <!-- Stats Cards -->
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 m-8">
                     <div class="bg-white rounded-2xl shadow-lg p-6 text-center border-l-4 border-pink-500">
                         <h2 class="text-gray-500 font-semibold">Maternity Appointments</h2>
                         <p id="totalAppointments" class="text-4xl font-bold text-pink-600 mt-2">0</p>
@@ -225,7 +226,7 @@
                 </div>
 
                 <!-- Pregnancy Progress Overview -->
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-8">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-8 m-8">
                     <div class="bg-white rounded-2xl shadow-lg p-6">
                         <h2 class="text-xl font-semibold mb-4 text-gray-800">Pregnancy Week Distribution</h2>
                         <div id="pregnancyWeeks" class="space-y-3 max-h-80 overflow-y-auto">
@@ -243,7 +244,7 @@
                 </div>
 
                 <!-- Recent Activity -->
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-8">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-8 m-8">
                     <div class="bg-white rounded-2xl shadow-lg p-6">
                         <div class="flex justify-between items-center mb-4">
                             <h2 class="text-xl font-semibold text-gray-800">Recent Appointments</h2>
@@ -272,7 +273,7 @@
                 </div>
 
                 <!-- Charts -->
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-8">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-8 m-8">
                     <div class="bg-white rounded-2xl shadow-lg p-6">
                         <h2 class="text-lg font-semibold mb-4 text-gray-800">Monthly Appointments Trend</h2>
                         <canvas id="monthlyTrendChart" height="250"></canvas>
@@ -281,29 +282,6 @@
                     <div class="bg-white rounded-2xl shadow-lg p-6">
                         <h2 class="text-lg font-semibold mb-4 text-gray-800">Pregnancy Stage Distribution</h2>
                         <canvas id="pregnancyStageChart" height="250"></canvas>
-                    </div>
-                </div>
-
-                <!-- Quick Actions -->
-                <div class="bg-white rounded-2xl shadow-lg p-6 mt-8">
-                    <h2 class="text-xl font-semibold mb-4 text-gray-800">Quick Actions</h2>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                        <a href="../Servscies/Maternity&Brith%20Servecises.html#contact" class="bg-pink-500 hover:bg-pink-600 text-white p-4 rounded-lg text-center transition duration-300 transform hover:-translate-y-1">
-                            <i class="fas fa-calendar-plus text-2xl mb-2"></i>
-                            <p class="font-semibold">Book Appointment</p>
-                        </a>
-                        <a href="../Servscies/Briths%20Servecises.html" class="bg-green-500 hover:bg-green-600 text-white p-4 rounded-lg text-center transition duration-300 transform hover:-translate-y-1">
-                            <i class="fas fa-baby text-2xl mb-2"></i>
-                            <p class="font-semibold">Register Birth</p>
-                        </a>
-                        <a href="../Servscies/paitents-Servecises.html" class="bg-blue-500 hover:bg-blue-600 text-white p-4 rounded-lg text-center transition duration-300 transform hover:-translate-y-1">
-                            <i class="fas fa-user-plus text-2xl mb-2"></i>
-                            <p class="font-semibold">Register Patient</p>
-                        </a>
-                        <button onclick="exportMaternityData()" class="bg-purple-500 hover:bg-purple-600 text-white p-4 rounded-lg text-center transition duration-300 transform hover:-translate-y-1">
-                            <i class="fas fa-download text-2xl mb-2"></i>
-                            <p class="font-semibold">Export Data</p>
-                        </button>
                     </div>
                 </div>
             </section>
