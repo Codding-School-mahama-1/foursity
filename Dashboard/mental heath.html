@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
     
     <style>
@@ -56,11 +57,43 @@
             transform: translateY(-5px);
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
         }
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(255, 255, 255, 0.9);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            flex-direction: column;
+        }
+        .loading-spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #3498db;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
     </style>
 </head>
 <body class="bg-gray-50 min-h-screen font-serif">
+    <!-- Loading overlay -->
+    <div id="loadingOverlay" class="loading-overlay">
+        <div class="loading-spinner"></div>
+        <p class="mt-4 text-gray-600">Loading mental health dashboard...</p>
+    </div>
+    
     <!-- Dashboard Content -->
-    <div id="dashboardContent">
+    <div id="dashboardContent" style="display: none;">
         <!-- Sidebar overlay for mobile -->
         <div id="sidebar-overlay" class="sidebar-overlay"></div>
 
@@ -69,48 +102,47 @@
             <div class="text-xl font-bold p-6 border-b border-blue-400 bg-blue-600">Hospital Admin</div>
             
             <nav class="flex-1 p-5 space-y-3">
-                     <!-- Logout Button -->
-            <a href="/login-andSignUP_to-Dashboard.html" id="logoutBtn" class="flex items-center p-3 rounded-xl hover:bg-blue-400 transition-all duration-200 text-red-100 bg-blue-700/30">
-                <i class="fa-solid fa-right-from-bracket text-xl mr-3"></i>
-                <span class="font-medium">Logout</span>
-            </a>
-            
-            <!-- Register Patient -->
-            <a href="/Dashboard.html" class="flex items-center p-3 rounded-xl hover:bg-blue-400 transition-all duration-200 bg-white/10">
-                <i class="fa-solid fa-user text-yellow-400 text-2xl mr-3"></i>
-                <span class="font-medium">Birth & Patient</span>
-            </a>
-                   <a href="/Dashboard/maternity.html" class="flex items-center p-3 rounded-xl hover:bg-blue-400 transition-all duration-200 bg-white/10">
-            <i class="fa-solid fa-user-injured text-yellow-400 text-2xl mr-3"></i>
-            <span class="font-medium">Maternity</span>
-          </a>
-               <!-- Emergency -->
-          <a href="./Dashboard/Emergency2.html" class="flex items-center p-3 rounded-xl hover:bg-blue-400 transition-all duration-200 bg-white/10">
-            <i class="fa-solid fa-truck-medical text-yellow-400 text-2xl mr-3"></i>
-            <span class="font-medium">Emergency</span>
-          </a>
+                <!-- Logout Button -->
+                <a href="#" id="logoutBtn" class="flex items-center p-3 rounded-xl hover:bg-blue-400 transition-all duration-200 text-red-100 bg-blue-700/30">
+                    <i class="fa-solid fa-right-from-bracket text-xl mr-3"></i>
+                    <span class="font-medium">Logout</span>
+                </a>
+                
+                <!-- Register Patient -->
+                <a href="/Dashboard.html" class="flex items-center p-3 rounded-xl hover:bg-blue-400 transition-all duration-200 bg-white/10">
+                    <i class="fa-solid fa-user text-yellow-400 text-2xl mr-3"></i>
+                    <span class="font-medium">Birth & Patient</span>
+                </a>
+                <a href="/Dashboard/maternity.html" class="flex items-center p-3 rounded-xl hover:bg-blue-400 transition-all duration-200 bg-white/10">
+                    <i class="fa-solid fa-user-injured text-yellow-400 text-2xl mr-3"></i>
+                    <span class="font-medium">Maternity</span>
+                </a>
+                <!-- Emergency -->
+                <a href="./Emergency2.html" class="flex items-center p-3 rounded-xl hover:bg-blue-400 transition-all duration-200 bg-white/10">
+                    <i class="fa-solid fa-truck-medical text-yellow-400 text-2xl mr-3"></i>
+                    <span class="font-medium">Emergency</span>
+                </a>
 
-          <!-- Vaccination -->
-          <a href="/Dashboard/vaccination2.html" class="flex items-center p-3 rounded-xl hover:bg-blue-400 transition-all duration-200 bg-white/10">
-            <i class="fa-solid fa-syringe text-yellow-400 text-2xl mr-3"></i>
-            <span class="font-medium">Vaccination</span>
-          </a>
-           
+                <!-- Vaccination -->
+                <a href="/Dashboard/vaccination2.html" class="flex items-center p-3 rounded-xl hover:bg-blue-400 transition-all duration-200 bg-white/10">
+                    <i class="fa-solid fa-syringe text-yellow-400 text-2xl mr-3"></i>
+                    <span class="font-medium">Vaccination</span>
+                </a>
+                
                 <!-- NCD -->
-          <a href="./NCD_Dashboard.html" class="flex items-center p-3 rounded-xl hover:bg-blue-400 transition-all duration-200 bg-white/10">
-            <i class="fas fa-heartbeat mr-2 text-yellow-400 text-2xl"></i> 
-            <span class="font-medium">NCD</span>
-          </a>
-          <!-- Disability -->
-          <a href="/Dashboard/Disability2.html" class="flex items-center p-3 rounded-xl hover:bg-blue-400 transition-all duration-200 bg-white/10">
-            <i class="fa-solid fa-wheelchair text-yellow-400 text-2xl mr-3"></i>
-            <span class="font-medium">Disability</span>
-          </a>
-                             <a href="/Dashboard/complain_Dashboard.html" class="flex items-center p-3 rounded-xl hover:bg-blue-400 transition-all duration-200 bg-white/10">
-             <i class="fas fa-headset mr-2 text-yellow-400 text-2xl"></i>
-            <span class="font-medium">Complain</span>
-          </a>
-               
+                <a href="./NCD_Dashboard.html" class="flex items-center p-3 rounded-xl hover:bg-blue-400 transition-all duration-200 bg-white/10">
+                    <i class="fas fa-heartbeat mr-2 text-yellow-400 text-2xl"></i> 
+                    <span class="font-medium">NCD</span>
+                </a>
+                <!-- Disability -->
+                <a href="/Dashboard/Disability2.html" class="flex items-center p-3 rounded-xl hover:bg-blue-400 transition-all duration-200 bg-white/10">
+                    <i class="fa-solid fa-wheelchair text-yellow-400 text-2xl mr-3"></i>
+                    <span class="font-medium">Disability</span>
+                </a>
+                <a href="/Dashboard/complain_Dashboard.html" class="flex items-center p-3 rounded-xl hover:bg-blue-400 transition-all duration-200 bg-white/10">
+                    <i class="fas fa-headset mr-2 text-yellow-400 text-2xl"></i>
+                    <span class="font-medium">Complain</span>
+                </a>
             </nav>
             
             <div class="p-4 border-t border-blue-400 bg-blue-600/50 rounded-br-3xl">
@@ -284,7 +316,7 @@
         // Firebase Configuration
         const firebaseConfig = {
             apiKey: "AIzaSyDt4vs7S3nckO8xxfp1_axHZ76J0cz2qdg",
-            authDomain: "mahamahospital.firebaseapp.com",
+            authDomain: "mahamahospital.firebasestorage.app",
             databaseURL: "https://mahamahospital-default-rtdb.firebaseio.com",
             projectId: "mahamahospital",
             storageBucket: "mahamahospital.firebasestorage.app",
@@ -293,8 +325,9 @@
         };
 
         // Initialize Firebase
-        firebase.initializeApp(firebaseConfig);
+        const firebaseApp = firebase.initializeApp(firebaseConfig);
         const database = firebase.database();
+        const auth = firebase.auth();
 
         // Dashboard Manager
         class DashboardManager {
@@ -674,11 +707,78 @@
         }
 
         // Initialize everything when DOM is loaded
-        document.addEventListener('DOMContentLoaded', function() {
-            // Initialize dashboard manager
-            window.dashboardManager = new DashboardManager();
-            dashboardManager.loadAllData();
+        document.addEventListener('DOMContentLoaded', async function() {
+            // Check authentication state first
+            auth.onAuthStateChanged(async (user) => {
+                if (!user) {
+                    // User is not logged in, redirect to login page
+                    console.log('No user found, redirecting to login...');
+                    showNotification('Please login to access the mental health dashboard', 'error');
+                    
+                    setTimeout(() => {
+                        window.location.href = '/login.html';
+                    }, 2000);
+                    return;
+                }
+                
+                // User is logged in, hide loading overlay and show dashboard
+                document.getElementById('loadingOverlay').style.display = 'none';
+                document.getElementById('dashboardContent').style.display = 'block';
+                
+                // Update admin name if available
+                const adminName = document.getElementById('adminName');
+                if (adminName && user.email) {
+                    adminName.textContent = user.email.split('@')[0];
+                }
+                
+                // Initialize dashboard manager
+                window.dashboardManager = new DashboardManager();
+                await dashboardManager.loadAllData();
+                
+                // Setup event listeners
+                setupEventListeners();
+                
+                // Show welcome notification
+                dashboardManager.showNotification(`Welcome, ${user.email}! Mental health dashboard loaded.`, 'success');
+            });
 
+            // Fixed Logout functionality
+            document.getElementById('logoutBtn').addEventListener('click', async function(e) {
+                e.preventDefault();
+                
+                try {
+                    // Show loading state
+                    dashboardManager.showNotification('Logging out...', 'success');
+                    
+                    // Sign out from Firebase
+                    await auth.signOut();
+                    console.log('User signed out successfully');
+                    
+                    // Clear any stored data
+                    localStorage.removeItem('userEmail');
+                    sessionStorage.clear();
+                    
+                    // Show success message
+                    dashboardManager.showNotification('Logged out successfully! Redirecting to login...', 'success');
+                    
+                    // Redirect to login page after a short delay
+                    setTimeout(() => {
+                        window.location.href = '/login.html';
+                    }, 1500);
+                    
+                } catch (error) {
+                    console.error('Logout error:', error);
+                    dashboardManager.showNotification('Error during logout. Please try again.', 'error');
+                    
+                    // Still redirect even if there's an error
+                    setTimeout(() => {
+                        window.location.href = '/login.html';
+                    }, 2000);
+                }
+            });
+        });
+
+        function setupEventListeners() {
             // Sidebar toggle functionality for mobile
             const sidebarToggle = document.getElementById('sidebar-toggle');
             const sidebar = document.getElementById('sidebar');
@@ -789,7 +889,24 @@
                     }
                 });
             }
-        });
+        }
+
+        // Helper function for notifications
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.className = `fixed top-4 right-4 p-4 rounded-lg shadow-lg z-50 ${
+                type === 'success' ? 'bg-green-500 text-white' :
+                type === 'error' ? 'bg-red-500 text-white' :
+                'bg-blue-500 text-white'
+            }`;
+            notification.textContent = message;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
     </script>
 </body>
 </html>

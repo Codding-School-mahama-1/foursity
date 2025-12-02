@@ -10,6 +10,7 @@
     
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
     
     <style>
@@ -97,14 +98,46 @@
         .pregnancy-progress {
             background: linear-gradient(90deg, #ec4899 var(--progress), #e5e7eb var(--progress));
         }
+        
+        /* Loading overlay */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(255, 255, 255, 0.9);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            flex-direction: column;
+        }
+        
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid #3b82f6;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
     </style>
 </head>
 <body class="bg-gray-100 text-gray-800 select-none font-serif">
+    <!-- Loading overlay -->
+    <div id="loadingOverlay" class="loading-overlay">
+        <div class="loading-spinner"></div>
+        <p class="mt-4 text-gray-600">Loading dashboard...</p>
+    </div>
+
     <!-- Sidebar overlay for mobile -->
     <div id="sidebar-overlay" class="sidebar-overlay"></div>
-
-    <!-- Header -->
-   
 
     <div class="flex">
         <!-- Fixed Sidebar -->
@@ -113,112 +146,118 @@
             
             <!-- Navigation Menu -->
             <nav class="flex-1 p-5 space-y-3">
-          <!-- Logout Button -->
-          <a href="#" id="logoutBtn" class="flex items-center p-3 rounded-xl hover:bg-blue-400 transition-all duration-200 text-red-100 bg-blue-700/30">
-            <i class="fa-solid fa-right-from-bracket text-xl mr-3"></i>
-            <span class="font-medium">Logout</span>
-          </a>
-               <a href="../Dashboard.html" class="flex items-center p-3 rounded-xl hover:bg-blue-400 transition-all duration-200 bg-white/10">
-                <i class="fa-solid fa-user text-yellow-400 text-2xl mr-3"></i>
-                <span class="font-medium">Birth & Patient</span>
-            </a>
+                <!-- Logout Button -->
+                <a href="#" id="logoutBtn" class="flex items-center p-3 rounded-xl hover:bg-blue-400 transition-all duration-200 text-red-100 bg-blue-700/30">
+                    <i class="fa-solid fa-right-from-bracket text-xl mr-3"></i>
+                    <span class="font-medium">Logout</span>
+                </a>
+                
+                <a href="../Dashboard.html" class="flex items-center p-3 rounded-xl hover:bg-blue-400 transition-all duration-200 bg-white/10">
+                    <i class="fa-solid fa-user text-yellow-400 text-2xl mr-3"></i>
+                    <span class="font-medium">Birth & Patient</span>
+                </a>
    
+                <!-- Emergency -->
+                <a href="/Dashboard/Emergency2.html" class="flex items-center p-3 rounded-xl hover:bg-blue-400 transition-all duration-200 bg-white/10">
+                    <i class="fa-solid fa-truck-medical text-yellow-400 text-2xl mr-3"></i>
+                    <span class="font-medium">Emergency</span>
+                </a>
 
-              <!-- Emergency -->
-          <a href="/Dashboard/Emergency2.html" class="flex items-center p-3 rounded-xl hover:bg-blue-400 transition-all duration-200 bg-white/10">
-            <i class="fa-solid fa-truck-medical text-yellow-400 text-2xl mr-3"></i>
-            <span class="font-medium">Emergency</span>
-          </a>
-
-          <!-- Vaccination -->
-          <a href="/Dashboard/vaccination2.html" class="flex items-center p-3 rounded-xl hover:bg-blue-400 transition-all duration-200 bg-white/10">
-            <i class="fa-solid fa-syringe text-yellow-400 text-2xl mr-3"></i>
-            <span class="font-medium">Vaccination</span>
-          </a>
-           <!-- mental -->
-         <a href="/Dashboard/mental heath.html" class="flex items-center p-3 rounded-xl hover:bg-blue-400 transition-all duration-200 bg-white/10">
-              <i class="fa-solid fa-head-side-brain mr-2 text-yellow-400 text-2x"></i>
-            <span class="font-medium">Mental Health</span>
-          </a>
+                <!-- Vaccination -->
+                <a href="/Dashboard/vaccination2.html" class="flex items-center p-3 rounded-xl hover:bg-blue-400 transition-all duration-200 bg-white/10">
+                    <i class="fa-solid fa-syringe text-yellow-400 text-2xl mr-3"></i>
+                    <span class="font-medium">Vaccination</span>
+                </a>
+                
+                <!-- mental -->
+                <a href="/Dashboard/mental heath.html" class="flex items-center p-3 rounded-xl hover:bg-blue-400 transition-all duration-200 bg-white/10">
+                    <i class="fa-solid fa-head-side-brain mr-2 text-yellow-400 text-2x"></i>
+                    <span class="font-medium">Mental Health</span>
+                </a>
+                
                 <!-- NCD -->
-          <a href="/Dashboard/NCD_Dashboard.html" class="flex items-center p-3 rounded-xl hover:bg-blue-400 transition-all duration-200 bg-white/10">
-            <i class="fas fa-heartbeat mr-2 text-yellow-400 text-2xl"></i> 
-            <span class="font-medium">NCD</span>
-          </a>
-          <!-- Disability -->
-          <a href="/Dashboard/Disability2.html" class="flex items-center p-3 rounded-xl hover:bg-blue-400 transition-all duration-200 bg-white/10">
-            <i class="fa-solid fa-wheelchair text-yellow-400 text-2xl mr-3"></i>
-            <span class="font-medium">Disability</span>
-          </a>
-    <!-- Complain -->
+                <a href="/Dashboard/NCD_Dashboard.html" class="flex items-center p-3 rounded-xl hover:bg-blue-400 transition-all duration-200 bg-white/10">
+                    <i class="fas fa-heartbeat mr-2 text-yellow-400 text-2xl"></i> 
+                    <span class="font-medium">NCD</span>
+                </a>
+                
+                <!-- Disability -->
+                <a href="/Dashboard/Disability2.html" class="flex items-center p-3 rounded-xl hover:bg-blue-400 transition-all duration-200 bg-white/10">
+                    <i class="fa-solid fa-wheelchair text-yellow-400 text-2xl mr-3"></i>
+                    <span class="font-medium">Disability</span>
+                </a>
+                
+                <!-- Complain -->
                 <a href="/Dashboard/complain_Dashboard.html" class="flex items-center p-3 rounded-xl hover:bg-blue-400 transition-all duration-200 bg-white/10">
-                 <i class="fas fa-headset mr-2 text-yellow-400 text-2xl"></i>
-            <span class="font-medium">Complain</span>
-          </a>
-        </nav>
+                    <i class="fas fa-headset mr-2 text-yellow-400 text-2xl"></i>
+                    <span class="font-medium">Complain</span>
+                </a>
+            </nav>
             
             <div class="p-4 border-t border-blue-400 bg-blue-600/50 rounded-br-3xl">
                 <div class="text-sm text-blue-100 text-center">
-                <i class="fa-solid fa-shield-heart mr-2"></i>
-                Secure System
+                    <i class="fa-solid fa-shield-heart mr-2"></i>
+                    Secure System
                 </div>
             </div>
         </aside>
 
         <!-- Main Content -->
         <main class="main-content w-full">
-             <header class="bg-white shadow-md sticky top-0 z-30 ">
-        <div class="container mx-auto px-4">
-            <div class="flex justify-between items-center py-4">
-                <div class="flex items-center">
-                    <!-- Sidebar toggle button for mobile -->
-                  
-                    <span class="text-2xl font-bold text-blue-600"> <a href="/index.html">🏥 MCH</a>   Maternity Care Dashboard</span>
+            <header class="bg-white shadow-md sticky top-0 z-30">
+                <div class="container mx-auto px-4">
+                    <div class="flex justify-between items-center py-4">
+                        <div class="flex items-center">
+                            <!-- Sidebar toggle button for mobile -->
+                            <button id="sidebar-toggle" class="md:hidden mr-4 text-gray-600 focus:outline-none">
+                                <i class="fas fa-bars text-xl"></i>
+                            </button>
+                            <span class="text-2xl font-bold text-blue-600"> <a href="/index.html">🏥 MCH</a>   Maternity Care Dashboard</span>
+                        </div>
+                        
+                        <button id="mobile-menu-button" class="md:hidden text-gray-600 focus:outline-none">
+                            <i class="fas fa-ellipsis-v text-xl"></i>
+                        </button>
+                        
+                        <nav id="nav-links" class="hidden md:flex items-center space-x-6">
+                            <a href="/Dashboard.html" class="text-gray-700 hover:text-blue-600 transition duration-300">Main Dashboard</a>
+                            <a href="/Services/Briths Services.html" class="text-gray-700 hover:text-blue-600 transition duration-300">Birth Registration</a>
+                        </nav>
+                    </div>
+                    
+                    <div id="mobile-menu" class="hidden md:hidden py-4 border-t border-gray-200">
+                        <div class="flex flex-col space-y-4">
+                            <a href="/Dashboard.html" class="text-gray-700 hover:text-blue-600">Main Dashboard</a>
+                            <a href="/Services/Briths Services.html" class="text-gray-700 hover:text-blue-600 transition duration-300">Birth Registration</a>
+                        </div>
+                    </div>
                 </div>
-                
-                <button id="mobile-menu-button" class="md:hidden text-gray-600 focus:outline-none">
-                    <i class="fas fa-ellipsis-v text-xl"></i>
-                </button>
-                
-                <nav id="nav-links" class="hidden md:flex items-center space-x-6">
-                    <a href="../Dashboard.html" class="text-gray-700 hover:text-blue-600 transition duration-300">Main Dashboard</a>
-                    <a href="/Services/Briths Services.html" class="text-gray-700 hover:text-blue-600 transition duration-300">Birth Registration</a>
-                </nav>
-            </div>
+            </header>
             
-            <div id="mobile-menu" class="hidden md:hidden py-4 border-t border-gray-200">
-                <div class="flex flex-col space-y-4">
-                    <a href="../Dashboard.html" class="text-gray-700 hover:text-blue-600">Main Dashboard</a>
-                    <a href="../Servscies/Maternity&Brith%20Servecises.html" class="text-gray-700 hover:text-blue-600 transition duration-300">Maternity Services</a>
-                    <a href="../Servscies/Briths%20Servecises.html" class="text-gray-700 hover:text-blue-600 transition duration-300">Birth Registration</a>
-                </div>
-            </div>
-        </div>
-    </header>
             <section id="dashboard">
                 <h1 class="text-3xl font-bold mb-6 text-blue-800 m-8">Maternity Care Overview</h1>
 
                 <!-- Stats Cards -->
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 m-8">
-                    <div class="bg-white rounded-2xl shadow-lg p-6 text-center border-l-4 border-pink-500">
+                    <div class="bg-white rounded-2xl shadow-lg p-6 text-center">
                         <h2 class="text-gray-500 font-semibold">Maternity Appointments</h2>
                         <p id="totalAppointments" class="text-4xl font-bold text-pink-600 mt-2">0</p>
                         <p class="text-sm text-gray-500 mt-1">Total bookings</p>
                     </div>
                     
-                    <div class="bg-white rounded-2xl shadow-lg p-6 text-center border-l-4 border-green-500">
+                    <div class="bg-white rounded-2xl shadow-lg p-6 text-center">
                         <h2 class="text-gray-500 font-semibold">Active Pregnancies</h2>
                         <p id="activePregnancies" class="text-4xl font-bold text-green-600 mt-2">0</p>
                         <p class="text-sm text-gray-500 mt-1">Currently monitoring</p>
                     </div>
                     
-                    <div class="bg-white rounded-2xl shadow-lg p-6 text-center border-l-4 border-purple-500">
+                    <div class="bg-white rounded-2xl shadow-lg p-6 text-center">
                         <h2 class="text-gray-500 font-semibold">This Week's Appointments</h2>
                         <p id="weeklyAppointments" class="text-4xl font-bold text-purple-600 mt-2">0</p>
                         <p class="text-sm text-gray-500 mt-1">Scheduled visits</p>
                     </div>
                     
-                    <div class="bg-white rounded-2xl shadow-lg p-6 text-center border-l-4 border-blue-500">
+                    <div class="bg-white rounded-2xl shadow-lg p-6 text-center">
                         <h2 class="text-gray-500 font-semibold">Service Distribution</h2>
                         <p id="serviceDistribution" class="text-4xl font-bold text-blue-600 mt-2">0</p>
                         <p class="text-sm text-gray-500 mt-1">Different services</p>
@@ -302,8 +341,9 @@
         };
 
         // Initialize Firebase
-        firebase.initializeApp(firebaseConfig);
+        const firebaseApp = firebase.initializeApp(firebaseConfig);
         const database = firebase.database();
+        const auth = firebase.auth();
 
         // Chart instances
         let servicesChart, monthlyTrendChart, pregnancyStageChart;
@@ -781,21 +821,66 @@
         }
 
         // Initialize dashboard when DOM is loaded
-        document.addEventListener('DOMContentLoaded', function() {
-            const maternityDashboard = new MaternityDashboard();
-            
-            // Load dashboard data
-            maternityDashboard.loadAllData();
-            
-            // Logout functionality - absolute path approach
-            document.getElementById('logoutBtn').addEventListener('click', function(e) {
+        document.addEventListener('DOMContentLoaded', async function() {
+            // Check authentication state first
+            auth.onAuthStateChanged(async (user) => {
+                if (!user) {
+                    // User is not logged in, redirect to login page
+                    console.log('No user found, redirecting to login...');
+                    showNotification('Please login to access the dashboard', 'error');
+                    
+                    setTimeout(() => {
+                        window.location.href = '/login.html';
+                    }, 2000);
+                    return;
+                }
+                
+                // User is logged in, hide loading overlay
+                document.getElementById('loadingOverlay').style.display = 'none';
+                
+                // Initialize dashboard
+                const maternityDashboard = new MaternityDashboard();
+                
+                // Load dashboard data
+                await maternityDashboard.loadAllData();
+                
+                // Show welcome notification
+                showNotification(`Welcome, ${user.email}! Dashboard loaded successfully.`, 'success');
+            });
+
+            // Fixed Logout functionality
+            document.getElementById('logoutBtn').addEventListener('click', async function(e) {
                 e.preventDefault();
                 
-                // Get the absolute root path
-                const rootPath = window.location.protocol + '//' + window.location.host;
-                
-                // Redirect to root index.html
-                window.location.href = rootPath + '/index.html';
+                try {
+                    // Show loading state
+                    showNotification('Logging out...', 'success');
+                    
+                    // Sign out from Firebase
+                    await auth.signOut();
+                    console.log('User signed out successfully');
+                    
+                    // Clear any stored data
+                    localStorage.removeItem('user');
+                    sessionStorage.clear();
+                    
+                    // Show success message
+                    showNotification('Logged out successfully! Redirecting to login...', 'success');
+                    
+                    // Redirect to login page after a short delay
+                    setTimeout(() => {
+                        window.location.href = '/login.html';
+                    }, 1500);
+                    
+                } catch (error) {
+                    console.error('Logout error:', error);
+                    showNotification('Error during logout. Please try again.', 'error');
+                    
+                    // Still redirect even if there's an error
+                    setTimeout(() => {
+                        window.location.href = '/login.html';
+                    }, 2000);
+                }
             });
 
             // Mobile menu functionality
