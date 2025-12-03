@@ -491,6 +491,9 @@
                                 <button onclick="dashboardManager.updateStatus('${contact.id}', '${status === 'new' ? 'in-progress' : 'completed'}')" class="text-green-600 hover:text-green-800">
                                     <i class="fas fa-check"></i>
                                 </button>
+                                <button onclick="dashboardManager.deleteContact('${contact.id}')" class="text-red-600 hover:text-red-800">
+                                    <i class="fas fa-trash"></i>
+                                </button>
                             </div>
                         </td>
                     </tr>
@@ -563,6 +566,20 @@
                 `;
                 
                 modal.classList.remove('hidden');
+            }
+
+            // Delete contact
+            deleteContact(contactId) {
+                if (confirm('Are you sure you want to delete this contact request? This action cannot be undone.')) {
+                    this.contactsRef.child(contactId).remove()
+                        .then(() => {
+                            this.showNotification('Contact request deleted successfully', 'success');
+                        })
+                        .catch((error) => {
+                            console.error('Error deleting contact:', error);
+                            this.showNotification('Error deleting contact request', 'error');
+                        });
+                }
             }
 
             // Update contact status
@@ -713,7 +730,7 @@
                 if (!user) {
                     // User is not logged in, redirect to login page
                     console.log('No user found, redirecting to login...');
-                    showNotification('Please login to access the mental health dashboard', 'error');
+                    // showNotification('Please login to access the mental health dashboard', 'error');
                     
                     setTimeout(() => {
                         window.location.href = '/login.html';
@@ -739,7 +756,7 @@
                 setupEventListeners();
                 
                 // Show welcome notification
-                dashboardManager.showNotification(`Welcome, ${user.email}! Mental health dashboard loaded.`, 'success');
+                // dashboardManager.showNotification(`Welcome, ${user.email}! Mental health dashboard loaded.`, 'success');
             });
 
             // Fixed Logout functionality
@@ -748,7 +765,7 @@
                 
                 try {
                     // Show loading state
-                    dashboardManager.showNotification('Logging out...', 'success');
+                    // dashboardManager.showNotification('Logging out...', 'success');
                     
                     // Sign out from Firebase
                     await auth.signOut();
@@ -759,7 +776,7 @@
                     sessionStorage.clear();
                     
                     // Show success message
-                    dashboardManager.showNotification('Logged out successfully! Redirecting to login...', 'success');
+                    // dashboardManager.showNotification('Logged out successfully! Redirecting to login...', 'success');
                     
                     // Redirect to login page after a short delay
                     setTimeout(() => {

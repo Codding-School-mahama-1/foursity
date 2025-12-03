@@ -79,6 +79,22 @@
             z-index: 9999;
             flex-direction: column;
         }
+        /* Status badge styles */
+        .status-badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        .status-pending {
+            background-color: #fef3c7;
+            color: #92400e;
+        }
+        .status-completed {
+            background-color: #d1fae5;
+            color: #065f46;
+        }
     </style>
 </head>
 <body class="bg-gray-50 min-h-screen font-serif">
@@ -198,15 +214,15 @@
                     </div>
                     
                     <div class="stat-card bg-white rounded-xl shadow-lg p-6 text-center">
-                        <div class="text-3xl font-bold text-purple-600 mb-2" id="children-count">0</div>
-                        <div class="text-gray-600">Children (<18 years)</div>
-                        <div class="text-sm text-gray-500 mt-2" id="children-percent">0% of total</div>
+                        <div class="text-3xl font-bold text-purple-600 mb-2" id="completed-count">0</div>
+                        <div class="text-gray-600">Completed Vaccinations</div>
+                        <div class="text-sm text-gray-500 mt-2" id="completed-percent">0% of total</div>
                     </div>
                     
                     <div class="stat-card bg-white rounded-xl shadow-lg p-6 text-center">
-                        <div class="text-3xl font-bold text-orange-600 mb-2" id="adults-count">0</div>
-                        <div class="text-gray-600">Adults (18+ years)</div>
-                        <div class="text-sm text-gray-500 mt-2" id="adults-percent">0% of total</div>
+                        <div class="text-3xl font-bold text-orange-600 mb-2" id="pending-count">0</div>
+                        <div class="text-gray-600">Pending Vaccinations</div>
+                        <div class="text-sm text-gray-500 mt-2" id="pending-percent">0% of total</div>
                     </div>
                 </div>
             </section>
@@ -237,6 +253,7 @@
                                     <th class="border-b border-gray-300 px-4 py-3 text-left font-semibold text-gray-700">Vaccine Interest</th>
                                     <th class="border-b border-gray-300 px-4 py-3 text-left font-semibold text-gray-700">Contact</th>
                                     <th class="border-b border-gray-300 px-4 py-3 text-left font-semibold text-gray-700">Date</th>
+                                    <th class="border-b border-gray-300 px-4 py-3 text-left font-semibold text-gray-700">Status</th>
                                     <th class="border-b border-gray-300 px-4 py-3 text-left font-semibold text-gray-700">Actions</th>
                                 </tr>
                             </thead>
@@ -355,7 +372,8 @@
 
                     return Object.entries(registrations).map(([key, value]) => ({
                         id: key,
-                        ...value
+                        ...value,
+                        status: value.status || 'pending' // Default to pending if no status
                     }));
                 } catch (error) {
                     console.error('Error fetching registrations:', error);
@@ -373,7 +391,8 @@
 
                     const registrationsArray = Object.entries(registrations).map(([key, value]) => ({
                         id: key,
-                        ...value
+                        ...value,
+                        status: value.status || 'pending'
                     }));
 
                     callback(registrationsArray);
@@ -394,7 +413,8 @@
                 try {
                     await this.registrationsRef.child(registrationId).update({
                         status: status,
-                        updatedAt: new Date().toISOString()
+                        updatedAt: new Date().toISOString(),
+                        completedAt: status === 'completed' ? new Date().toISOString() : null
                     });
                     return { success: true };
                 } catch (error) {
@@ -428,6 +448,35 @@
             if (!dateString) return 'N/A';
             const date = new Date(dateString);
             return date.toLocaleDateString();
+        }
+
+        function getStatusBadge(status) {
+            const statusMap = {
+                'pending': {
+                    text: 'Pending',
+                    class: 'status-pending'
+                },
+                'completed': {
+                    text: 'Completed',
+                    class: 'status-completed'
+                },
+                'in-progress': {
+                    text: 'In Progress',
+                    class: 'status-in-progress'
+                }
+            };
+            
+            const statusInfo = statusMap[status] || { text: 'Unknown', class: 'status-pending' };
+            return `<span class="status-badge ${statusInfo.class}">${statusInfo.text}</span>`;
+        }
+
+        function getStatusColor(status) {
+            const colors = {
+                'pending': 'bg-yellow-100 text-yellow-800',
+                'completed': 'bg-green-100 text-green-800',
+                'in-progress': 'bg-blue-100 text-blue-800'
+            };
+            return colors[status] || 'bg-gray-100 text-gray-800';
         }
 
         function showNotification(message, type = 'info') {
@@ -498,7 +547,11 @@
             const endIndex = Math.min(startIndex + pageSize, filteredRegistrations.length);
             const pageRegistrations = filteredRegistrations.slice(startIndex, endIndex);
             
-            registrationsBody.innerHTML = pageRegistrations.map(reg => `
+            registrationsBody.innerHTML = pageRegistrations.map(reg => {
+                const status = reg.status || 'pending';
+                const isCompleted = status === 'completed';
+                
+                return `
                 <tr class="registration-row border-b border-gray-200">
                     <td class="px-4 py-3">${escapeHtml(reg.fullName)}</td>
                     <td class="px-4 py-3">${reg.age}</td>
@@ -512,15 +565,25 @@
                     <td class="px-4 py-3">${escapeHtml(reg.contact)}</td>
                     <td class="px-4 py-3 text-sm">${formatDate(reg.timestamp)}</td>
                     <td class="px-4 py-3">
+                        ${getStatusBadge(status)}
+                    </td>
+                    <td class="px-4 py-3">
+                        ${!isCompleted ? `
                         <button onclick="markAsCompleted('${reg.id}')" class="bg-green-500 text-white px-2 py-1 rounded text-xs hover:bg-green-600 mr-1">
                             Complete
                         </button>
+                        ` : `
+                        <span class="text-green-600 text-xs font-semibold">
+                            <i class="fas fa-check mr-1"></i>Completed
+                        </span>
+                        `}
                         <button onclick="deleteRegistration('${reg.id}')" class="bg-red-500 text-white px-2 py-1 rounded text-xs hover:bg-red-600">
                             Delete
                         </button>
                     </td>
                 </tr>
-            `).join('');
+                `;
+            }).join('');
             
             // Update pagination info
             paginationInfo.textContent = `Showing ${startIndex + 1}-${endIndex} of ${filteredRegistrations.length} registrations`;
@@ -536,24 +599,24 @@
                 new Date(reg.timestamp).toDateString() === today
             );
             
-            const children = registrations.filter(reg => parseInt(reg.age) < 18);
-            const adults = registrations.filter(reg => parseInt(reg.age) >= 18);
+            const completedRegistrations = registrations.filter(reg => reg.status === 'completed');
+            const pendingRegistrations = registrations.filter(reg => reg.status !== 'completed');
             
             const totalChange = todayRegistrations.length > 0 ? `+${todayRegistrations.length} today` : 'No new registrations today';
             
             document.getElementById('total-registrations').textContent = registrations.length;
             document.getElementById('today-registrations').textContent = todayRegistrations.length;
-            document.getElementById('children-count').textContent = children.length;
-            document.getElementById('adults-count').textContent = adults.length;
+            document.getElementById('completed-count').textContent = completedRegistrations.length;
+            document.getElementById('pending-count').textContent = pendingRegistrations.length;
             document.getElementById('total-change').textContent = totalChange;
             document.getElementById('today-date').textContent = new Date().toLocaleDateString();
             
             // Calculate percentages
-            const childrenPercent = registrations.length > 0 ? Math.round((children.length / registrations.length) * 100) : 0;
-            const adultsPercent = registrations.length > 0 ? Math.round((adults.length / registrations.length) * 100) : 0;
+            const completedPercent = registrations.length > 0 ? Math.round((completedRegistrations.length / registrations.length) * 100) : 0;
+            const pendingPercent = registrations.length > 0 ? Math.round((pendingRegistrations.length / registrations.length) * 100) : 0;
             
-            document.getElementById('children-percent').textContent = `${childrenPercent}% of total`;
-            document.getElementById('adults-percent').textContent = `${adultsPercent}% of total`;
+            document.getElementById('completed-percent').textContent = `${completedPercent}% of total`;
+            document.getElementById('pending-percent').textContent = `${pendingPercent}% of total`;
         }
 
         function updateCharts(registrations) {
@@ -655,7 +718,7 @@
                     return;
                 }
 
-                const headers = ['Name', 'Age', 'Gender', 'Location', 'Vaccine Interest', 'Contact', 'Registration Date'];
+                const headers = ['Name', 'Age', 'Gender', 'Location', 'Vaccine Interest', 'Contact', 'Status', 'Registration Date'];
                 const csvData = registrations.map(reg => [
                     reg.fullName,
                     reg.age,
@@ -663,6 +726,7 @@
                     reg.campSector,
                     reg.vaccineInterest,
                     reg.contact,
+                    reg.status || 'pending',
                     formatDate(reg.timestamp)
                 ]);
 
@@ -720,7 +784,7 @@
                 if (!user) {
                     // User is not logged in, redirect to login page
                     console.log('No user found, redirecting to login...');
-                    showNotification('Please login to access the vaccination dashboard', 'error');
+                    // showNotification('Please login to access the vaccination dashboard', 'error');
                     
                     setTimeout(() => {
                         window.location.href = '/login.html';
@@ -738,7 +802,7 @@
                 setupEventListeners();
                 
                 // Show welcome notification
-                showNotification(`Welcome, ${user.email}! Vaccination dashboard loaded.`, 'success');
+                // showNotification(`Welcome, ${user.email}! Vaccination dashboard loaded.`, 'success');
             });
 
             // Fixed Logout functionality
@@ -747,7 +811,7 @@
                 
                 try {
                     // Show loading state
-                    showNotification('Logging out...', 'success');
+                    // showNotification('Logging out...', 'success');
                     
                     // Sign out from Firebase
                     await auth.signOut();
@@ -758,7 +822,7 @@
                     sessionStorage.clear();
                     
                     // Show success message
-                    showNotification('Logged out successfully! Redirecting to login...', 'success');
+                    // showNotification('Logged out successfully! Redirecting to login...', 'success');
                     
                     // Redirect to login page after a short delay
                     setTimeout(() => {
@@ -799,7 +863,8 @@
                             reg.fullName?.toLowerCase().includes(searchTerm) ||
                             reg.campSector?.toLowerCase().includes(searchTerm) ||
                             reg.vaccineInterest?.toLowerCase().includes(searchTerm) ||
-                            reg.contact?.toLowerCase().includes(searchTerm)
+                            reg.contact?.toLowerCase().includes(searchTerm) ||
+                            reg.status?.toLowerCase().includes(searchTerm)
                         );
                     } else {
                         filteredRegistrations = [...allRegistrations];
