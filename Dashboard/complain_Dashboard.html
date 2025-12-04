@@ -11,7 +11,9 @@
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
-    
+    <script type="text/javascript"
+        src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js">
+</script>
     <style>
         .stat-card {
             transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -414,7 +416,7 @@
                 if (!user) {
                     // User is not logged in, redirect to login page
                     console.log('No user found, redirecting to login...');
-                    showNotification('Please login to access the complaints dashboard', 'error');
+                    // showNotification('Please login to access the complaints dashboard', 'error');
                     
                     setTimeout(() => {
                         window.location.href = '/login.html';
@@ -450,7 +452,7 @@
                 });
                 
                 // Show welcome notification
-                showNotification(`Welcome, ${user.email}! Complaints dashboard loaded.`, 'success');
+                // showNotification(`Welcome, ${user.email}! Complaints dashboard loaded.`, 'success');
             });
 
             // Logout functionality
@@ -459,7 +461,7 @@
                 
                 try {
                     // Show loading state
-                    showNotification('Logging out...', 'success');
+                    // showNotification('Logging out...', 'success');
                     
                     // Sign out from Firebase
                     await auth.signOut();
@@ -470,7 +472,7 @@
                     sessionStorage.clear();
                     
                     // Show success message
-                    showNotification('Logged out successfully! Redirecting to login...', 'success');
+                    // showNotification('Logged out successfully! Redirecting to login...', 'success');
                     
                     // Redirect to login page after a short delay
                     setTimeout(() => {
@@ -695,6 +697,9 @@
                                 <button onclick="updateComplaintStatus('${complaint.id}', 'resolved')" class="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded text-sm">
                                     <i class="fas fa-check mr-1"></i> Resolve
                                 </button>
+                                <button onclick="deleteComplaint('${complaint.id}')" class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-sm">
+                                    <i class="fas fa-trash mr-1"></i> Delete
+                                </button>
                             </div>
                         </td>
                     `;
@@ -706,6 +711,25 @@
                 complaintsPaginationInfo.textContent = `Showing ${startIndex + 1}-${endIndex} of ${filteredComplaints.length} complaints`;
                 prevComplaintsPageBtn.disabled = currentPage === 1;
                 nextComplaintsPageBtn.disabled = currentPage === totalPages;
+            }
+        }
+
+        // Delete complaint function
+        function deleteComplaint(complaintId) {
+            if (confirm('Are you sure you want to delete this complaint? This action cannot be undone.')) {
+                database.ref('complaints/' + complaintId).remove()
+                    .then(() => {
+                        showSuccess('Complaint deleted successfully');
+                        loadComplaintsData(); // Reload data to reflect changes
+                        
+                        // Close any open modals
+                        const modals = document.querySelectorAll('.fixed.inset-0');
+                        modals.forEach(modal => modal.remove());
+                    })
+                    .catch((error) => {
+                        console.error('Error deleting complaint:', error);
+                        showError('Failed to delete complaint');
+                    });
             }
         }
 
@@ -771,6 +795,9 @@
                             </button>
                             <button onclick="updateComplaintStatus('${complaint.id}', 'resolved')" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded">
                                 Mark Resolved
+                            </button>
+                            <button onclick="deleteComplaint('${complaint.id}')" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded">
+                                <i class="fas fa-trash mr-1"></i> Delete
                             </button>
                             <button onclick="this.parentElement.parentElement.parentElement.remove()" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">
                                 Close

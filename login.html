@@ -35,8 +35,7 @@
             <!-- Login Form -->
             <div class="p-8">
                 <div class="text-center mb-8">
-                
-                    <h2 class="text-2xl font-bold text-gray-800 mb-2">Welcome Backe</h2>
+                    <h2 class="text-2xl font-bold text-gray-800 mb-2">Welcome Back</h2>
                     <p class="text-gray-600">Login to your dashboard</p>
                 </div>
                 
@@ -66,7 +65,7 @@
                         </div>
                     </div>
                     
-                    <button type="submit" id="loginBtn" class="w-full bg-blue-600  text-white font-semibold py-3 rounded-lg hover:from-blue-700 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-200 transform hover:-translate-y-0.5">
+                    <button type="submit" id="loginBtn" class="w-full bg-blue-600 text-white font-semibold py-3 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-200 transform hover:-translate-y-0.5">
                         <span id="loginBtnText">Login</span>
                         <i class="fas fa-spinner fa-spin ml-2 hidden" id="loginSpinner"></i>
                     </button>
@@ -81,12 +80,7 @@
             <!-- Footer -->
       
         </div>
-        
-        <div class="text-center mt-6">
-            <p class="text-white/80 text-sm">
-                © 2024 Hospital Management System. All rights reserved.
-            </p>
-        </div>
+    
     </div>
     
     <script>
@@ -104,6 +98,10 @@
         // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
+
+        // Track if this is a fresh page load or coming back
+        let isFreshLoad = true;
+        let loginWasSuccessful = false;
 
         // Toggle password visibility
         document.getElementById('togglePassword').addEventListener('click', function() {
@@ -126,7 +124,7 @@
             const messageContent = document.getElementById('messageContent');
             
             messageContent.textContent = message;
-            messageDiv.className = `mt-4 ${type === 'success' ? 'bg-green-100 text-green-700 border border-green-200' : 'bg-red-100 text-red-700 border border-red-200'}`;
+            messageDiv.className = `mt-4 p-3 rounded-lg text-sm ${type === 'success' ? 'bg-green-100 text-green-700 border border-green-200' : 'bg-red-100 text-red-700 border border-red-200'}`;
             messageDiv.classList.remove('hidden');
             
             // Auto hide after 5 seconds for success messages
@@ -139,6 +137,32 @@
 
         function hideMessage() {
             document.getElementById('messageDiv').classList.add('hidden');
+        }
+
+        // Clear form function - COMPLETELY clears everything
+        function clearLoginForm() {
+            document.getElementById('loginEmail').value = '';
+            document.getElementById('loginPassword').value = '';
+            // Reset password field to password type
+            document.getElementById('loginPassword').type = 'password';
+            const toggleIcon = document.getElementById('togglePassword').querySelector('i');
+            toggleIcon.classList.remove('fa-eye-slash');
+            toggleIcon.classList.add('fa-eye');
+            
+            // Reset button state
+            const loginBtn = document.getElementById('loginBtn');
+            const loginBtnText = document.getElementById('loginBtnText');
+            const loginSpinner = document.getElementById('loginSpinner');
+            
+            loginBtn.disabled = false;
+            loginBtnText.textContent = 'Login';
+            loginSpinner.classList.add('hidden');
+            
+            // Clear any messages
+            hideMessage();
+            
+            // Clear stored email from localStorage
+            localStorage.removeItem('userEmail');
         }
 
         // Login function
@@ -165,8 +189,8 @@
             }
             
             // Show loading state
-            // loginBtn.disabled = true;
-            // loginBtnText.textContent = '';
+            loginBtn.disabled = true;
+            loginBtnText.textContent = 'Logging in...';
             loginSpinner.classList.remove('hidden');
             hideMessage();
             
@@ -174,8 +198,15 @@
                 const userCredential = await auth.signInWithEmailAndPassword(email, password);
                 showMessage('Login successful! Redirecting to dashboard...', 'success');
                 
-                // Store user email in localStorage for future use
-                localStorage.setItem('userEmail', email);
+                // Mark login as successful
+                loginWasSuccessful = true;
+                
+                // Store in sessionStorage instead of localStorage (clears when browser closes)
+                sessionStorage.setItem('userEmail', email);
+                sessionStorage.setItem('loginTime', Date.now());
+                
+                // Clear form immediately
+                clearLoginForm();
                 
                 // Redirect to dashboard after successful login
                 setTimeout(() => {
@@ -215,6 +246,10 @@
                 loginBtn.disabled = false;
                 loginBtnText.textContent = 'Login';
                 loginSpinner.classList.add('hidden');
+                
+                // Clear password field for security after failed login
+                document.getElementById('loginPassword').value = '';
+                        document.getElementById('loginEmail').value = '';
             }
         });
 
@@ -225,24 +260,83 @@
                 console.log('User already logged in, redirecting to dashboard...');
                 showMessage('Already logged in. Redirecting...', 'success');
                 
+                // Clear form before redirecting
+                clearLoginForm();
+                
                 setTimeout(() => {
                     window.location.href = '/Dashboard.html';
                 }, 1000);
             }
         });
 
-        // Load remembered email on page load
+        // Check if we should load remembered email
         window.addEventListener('load', function() {
-            const rememberedEmail = localStorage.getItem('userEmail');
-            if (rememberedEmail) {
-                document.getElementById('loginEmail').value = rememberedEmail;
+            // Clear form on every load to ensure fresh start
+            clearLoginForm();
+            
+            // Only load email if it's a fresh load AND user came directly (not from back button)
+            if (isFreshLoad && performance.navigation.type === 0) {
+                // Check if we have a recent login (within last 5 minutes)
+                const loginTime = sessionStorage.getItem('loginTime');
+                const currentTime = Date.now();
+                
+                if (loginTime && (currentTime - parseInt(loginTime) < 5 * 60 * 1000)) {
+                    const rememberedEmail = sessionStorage.getItem('userEmail');
+                    if (rememberedEmail) {
+                        document.getElementById('loginEmail').value = rememberedEmail;
+                    }
+                }
             }
+            
+            // Mark that initial load is done
+            isFreshLoad = false;
+        });
+
+        // Detect browser back/forward navigation
+        window.addEventListener('pageshow', function(event) {
+            // If page is loaded from cache (back/forward button), clear everything
+            if (event.persisted) {
+                console.log('Page loaded from cache - clearing form');
+                clearLoginForm();
+            }
+            
+            // If user is coming back to login page (not initial load), clear everything
+            if (!isFreshLoad) {
+                clearLoginForm();
+            }
+        });
+
+        // Clear form when page is hidden (user navigates away)
+        window.addEventListener('pagehide', function() {
+            // Don't clear if login was just successful
+            if (!loginWasSuccessful) {
+                // Only clear password for security
+                document.getElementById('loginPassword').value = '';
+            }
+        });
+
+        // Clear form when page is about to be unloaded
+        window.addEventListener('beforeunload', function() {
+            // Only clear password for security
+            document.getElementById('loginPassword').value = '';
         });
 
         // Enter key to submit form
         document.getElementById('loginPassword').addEventListener('keypress', function(e) {
             if (e.key === 'Enter') {
                 document.getElementById('loginForm').dispatchEvent(new Event('submit'));
+            }
+        });
+
+        // Clear form when clicking anywhere on the page (optional - makes it super clean)
+        document.body.addEventListener('click', function(e) {
+            // Only clear if user clicks outside the form area and form is empty
+            const form = document.getElementById('loginForm');
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            
+            if (!form.contains(e.target) && !email && !password) {
+                clearLoginForm();
             }
         });
     </script>

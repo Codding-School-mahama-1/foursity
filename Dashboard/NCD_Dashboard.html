@@ -426,7 +426,7 @@
                 if (!user) {
                     // User is not logged in, redirect to login page
                     console.log('No user found, redirecting to login...');
-                    showNotification('Please login to access the NCD dashboard', 'error');
+                    // showNotification('Please login to access the NCD dashboard', 'error');
                     
                     setTimeout(() => {
                         window.location.href = '/login.html';
@@ -461,7 +461,7 @@
                 });
                 
                 // Show welcome notification
-                showNotification(`Welcome, ${user.email}! NCD dashboard loaded.`, 'success');
+                // showNotification(`Welcome, ${user.email}! NCD dashboard loaded.`, 'success');
             });
 
             // Fixed Logout functionality
@@ -470,7 +470,7 @@
                 
                 try {
                     // Show loading state
-                    showNotification('Logging out...', 'success');
+                    // showNotification('Logging out...', 'success');
                     
                     // Sign out from Firebase
                     await auth.signOut();
@@ -481,7 +481,7 @@
                     sessionStorage.clear();
                     
                     // Show success message
-                    showNotification('Logged out successfully! Redirecting to login...', 'success');
+                    // showNotification('Logged out successfully! Redirecting to login...', 'success');
                     
                     // Redirect to login page after a short delay
                     setTimeout(() => {
