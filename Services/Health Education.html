@@ -3,18 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Health Education for Refugee Communities</title>
+    <title data-i18n="health-education-page-title">Health Education for Refugee Communities</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body class="font-serif bg-gray-50 text-gray-900 select-none">
     <!-- Header -->
-   <header class="bg-white shadow-md sticky top-0 z-50">
+    <header class="bg-white shadow-md sticky top-0 z-50">
         <div class="container mx-auto px-4">
             <div class="flex justify-between items-center py-4">
                 <!-- Logo -->
                 <div class="flex items-center">
-                    <span class="text-2xl font-bold text-blue-600"><a href="../index.html">🏥 MCH</a></span>
+                    <span class="text-2xl font-bold text-blue-600"><a href="../index.html" data-i18n="logo-text">🏥 MCH</a></span>
                 </div>
                 
                 <!-- Mobile menu button -->
@@ -24,38 +24,37 @@
                 
                 <!-- Navigation Links -->
                 <nav id="nav-links" class="hidden md:flex items-center space-x-6">
-                    <a href="../index.html" class="text-gray-700 hover:text-blue-600 transition duration-300">Home</a>
-                    <a href="../index.html#about" class="text-gray-700 hover:text-blue-600 transition duration-300">About</a>
+                    <a href="../index.html" class="text-gray-700 hover:text-blue-600 transition duration-300" data-i18n="home-nav">Home</a>
+                    <a href="../index.html#about" class="text-gray-700 hover:text-blue-600 transition duration-300" data-i18n="about-nav">About</a>
                     
                     <!-- Services Dropdown -->
                     <div class="relative group">
                         <button class="flex items-center text-gray-700 hover:text-blue-600 transition duration-300">
-                            Services <i class="fas fa-chevron-down ml-1 text-xs"></i>
+                            <span data-i18n="services-nav">Services</span> <i class="fas fa-chevron-down ml-1 text-xs"></i>
                         </button>
                         <div class="absolute left-0 mt-2 w-64 bg-white shadow-xl rounded-lg py-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50">
-                            <a href="/Services/Maternity&Brith Services.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">Maternity & Birth Services</a>
-                            <a href="/Emergency.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">Emergency Care</a>
-                            <a href="/Services/veccination.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">Vaccination Programs</a>
-                            <a href="/Services/mentalhealth.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">Mental Health Support</a>
-                            <a href="/Services/NCD.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">Chronic Disease Care</a>
-                            <a href="/Services/Health Education.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">Health Awareness & Education</a>
-                            <a href="/Services/Disability.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">Disability Care</a>
+                            <a href="/Services/Maternity&Brith Services.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600" data-i18n="maternity-nav">Maternity & Birth Services</a>
+                            <a href="/Emergency.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600" data-i18n="emergency-nav">Emergency Care</a>
+                            <a href="/Services/veccination.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600" data-i18n="vaccination-nav">Vaccination Programs</a>
+                            <a href="/Services/mentalhealth.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600" data-i18n="mentalhealth-nav">Mental Health Support</a>
+                            <a href="/Services/NCD.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600" data-i18n="chronic-disease-nav">Chronic Disease Care</a>
+                            <a href="/Services/Health Education.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600" data-i18n="health-education-nav">Health Awareness & Education</a>
+                            <a href="/Services/Disability.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600" data-i18n="disability-nav">Disability Care</a>
                         </div>
                     </div>
                     
-                    <a href="/doctors.html" class="text-gray-700 hover:text-blue-600 transition duration-300">Doctors</a>
-                   
+                    <a href="/doctors.html" class="text-gray-700 hover:text-blue-600 transition duration-300" data-i18n="doctors-nav">Doctors</a>
                 </nav>
                 
                 <!-- Actions -->
                 <div class="hidden md:flex items-center space-x-4">
-                    <select class="border border-gray-300 rounded px-3 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <select class="language-selector border border-gray-300 rounded px-3 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
                         <option value="en">English</option>
-                        <option value="ar">العربية</option>
+                      
                         <option value="rw">Kinyarwanda</option>
                     </select>
-                    <button id="desktop-signup-btn" class="bg-blue-600 text-white px-4 py-2 rounded... hidden">Sign Up</button>
-                    <button id="desktop-login-btn" class="border border-blue-600 text-blue-600 px-4 py-2 rounded... hidden">Log In</button>
+                    <button id="desktop-signup-btn" class="bg-blue-600 text-white px-4 py-2 rounded hidden" data-i18n="signup-btn">Sign Up</button>
+                    <button id="desktop-login-btn" class="border border-blue-600 text-blue-600 px-4 py-2 rounded hidden" data-i18n="login-btn">Log In</button>
                 </div>
             </div>
             
@@ -63,39 +62,39 @@
             <div id="mobile-menu" class="hidden md:hidden py-4 border-t border-gray-200">
                 <div class="flex flex-col space-y-4">
                     <div class="flex space-x-2">
-                        <button id="mobile-signup-btn" class="flex-1 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition duration-300">Sign Up</button>
-                        <button id="mobile-login-btn" class="flex-1 border border-blue-600 text-blue-600 px-4 py-2 rounded hover:bg-blue-600 hover:text-white transition duration-300">Log In</button>
+                        <button id="mobile-signup-btn" class="flex-1 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition duration-300" data-i18n="signup-btn">Sign Up</button>
+                        <button id="mobile-login-btn" class="flex-1 border border-blue-600 text-blue-600 px-4 py-2 rounded hover:bg-blue-600 hover:text-white transition duration-300" data-i18n="login-btn">Log In</button>
                     </div>
-                    <a href="#home" class="text-gray-700 hover:text-blue-600">Home</a>
-                    <a href="#about" class="text-gray-700 hover:text-blue-600">About</a>
+                    <a href="#home" class="text-gray-700 hover:text-blue-600" data-i18n="home-nav">Home</a>
+                    <a href="#about" class="text-gray-700 hover:text-blue-600" data-i18n="about-nav">About</a>
                     
                     <!-- Mobile Services Dropdown -->
                     <div class="relative">
                         <button id="mobile-services-toggle" class="flex items-center text-gray-700 hover:text-blue-600 w-full justify-between">
-                            Services <i class="fas fa-chevron-down"></i>
+                            <span data-i18n="services-nav">Services</span> <i class="fas fa-chevron-down"></i>
                         </button>
                         <div id="mobile-services-menu" class="hidden pl-4 mt-2 space-y-2">
-                            <a href="/Services/Maternity&Brith Services.html" class="block text-gray-700 hover:text-blue-600">Maternity & Birth Services</a>
-                            <a href="/Emergency.html" class="block text-gray-700 hover:text-blue-600">Emergency Care</a>
-                            <a href="/Services/veccination.html" class="block text-gray-700 hover:text-blue-600">Vaccination Programs</a>
-                            <a href="/Services/mentalhealth.html" class="block text-gray-700 hover:text-blue-600">Mental Health Support</a>
-                            <a href="/Services/NCD.html" class="block text-gray-700 hover:text-blue-600">Chronic Disease Care</a>
-                            <a href="/Services/Health Education.html" class="block text-gray-700 hover:text-blue-600">Health Awareness & Education</a>
-                            <a href="/Services/Disability.html" class="block text-gray-700 hover:text-blue-600">Disability Care</a>
+                            <a href="/Services/Maternity&Brith Services.html" class="block text-gray-700 hover:text-blue-600" data-i18n="maternity-nav">Maternity & Birth Services</a>
+                            <a href="/Emergency.html" class="block text-gray-700 hover:text-blue-600" data-i18n="emergency-nav">Emergency Care</a>
+                            <a href="/Services/veccination.html" class="block text-gray-700 hover:text-blue-600" data-i18n="vaccination-nav">Vaccination Programs</a>
+                            <a href="/Services/mentalhealth.html" class="block text-gray-700 hover:text-blue-600" data-i18n="mentalhealth-nav">Mental Health Support</a>
+                            <a href="/Services/NCD.html" class="block text-gray-700 hover:text-blue-600" data-i18n="chronic-disease-nav">Chronic Disease Care</a>
+                            <a href="/Services/Health Education.html" class="block text-gray-700 hover:text-blue-600" data-i18n="health-education-nav">Health Awareness & Education</a>
+                            <a href="/Services/Disability.html" class="block text-gray-700 hover:text-blue-600" data-i18n="disability-nav">Disability Care</a>
                         </div>
                     </div>
                     
-                    <a href="/doctors.html" class="text-gray-700 hover:text-blue-600">Doctors</a>
-                   
+                    <a href="/doctors.html" class="text-gray-700 hover:text-blue-600" data-i18n="doctors-nav">Doctors</a>
+                    
                     <div class="pt-4 border-t border-gray-200">
-                        <select class="w-full border border-gray-300 rounded px-3 py-2 text-sm mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <select class="language-selector w-full border border-gray-300 rounded px-3 py-2 text-sm mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500">
                             <option value="en">English</option>
-                            <option value="ar">العربية</option>
+                          
                             <option value="rw">Kinyarwanda</option>
                         </select>
                         <div class="flex space-x-2">
-                            <button id="signup-btn" class="flex-1 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition duration-300 hidden">Sign Up</button>
-                            <button id="login-btn" class="flex-1 border border-blue-600 text-blue-600 px-4 py-2 rounded hover:bg-blue-600 hover:text-white transition duration-300 hidden">Log In</button>
+                            <button id="signup-btn" class="flex-1 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition duration-300 hidden" data-i18n="signup-btn">Sign Up</button>
+                            <button id="login-btn" class="flex-1 border border-blue-600 text-blue-600 px-4 py-2 rounded hover:bg-blue-600 hover:text-white transition duration-300 hidden" data-i18n="login-btn">Log In</button>
                         </div>
                     </div>
                 </div>
@@ -105,94 +104,94 @@
 
     <!-- Hero Section -->
     <section class="bg-[url(/img/health.webp)] bg-no-repeat bg-cover text-white md:py-40" id="home">
-                 <video class="absolute top-0 left-0 w-full h-full object-cover z-0" autoplay muted loop playsinline>
-      <source src="" type="video/mp4">
-      Your browser does not support the video tag.
-    </video>
+        <video class="absolute top-0 left-0 w-full h-full object-cover z-0" autoplay muted loop playsinline>
+            <source src="" type="video/mp4">
+            <span data-i18n="video-not-supported">Your browser does not support the video tag.</span>
+        </video>
         <div class="relative container mx-auto px-4 text-center">
             <div class="max-w-3xl mx-auto">
-                <h1 class="text-4xl md:text-5xl font-bold mb-6 leading-tight">Health Education for Refugee Communities</h1>
-                <p class="text-xl mb-8 opacity-90">Accessible, culturally sensitive health information and resources for refugee camps</p>
+                <h1 class="text-4xl md:text-5xl font-bold mb-6 leading-tight" data-i18n="hero-title">Health Education for Refugee Communities</h1>
+                <p class="text-xl mb-8 opacity-90" data-i18n="hero-subtitle">Accessible, culturally sensitive health information and resources for refugee camps</p>
                 <div class="flex flex-wrap gap-5 justify-center">
-                    <a href="#topics" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition duration-300 transform hover:-translate-y-1">Explore Health Topics</a>
-                    <a href="#emergency" class="border border-white hover:bg-white hover:text-blue-600 text-white px-6 py-3 rounded-lg font-semibold transition duration-300 transform hover:-translate-y-1 text-center">Emergency Health Info</a>
+                    <a href="#topics" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition duration-300 transform hover:-translate-y-1" data-i18n="explore-topics-btn">Explore Health Topics</a>
+                    <a href="#emergency" class="border border-white hover:bg-white hover:text-blue-600 text-white px-6 py-3 rounded-lg font-semibold transition duration-300 transform hover:-translate-y-1 text-center" data-i18n="emergency-info-btn">Emergency Health Info</a>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Health Topics -->
-    <section class="py-20  " id="topics">
+    <section class="py-20" id="topics">
         <div class="container mx-auto px-4">
             <div class="text-center mb-12">
-                <h2 class="text-3xl md:text-4xl font-bold text-blue-600 mb-4">Essential Health Topics</h2>
-                <p class="text-xl text-gray-600 max-w-2xl mx-auto">Learn about common health issues in refugee settings and how to prevent them</p>
+                <h2 class="text-3xl md:text-4xl font-bold text-blue-600 mb-4" data-i18n="topics-title">Essential Health Topics</h2>
+                <p class="text-xl text-gray-600 max-w-2xl mx-auto" data-i18n="topics-subtitle">Learn about common health issues in refugee settings and how to prevent them</p>
             </div>
             
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 <div class="bg-white rounded-lg overflow-hidden shadow-md hover:-translate-y-2 hover:shadow-xl transition-all">
-                    <div >
-                      <img src="../img/water.webp" alt="">
+                    <div>
+                        <img src="../img/water.webp" alt data-i18n="clean-water-alt">
                     </div>
                     <div class="p-6">
-                        <h3 class="text-xl font-bold text-primary-dark mb-4">Clean Water & Sanitation</h3>
-                        <p class="text-gray-600 mb-6">Learn about safe water practices, proper handwashing, and maintaining hygiene in crowded conditions.</p>
-                        <a href="#" class="bg-blue-600 text-white px-5 py-2 rounded-lg font-semibold hover:bg-green-600 transition">Learn More</a>
+                        <h3 class="text-xl font-bold text-primary-dark mb-4" data-i18n="clean-water-title">Clean Water & Sanitation</h3>
+                        <p class="text-gray-600 mb-6" data-i18n="clean-water-desc">Learn about safe water practices, proper handwashing, and maintaining hygiene in crowded conditions.</p>
+                        <a href="#" class="bg-blue-600 text-white px-5 py-2 rounded-lg font-semibold hover:bg-green-600 transition" data-i18n="learn-more-btn">Learn More</a>
                     </div>
                 </div>
                 
                 <div class="bg-white/10 rounded-lg overflow-hidden shadow-md hover:-translate-y-2 hover:shadow-xl transition-all">
                     <div class="">
-                        <img src="../img/MCH.webp" alt="">
+                        <img src="../img/MCH.webp" alt data-i18n="maternal-child-alt">
                     </div>
                     <div class="p-6">
-                        <h3 class="text-xl font-bold text-primary-dark mb-4">Maternal & Child Health</h3>
-                        <p class="text-gray-600 mb-6">Information on prenatal care, safe delivery, newborn care, and childhood vaccinations.</p>
-                        <a href="#" class="bg-blue-600 text-white px-5 py-2 rounded-lg font-semibold hover:bg-green-600 transition">Learn More</a>
+                        <h3 class="text-xl font-bold text-primary-dark mb-4" data-i18n="maternal-child-title">Maternal & Child Health</h3>
+                        <p class="text-gray-600 mb-6" data-i18n="maternal-child-desc">Information on prenatal care, safe delivery, newborn care, and childhood vaccinations.</p>
+                        <a href="#" class="bg-blue-600 text-white px-5 py-2 rounded-lg font-semibold hover:bg-green-600 transition" data-i18n="learn-more-btn">Learn More</a>
                     </div>
                 </div>
                 
                 <div class="bg-white/10 rounded-lg overflow-hidden shadow-md hover:-translate-y-2 hover:shadow-xl transition-all">
                     <div class="">
-                        <img src="../img/ris.webp" alt="">
+                        <img src="../img/ris.webp" alt data-i18n="respiratory-alt">
                     </div>
                     <div class="p-6">
-                        <h3 class="text-xl font-bold text-primary-dark mb-4">Respiratory Infections</h3>
-                        <p class="text-gray-600 mb-6">Prevention and management of common respiratory illnesses like pneumonia, TB, and COVID-19.</p>
-                        <a href="#" class="bg-blue-600 text-white px-5 py-2 rounded-lg font-semibold hover:bg-green-600 transition">Learn More</a>
+                        <h3 class="text-xl font-bold text-primary-dark mb-4" data-i18n="respiratory-title">Respiratory Infections</h3>
+                        <p class="text-gray-600 mb-6" data-i18n="respiratory-desc">Prevention and management of common respiratory illnesses like pneumonia, TB, and COVID-19.</p>
+                        <a href="#" class="bg-blue-600 text-white px-5 py-2 rounded-lg font-semibold hover:bg-green-600 transition" data-i18n="learn-more-btn">Learn More</a>
                     </div>
                 </div>
                 
                 <div class="bg-white/10 rounded-lg overflow-hidden shadow-md hover:-translate-y-2 hover:shadow-xl transition-all">
                     <div class="">
-                       <img src="../img/PHC.webp" alt="">
+                        <img src="../img/PHC.webp" alt data-i18n="primary-healthcare-alt">
                     </div>
                     <div class="p-6">
-                        <h3 class="text-xl font-bold text-primary-dark mb-4">Primary Healthcare</h3>
-                        <p class="text-gray-600 mb-6">Accessing basic medical services, managing chronic conditions, and when to seek help.</p>
-                        <a href="#" class="bg-blue-600 text-white px-5 py-2 rounded-lg font-semibold hover:bg-green-600 transition">Learn More</a>
+                        <h3 class="text-xl font-bold text-primary-dark mb-4" data-i18n="primary-healthcare-title">Primary Healthcare</h3>
+                        <p class="text-gray-600 mb-6" data-i18n="primary-healthcare-desc">Accessing basic medical services, managing chronic conditions, and when to seek help.</p>
+                        <a href="#" class="bg-blue-600 text-white px-5 py-2 rounded-lg font-semibold hover:bg-green-600 transition" data-i18n="learn-more-btn">Learn More</a>
                     </div>
                 </div>
                 
                 <div class="bg-white/10 rounded-lg overflow-hidden shadow-md hover:-translate-y-2 hover:shadow-xl transition-all">
                     <div class="">
-                       <img src="../img/m.webp" alt="">
+                        <img src="../img/m.webp" alt data-i18n="mental-health-alt">
                     </div>
                     <div class="p-6">
-                        <h3 class="text-xl font-bold text-primary-dark mb-4">Mental Health & Wellness</h3>
-                        <p class="text-gray-600 mb-6">Coping with stress, trauma, and anxiety. Building resilience and community support.</p>
-                        <a href="#" class="bg-blue-600 text-white px-5 py-2 rounded-lg font-semibold hover:bg-green-600 transition">Learn More</a>
+                        <h3 class="text-xl font-bold text-primary-dark mb-4" data-i18n="mental-health-title">Mental Health & Wellness</h3>
+                        <p class="text-gray-600 mb-6" data-i18n="mental-health-desc">Coping with stress, trauma, and anxiety. Building resilience and community support.</p>
+                        <a href="#" class="bg-blue-600 text-white px-5 py-2 rounded-lg font-semibold hover:bg-green-600 transition" data-i18n="learn-more-btn">Learn More</a>
                     </div>
                 </div>
                 
                 <div class="bg-white/10 rounded-lg overflow-hidden shadow-md hover:-translate-y-2 hover:shadow-xl transition-all">
                     <div class="">
-                       <img src="../img/pd.webp" alt="">
+                        <img src="../img/pd.webp" alt data-i18n="disease-prevention-alt">
                     </div>
                     <div class="p-6">
-                        <h3 class="text-xl font-bold text-primary-dark mb-4">Disease Prevention</h3>
-                        <p class="text-gray-600 mb-6">Protecting against malaria, dengue, cholera, and other common diseases in camp settings.</p>
-                        <a href="#" class="bg-blue-600 text-white px-5 py-2 rounded-lg font-semibold hover:bg-green-600 transition">Learn More</a>
+                        <h3 class="text-xl font-bold text-primary-dark mb-4" data-i18n="disease-prevention-title">Disease Prevention</h3>
+                        <p class="text-gray-600 mb-6" data-i18n="disease-prevention-desc">Protecting against malaria, dengue, cholera, and other common diseases in camp settings.</p>
+                        <a href="#" class="bg-blue-600 text-white px-5 py-2 rounded-lg font-semibold hover:bg-green-600 transition" data-i18n="learn-more-btn">Learn More</a>
                     </div>
                 </div>
             </div>
@@ -203,45 +202,45 @@
     <section class="py-20 bg-gray-50" id="emergency">
         <div class="container mx-auto px-4">
             <div class="text-center mb-12">
-                <h2 class="text-3xl md:text-4xl font-bold text-blue-600 mb-4">Emergency Health Information</h2>
-                <p class="text-xl text-gray-600">Critical information for urgent health situations</p>
+                <h2 class="text-3xl md:text-4xl font-bold text-blue-600 mb-4" data-i18n="emergency-info-title">Emergency Health Information</h2>
+                <p class="text-xl text-gray-600" data-i18n="emergency-info-subtitle">Critical information for urgent health situations</p>
             </div>
             
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                <div class="bg-white p-6 rounded-lg shadow-md text-center  ">
+                <div class="bg-white p-6 rounded-lg shadow-md text-center">
                     <div class="text-red-500 text-4xl mb-4">
-                        <img src="../img/EM.webp" alt="">
+                        <img src="../img/EM.webp" alt data-i18n="medical-emergency-alt">
                     </div>
-                    <h3 class="text-xl font-bold mb-4">Medical Emergency</h3>
-                    <p class="text-gray-600 mb-4">If someone has severe injury, difficulty breathing, chest pain, or unconsciousness</p>
-                    <p class="font-bold">Go to the clinic immediately or call for help</p>
+                    <h3 class="text-xl font-bold mb-4" data-i18n="medical-emergency-title">Medical Emergency</h3>
+                    <p class="text-gray-600 mb-4" data-i18n="medical-emergency-desc">If someone has severe injury, difficulty breathing, chest pain, or unconsciousness</p>
+                    <p class="font-bold" data-i18n="medical-emergency-action">Go to the clinic immediately or call for help</p>
                 </div>
                 
-                <div class="bg-white p-6 rounded-lg shadow-md text-center ">
+                <div class="bg-white p-6 rounded-lg shadow-md text-center">
                     <div class="text-amber-500 text-4xl mb-4">
-                       <img src="../img/DH.webp" alt="">
+                        <img src="../img/DH.webp" alt data-i18n="dehydration-alt">
                     </div>
-                    <h3 class="text-xl font-bold mb-4">Dehydration</h3>
-                    <p class="text-gray-600 mb-4">Signs: Dry mouth, dizziness, little urine, sunken eyes (especially in children)</p>
-                    <p class="font-bold">Drink clean water with oral rehydration salts</p>
+                    <h3 class="text-xl font-bold mb-4" data-i18n="dehydration-title">Dehydration</h3>
+                    <p class="text-gray-600 mb-4" data-i18n="dehydration-desc">Signs: Dry mouth, dizziness, little urine, sunken eyes (especially in children)</p>
+                    <p class="font-bold" data-i18n="dehydration-action">Drink clean water with oral rehydration salts</p>
                 </div>
                 
-                <div class="bg-white p-6 rounded-lg shadow-md text-center ">
+                <div class="bg-white p-6 rounded-lg shadow-md text-center">
                     <div class="text-amber-500 text-4xl mb-4">
-                     <img src="../img/Fever.webp" alt="">
+                        <img src="../img/Fever.webp" alt data-i18n="fever-alt">
                     </div>
-                    <h3 class="text-xl font-bold mb-4">High Fever</h3>
-                    <p class="text-gray-600 mb-4">If fever is very high (over 39°C/102°F) or lasts more than 2 days</p>
-                    <p class="font-bold">Seek medical care, especially for children</p>
+                    <h3 class="text-xl font-bold mb-4" data-i18n="fever-title">High Fever</h3>
+                    <p class="text-gray-600 mb-4" data-i18n="fever-desc">If fever is very high (over 39°C/102°F) or lasts more than 2 days</p>
+                    <p class="font-bold" data-i18n="fever-action">Seek medical care, especially for children</p>
                 </div>
                 
-                <div class="bg-white p-6 rounded-lg shadow-md text-center ">
+                <div class="bg-white p-6 rounded-lg shadow-md text-center">
                     <div class="text-red-500 text-4xl mb-4">
-                    <img src="../img/PE.webp" alt="">
+                        <img src="../img/PE.webp" alt data-i18n="pregnancy-emergency-alt">
                     </div>
-                    <h3 class="text-xl font-bold mb-4">Pregnancy Emergency</h3>
-                    <p class="text-gray-600 mb-4">Severe pain, bleeding, prolonged labor, or concerns about the baby</p>
-                    <p class="font-bold">Go to the health center immediately</p>
+                    <h3 class="text-xl font-bold mb-4" data-i18n="pregnancy-emergency-title">Pregnancy Emergency</h3>
+                    <p class="text-gray-600 mb-4" data-i18n="pregnancy-emergency-desc">Severe pain, bleeding, prolonged labor, or concerns about the baby</p>
+                    <p class="font-bold" data-i18n="pregnancy-emergency-action">Go to the health center immediately</p>
                 </div>
             </div>
         </div>
@@ -251,41 +250,41 @@
     <section class="py-20 bg-gray-50" id="resources">
         <div class="container mx-auto px-4">
             <div class="text-center mb-12">
-                <h2 class="text-3xl md:text-4xl font-bold text-blue-600 mb-4">Health Resources</h2>
-                <p class="text-xl text-black max-w-2xl mx-auto">Downloadable materials and information for community health workers</p>
+                <h2 class="text-3xl md:text-4xl font-bold text-blue-600 mb-4" data-i18n="resources-title">Health Resources</h2>
+                <p class="text-xl text-black max-w-2xl mx-auto" data-i18n="resources-subtitle">Downloadable materials and information for community health workers</p>
             </div>
             
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <div class="border border-gray-300 rounded-lg overflow-hidden hover:-translate-y-1 hover:shadow-md transition-all">
                     <div class="">
-                       <img src="../img/HP.webp" alt="">
+                        <img src="../img/HP.webp" alt data-i18n="posters-alt">
                     </div>
                     <div class="p-6 bg-white">
-                        <h3 class="text-xl font-bold text-primary-dark mb-4">Health Education Posters</h3>
-                        <p class="text-black mb-6">Printable posters on hygiene, nutrition, disease prevention for display in common areas.</p>
-                        <a href="#" class="bg-blue-500 text-white px-5 py-2 rounded-lg font-semibold hover:bg-primary-dark transition">Download</a>
+                        <h3 class="text-xl font-bold text-primary-dark mb-4" data-i18n="posters-title">Health Education Posters</h3>
+                        <p class="text-black mb-6" data-i18n="posters-desc">Printable posters on hygiene, nutrition, disease prevention for display in common areas.</p>
+                        <a href="#" class="bg-blue-500 text-white px-5 py-2 rounded-lg font-semibold hover:bg-primary-dark transition" data-i18n="download-btn">Download</a>
                     </div>
                 </div>
                 
                 <div class="border border-gray-300 rounded-lg overflow-hidden hover:-translate-y-1 hover:shadow-md transition-all">
                     <div class="">
-                    <img src="../img/CHW.webp" alt="">
+                        <img src="../img/CHW.webp" alt data-i18n="health-worker-guide-alt">
                     </div>
                     <div class="p-6 bg-white">
-                        <h3 class="text-xl font-bold  mb-4">Community Health Worker Guide</h3>
-                        <p class="text-black mb-6">Comprehensive manual for training community health volunteers in refugee settings.</p>
-                        <a href="#" class="bg-blue-500 text-white px-5 py-2 rounded-lg font-semibold hover:bg-primary-dark transition">Download</a>
+                        <h3 class="text-xl font-bold mb-4" data-i18n="health-worker-guide-title">Community Health Worker Guide</h3>
+                        <p class="text-black mb-6" data-i18n="health-worker-guide-desc">Comprehensive manual for training community health volunteers in refugee settings.</p>
+                        <a href="#" class="bg-blue-500 text-white px-5 py-2 rounded-lg font-semibold hover:bg-primary-dark transition" data-i18n="download-btn">Download</a>
                     </div>
                 </div>
                 
                 <div class="border border-gray-300 rounded-lg overflow-hidden hover:-translate-y-1 hover:shadow-md transition-all">
                     <div class="">
-                       <img src="../img/Passpot.webp" alt="">
+                        <img src="../img/Passpot.webp" alt data-i18n="health-passport-alt">
                     </div>
                     <div class="p-6 bg-white">
-                        <h3 class="text-xl font-bold text-primary-dark mb-4">Health Passport</h3>
-                        <p class="text-black mb-6">Personal health record for families to track vaccinations, medications, and health visits.</p>
-                        <a href="#" class="bg-blue-500 text-white px-5 py-2 rounded-lg font-semibold hover:bg-primary-dark transition">Download</a>
+                        <h3 class="text-xl font-bold text-primary-dark mb-4" data-i18n="health-passport-title">Health Passport</h3>
+                        <p class="text-black mb-6" data-i18n="health-passport-desc">Personal health record for families to track vaccinations, medications, and health visits.</p>
+                        <a href="#" class="bg-blue-500 text-white px-5 py-2 rounded-lg font-semibold hover:bg-primary-dark transition" data-i18n="download-btn">Download</a>
                     </div>
                 </div>
             </div>
@@ -296,48 +295,48 @@
     <section class="py-20 bg-gray-50" id="guides">
         <div class="container mx-auto px-4">
             <div class="text-center mb-12">
-                <h2 class="text-3xl md:text-4xl font-bold text-blue-600 mb-4">Visual Health Guides</h2>
-                <p class="text-xl text-gray-600 max-w-2xl mx-auto">Easy-to-understand visual instructions for common health practices</p>
+                <h2 class="text-3xl md:text-4xl font-bold text-blue-600 mb-4" data-i18n="visual-guides-title">Visual Health Guides</h2>
+                <p class="text-xl text-gray-600 max-w-2xl mx-auto" data-i18n="visual-guides-subtitle">Easy-to-understand visual instructions for common health practices</p>
             </div>
             
             <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
                 <div class="bg-white rounded-lg overflow-hidden shadow-md max-w-xs">
                     <div class="">
-                       <img src="../img/hand.webp" alt="">
+                        <img src="../img/hand.webp" alt data-i18n="handwashing-alt">
                     </div>
                     <div class="p-5">
-                        <h3 class="text-xl font-bold text-primary-dark mb-2">Proper Handwashing</h3>
-                        <p class="text-gray-600">Step-by-step guide to effective handwashing with soap</p>
+                        <h3 class="text-xl font-bold text-primary-dark mb-2" data-i18n="handwashing-title">Proper Handwashing</h3>
+                        <p class="text-gray-600" data-i18n="handwashing-desc">Step-by-step guide to effective handwashing with soap</p>
                     </div>
                 </div>
                 
                 <div class="bg-white rounded-lg overflow-hidden shadow-md max-w-xs">
                     <div class="">
-                       <img src="../img/WP.webp" alt="">
+                        <img src="../img/WP.webp" alt data-i18n="water-purification-alt">
                     </div>
                     <div class="p-5">
-                        <h3 class="text-xl font-bold text-primary-dark mb-2">Water Purification</h3>
-                        <p class="text-gray-600">Methods to make water safe for drinking</p>
+                        <h3 class="text-xl font-bold text-primary-dark mb-2" data-i18n="water-purification-title">Water Purification</h3>
+                        <p class="text-gray-600" data-i18n="water-purification-desc">Methods to make water safe for drinking</p>
                     </div>
                 </div>
                 
                 <div class="bg-white rounded-lg overflow-hidden shadow-md max-w-xs">
                     <div class="">
-                        <img src="../img/IF.webp" alt="">
+                        <img src="../img/IF.webp" alt data-i18n="infant-feeding-alt">
                     </div>
                     <div class="p-5">
-                        <h3 class="text-xl font-bold text-primary-dark mb-2">Infant Feeding</h3>
-                        <p class="text-gray-600">Safe practices for breastfeeding and complementary feeding</p>
+                        <h3 class="text-xl font-bold text-primary-dark mb-2" data-i18n="infant-feeding-title">Infant Feeding</h3>
+                        <p class="text-gray-600" data-i18n="infant-feeding-desc">Safe practices for breastfeeding and complementary feeding</p>
                     </div>
                 </div>
                 
                 <div class="bg-white rounded-lg overflow-hidden shadow-md max-w-xs">
                     <div class="">
-                      <img src="../img/disposal.webp" alt="">
+                        <img src="../img/disposal.webp" alt data-i18n="waste-disposal-alt">
                     </div>
                     <div class="p-5">
-                        <h3 class="text-xl font-bold text-primary-dark mb-2">Waste Disposal</h3>
-                        <p class="text-gray-600">Proper management of solid waste and human waste</p>
+                        <h3 class="text-xl font-bold text-primary-dark mb-2" data-i18n="waste-disposal-title">Waste Disposal</h3>
+                        <p class="text-gray-600" data-i18n="waste-disposal-desc">Proper management of solid waste and human waste</p>
                     </div>
                 </div>
             </div>
@@ -345,61 +344,63 @@
     </section>
 
     <!-- Footer -->
-   <footer class="bg-gray-900 text-white py-12">
-    <div class="container mx-auto px-4">
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-        <!-- Column 1 -->
-        <div>
-          <h3 class="text-xl font-bold mb-4">MahamaCare Hospital</h3>
-          <p class="text-gray-400">Providing high quality healthcare for over 20 years.</p>
+    <footer class="bg-gray-900 text-white py-12">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <!-- Column 1 -->
+                <div>
+                    <h3 class="text-xl font-bold mb-4" data-i18n="hospital-name">MahamaCare Hospital</h3>
+                    <p class="text-gray-400" data-i18n="hospital-tagline">Providing high quality healthcare for over 20 years.</p>
+                </div>
+                
+                <!-- Column 2 -->
+                <div>
+                    <h4 class="text-lg font-semibold mb-4" data-i18n="quick-links-title">Quick Links</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#home" class="text-gray-400 hover:text-white transition duration-300" data-i18n="home-nav">Home</a></li>
+                        <li><a href="#about" class="text-gray-400 hover:text-white transition duration-300" data-i18n="about-nav">About</a></li>
+                        <li><a href="#services" class="text-gray-400 hover:text-white transition duration-300" data-i18n="services-nav">Services</a></li>
+                        <li><a href="#doctors" class="text-gray-400 hover:text-white transition duration-300" data-i18n="doctors-nav">Doctors</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Column 3 -->
+                <div>
+                    <h4 class="text-lg font-semibold mb-4" data-i18n="contact-info-title">Contact Info</h4>
+                    <div class="space-y-2 text-gray-400">
+                        <p><i class="fas fa-envelope mr-2"></i> unitycoders2025@gmail.com</p>
+                        <p><i class="fas fa-phone mr-2"></i> +250 000 000</p>
+                        <p><i class="fas fa-map-marker-alt mr-2"></i> <span data-i18n="location-address">Mahama Refugee Camp, Rwanda</span></p>
+                    </div>
+                </div>
+                
+                <!-- Column 4 -->
+                <div>
+                    <h4 class="text-lg font-semibold mb-4" data-i18n="follow-us-title">Follow Us</h4>
+                    <div class="flex space-x-4">
+                        <a href="https://www.facebook.com/profile.php?id=61583964942775&mibextid=rS40aB7S9Ucbxw6v" class="text-gray-400 hover:text-white transition duration-300">
+                            <i class="fab fa-facebook-f text-xl"></i>
+                        </a>
+                        <a href="https://x.com/CodersUnit2026?t=ym3SPxmqVxW3QcuboUGcDg&s=03" class="text-gray-400 hover:text-white transition duration-300">
+                            <i class="fab fa-twitter text-xl"></i>
+                        </a>
+                        <a href="https://www.instagram.com/unitycoders?utm_source=qr&igsh=aDFjdGUxNWxwNHR3" class="text-gray-400 hover:text-white transition duration-300">
+                            <i class="fab fa-instagram text-xl"></i>
+                        </a>
+                        <a href="https://www.linkedin.com/in/unity-coders-56aa0739a?utm_source=share_via&utm_content=profile&utm_medium=member_android" class="text-gray-400 hover:text-white transition duration-300">
+                            <i class="fab fa-linkedin-in text-xl"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-500">
+                <p data-i18n="copyright">&copy; 2025 MahamaCare Hospital. All rights reserved.</p>
+            </div>
         </div>
-        
-        <!-- Column 2 -->
-        <div>
-          <h4 class="text-lg font-semibold mb-4">Quick Links</h4>
-          <ul class="space-y-2">
-            <li><a href="#home" class="text-gray-400 hover:text-white transition duration-300">Home</a></li>
-            <li><a href="#about" class="text-gray-400 hover:text-white transition duration-300">About</a></li>
-            <li><a href="#services" class="text-gray-400 hover:text-white transition duration-300">Services</a></li>
-            <li><a href="#doctors" class="text-gray-400 hover:text-white transition duration-300">Doctors</a></li>
-        
-          </ul>
-        </div>
-        
-        <!-- Column 3 -->
-        <div>
-          <h4 class="text-lg font-semibold mb-4">Contact Info</h4>
-          <div class="space-y-2 text-gray-400">
-            <p><i class="fas fa-envelope mr-2"></i> unitycoders2025@gmail.com</p>
-            <p><i class="fas fa-phone mr-2"></i> +250 000 000</p>
-            <p><i class="fas fa-map-marker-alt mr-2"></i> Mahama Refugee Camp, Rwanda</p>
-          </div>
-        </div>
-        
-        <!-- Column 4 -->
-          <div>
-          <h4 class="text-lg font-semibold mb-4">Follow Us</h4>
-          <div class="flex space-x-4">
-            <a href="https://www.facebook.com/profile.php?id=61583964942775&mibextid=rS40aB7S9Ucbxw6v" class="text-gray-400 hover:text-white transition duration-300">
-              <i class="fab fa-facebook-f text-xl"></i>
-            </a>
-            <a href="https://x.com/CodersUnit2026?t=ym3SPxmqVxW3QcuboUGcDg&s=03" class="text-gray-400 hover:text-white transition duration-300">
-              <i class="fab fa-twitter text-xl"></i>
-            </a>
-            <a href="https://www.instagram.com/unitycoders?utm_source=qr&igsh=aDFjdGUxNWxwNHR3" class="text-gray-400 hover:text-white transition duration-300">
-              <i class="fab fa-instagram text-xl"></i>
-            </a>
-            <a href="https://www.linkedin.com/in/unity-coders-56aa0739a?utm_source=share_via&utm_content=profile&utm_medium=member_android" class="text-gray-400 hover:text-white transition duration-300">
-              <i class="fab fa-linkedin-in text-xl"></i>
-            </a>
-          </div>
-        </div>
-      </div>
-      
-      <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-500">
-        <p>&copy; 2025 MahamaCare Hospital. All rights reserved.</p>
-      </div>
-    </div>
-  </footer>
+    </footer>
+
+    <!-- JavaScript for Language Support -->
+    <script src="/JavaScript-Files/healthedu.js"></script>
 </body>
 </html>

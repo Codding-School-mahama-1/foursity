@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Disability Care Services | MahamaCare Hospital</title>
+    <title data-i18n="disability-page-title">Disability Care Services | MahamaCare Hospital</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -82,14 +82,14 @@
         }
     </style>
 </head>
-<body class="bg-gray-50 font-serif  text-gray-900 select-none">
+<body class="bg-gray-50 font-serif text-gray-900 select-none">
     <!-- Header -->
     <header class="bg-white shadow-md sticky top-0 z-50">
         <div class="container mx-auto px-4">
             <div class="flex justify-between items-center py-4">
                 <!-- Logo -->
                 <div class="flex items-center">
-                    <span class="text-2xl font-bold text-blue-600"><a href="../index.html">🏥 MCH</a></span>
+                    <span class="text-2xl font-bold text-blue-600"><a href="../index.html" data-i18n="logo-text">🏥 MCH</a></span>
                 </div>
                 
                 <!-- Mobile menu button -->
@@ -99,39 +99,37 @@
                 
                 <!-- Navigation Links -->
                 <nav id="nav-links" class="hidden md:flex items-center space-x-6">
-                    <a href="../index.html" class="nav-link text-gray-700 hover:text-blue-600 transition duration-300">Home</a>
-                    <a href="../index.html#about" class="nav-link text-gray-700 hover:text-blue-600 transition duration-300">About</a>
+                    <a href="../index.html" class="nav-link text-gray-700 hover:text-blue-600 transition duration-300" data-i18n="home-nav">Home</a>
+                    <a href="../index.html#about" class="nav-link text-gray-700 hover:text-blue-600 transition duration-300" data-i18n="about-nav">About</a>
                     
                     <!-- Services Dropdown -->
                     <div class="relative group">
                         <button class="flex items-center text-gray-700 hover:text-blue-600 transition duration-300">
-                            Services <i class="fas fa-chevron-down ml-1 text-xs"></i>
+                            <span data-i18n="services-nav">Services</span> <i class="fas fa-chevron-down ml-1 text-xs"></i>
                         </button>
                         <div class="absolute left-0 mt-2 w-64 bg-white shadow-xl rounded-lg py-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50">
-                            <a href="/Services/Maternity&Brith Services.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">Maternity & Birth Services</a>
-                            <a href="/Emergency.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">Emergency Care</a>
-                            <a href="/Services/veccination.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">Vaccination Programs</a>
-                            <a href="/Services/mentalhealth.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">Mental Health Support</a>
-                            <a href="/Services/NCD.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">Chronic Disease Care</a>
-                            <a href="/Services/Health Education.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">Health Awareness & Education</a>
-                            <a href="/Services/Disability.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">Disability Care</a>
+                            <a href="/Services/Maternity&Brith Services.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600" data-i18n="maternity-nav">Maternity & Birth Services</a>
+                            <a href="/Emergency.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600" data-i18n="emergency-nav">Emergency Care</a>
+                            <a href="/Services/veccination.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600" data-i18n="vaccination-nav">Vaccination Programs</a>
+                            <a href="/Services/mentalhealth.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600" data-i18n="mentalhealth-nav">Mental Health Support</a>
+                            <a href="/Services/NCD.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600" data-i18n="chronic-disease-nav">Chronic Disease Care</a>
+                            <a href="/Services/Health Education.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600" data-i18n="health-education-nav">Health Awareness & Education</a>
+                            <a href="/Services/Disability.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600" data-i18n="disability-nav">Disability Care</a>
                         </div>
                     </div>
                     
-                    <a href="/doctors.html" class="nav-link text-gray-700 hover:text-blue-600 transition duration-300">Doctors</a>
-                    <a href="#contact" class="nav-link text-gray-700 hover:text-blue-600 transition duration-300">Book Appointment</a>
-
+                    <a href="/doctors.html" class="nav-link text-gray-700 hover:text-blue-600 transition duration-300" data-i18n="doctors-nav">Doctors</a>
+                    <a href="#contact" class="nav-link text-gray-700 hover:text-blue-600 transition duration-300" data-i18n="appointment-nav">Book Appointment</a>
                 </nav>
                 
                 <!-- Actions -->
                 <div class="hidden md:flex items-center space-x-4">
-                    <select class="border border-gray-300 rounded px-3 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
-                        <option value="en">English</option>
-                        <option value="ar">العربية</option>
-                        <option value="rw">Kinyarwanda</option>
+                    <select class="language-selector border border-gray-300 rounded px-3 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <option value="en" data-i18n="english-lang">English</option>
+                        <option value="rw" data-i18n="kinyarwanda-lang">Kinyarwanda</option>
                     </select>
-                    <button id="desktop-signup-btn" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition duration-300 hidden">Sign Up</button>
-                    <button id="desktop-login-btn" class="border border-blue-600 text-blue-600 px-4 py-2 rounded hover:bg-blue-600 hover:text-white transition duration-300 hidden">Log In</button>
+                    <button id="desktop-signup-btn" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition duration-300 hidden" data-i18n="signup-btn">Sign Up</button>
+                    <button id="desktop-login-btn" class="border border-blue-600 text-blue-600 px-4 py-2 rounded hover:bg-blue-600 hover:text-white transition duration-300 hidden" data-i18n="login-btn">Log In</button>
                 </div>
             </div>
             
@@ -139,41 +137,39 @@
             <div id="mobile-menu" class="hidden md:hidden py-4 border-t border-gray-200">
                 <div class="flex flex-col space-y-4">
                     <div class="flex space-x-2">
-                        <button id="mobile-signup-btn" class="flex-1 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition duration-300">Sign Up</button>
-                        <button id="mobile-login-btn" class="flex-1 border border-blue-600 text-blue-600 px-4 py-2 rounded hover:bg-blue-600 hover:text-white transition duration-300">Log In</button>
+                        <button id="mobile-signup-btn" class="flex-1 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition duration-300" data-i18n="signup-btn">Sign Up</button>
+                        <button id="mobile-login-btn" class="flex-1 border border-blue-600 text-blue-600 px-4 py-2 rounded hover:bg-blue-600 hover:text-white transition duration-300" data-i18n="login-btn">Log In</button>
                     </div>
-                    <a href="../index.html" class="text-gray-700 hover:text-blue-600">Home</a>
-                    <a href="../index.html#about" class="text-gray-700 hover:text-blue-600">About</a>
+                    <a href="../index.html" class="text-gray-700 hover:text-blue-600" data-i18n="home-nav">Home</a>
+                    <a href="../index.html#about" class="text-gray-700 hover:text-blue-600" data-i18n="about-nav">About</a>
                     
                     <!-- Mobile Services Dropdown -->
                     <div class="relative">
                         <button id="mobile-services-toggle" class="flex items-center text-gray-700 hover:text-blue-600 w-full justify-between">
-                            Services <i class="fas fa-chevron-down"></i>
+                            <span data-i18n="services-nav">Services</span> <i class="fas fa-chevron-down"></i>
                         </button>
                         <div id="mobile-services-menu" class="hidden pl-4 mt-2 space-y-2">
-                            <a href="/Services/Maternity&Brith Services.html" class="block text-gray-700 hover:text-blue-600">Maternity & Birth Services</a>
-                            <a href="/Emergency.html" class="block text-gray-700 hover:text-blue-600">Emergency Care</a>
-                            <a href="/Services/veccination.html" class="block text-gray-700 hover:text-blue-600">Vaccination Programs</a>
-                            <a href="/Services/mentalhealth.html" class="block text-gray-700 hover:text-blue-600">Mental Health Support</a>
-                            <a href="/Services/NCD.html" class="block text-gray-700 hover:text-blue-600">Chronic Disease Care</a>
-                            <a href="/Services/Health Education.html" class="block text-gray-700 hover:text-blue-600">Health Awareness & Education</a>
-                            <a href="/Services/Disability.html" class="block text-gray-700 hover:text-blue-600">Disability Care</a>
+                            <a href="/Services/Maternity&Brith Services.html" class="block text-gray-700 hover:text-blue-600" data-i18n="maternity-nav">Maternity & Birth Services</a>
+                            <a href="/Emergency.html" class="block text-gray-700 hover:text-blue-600" data-i18n="emergency-nav">Emergency Care</a>
+                            <a href="/Services/veccination.html" class="block text-gray-700 hover:text-blue-600" data-i18n="vaccination-nav">Vaccination Programs</a>
+                            <a href="/Services/mentalhealth.html" class="block text-gray-700 hover:text-blue-600" data-i18n="mentalhealth-nav">Mental Health Support</a>
+                            <a href="/Services/NCD.html" class="block text-gray-700 hover:text-blue-600" data-i18n="chronic-disease-nav">Chronic Disease Care</a>
+                            <a href="/Services/Health Education.html" class="block text-gray-700 hover:text-blue-600" data-i18n="health-education-nav">Health Awareness & Education</a>
+                            <a href="/Services/Disability.html" class="block text-gray-700 hover:text-blue-600" data-i18n="disability-nav">Disability Care</a>
                         </div>
                     </div>
                     
-                    <a href="/doctors.html" class="text-gray-700 hover:text-blue-600">Doctors</a>
-                    <a href="#contact" class="text-gray-700 hover:text-blue-600">Book Appointment</a>
-                 
+                    <a href="/doctors.html" class="text-gray-700 hover:text-blue-600" data-i18n="doctors-nav">Doctors</a>
+                    <a href="#contact" class="text-gray-700 hover:text-blue-600" data-i18n="appointment-nav">Book Appointment</a>
                     
                     <div class="pt-4 border-t border-gray-200">
-                        <select class="w-full border border-gray-300 rounded px-3 py-2 text-sm mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                            <option value="en">English</option>
-                            <option value="ar">العربية</option>
-                            <option value="rw">Kinyarwanda</option>
+                        <select class="language-selector w-full border border-gray-300 rounded px-3 py-2 text-sm mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <option value="en" data-i18n="english-lang">English</option>
+                            <option value="rw" data-i18n="kinyarwanda-lang">Kinyarwanda</option>
                         </select>
                         <div class="flex space-x-2">
-                            <button id="signup-btn" class="flex-1 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition duration-300">Sign Up</button>
-                            <button id="login-btn" class="flex-1 border border-blue-600 text-blue-600 px-4 py-2 rounded hover:bg-blue-600 hover:text-white transition duration-300">Log In</button>
+                            <button id="signup-btn" class="flex-1 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition duration-300" data-i18n="signup-btn">Sign Up</button>
+                            <button id="login-btn" class="flex-1 border border-blue-600 text-blue-600 px-4 py-2 rounded hover:bg-blue-600 hover:text-white transition duration-300" data-i18n="login-btn">Log In</button>
                         </div>
                     </div>
                 </div>
@@ -183,16 +179,17 @@
 
     <!-- Hero Section -->
     <section class="text-white md:py-40 py-20" id="home">
-           <video class="hero-video absolute top-0 left-0 w-full h-full object-cover z-0" autoplay muted loop playsinline>
-      <source src="/videos/disability_1080p.mp4" type="video/mp4">
-    </video>
+        <video class="hero-video absolute top-0 left-0 w-full h-full object-cover z-0" autoplay muted loop playsinline>
+            <source src="/videos/disability_1080p.mp4" type="video/mp4">
+            <span data-i18n="video-not-supported">Your browser does not support the video tag.</span>
+        </video>
         <div class="relative container mx-auto px-4 text-center">
             <div class="max-w-3xl mx-auto">
-                <h1 class="text-4xl md:text-5xl font-bold mb-6 text-white ">Specialized Disability Care Services</h1>
-                <p class="text-xl mb-8 opacity-90">Comprehensive, compassionate care designed to support individuals with disabilities and their families</p>
+                <h1 class="text-4xl md:text-5xl font-bold mb-6 text-white" data-i18n="disability-hero-title">Specialized Disability Care Services</h1>
+                <p class="text-xl mb-8 opacity-90" data-i18n="disability-hero-subtitle">Comprehensive, compassionate care designed to support individuals with disabilities and their families</p>
                 <div class="flex flex-wrap gap-5 justify-center">
-                    <a href="#services" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition duration-300 transform hover:-translate-y-1">Our Services</a>
-                    <a href="#contact" class="border border-white text-white px-6 py-3 rounded-lg font-semibold transition duration-300 transform hover:-translate-y-1 hover:bg-white hover:text-blue-600 text-center">Book Appointment</a>
+                    <a href="#services" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition duration-300 transform hover:-translate-y-1" data-i18n="our-services-btn">Our Services</a>
+                    <a href="#contact" class="border border-white text-white px-6 py-3 rounded-lg font-semibold transition duration-300 transform hover:-translate-y-1 hover:bg-white hover:text-blue-600 text-center" data-i18n="book-appointment-btn">Book Appointment</a>
                 </div>
             </div>
         </div>
@@ -202,283 +199,278 @@
     <section class="py-20 bg-white" id="services">
         <div class="container mx-auto px-4">
             <div class="text-center mb-12">
-                <h2 class="text-3xl md:text-4xl font-bold text-blue-600 mb-4">Our Disability Care Services</h2>
-                <p class="text-xl text-gray-600 max-w-2xl mx-auto">We provide comprehensive care and support for individuals with various disabilities</p>
+                <h2 class="text-3xl md:text-4xl font-bold text-blue-600 mb-4" data-i18n="services-title">Our Disability Care Services</h2>
+                <p class="text-xl text-gray-600 max-w-2xl mx-auto" data-i18n="services-subtitle">We provide comprehensive care and support for individuals with various disabilities</p>
             </div>
             
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Service Card 1 -->
                 <div class="service-card bg-white rounded-lg overflow-hidden shadow-md border border-gray-100">
-                    <div class="">
-                   <img src="../img/ds.webp" alt="">
+                    <div>
+                        <img src="../img/ds.webp" alt="" data-i18n="mobility-therapy-alt">
                     </div>
                     <div class="p-6">
-                        <h3 class="text-xl font-bold text-gray-800 mb-4">Mobility & Physical Therapy</h3>
-                        <p class="text-gray-600 mb-6">Comprehensive rehabilitation services including physical therapy, mobility aids, and adaptive equipment.</p>
-                       
+                        <h3 class="text-xl font-bold text-gray-800 mb-4" data-i18n="mobility-therapy-title">Mobility & Physical Therapy</h3>
+                        <p class="text-gray-600 mb-6" data-i18n="mobility-therapy-desc">Comprehensive rehabilitation services including physical therapy, mobility aids, and adaptive equipment.</p>
                     </div>
                 </div>
                 
+                <!-- Service Card 2 -->
                 <div class="service-card bg-white rounded-lg overflow-hidden shadow-md border border-gray-100">
-                    <div class="">
-                        <img src="../img/ds2.webp" alt="">
-                       
+                    <div>
+                        <img src="../img/ds2.webp" alt="" data-i18n="cognitive-support-alt">
                     </div>
                     <div class="p-6">
-                        <h3 class="text-xl font-bold text-gray-800 mb-4">Cognitive & Developmental Support</h3>
-                        <p class="text-gray-600 mb-6">Specialized programs for individuals with cognitive disabilities, autism spectrum disorders, and developmental delays.</p>
-                        
+                        <h3 class="text-xl font-bold text-gray-800 mb-4" data-i18n="cognitive-support-title">Cognitive & Developmental Support</h3>
+                        <p class="text-gray-600 mb-6" data-i18n="cognitive-support-desc">Specialized programs for individuals with cognitive disabilities, autism spectrum disorders, and developmental delays.</p>
                     </div>
                 </div>
                 
+                <!-- Service Card 3 -->
                 <div class="service-card bg-white rounded-lg overflow-hidden shadow-md border border-gray-100">
-                    <div class="">
-                        <img src="../img/ds1.webp" alt="">
+                    <div>
+                        <img src="../img/ds1.webp" alt="" data-i18n="communication-assistance-alt">
                     </div>
                     <div class="p-6">
-                        <h3 class="text-xl font-bold text-gray-800 mb-4">Communication Assistance</h3>
-                        <p class="text-gray-600 mb-6">Augmentative and alternative communication support, speech therapy, and assistive technology for non-verbal individuals.</p>
-
+                        <h3 class="text-xl font-bold text-gray-800 mb-4" data-i18n="communication-assistance-title">Communication Assistance</h3>
+                        <p class="text-gray-600 mb-6" data-i18n="communication-assistance-desc">Augmentative and alternative communication support, speech therapy, and assistive technology for non-verbal individuals.</p>
                     </div>
                 </div>
                 
+                <!-- Service Card 4 -->
                 <div class="service-card bg-white rounded-lg overflow-hidden shadow-md border border-gray-100">
-                    <div class="">
-                      <img src="../img/ds3.webp" alt="">
+                    <div>
+                        <img src="../img/ds3.webp" alt="" data-i18n="sensory-support-alt">
                     </div>
                     <div class="p-6">
-                        <h3 class="text-xl font-bold text-gray-800 mb-4">Vision & Hearing Support</h3>
-                        <p class="text-gray-600 mb-6">Specialized care for visual and hearing impairments, including assessments, aids, and rehabilitation services.</p>
-                    
+                        <h3 class="text-xl font-bold text-gray-800 mb-4" data-i18n="sensory-support-title">Vision & Hearing Support</h3>
+                        <p class="text-gray-600 mb-6" data-i18n="sensory-support-desc">Specialized care for visual and hearing impairments, including assessments, aids, and rehabilitation services.</p>
                     </div>
                 </div>
                 
+                <!-- Service Card 5 -->
                 <div class="service-card bg-white rounded-lg overflow-hidden shadow-md border border-gray-100">
-                    <div class="">
-              <img src="../img/ds4.webp" alt="">
+                    <div>
+                        <img src="../img/ds4.webp" alt="" data-i18n="daily-living-alt">
                     </div>
                     <div class="p-6">
-                        <h3 class="text-xl font-bold text-gray-800 mb-4">Daily Living Assistance</h3>
-                        <p class="text-gray-600 mb-6">Support with activities of daily living, adaptive techniques, and independent living skills training.</p>
-                    
+                        <h3 class="text-xl font-bold text-gray-800 mb-4" data-i18n="daily-living-title">Daily Living Assistance</h3>
+                        <p class="text-gray-600 mb-6" data-i18n="daily-living-desc">Support with activities of daily living, adaptive techniques, and independent living skills training.</p>
                     </div>
                 </div>
                 
+                <!-- Service Card 6 -->
                 <div class="service-card bg-white rounded-lg overflow-hidden shadow-md border border-gray-100">
-                    <div class="">
-                      <img src="../img/ds6.webp" alt="">
+                    <div>
+                        <img src="../img/ds6.webp" alt="" data-i18n="caregiver-support-alt">
                     </div>
                     <div class="p-6">
-                        <h3 class="text-xl font-bold text-gray-800 mb-4">Family & Caregiver Support</h3>
-                        <p class="text-gray-600 mb-6">Resources, training, counseling, and respite care for families and caregivers of individuals with disabilities.</p>
-                        
+                        <h3 class="text-xl font-bold text-gray-800 mb-4" data-i18n="caregiver-support-title">Family & Caregiver Support</h3>
+                        <p class="text-gray-600 mb-6" data-i18n="caregiver-support-desc">Resources, training, counseling, and respite care for families and caregivers of individuals with disabilities.</p>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    
     <!-- Resources Section -->
     <section class="py-20 bg-white" id="resources">
         <div class="container mx-auto px-4">
             <div class="text-center mb-12">
-                <h2 class="text-3xl md:text-4xl font-bold text-blue-600 mb-4">Disability Care Resources</h2>
-                <p class="text-xl text-gray-600 max-w-2xl mx-auto">Helpful materials and information for individuals with disabilities and their caregivers</p>
+                <h2 class="text-3xl md:text-4xl font-bold text-blue-600 mb-4" data-i18n="resources-title">Disability Care Resources</h2>
+                <p class="text-xl text-gray-600 max-w-2xl mx-auto" data-i18n="resources-subtitle">Helpful materials and information for individuals with disabilities and their caregivers</p>
             </div>
             
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Resource 1 -->
                 <div class="border border-gray-300 rounded-lg overflow-hidden hover:-translate-y-1 hover:shadow-md transition-all">
-                    <div class="">
-                 <img src="../img/ds7.png" alt="">
+                    <div>
+                        <img src="../img/ds7.webp" alt="" data-i18n="caregiver-guides-alt">
                     </div>
                     <div class="p-6 bg-white">
-                        <h3 class="text-xl font-bold text-gray-800 mb-4">Caregiver Guides</h3>
-                        <p class="text-gray-600 mb-6">Comprehensive manuals and resources for families and caregivers supporting individuals with disabilities.</p>
-                       
+                        <h3 class="text-xl font-bold text-gray-800 mb-4" data-i18n="caregiver-guides-title">Caregiver Guides</h3>
+                        <p class="text-gray-600 mb-6" data-i18n="caregiver-guides-desc">Comprehensive manuals and resources for families and caregivers supporting individuals with disabilities.</p>
                     </div>
                 </div>
                 
+                <!-- Resource 2 -->
                 <div class="border border-gray-300 rounded-lg overflow-hidden hover:-translate-y-1 hover:shadow-md transition-all">
-                    <div class="">
-                      <img src="../img/ds8.png" alt="">
+                    <div>
+                        <img src="../img/ds8.webp" alt="" data-i18n="disability-rights-alt">
                     </div>
                     <div class="p-6 bg-white">
-                        <h3 class="text-xl font-bold text-gray-800 mb-4">Disability Rights Information</h3>
-                        <p class="text-gray-600 mb-6">Information about disability rights, accessibility laws, and advocacy resources.</p>
-                       
+                        <h3 class="text-xl font-bold text-gray-800 mb-4" data-i18n="disability-rights-title">Disability Rights Information</h3>
+                        <p class="text-gray-600 mb-6" data-i18n="disability-rights-desc">Information about disability rights, accessibility laws, and advocacy resources.</p>
                     </div>
                 </div>
                 
+                <!-- Resource 3 -->
                 <div class="border border-gray-300 rounded-lg overflow-hidden hover:-translate-y-1 hover:shadow-md transition-all">
-                    <div class="">
-                    <img src="../img/ds9.png" alt="">
+                    <div>
+                        <img src="../img/ds9.webp" alt="" data-i18n="health-passport-alt">
                     </div>
                     <div class="p-6 bg-white">
-                        <h3 class="text-xl font-bold text-gray-800 mb-4">Health Passport</h3>
-                        <p class="text-gray-600 mb-6">Personal health record for individuals with disabilities to track medical history and care needs.</p>
-                        
+                        <h3 class="text-xl font-bold text-gray-800 mb-4" data-i18n="health-passport-title">Health Passport</h3>
+                        <p class="text-gray-600 mb-6" data-i18n="health-passport-desc">Personal health record for individuals with disabilities to track medical history and care needs.</p>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- FAQ Section -->
-
-
     <!-- Contact Section -->
- <section id="contact" class="py-16 bg-gray-50">
-  <div class="container mx-auto px-4">
-    <div class="text-center mb-12">
-      <h2 class="text-3xl md:text-4xl font-bold text-blue-600 mb-4">Book an Appointment</h2>
-      <p class="text-gray-600 max-w-2xl mx-auto">Schedule a consultation with our disability care specialists.</p>
-    </div>
-   
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
-      <!-- Contact Form -->
-      <div class="bg-gray-200 rounded-xl shadow-lg p-8">
-        <h3 class="text-2xl font-bold text-gray-800 mb-6">Send us a Message</h3>
-        <form id="appointmentForm" class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div>
-                        <label for="name" class="block text-gray-700 mb-2 font-medium">Full Name</label>
-                        <input type="text" id="name" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+    <section id="contact" class="py-16 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-blue-600 mb-4" data-i18n="contact-title">Book an Appointment</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto" data-i18n="contact-subtitle">Schedule a consultation with our disability care specialists.</p>
+            </div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                <!-- Contact Form -->
+                <div class="bg-gray-200 rounded-xl shadow-lg p-8">
+                    <h3 class="text-2xl font-bold text-gray-800 mb-6" data-i18n="send-message-title">Send us a Message</h3>
+                    <form id="appointmentForm" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label for="name" class="block text-gray-700 mb-2 font-medium" data-i18n="full-name-label">Full Name</label>
+                            <input type="text" id="name" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required data-i18n="full-name-placeholder" placeholder="Full Name">
+                        </div>
+                        
+                        <div>
+                            <label for="email" class="block text-gray-700 mb-2 font-medium" data-i18n="email-label">Email Address</label>
+                            <input type="email" id="email" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required data-i18n="email-placeholder" placeholder="Email Address">
+                        </div>
+                        
+                        <div>
+                            <label for="phone" class="block text-gray-700 mb-2 font-medium" data-i18n="phone-label">Phone Number</label>
+                            <input type="tel" id="phone" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required data-i18n="phone-placeholder" placeholder="Phone Number">
+                        </div>
+                        
+                        <div>
+                            <label for="service" class="block text-gray-700 mb-2 font-medium" data-i18n="service-label">Service Needed</label>
+                            <select id="service" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                                <option value="" data-i18n="select-service-option">Select a service</option>
+                                <option value="mobility" data-i18n="mobility-service-option">Mobility & Physical Therapy</option>
+                                <option value="cognitive" data-i18n="cognitive-service-option">Cognitive & Developmental Support</option>
+                                <option value="communication" data-i18n="communication-service-option">Communication Assistance</option>
+                                <option value="sensory" data-i18n="sensory-service-option">Vision & Hearing Support</option>
+                                <option value="daily" data-i18n="daily-service-option">Daily Living Assistance</option>
+                                <option value="family" data-i18n="family-service-option">Family & Caregiver Support</option>
+                            </select>
+                        </div>
+                        
+                        <div>
+                            <label for="date" class="block text-gray-700 mb-2 font-medium" data-i18n="date-label">Preferred Date</label>
+                            <input type="date" id="date" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                        </div>
+                        
+                        <div>
+                            <label for="time" class="block text-gray-700 mb-2 font-medium" data-i18n="time-label">Preferred Time</label>
+                            <select id="time" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                                <option value="" data-i18n="select-time-option">Select a time</option>
+                                <option value="morning" data-i18n="morning-time-option">Morning (9am - 12pm)</option>
+                                <option value="afternoon" data-i18n="afternoon-time-option">Afternoon (1pm - 4pm)</option>
+                                <option value="evening" data-i18n="evening-time-option">Evening (5pm - 7pm)</option>
+                            </select>
+                        </div>
+                        
+                        <div class="md:col-span-2">
+                            <label for="accessibility" class="block text-gray-700 mb-2 font-medium" data-i18n="accessibility-label">Accessibility Requirements</label>
+                            <textarea id="accessibility" rows="3" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" data-i18n="accessibility-placeholder" placeholder="Please let us know about any specific accessibility needs..."></textarea>
+                        </div>
+                        
+                        <div class="md:col-span-2">
+                            <label for="message" class="block text-gray-700 mb-2 font-medium" data-i18n="message-label">Additional Message</label>
+                            <textarea id="message" rows="3" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" data-i18n="message-placeholder" placeholder="Any additional information you'd like to share..."></textarea>
+                        </div>
+                        
+                        <div class="md:col-span-2 flex justify-center mt-6">
+                            <button type="submit" class="bg-blue-600 text-white font-semibold py-3 px-8 rounded-lg shadow-md hover:bg-blue-700 transition duration-300" data-i18n="book-appointment-submit">
+                                Book Appointment
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                
+                <!-- Contact Information & Map -->
+                <div class="space-y-8">
+                    <!-- Contact Info Cards -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="bg-white rounded-xl shadow-lg p-6 flex items-start">
+                            <div class="bg-blue-100 p-3 rounded-lg mr-4">
+                                <i class="fas fa-map-marker-alt text-blue-600 text-xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-gray-800 mb-1" data-i18n="location-title">Our Location</h4>
+                                <p class="text-gray-600" data-i18n="location-address">Mahama Refugee Camp, Kirehe District, Rwanda</p>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-white rounded-xl shadow-lg p-6 flex items-start">
+                            <div class="bg-blue-100 p-3 rounded-lg mr-4">
+                                <i class="fas fa-phone text-blue-600 text-xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-gray-800 mb-1" data-i18n="phone-title">Phone Number</h4>
+                                <p class="text-gray-600" data-i18n="phone-number">+250 000 000</p>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-white rounded-xl shadow-lg p-6 flex items-start">
+                            <div class="bg-blue-100 p-3 rounded-lg mr-4">
+                                <i class="fas fa-envelope text-blue-600 text-xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-gray-800 mb-1" data-i18n="email-title">Email Address</h4>
+                                <p class="text-gray-600" data-i18n="email-address">info@hopecare.com</p>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-white rounded-xl shadow-lg p-6 flex items-start">
+                            <div class="bg-blue-100 p-3 rounded-lg mr-4">
+                                <i class="fas fa-clock text-blue-600 text-xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-gray-800 mb-1" data-i18n="hours-title">Working Hours</h4>
+                                <p class="text-gray-600" data-i18n="emergency-hours">24/7 Emergency Services</p>
+                                <p class="text-gray-600" data-i18n="regular-hours">Mon-Fri: 8am-6pm</p>
+                            </div>
+                        </div>
                     </div>
                     
-                    <div>
-                        <label for="email" class="block text-gray-700 mb-2 font-medium">Email Address</label>
-                        <input type="email" id="email" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                    <!-- Map -->
+                    <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+                        <div class="h-96">
+                            <iframe 
+                                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1334.760614585555!2d30.642434783637935!3d-2.2630583877293016!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x19c4c500078c5f45%3A0xc3605c2533855d6b!2sMahama%20refugee%20camp!5e0!3m2!1sen!2sus!4v1762760708457!5m2!1sen!2sus" 
+                                width="100%" 
+                                height="100%" 
+                                style="border:0;" 
+                                allowfullscreen="" 
+                                loading="lazy" 
+                                referrerpolicy="no-referrer-when-downgrade"
+                                title="Mahamacare Hospital Location at Mahama Refugee Camp">
+                            </iframe>
+                        </div>
                     </div>
                     
-                    <div>
-                        <label for="phone" class="block text-gray-700 mb-2 font-medium">Phone Number</label>
-                        <input type="tel" id="phone" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                    <!-- Emergency Notice -->
+                    <div class="bg-red-50 border border-red-200 rounded-xl p-6">
+                        <div class="flex items-start">
+                            <i class="fas fa-exclamation-triangle text-red-500 text-xl mt-1 mr-4"></i>
+                            <div>
+                                <h4 class="font-bold text-red-700 mb-2" data-i18n="emergency-title">Emergency Contact</h4>
+                                <p class="text-red-600 mb-2" data-i18n="emergency-description">For urgent medical assistance, please call our emergency line immediately.</p>
+                                <a href="tel:+250000000" class="inline-block bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg transition duration-300" data-i18n="emergency-call">
+                                    Call Emergency: 112
+                                </a>
+                            </div>
+                        </div>
                     </div>
-                    
-                    <div>
-                        <label for="service" class="block text-gray-700 mb-2 font-medium">Service Needed</label>
-                        <select id="service" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required>
-                            <option value="">Select a service</option>
-                            <option value="mobility">Mobility & Physical Therapy</option>
-                            <option value="cognitive">Cognitive & Developmental Support</option>
-                            <option value="communication">Communication Assistance</option>
-                            <option value="sensory">Vision & Hearing Support</option>
-                            <option value="daily">Daily Living Assistance</option>
-                            <option value="family">Family & Caregiver Support</option>
-                        </select>
-                    </div>
-                    
-                    <div>
-                        <label for="date" class="block text-gray-700 mb-2 font-medium">Preferred Date</label>
-                        <input type="date" id="date" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required>
-                    </div>
-                    
-                    <div>
-                        <label for="time" class="block text-gray-700 mb-2 font-medium">Preferred Time</label>
-                        <select id="time" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required>
-                            <option value="">Select a time</option>
-                            <option value="morning">Morning (9am - 12pm)</option>
-                            <option value="afternoon">Afternoon (1pm - 4pm)</option>
-                            <option value="evening">Evening (5pm - 7pm)</option>
-                        </select>
-                    </div>
-                    
-                    <div class="md:col-span-2">
-                        <label for="accessibility" class="block text-gray-700 mb-2 font-medium">Accessibility Requirements</label>
-                        <textarea id="accessibility" rows="3" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Please let us know about any specific accessibility needs..."></textarea>
-                    </div>
-                    
-                    <div class="md:col-span-2">
-                        <label for="message" class="block text-gray-700 mb-2 font-medium">Additional Message</label>
-                        <textarea id="message" rows="3" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Any additional information you'd like to share..."></textarea>
-                    </div>
-                    
-                    <div class="md:col-span-2 flex justify-center mt-6">
-                        <button type="submit" class="bg-blue-600 text-white font-semibold py-3 px-8 rounded-lg shadow-md hover:bg-blue-700 transition duration-300">
-                            Book Appointment
-                        </button>
-                    </div>
-                </form>
-      </div>
-     
-      <!-- Contact Information & Map -->
-      <div class="space-y-8">
-        <!-- Contact Info Cards -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div class="bg-white rounded-xl shadow-lg p-6 flex items-start">
-            <div class="bg-blue-100 p-3 rounded-lg mr-4">
-              <i class="fas fa-map-marker-alt text-blue-600 text-xl"></i>
+                </div>
             </div>
-            <div>
-              <h4 class="font-bold text-gray-800 mb-1">Our Location</h4>
-              <p class="text-gray-600">Mahama Refugee Camp, Kirehe District, Rwanda</p>
-            </div>
-          </div>
-         
-          <div class="bg-white rounded-xl shadow-lg p-6 flex items-start">
-            <div class="bg-blue-100 p-3 rounded-lg mr-4">
-              <i class="fas fa-phone text-blue-600 text-xl"></i>
-            </div>
-            <div>
-              <h4 class="font-bold text-gray-800 mb-1">Phone Number</h4>
-              <p class="text-gray-600">+250 000 000</p>
-            </div>
-          </div>
-         
-          <div class="bg-white rounded-xl shadow-lg p-6 flex items-start">
-            <div class="bg-blue-100 p-3 rounded-lg mr-4">
-              <i class="fas fa-envelope text-blue-600 text-xl"></i>
-            </div>
-            <div>
-              <h4 class="font-bold text-gray-800 mb-1">Email Address</h4>
-              <p class="text-gray-600">info@hopecare.com</p>
-            </div>
-          </div>
-         
-          <div class="bg-white rounded-xl shadow-lg p-6 flex items-start">
-            <div class="bg-blue-100 p-3 rounded-lg mr-4">
-              <i class="fas fa-clock text-blue-600 text-xl"></i>
-            </div>
-            <div>
-              <h4 class="font-bold text-gray-800 mb-1">Working Hours</h4>
-              <p class="text-gray-600">24/7 Emergency Services</p>
-              <p class="text-gray-600">Mon-Fri: 8am-6pm</p>
-            </div>
-          </div>
         </div>
-        <!-- Google Map for Mahama Refugee Camp -->
-<div class="bg-white rounded-xl shadow-lg overflow-hidden">
-  <div class="h-96">
-    <iframe 
-      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1334.760614585555!2d30.642434783637935!3d-2.2630583877293016!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x19c4c500078c5f45%3A0xc3605c2533855d6b!2sMahama%20refugee%20camp!5e0!3m2!1sen!2sus!4v1762760708457!5m2!1sen!2sus" 
-      width="100%" 
-      height="10<li><a href="#faq" class="text-gray-400 hover:text-white transition duration-300">FAQ</a></li>
-                        <li><a href="#contact" class="text-gray-400 hover:text-white transition duration-300">Contact</a></li>0%" 
-      style="border:0;" 
-      allowfullscreen="" 
-      loading="lazy" 
-      referrerpolicy="no-referrer-when-downgrade"
-      title="Mahamacare Hospital Location at Mahama Refugee Camp">
-    </iframe>
-  </div>
-</div>
-       
-        <!-- Emergency Notice -->
-        <div class="bg-red-50 border border-red-200 rounded-xl p-6">
-          <div class="flex items-start">
-            <i class="fas fa-exclamation-triangle text-red-500 text-xl mt-1 mr-4"></i>
-            <div>
-              <h4 class="font-bold text-red-700 mb-2">Emergency Contact</h4>
-              <p class="text-red-600 mb-2">For urgent medical assistance, please call our emergency line immediately.</p>
-              <a href="tel:+250000000" class="inline-block bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg transition duration-300">
-                Call Emergency: 112
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
+    </section>
 
     <!-- Footer -->
     <footer class="bg-gray-900 text-white py-12">
@@ -486,61 +478,59 @@
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
                 <!-- Column 1 -->
                 <div>
-                    <h3 class="text-xl font-bold mb-4">MahamaCare Hospital</h3>
-                    <p class="text-gray-400">Providing specialized disability care with compassion and expertise.</p>
+                    <h3 class="text-xl font-bold mb-4" data-i18n="hospital-name">MahamaCare Hospital</h3>
+                    <p class="text-gray-400" data-i18n="disability-tagline">Providing specialized disability care with compassion and expertise.</p>
                 </div>
                 
                 <!-- Column 2 -->
                 <div>
-                    <h4 class="text-lg font-semibold mb-4">Quick Links</h4>
+                    <h4 class="text-lg font-semibold mb-4" data-i18n="quick-links-title">Quick Links</h4>
                     <ul class="space-y-2">
-                        <li><a href="../index.html" class="text-gray-400 hover:text-white transition duration-300">Home</a></li>
-                        <li><a href="../index.html#about" class="text-gray-400 hover:text-white transition duration-300">About</a></li>
-                        <li><a href="#services" class="text-gray-400 hover:text-white transition duration-300">Services</a></li>
-                        <li><a href="/doctors.html" class="text-gray-400 hover:text-white transition duration-300">Doctors</a></li>
-                        
+                        <li><a href="../index.html" class="text-gray-400 hover:text-white transition duration-300" data-i18n="home-nav">Home</a></li>
+                        <li><a href="../index.html#about" class="text-gray-400 hover:text-white transition duration-300" data-i18n="about-nav">About</a></li>
+                        <li><a href="#services" class="text-gray-400 hover:text-white transition duration-300" data-i18n="services-nav">Services</a></li>
+                        <li><a href="/doctors.html" class="text-gray-400 hover:text-white transition duration-300" data-i18n="doctors-nav">Doctors</a></li>
                     </ul>
                 </div>
                 
                 <!-- Column 3 -->
                 <div>
-                    <h4 class="text-lg font-semibold mb-4">Contact Info</h4>
+                    <h4 class="text-lg font-semibold mb-4" data-i18n="contact-info-title">Contact Info</h4>
                     <div class="space-y-2 text-gray-400">
-                        <p><i class="fas fa-envelope mr-2"></i> unitycoders2025@gmail.com</p>
-                        <p><i class="fas fa-phone mr-2"></i> +250 000 000</p>
-                        <p><i class="fas fa-map-marker-alt mr-2"></i> Mahama Refugee Camp, Rwanda</p>
+                        <p><i class="fas fa-envelope mr-2"></i> <span data-i18n="footer-email">unitycoders2025@gmail.com</span></p>
+                        <p><i class="fas fa-phone mr-2"></i> <span data-i18n="footer-phone">+250 000 000</span></p>
+                        <p><i class="fas fa-map-marker-alt mr-2"></i> <span data-i18n="footer-location">Mahama Refugee Camp, Rwanda</span></p>
                     </div>
                 </div>
                 
                 <!-- Column 4 -->
-                  <div>
-          <h4 class="text-lg font-semibold mb-4">Follow Us</h4>
-          <div class="flex space-x-4">
-            <a href="https://www.facebook.com/profile.php?id=61583964942775&mibextid=rS40aB7S9Ucbxw6v" class="text-gray-400 hover:text-white transition duration-300">
-              <i class="fab fa-facebook-f text-xl"></i>
-            </a>
-            <a href="https://x.com/CodersUnit2026?t=ym3SPxmqVxW3QcuboUGcDg&s=03" class="text-gray-400 hover:text-white transition duration-300">
-              <i class="fab fa-twitter text-xl"></i>
-            </a>
-            <a href="https://www.instagram.com/unitycoders?utm_source=qr&igsh=aDFjdGUxNWxwNHR3" class="text-gray-400 hover:text-white transition duration-300">
-              <i class="fab fa-instagram text-xl"></i>
-            </a>
-            <a href="https://www.linkedin.com/in/unity-coders-56aa0739a?utm_source=share_via&utm_content=profile&utm_medium=member_android" class="text-gray-400 hover:text-white transition duration-300">
-              <i class="fab fa-linkedin-in text-xl"></i>
-            </a>
-          </div>
-        </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-4" data-i18n="follow-us-title">Follow Us</h4>
+                    <div class="flex space-x-4">
+                        <a href="https://www.facebook.com/profile.php?id=61583964942775&mibextid=rS40aB7S9Ucbxw6v" class="text-gray-400 hover:text-white transition duration-300">
+                            <i class="fab fa-facebook-f text-xl"></i>
+                        </a>
+                        <a href="https://x.com/CodersUnit2026?t=ym3SPxmqVxW3QcuboUGcDg&s=03" class="text-gray-400 hover:text-white transition duration-300">
+                            <i class="fab fa-twitter text-xl"></i>
+                        </a>
+                        <a href="https://www.instagram.com/unitycoders?utm_source=qr&igsh=aDFjdGUxNWxwNHR3" class="text-gray-400 hover:text-white transition duration-300">
+                            <i class="fab fa-instagram text-xl"></i>
+                        </a>
+                        <a href="https://www.linkedin.com/in/unity-coders-56aa0739a?utm_source=share_via&utm_content=profile&utm_medium=member_android" class="text-gray-400 hover:text-white transition duration-300">
+                            <i class="fab fa-linkedin-in text-xl"></i>
+                        </a>
+                    </div>
+                </div>
             </div>
             
             <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-500">
-                <p>&copy; 2025 MahamaCare Hospital. All rights reserved.</p>
+                <p data-i18n="copyright">&copy; 2025 MahamaCare Hospital. All rights reserved.</p>
             </div>
         </div>
     </footer>
 
-    <script type="module" src="/JavaScript-Files/disability.js">
-  
-</script>
-
+    <!-- JavaScript files -->
+    <script src="/JavaScript-Files/language.js"></script>
+    <script type="module" src="/JavaScript-Files/disability.js"></script>
 </body>
 </html>
