@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Emergency System | Emergency Help Hub</title>
+  <title data-i18n="emergency-page-title">Emergency System | Emergency Help Hub</title>
   <script src="https://cdn.tailwindcss.com"></script>
    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
@@ -109,49 +109,48 @@
       <div class="flex justify-between items-center py-4">
         <!-- Logo -->
         <div class="flex items-center">
-          <span class="text-2xl font-bold text-blue-600"><a href="./index.html">🏥 MCH</a></span>
+          <span class="text-2xl font-bold text-blue-600"><a href="./index.html" data-i18n="logo-text">🏥 MCH</a></span>
         </div>
         
         <!-- Mobile menu button -->
-        <button id="mobile-menu-button" class="md:hidden text-gray-600 focus:outline-none">
+        <button id="mobile-menu-button" class="md:hidden text-gray-600 focus:outline-none" data-i18n="mobile-menu-button">
           <i class="fas fa-bars text-xl"></i>
         </button>
         
         <!-- Navigation Links -->
         <nav id="nav-links" class="hidden md:flex items-center space-x-6">
-          <a href="../index.html" class="text-gray-700 hover:text-blue-600 transition duration-300">Home</a>
-          <a href="../index.html#about" class="text-gray-700 hover:text-blue-600 transition duration-300">About</a>
+          <a href="../index.html" class="text-gray-700 hover:text-blue-600 transition duration-300" data-i18n="home-nav">Home</a>
+          <a href="../index.html#about" class="text-gray-700 hover:text-blue-600 transition duration-300" data-i18n="about-nav">About</a>
           
           <!-- Services Dropdown -->
           <div class="relative group">
-            <button class="flex items-center text-gray-700 hover:text-blue-600 transition duration-300">
+            <button class="flex items-center text-gray-700 hover:text-blue-600 transition duration-300" data-i18n="services-nav">
               Services <i class="fas fa-chevron-down ml-1 text-xs"></i>
             </button>
             <div class="absolute left-0 mt-2 w-64 bg-white shadow-xl rounded-lg py-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50">
-              <a href="/Services/Maternity&Brith Services.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">Maternity & Birth Services</a>
-              <a href="/Emergency.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">Emergency Care</a>
-              <a href="/Services/veccination.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">Vaccination Programs</a>
-              <a href="/Services/mentalhealth.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">Mental Health Support</a>
-              <a href="/Services/NCD.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">Chronic Disease Care</a>
-              <a href="/Services/Health Education.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">Health Awareness & Education</a>
-              <a href="/Services/Disability.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">Disability Care</a>
+              <a href="/Services/Maternity&Brith Services.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600" data-i18n="Maternity-nav">Maternity & Birth Services</a>
+              <a href="/Emergency.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600" data-i18n="emergency-nav">Emergency Care</a>
+              <a href="/Services/veccination.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600" data-i18n="vaccination-nav">Vaccination Programs</a>
+              <a href="/Services/mentalhealth.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600" data-i18n="mentalhealth-nav">Mental Health Support</a>
+              <a href="/Services/NCD.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600" data-i18n="chronic-disease-nav">Chronic Disease Care</a>
+              <a href="/Services/Health Education.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600" data-i18n="health-edu-nav">Health Awareness & Education</a>
+              <a href="/Services/Disability.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600" data-i18n="disability-nav">Disability Care</a>
             </div>
           </div>
           
-          <a href="/doctors.html" class="text-gray-700 hover:text-blue-600 transition duration-300">Doctors</a>
-          <a href="#contact" class="text-gray-700 hover:text-blue-600 transition duration-300">Report an Emergency</a>
-  
+          <a href="/doctors.html" class="text-gray-700 hover:text-blue-600 transition duration-300" data-i18n="doctors-nav">Doctors</a>
+          <a href="#contact" class="text-gray-700 hover:text-blue-600 transition duration-300" data-i18n="report-emergency-nav">Report an Emergency</a>
         </nav>
         
         <!-- Actions -->
         <div class="hidden md:flex items-center space-x-4">
-          <select class="border border-gray-300 rounded px-3 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+          <select class="border border-gray-300 rounded px-3 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" data-i18n="language-select">
             <option value="en">English</option>
-            <option value="ar">العربية</option>
+           
             <option value="rw">Kinyarwanda</option>
           </select>
-          <button id="desktop-signup-btn" class=" hidden text-white px-4 py-2 rounded...">Sign Up</button>
-          <button id="desktop-login-btn" class=" hidden border-blue-600 text-blue-600 px-4 py-2 rounded...">Log In</button>
+          <button id="desktop-signup-btn" class=" hidden text-white px-4 py-2 rounded..." data-i18n="signup-btn">Sign Up</button>
+          <button id="desktop-login-btn" class=" hidden border-blue-600 text-blue-600 px-4 py-2 rounded..." data-i18n="login-btn">Log In</button>
         </div>
       </div>
       
@@ -159,42 +158,40 @@
       <div id="mobile-menu" class="hidden md:hidden py-4 border-t border-gray-200">
         <div class="flex flex-col space-y-4">
           <div class="flex space-x-2">
-  <button id="mobile-signup-btn" class=" hidden bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition duration-300">Sign Up</button>
-  <button id="mobile-login-btn" class=" hidden border border-blue-600 text-blue-600 px-4 py-2 rounded hover:bg-blue-600 hover:text-white transition duration-300">Log In</button>
-</div>
-          <a href="#home" class="text-gray-700 hover:text-blue-600">Home</a>
-          <a href="#about" class="text-gray-700 hover:text-blue-600">About</a>
+            <button id="mobile-signup-btn" class=" hidden bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition duration-300" data-i18n="signup-btn">Sign Up</button>
+            <button id="mobile-login-btn" class=" hidden border border-blue-600 text-blue-600 px-4 py-2 rounded hover:bg-blue-600 hover:text-white transition duration-300" data-i18n="login-btn">Log In</button>
+          </div>
+          <a href="#home" class="text-gray-700 hover:text-blue-600" data-i18n="home-nav">Home</a>
+          <a href="#about" class="text-gray-700 hover:text-blue-600" data-i18n="about-nav">About</a>
           
           <!-- Mobile Services Dropdown -->
           <div class="relative">
-            <button id="mobile-services-toggle" class="flex items-center text-gray-700 hover:text-blue-600 w-full justify-between">
+            <button id="mobile-services-toggle" class="flex items-center text-gray-700 hover:text-blue-600 w-full justify-between" data-i18n="services-nav">
               Services <i class="fas fa-chevron-down"></i>
             </button>
             <div id="mobile-services-menu" class="hidden pl-4 mt-2 space-y-2">
-              <a href="/Services/Maternity&Brith Services.html" class="block text-gray-700 hover:text-blue-600">Maternity & Birth Services</a>
-              <a href="/Emergency.html" class="block text-gray-700 hover:text-blue-600">Emergency Care</a>
-              <a href="/Services/veccination.html" class="block text-gray-700 hover:text-blue-600">Vaccination Programs</a>
-              <a href="/Services/mentalhealth.html" class="block text-gray-700 hover:text-blue-600">Mental Health Support</a>
-              <a href="/Services/NCD.html" class="block text-gray-700 hover:text-blue-600">Chronic Disease Care</a>
-              <a href="/Services/Health Education.html" class="block text-gray-700 hover:text-blue-600">Health Awareness & Education</a>
-              <a href="/Services/Disability.html" class="block text-gray-700 hover:text-blue-600">Disability Care</a>
+              <a href="/Services/Maternity&Brith Services.html" class="block text-gray-700 hover:text-blue-600" data-i18n="Maternity-nav">Maternity & Birth Services</a>
+              <a href="/Emergency.html" class="block text-gray-700 hover:text-blue-600" data-i18n="emergency-nav">Emergency Care</a>
+              <a href="/Services/veccination.html" class="block text-gray-700 hover:text-blue-600" data-i18n="vaccination-nav">Vaccination Programs</a>
+              <a href="/Services/mentalhealth.html" class="block text-gray-700 hover:text-blue-600" data-i18n="mentalhealth-nav">Mental Health Support</a>
+              <a href="/Services/NCD.html" class="block text-gray-700 hover:text-blue-600" data-i18n="chronic-disease-nav">Chronic Disease Care</a>
+              <a href="/Services/Health Education.html" class="block text-gray-700 hover:text-blue-600" data-i18n="health-edu-nav">Health Awareness & Education</a>
+              <a href="/Services/Disability.html" class="block text-gray-700 hover:text-blue-600" data-i18n="disability-nav">Disability Care</a>
             </div>
           </div>
           
-          <a href="/doctors.html" class="text-gray-700 hover:text-blue-600">Doctors</a>
-          <a href="../index.html#contact" class="text-gray-700 hover:text-blue-600">Report an Emergency</a>
-     
-        
+          <a href="/doctors.html" class="text-gray-700 hover:text-blue-600" data-i18n="doctors-nav">Doctors</a>
+          <a href="../index.html#contact" class="text-gray-700 hover:text-blue-600" data-i18n="report-emergency-nav">Report an Emergency</a>
           
           <div class="pt-4 border-t border-gray-200">
-            <select class="w-full border border-gray-300 rounded px-3 py-2 text-sm mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <select class="w-full border border-gray-300 rounded px-3 py-2 text-sm mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500" data-i18n="language-select">
               <option value="en">English</option>
-              <option value="ar">العربية</option>
+            
               <option value="rw">Kinyarwanda</option>
             </select>
             <div class="flex space-x-2">
-              <button  id="signup-btn" class=" hidden bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition duration-300">Sign Up</button>
-              <button  id="login-btn" class=" hidden border border-blue-600 text-blue-600 px-4 py-2 rounded hover:bg-blue-600 hover:text-white transition duration-300">Log In</button>
+              <button id="signup-btn" class=" hidden bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition duration-300" data-i18n="signup-btn">Sign Up</button>
+              <button id="login-btn" class=" hidden border border-blue-600 text-blue-600 px-4 py-2 rounded hover:bg-blue-600 hover:text-white transition duration-300" data-i18n="login-btn">Log In</button>
             </div>
           </div>
         </div>
@@ -206,25 +203,28 @@
   <section class="relative py-8 md:py-12 px-4" id="home">
      <video class="hero-video absolute top-0 left-0 w-full h-full object-cover z-0" autoplay muted loop playsinline>
       <source src="/videos/emergency_1080p.mp4" type="video/mp4">
+      <span data-i18n="video-not-supported">Your browser does not support the video tag.</span>
     </video>
     
-    <div class="max-w-7xl mx-auto text-center relative">
-      <h2 class="text-3xl md:text-5xl font-bold mb-4 md:mb-6 text-white">Emergency Response System</h2>
-      <p class="text-lg md:text-xl text-gray-300 max-w-3xl mx-auto mb-6 md:mb-8">
+    <div class="max-w-7xl mx-auto text-center relative px-4" >
+      <h2 class="text-3xl md:text-5xl font-bold mb-4 md:mb-6 text-white" data-i18n="emergency-hero-title">Emergency Response System</h2>
+      <p class="text-lg md:text-xl text-gray-300 max-w-3xl mx-auto mb-6 md:mb-8" data-i18n="emergency-hero-subtitle">
         Learn about emergency types, prevention methods, and how to respond correctly to protect yourself and others.
       </p>
        <div class="hero-buttons flex flex-col sm:flex-row justify-center gap-4 mb-6 md:mb-8">
-        <button class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition duration-300 transform hover:-translate-y-1"> <a href="#Emergency">Emergency Types</a></button>
-        <a href="#Prevention" class="border border-white hover:bg-white hover:text-blue-600 text-white px-6 py-3 rounded-lg font-semibold transition duration-300 transform hover:-translate-y-1 text-center">Prevention Methods </a>
+        <button class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition duration-300 transform hover:-translate-y-1">
+          <a href="#Emergency" data-i18n="emergency-types-btn">Emergency Types</a>
+        </button>
+        <a href="#Prevention" class="border border-white hover:bg-white hover:text-blue-600 text-white px-6 py-3 rounded-lg font-semibold transition duration-300 transform hover:-translate-y-1 text-center" data-i18n="prevention-methods-btn">Prevention Methods</a>
       </div>
-      <div class="bg-red-600/80 inline-block px-4 py-2 rounded-lg hover:bg-danger-600 text-white font-bold py-3 md:py-4 px-6 md:px-8 rounded-xl shadow-lg transition-all duration-300 transform hover:scale-105 animate-emergency-pulse">
+      <div class="bg-red-600/80 inline-block px-4 py-2 rounded-lg hover:bg-danger-600 text-white font-bold py-3 md:py-4 px-6 md:px-8 rounded-xl shadow-lg transition-all duration-300 transform hover:scale-105 animate-emergency-pulse" data-i18n="emergency-call-banner">
          🚨 Emergency Call: 112 <strong class="text-lg md:text-xl"></strong>
       </div>
         <div class="flex items-center mb-4">
-        <h2 class="text-xl md:text-2xl font-bold text-white p-6 m-3">Emergency Definition</h2>
+        <h2 class="text-xl md:text-2xl font-bold text-white p-6 m-3" data-i18n="emergency-definition-title">Emergency Definition</h2>
       </div>
       
-      <p class="text-gray-100 text-base md:text-lg">
+      <p class="text-gray-100 text-base md:text-lg" data-i18n="emergency-definition">
         An emergency is a sudden situation that threatens human life, property, or the environment, requiring a quick and immediate response such as fires, accidents, natural disasters, or critical health conditions.
       </p>
     </div>
@@ -233,41 +233,38 @@
 
   <!-- Main Content -->
   <main class="max-w-7xl mx-auto px-4 py-8 md:py-11">
-    <!-- Definition Section -->
-   
-    
     <!-- Emergency Types -->
     <section id="Emergency" class="py-12 md:py-16 bg-gray-50">
       <div class="container mx-auto px-4">
-        <h2 class="text-2xl md:text-4xl font-bold text-center text-blue-600 mb-8 md:mb-12">Emergency Types</h2>
+        <h2 class="text-2xl md:text-4xl font-bold text-center text-blue-600 mb-8 md:mb-12" data-i18n="emergency-types-title">Emergency Types</h2>
         
         <div class="emergency-cards grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
           <!-- Emergency Types Card 1 -->
           <div class="Emergency-card bg-white rounded-xl shadow-lg p-4 md:p-6 transition-all duration-300 hover:-translate-y-2 hover:shadow-xl">
-            <img src="./img/fire.webp" alt="Fire Emergency" class="w-full h-40 md:h-48 object-cover rounded-lg mb-4">
-            <h3 class="text-lg md:text-xl font-bold text-gray-800 mb-2">Fire Emergencies</h3>
-            <p class="text-sm md:text-base text-gray-600 mb-4">Includes house or forest fires, requiring quick evacuation and use of fire extinguishers.</p>
+            <img src="./img/fire.webp" alt data-i18n="fire-emergency-alt" data-alt="Fire Emergency" class="w-full h-40 md:h-48 object-cover rounded-lg mb-4">
+            <h3 class="text-lg md:text-xl font-bold text-gray-800 mb-2" data-i18n="fire-emergencies-title">Fire Emergencies</h3>
+            <p class="text-sm md:text-base text-gray-600 mb-4" data-i18n="fire-emergencies-desc">Includes house or forest fires, requiring quick evacuation and use of fire extinguishers.</p>
           </div>
           
           <!-- Emergency Types Card 2 -->
           <div class="Emergency-card bg-white rounded-xl shadow-lg p-4 md:p-6 transition-all duration-300 hover:-translate-y-2 hover:shadow-xl">
-            <img src="./img/medicalE.webp" alt="Medical Emergency" class="w-full h-40 md:h-48 object-cover rounded-lg mb-4">
-            <h3 class="text-lg md:text-xl font-bold text-gray-800 mb-2">Medical Emergencies</h3>
-            <p class="text-sm md:text-base text-gray-600 mb-4">Such as serious injuries, heart attacks, or fainting, requiring immediate ambulance response.</p>
+            <img src="./img/medicalE.webp" alt data-i18n="medical-emergency-alt" data-alt="Medical Emergency" class="w-full h-40 md:h-48 object-cover rounded-lg mb-4">
+            <h3 class="text-lg md:text-xl font-bold text-gray-800 mb-2" data-i18n="medical-emergencies-title">Medical Emergencies</h3>
+            <p class="text-sm md:text-base text-gray-600 mb-4" data-i18n="medical-emergencies-desc">Such as serious injuries, heart attacks, or fainting, requiring immediate ambulance response.</p>
           </div>
           
           <!-- Emergency Types Card 3 -->
           <div class="Emergency-card bg-white rounded-xl shadow-lg p-4 md:p-6 transition-all duration-300 hover:-translate-y-2 hover:shadow-xl">
-            <img src="./img/natural.webp" alt="Natural Disaster" class="w-full h-40 md:h-48 object-cover rounded-lg mb-4">
-            <h3 class="text-lg md:text-xl font-bold text-gray-800 mb-2">Natural Disasters</h3>
-            <p class="text-sm md:text-base text-gray-600 mb-4">Like floods, earthquakes, and storms, requiring preparation with pre-planned emergency procedures.</p>
+            <img src="./img/natural.webp" alt data-i18n="natural-disaster-alt" data-alt="Natural Disaster" class="w-full h-40 md:h-48 object-cover rounded-lg mb-4">
+            <h3 class="text-lg md:text-xl font-bold text-gray-800 mb-2" data-i18n="natural-disasters-title">Natural Disasters</h3>
+            <p class="text-sm md:text-base text-gray-600 mb-4" data-i18n="natural-disasters-desc">Like floods, earthquakes, and storms, requiring preparation with pre-planned emergency procedures.</p>
           </div>
           
           <!-- Emergency Types Card 4 -->
           <div class="Emergency-card bg-white rounded-xl shadow-lg p-4 md:p-6 transition-all duration-300 hover:-translate-y-2 hover:shadow-xl">
-            <img src="./img/traffic.webp" alt="Traffic Accident" class="w-full h-40 md:h-48 object-cover rounded-lg mb-4">
-            <h3 class="text-lg md:text-xl font-bold text-gray-800 mb-2">Traffic Accidents</h3>
-            <p class="text-sm md:text-base text-gray-600 mb-4">Require immediate reporting to police and ambulance, and ensuring the safety of the injured.</p>
+            <img src="./img/traffic.webp" alt data-i18n="traffic-accident-alt" data-alt="Traffic Accident" class="w-full h-40 md:h-48 object-cover rounded-lg mb-4">
+            <h3 class="text-lg md:text-xl font-bold text-gray-800 mb-2" data-i18n="traffic-accidents-title">Traffic Accidents</h3>
+            <p class="text-sm md:text-base text-gray-600 mb-4" data-i18n="traffic-accidents-desc">Require immediate reporting to police and ambulance, and ensuring the safety of the injured.</p>
           </div>
         </div>
       </div>
@@ -276,44 +273,44 @@
     <!-- Prevention Methods -->
     <section id="Prevention" class="bg-white/10 backdrop-blur-sm rounded-2xl py-8 md:py-11 px-4 md:px-6 mb-8 border border-white/10 shadow-xl">
       <div class="flex items-center mb-4">
-        <h2 class="text-xl md:text-2xl font-bold">Prevention Methods</h2>
+        <h2 class="text-xl md:text-2xl font-bold" data-i18n="prevention-methods-title">Prevention Methods</h2>
       </div>
       <div class="prevention-grid grid grid-cols-1 md:grid-cols-2 gap-4">
         <div class="flex items-start">
           <div class="p-2 rounded-lg mr-3 mt-1">
             <span class="text-green-800">✓</span>
           </div>
-          <p class="text-gray-600">Install fire alarm devices in homes.</p>
+          <p class="text-gray-600" data-i18n="prevention-1">Install fire alarm devices in homes.</p>
         </div>
         <div class="flex items-start">
           <div class="p-2 rounded-lg mr-3 mt-1">
             <span class="text-green-800">✓</span>
           </div>
-          <p class="text-gray-600">Learn basic first aid skills.</p>
+          <p class="text-gray-600" data-i18n="prevention-2">Learn basic first aid skills.</p>
         </div>
         <div class="flex items-start">
           <div class=" p-2 rounded-lg mr-3 mt-1">
             <span class="text-green-800">✓</span>
           </div>
-          <p class="text-gray-600">Keep emergency numbers in a visible place.</p>
+          <p class="text-gray-600" data-i18n="prevention-3">Keep emergency numbers in a visible place.</p>
         </div>
         <div class="flex items-start">
           <div class=" p-2 rounded-lg mr-3 mt-1">
             <span class="text-green-800">✓</span>
           </div>
-          <p class="text-gray-600">Participate in evacuation and emergency drills.</p>
+          <p class="text-gray-600" data-i18n="prevention-4">Participate in evacuation and emergency drills.</p>
         </div>
         <div class="flex items-start">
           <div class=" p-2 rounded-lg mr-3 mt-1">
             <span class="text-green-800">✓</span>
           </div>
-          <p class="text-gray-600">Prepare an emergency kit with essential supplies.</p>
+          <p class="text-gray-600" data-i18n="prevention-5">Prepare an emergency kit with essential supplies.</p>
         </div>
         <div class="flex items-start">
           <div class=" p-2 rounded-lg mr-3 mt-1">
             <span class="text-green-800">✓</span>
           </div>
-          <p class="text-gray-600">Create a family emergency communication plan.</p>
+          <p class="text-gray-600" data-i18n="prevention-6">Create a family emergency communication plan.</p>
         </div>
       </div>
     </section>
@@ -321,7 +318,7 @@
     <!-- Emergency number -->
     <section class="mb-8 md:mb-12">
       <div class="flex items-center mb-4 md:mb-6">
-        <h2 class="text-xl md:text-2xl font-bold">Important Emergency Numbers</h2>
+        <h2 class="text-xl md:text-2xl font-bold" data-i18n="emergency-numbers-title">Important Emergency Numbers</h2>
       </div>
       <div class="emergency-numbers grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
         <div class="bg-gradient-to-br from-yellow-500/20 to-yellow-600/10 backdrop-blur-sm rounded-xl p-4 md:p-6 border border-yellow-500/30 shadow-lg">
@@ -329,7 +326,7 @@
             <div class="bg-red-500 p-2 rounded-lg mr-3">
               <span class="text-white">🚒</span>
             </div>
-            <h3 class="text-base md:text-lg font-semibold">Fire Department</h3>
+            <h3 class="text-base md:text-lg font-semibold" data-i18n="fire-department">Fire Department</h3>
           </div>
           <p class="text-xl md:text-2xl font-bold">111</p>
         </div>
@@ -339,7 +336,7 @@
             <div class="bg-blue-500 p-2 rounded-lg mr-3">
               <span class="text-white">🚑</span>
             </div>
-            <h3 class="text-base md:text-lg font-semibold">Ambulance</h3>
+            <h3 class="text-base md:text-lg font-semibold" data-i18n="ambulance">Ambulance</h3>
           </div>
           <p class="text-xl md:text-2xl font-bold">912</p>
         </div>
@@ -349,7 +346,7 @@
             <div class="bg-indigo-500 p-2 rounded-lg mr-3">
               <span class="text-white">🚓</span>
             </div>
-            <h3 class="text-base md:text-lg font-semibold">Police</h3>
+            <h3 class="text-base md:text-lg font-semibold" data-i18n="police">Police</h3>
           </div>
           <p class="text-xl md:text-2xl font-bold">112</p>
         </div>
@@ -359,7 +356,7 @@
             <div class="bg-purple-500 p-2 rounded-lg mr-3">
               <span class="text-white">⚡</span>
             </div>
-            <h3 class="text-base md:text-lg font-semibold">General Emergency</h3>
+            <h3 class="text-base md:text-lg font-semibold" data-i18n="general-emergency">General Emergency</h3>
           </div>
           <p class="text-xl md:text-2xl font-bold">112</p>
         </div>
@@ -370,50 +367,50 @@
     <section id="contact" class="py-12 md:py-16 bg-gray-50">
       <div class="container mx-auto px-4">
         <div class="text-center mb-8 md:mb-12">
-          <h2 class="text-2xl md:text-4xl font-bold text-blue-600 mb-4">Report an Emergency</h2>
-          <p class="text-gray-600 max-w-2xl mx-auto">Contact Us to Report an Emergency</p>
+          <h2 class="text-2xl md:text-4xl font-bold text-blue-600 mb-4" data-i18n="report-emergency-title">Report an Emergency</h2>
+          <p class="text-gray-600 max-w-2xl mx-auto" data-i18n="report-emergency-subtitle">Contact Us to Report an Emergency</p>
         </div>
        
         <div class="contact-grid grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12">
           <!-- Contact Form -->
           <div class="bg-gray-200 rounded-xl shadow-lg p-6 md:p-8">
-            <h3 class="text-xl md:text-2xl font-bold text-gray-800 mb-4 md:mb-6">Report an Emergency</h3>
+            <h3 class="text-xl md:text-2xl font-bold text-gray-800 mb-4 md:mb-6" data-i18n="emergency-form-title">Report an Emergency</h3>
             <form id="contact-form" class="space-y-4 md:space-y-6">
               <div class="contact-form-grid grid grid-cols-1 gap-6">
                 <div>
-                  <label for="full-name" class="block text-gray-700 mb-2">Full Name</label>
+                  <label for="full-name" class="block text-gray-700 mb-2" data-i18n="full-name-label">Full Name</label>
                   <input type="text" id="first-name" name="first-name" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required>
                 </div>
               </div>
              
               <div>
-                <label for="email" class="block text-gray-700 mb-2">Email Address</label>
+                <label for="email" class="block text-gray-700 mb-2" data-i18n="email-label">Email Address</label>
                 <input type="email" id="email" name="email" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required>
               </div>
              
               <div>
-                <label for="phone" class="block text-gray-700 mb-2">Phone Number</label>
+                <label for="phone" class="block text-gray-700 mb-2" data-i18n="phone-label">Phone Number</label>
                 <input type="tel" id="phone" name="phone" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
               </div>
              
               <div>
-                <label for="subject" class="block text-gray-700 mb-2">Emergency Types</label>
+                <label for="subject" class="block text-gray-700 mb-2" data-i18n="emergency-types-label">Emergency Types</label>
                 <select id="subject" name="subject" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-                  <option value="">Select Emergency Types</option>
-                  <option value="appointment">Fire Emergencies</option>
-                  <option value="general">Medical Emergencies</option>
-                  <option value="feedback">Natural Disasters</option>
-                  <option value="emergency">Traffic Accidents</option>
-                  <option value="other">Other</option>
+                  <option value="" data-i18n="select-emergency-type">Select Emergency Types</option>
+                  <option value="fire" data-i18n="fire-emergencies-option">Fire Emergencies</option>
+                  <option value="medical" data-i18n="medical-emergencies-option">Medical Emergencies</option>
+                  <option value="natural" data-i18n="natural-disasters-option">Natural Disasters</option>
+                  <option value="traffic" data-i18n="traffic-accidents-option">Traffic Accidents</option>
+                  <option value="other" data-i18n="other-option">Other</option>
                 </select>
               </div>
              
               <div>
-                <label for="message" class="block text-gray-700 mb-2">Briefly describe the situation...</label>
+                <label for="message" class="block text-gray-700 mb-2" data-i18n="emergency-description-label">Briefly describe the situation...</label>
                 <textarea id="message" name="message" rows="5" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required></textarea>
               </div>
              
-              <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition duration-300 transform hover:-translate-y-1">
+              <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition duration-300 transform hover:-translate-y-1" data-i18n="send-emergency-report-btn">
                 Send Emergency Report
               </button>
             </form>
@@ -428,8 +425,8 @@
                   <i class="fas fa-map-marker-alt text-blue-600 text-xl"></i>
                 </div>
                 <div>
-                  <h4 class="font-bold text-gray-800 mb-1">Our Location</h4>
-                  <p class="text-gray-600">Mahama Refugee Camp, Kirehe District, Rwanda</p>
+                  <h4 class="font-bold text-gray-800 mb-1" data-i18n="location-title">Our Location</h4>
+                  <p class="text-gray-600" data-i18n="location-address">Mahama Refugee Camp, Kirehe District, Rwanda</p>
                 </div>
               </div>
              
@@ -438,7 +435,7 @@
                   <i class="fas fa-phone text-blue-600 text-xl"></i>
                 </div>
                 <div>
-                  <h4 class="font-bold text-gray-800 mb-1">Phone Number</h4>
+                  <h4 class="font-bold text-gray-800 mb-1" data-i18n="phone-title">Phone Number</h4>
                   <p class="text-gray-600">+250 000 000</p>
                 </div>
               </div>
@@ -448,7 +445,7 @@
                   <i class="fas fa-envelope text-blue-600 text-xl"></i>
                 </div>
                 <div>
-                  <h4 class="font-bold text-gray-800 mb-1">Email Address</h4>
+                  <h4 class="font-bold text-gray-800 mb-1" data-i18n="email-title">Email Address</h4>
                   <p class="text-gray-600">info@hopecare.com</p>
                 </div>
               </div>
@@ -458,9 +455,9 @@
                   <i class="fas fa-clock text-blue-600 text-xl"></i>
                 </div>
                 <div>
-                  <h4 class="font-bold text-gray-800 mb-1">Working Hours</h4>
-                  <p class="text-gray-600">24/7 Emergency Services</p>
-                  <p class="text-gray-600">Mon-Fri: 8am-6pm</p>
+                  <h4 class="font-bold text-gray-800 mb-1" data-i18n="hours-title">Working Hours</h4>
+                  <p class="text-gray-600" data-i18n="emergency-hours">24/7 Emergency Services</p>
+                  <p class="text-gray-600" data-i18n="regular-hours">Mon-Fri: 8am-6pm</p>
                 </div>
               </div>
             </div>
@@ -486,9 +483,9 @@
               <div class="flex items-start">
                 <i class="fas fa-exclamation-triangle text-red-500 text-xl mt-1 mr-4"></i>
                 <div>
-                  <h4 class="font-bold text-red-700 mb-2">Emergency Contact</h4>
-                  <p class="text-red-600 mb-2">For urgent medical assistance, please call our emergency line immediately.</p>
-                  <a href="tel:+250000000" class="inline-block bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg transition duration-300">
+                  <h4 class="font-bold text-red-700 mb-2" data-i18n="emergency-notice-title">Emergency Contact</h4>
+                  <p class="text-red-600 mb-2" data-i18n="emergency-notice-text">For urgent medical assistance, please call our emergency line immediately.</p>
+                  <a href="tel:+250000000" class="inline-block bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg transition duration-300" data-i18n="emergency-call-btn">
                     Call Emergency: +250 000 000
                   </a>
                 </div>
@@ -507,37 +504,36 @@
       <div class="footer-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
         <!-- Column 1 -->
         <div>
-          <h3 class="text-lg md:text-xl font-bold mb-3 md:mb-4">MahamaCare Hospital</h3>
-          <p class="text-sm md:text-base text-gray-400">Providing high quality healthcare for over 20 years.</p>
+          <h3 class="text-lg md:text-xl font-bold mb-3 md:mb-4" data-i18n="footer-hospital-name">MahamaCare Hospital</h3>
+          <p class="text-sm md:text-base text-gray-400" data-i18n="footer-tagline">Providing high quality healthcare for over 20 years.</p>
         </div>
         
         <!-- Column 2 -->
         <div>
-          <h4 class="text-base md:text-lg font-semibold mb-3 md:mb-4">Quick Links</h4>
+          <h4 class="text-base md:text-lg font-semibold mb-3 md:mb-4" data-i18n="quick-links-title">Quick Links</h4>
           <ul class="space-y-2">
-            <li><a href="#home" class="text-sm md:text-base text-gray-400 hover:text-white transition duration-300">Home</a></li>
-            <li><a href="./index.html#about" class="text-sm md:text-base text-gray-400 hover:text-white transition duration-300">About</a></li>
-            <li><a href="/index.html#services" class="text-sm md:text-base text-gray-400 hover:text-white transition duration-300">Services</a></li>
-            <li><a href="/doctors.html" class="text-sm md:text-base text-gray-400 hover:text-white transition duration-300">Doctors</a></li>
-            <li><a href="#faq" id="footer-faq-link" class="text-sm md:text-base text-gray-400 hover:text-white transition duration-300">FAQ</a></li>
-            <li><a href="/index.html#contact" class="text-sm md:text-base text-gray-400 hover:text-white transition duration-300">Contact</a></li>
+            <li><a href="#home" class="text-sm md:text-base text-gray-400 hover:text-white transition duration-300" data-i18n="home-nav">Home</a></li>
+            <li><a href="./index.html#about" class="text-sm md:text-base text-gray-400 hover:text-white transition duration-300" data-i18n="about-nav">About</a></li>
+            <li><a href="/index.html#services" class="text-sm md:text-base text-gray-400 hover:text-white transition duration-300" data-i18n="services-nav">Services</a></li>
+            <li><a href="/doctors.html" class="text-sm md:text-base text-gray-400 hover:text-white transition duration-300" data-i18n="doctors-nav">Doctors</a></li>
+            <li><a href="#faq" id="footer-faq-link" class="text-sm md:text-base text-gray-400 hover:text-white transition duration-300" data-i18n="faq-nav">FAQ</a></li>
+            <li><a href="/index.html#contact" class="text-sm md:text-base text-gray-400 hover:text-white transition duration-300" data-i18n="contact-nav">Contact</a></li>
           </ul>
         </div>
         
         <!-- Column 3 -->
         <div>
-          <h4 class="text-base md:text-lg font-semibold mb-3 md:mb-4">Contact Info</h4>
+          <h4 class="text-base md:text-lg font-semibold mb-3 md:mb-4" data-i18n="contact-info-title">Contact Info</h4>
           <div class="space-y-2 text-sm md:text-base text-gray-400">
             <p><i class="fas fa-envelope mr-2"></i> info@hopecare.com</p>
             <p><i class="fas fa-phone mr-2"></i> +250 000 000</p>
-            <p><i class="fas fa-map-marker-alt mr-2"></i> Mahama Refugee Camp, Rwanda</p>
+            <p><i class="fas fa-map-marker-alt mr-2"></i> <span data-i18n="location-address">Mahama Refugee Camp, Rwanda</span></p>
           </div>
         </div>
         
-<<<<<<< HEAD
-            <!-- Column 4 -->
+        <!-- Column 4 -->
         <div>
-          <h4 class="text-lg font-semibold mb-4">Follow Us</h4>
+          <h4 class="text-lg font-semibold mb-4" data-i18n="follow-us-title">Follow Us</h4>
           <div class="flex space-x-4">
             <a href="https://www.facebook.com/profile.php?id=61583964942775&mibextid=rS40aB7S9Ucbxw6v" target="_self" class="text-gray-400 hover:text-white transition duration-300">
               <i class="fab fa-facebook-f text-xl"></i>
@@ -549,22 +545,6 @@
               <i class="fab fa-instagram text-xl"></i>
             </a>
             <a href="https://www.linkedin.com/in/unity-coders-56aa0739a?utm_source=share_via&utm_content=profile&utm_medium=member_android" target="_self" class="text-gray-400 hover:text-white transition duration-300">
-=======
-        <!-- Column 4 -->
-             <div>
-          <h4 class="text-lg font-semibold mb-4">Follow Us</h4>
-          <div class="flex space-x-4">
-            <a href="https://www.facebook.com/profile.php?id=61583964942775&mibextid=rS40aB7S9Ucbxw6v" class="text-gray-400 hover:text-white transition duration-300">
-              <i class="fab fa-facebook-f text-xl"></i>
-            </a>
-            <a href="https://x.com/CodersUnit2026?t=ym3SPxmqVxW3QcuboUGcDg&s=03" class="text-gray-400 hover:text-white transition duration-300">
-              <i class="fab fa-twitter text-xl"></i>
-            </a>
-            <a href="https://www.instagram.com/unitycoders?utm_source=qr&igsh=aDFjdGUxNWxwNHR3" class="text-gray-400 hover:text-white transition duration-300">
-              <i class="fab fa-instagram text-xl"></i>
-            </a>
-            <a href="https://www.linkedin.com/in/unity-coders-56aa0739a?utm_source=share_via&utm_content=profile&utm_medium=member_android" class="text-gray-400 hover:text-white transition duration-300">
->>>>>>> main
               <i class="fab fa-linkedin-in text-xl"></i>
             </a>
           </div>
@@ -572,7 +552,7 @@
       </div>
       
       <div class="border-t border-gray-800 mt-6 md:mt-8 pt-6 md:pt-8 text-center text-sm md:text-base text-gray-500">
-        <p>&copy; 2025 MahamaCare Hospital. All rights reserved.</p>
+        <p data-i18n="copyright">&copy; 2025 MahamaCare Hospital. All rights reserved.</p>
       </div>
     </div>
   </footer>

@@ -1,4 +1,180 @@
-       // Firebase Configuration and Initialization
+      
+      translations.rw = {
+    // ... existing Kinyarwanda translations ...
+    
+    // Chronic Disease Care Page Translations
+    "ncd-page-title": "Ubuvuzi bwa Bumuga",
+    "home-nav": "Ahabanza",
+    "about-nav": "Abyerekeye",
+    "services-nav": "Serivisi",
+    "maternity-nav": "Serivisi z'ububyeyi no kubyara",
+    "emergency-nav": "Emergence",
+    "vaccination-nav": "Guhumurizwa",
+    "mentalhealth-nav": "Ubuzima bwo mu mutwe",
+    "chronic-disease-nav": "Ubuvuzi bwa Bumuga",
+    "health-education-nav": "Amahugurwa y'Ubuzima",
+    "disability-nav": "Ubumuga",
+    "doctors-nav": "Abaganga",
+    "appointment-nav": "Igitego",
+    "logo-text": "🏥 MCH",
+    "english-lang": "Icyongereza",
+    "kinyarwanda-lang": "Kinyarwanda",
+    
+    // Hero Section
+    "ncd-hero-title": "Ubuvuzi bwiza ku murwayi wese",
+    "ncd-hero-subtitle": "Serivisi z'ubuvuzi zuzuye zifite ibikoresho bya modereni n'impuhwe ku byo ukeneye byose by'ubuzima",
+    "book-appointment-btn": "Igitego",
+    "ncd-care-btn": "Ubuvuzi bwa Bumuga",
+    
+    // NCD Section
+    "ncd-title": "Ubuvuzi bwa Bumuga",
+    "ncd-subtitle": "Gukora neza no guvura indwara zitandukanye",
+    "specialized-ncd-title": "Uburyo bworoshye bwo Gukora NCD",
+    "specialized-ncd-desc": "Porogaramu yacu yuzuye y'ubuvuzi bwa Bumuga itanga ubuvuzi bwihariye ku indwara zitandukanye zigomba gukurikirana bihe birebire n'uburyo bworoshye bwo kuvura.",
+    
+    // NCD Cards
+    "cardiovascular-title": "Indwara z'Umutima",
+    "cardiovascular-desc": "Gukora umutwaro w'umutima, indwara y'umutima, no gukurikirana umutima.",
+    "cardiovascular-alt": "Indwara z'umutima",
+    
+    "diabetes-title": "Ubuvuzi bwa Sukari",
+    "diabetes-desc": "Gukora sukeri Type 1 & 2, insuline, no gufasha mu mibereho.",
+    "diabetes-alt": "Ubuvuzi bwa sukeri",
+    
+    "respiratory-title": "Indwara zo mu Mahaha",
+    "respiratory-desc": "Gukora no guhagurukiriza COPD, asima, na bronchitis.",
+    "respiratory-alt": "Indwara zo mu mahaha",
+    
+    "neurological-title": "Indwara zo mu Mutwe",
+    "neurological-desc": "Kuvura stroke, epilepsy, indwara ya Parkinson, n'ubuvuzi bwa demansi.",
+    "neurological-alt": "Indwara zo mu mutwe",
+    
+    // Services Section
+    "services-title": "Serivisi zacu",
+    "services-subtitle": "Serivisi z'ubuzima zuzuye ku byo ukeneye byose by'ubuvuzi",
+    
+    "primary-care-title": "Ubuvuzi bwa Mbere",
+    "primary-care-desc": "Serivisi z'ubuvuzi bwa mbere ku barwayi bose, zirimo kwirinda, igenamigambi by'ubuzima, no gukora indwara zitandukanye.",
+    "primary-care-alt": "Ubuvuzi bwa mbere",
+    
+    "specialty-care-title": "Ubuvuzi bw'Ingano",
+    "specialty-care-desc": "Kubona banyamwuga b'ingano mu buvuzi bw'umutima, ubuvuzi bwo mu mutwe, orthopedics, gastroenterology, n'ibindi byo kuvura.",
+    "specialty-care-alt": "Ubuvuzi bw'ingano",
+    
+    "emergency-care-title": "Emergence",
+    "emergency-care-desc": "Serivisi za emergence 24/7 zifite ibikoresho bya modereni n'abaganga bafite uburambe mu kugabanya ibyago by'ubuzima.",
+    "emergency-care-alt": "Emergence",
+    
+    // Specialties Section
+    "specialties-title": "Ingano zacu",
+    "specialties-subtitle": "Ubuvuzi bw'ingano mu byiciro by'ubuvuzi",
+    
+    "cardiology-title": "Ubuvuzi bw'Umutima",
+    "cardiology-desc": "Ubuvuzi bw'umutima n'umurongo w'amaraso",
+    "cardiology-alt": "Ubuvuzi bw'umutima",
+    
+    "neurology-title": "Ubuvuzi bwo mu Mutwe",
+    "neurology-desc": "Indwara zo mu mutwe n'umurongo w'imiyoboro",
+    "neurology-alt": "Ubuvuzi bwo mu mutwe",
+    
+    "orthopedics-title": "Orthopedics",
+    "orthopedics-desc": "Ubuvuzi bw'umubiri w'imikaya n'amagufa",
+    "orthopedics-alt": "Orthopedics",
+    
+    "pediatrics-title": "Ubuvuzi bw'Abana",
+    "pediatrics-desc": "Ubuvuzi ku bana bato, abana, n'abakiri bato",
+    "pediatrics-alt": "Ubuvuzi bw'abana",
+    
+    // Why Us Section
+    "why-us-title": "Kubera iki dutora",
+    "why-us-subtitle": "Ibyo bitandukanya MediCare Excellence",
+    
+    "expert-team-title": "Itsinda ry'Abaganga b'Ingano",
+    "expert-team-desc": "Abaganga bacu bafite ubumenyi n'uburambe bwo gutanga ubuvuzi bwiza cyane.",
+    
+    "advanced-tech-title": "Ibikoresho bya Modereni",
+    "advanced-tech-desc": "Dukoresha ibikoresho bya modereni by'ubuvuzi kugirango duhamye no guvura neza.",
+    
+    "patient-care-title": "Ubuvuzi bw'Umurwayi",
+    "patient-care-desc": "Dushyira mu ibanza ibyiza byawe, tugutangira ubuvuzi bwihariye ku byo ukeneye by'ubuzima.",
+    
+    "hospital-facility-alt": "Ibitaro bya modereni",
+    
+    // Appointment Section
+    "appointment-title": "Igitego cyawe cya NCD",
+    "appointment-subtitle": "Gena igitego cyawe cy'ubuvuzi bwa bumuga n'uburyo bwo gukora.",
+    "appointment-form-title": "Ifishi yo Gusaba Igitego",
+    
+    // Form Labels
+    "first-name-label": "Izina ry'umubyeyi *",
+    "first-name-placeholder": "Izina ry'umubyeyi",
+    "last-name-label": "Izina ry'umuryango *",
+    "last-name-placeholder": "Izina ry'umuryango",
+    "email-label": "Imeri *",
+    "email-placeholder": "Imeri",
+    "phone-label": "Numero ya telefone *",
+    "phone-placeholder": "Numero ya telefone",
+    "dob-label": "Itariki y'amavuko *",
+    "condition-label": "Uburwayi bwa NCD *",
+    "appointment-date-label": "Itariki y'igitego ukunda *",
+    "message-label": "Amakuru yongewaho",
+    "message-placeholder": "Twandikire ibindi byerekeye uburwayi bwanyu cyangwa ibibazo...",
+    "consent-label": "Nemerera gukusanya no gukora amakuru yanjye kugirango ngenere igitego *",
+    "book-appointment-submit": "Igitego",
+    
+    // Form Options
+    "select-condition-option": "Hitamo uburwayi",
+    "hypertension-option": "Umutwaro w'umutima",
+    "diabetes-option": "Sukari",
+    "asthma-option": "Asima",
+    "copd-option": "COPD",
+    "heart-disease-option": "Indwara y'umutima",
+    "arthritis-option": "Arthritis",
+    "thyroid-option": "Uburwayi bwa Thyroid",
+    "other-option": "Ibindi",
+    
+    // Contact Information
+    "location-title": "Aho turi",
+    "location-address": "Umukambi w'impunzi wa Mahama, Akarere ka Kirehe, u Rwanda",
+    "phone-title": "Numero ya telefone",
+    "phone-number": "+250 000 000",
+    "email-title": "Imeri",
+    "email-address": "unitycoders2025@gmail.com",
+    "hours-title": "Amasaha yo gukora",
+    "emergency-hours": "Emergence 24/7",
+    "regular-hours": "Ku wa mbere kugeza ku wa gatandatu: saa 2-6",
+    
+    // Emergency Notice
+    "emergency-title": "Emergence",
+    "emergency-description": "Mu bihe by'emergence, uhamagare telefone ya emergence.",
+    "emergency-call": "Emergence: 112",
+    
+    // Footer
+    "hospital-name": "Ibitaro bya MahamaCare",
+    "ncd-tagline": "Dutanga ubuvuzi bwiza imyaka irenga 20.",
+    "quick-links-title": "Amashami",
+    "contact-info-title": "Amakuru",
+    "follow-us-title": "Dukurikire",
+    "footer-email": "unitycoders2025@gmail.com",
+    "footer-phone": "+250 000 000",
+    "footer-location": "Umukambi w'impunzi wa Mahama, u Rwanda",
+    "copyright": "© 2025 Ibitaro bya MahamaCare. Amahoro abiriwe.",
+    
+    // Dashboard Modal
+    "dashboard-title": "Ikibaho cy'Ibitego bya NCD",
+    "total-appointments": "Ibitego byose",
+    "pending-appointments": "Bitegereje",
+    "accepted-appointments": "Byemewe",
+    "appointment-list": "Urutonde rw'Ibitego",
+    "refresh-btn": "Ongera ushyiremo",
+    "patient-name": "Izina ry'Umurwayi",
+    "condition-table": "Uburwayi",
+    "appointment-date-table": "Itariki y'Igitego",
+    "status-table": "Imiterere",
+    "actions-table": "Ibikorwa",
+    "no-appointments": "Nta bigetse bihabuwe"
+};
+      // Firebase Configuration and Initialization
         // (Already included in the head section)
         
         // Form submission handler
