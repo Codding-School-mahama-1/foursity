@@ -1,4 +1,72 @@
 
+        
+        // Add to translations.en object
+translations.en["doctors-page-title"] = "MediBook - Doctor Appointment Booking";
+translations.en["doctors-hero-title"] = "Find the Best Doctors & Book Appointments Easily";
+translations.en["doctors-hero-subtitle"] = "Get access to thousands of certified doctors across various medical specialties";
+translations.en["medical-specialties-btn"] = "Medical Specialties";
+translations.en["available-doctors-btn"] = "Available Doctors";
+translations.en["medical-specialties-title"] = "Medical Specialties";
+translations.en["available-doctors-title"] = "Available Doctors";
+translations.en["doctors-tagline"] = "Providing high quality healthcare for over 20 years.";
+translations.en["faq-nav"] = "FAQ";
+translations.en["contact-nav"] = "Contact";
+
+// Medical Specialties
+translations.en["pediatrics-title"] = "Pediatrics";
+translations.en["pediatrics-alt"] = "Pediatrics";
+translations.en["cardiology-title"] = "Cardiology";
+translations.en["cardiology-alt"] = "Cardiology";
+translations.en["dentistry-title"] = "Dentistry";
+translations.en["dentistry-alt"] = "Dentistry";
+translations.en["ophthalmology-title"] = "Ophthalmology";
+translations.en["ophthalmology-alt"] = "Ophthalmology";
+translations.en["neurology-title"] = "Neurology";
+translations.en["neurology-alt"] = "Neurology";
+translations.en["orthopedics-title"] = "Orthopedics";
+translations.en["orthopedics-alt"] = "Orthopedics";
+translations.en["gynecology-title"] = "Gynecology";
+translations.en["gynecology-alt"] = "Gynecology";
+translations.en["internal-medicine-title"] = "Internal Medicine";
+translations.en["internal-medicine-alt"] = "Internal Medicine";
+
+// Doctor Details
+translations.en["view-details-btn"] = "View Details";
+translations.en["book-now-btn"] = "Book Now";
+
+// Add to translations.rw object
+translations.rw["doctors-page-title"] = "MediBook - Igitego cy'Umuganga";
+translations.rw["doctors-hero-title"] = "Shakisha Abaganga beza ujye utora igitego";
+translations.rw["doctors-hero-subtitle"] = "Kubona amahirwe yo kubona ibihumbi by'abaganga bafite ibyangombwa mu byiciro bitandukanye by'ubuvuzi";
+translations.rw["medical-specialties-btn"] = "Ingano z'Ubuvuzi";
+translations.rw["available-doctors-btn"] = "Abaganga bahari";
+translations.rw["medical-specialties-title"] = "Ingano z'Ubuvuzi";
+translations.rw["available-doctors-title"] = "Abaganga bahari";
+translations.rw["doctors-tagline"] = "Dutanga ubuvuzi bwiza imyaka irenga 20.";
+translations.rw["faq-nav"] = "Ibibazo";
+translations.rw["contact-nav"] = "Twandikire";
+
+// Medical Specialties in Kinyarwanda
+translations.rw["pediatrics-title"] = "Ubuvuzi bw'Abana";
+translations.rw["pediatrics-alt"] = "Ubuvuzi bw'abana";
+translations.rw["cardiology-title"] = "Ubuvuzi bw'Umutima";
+translations.rw["cardiology-alt"] = "Ubuvuzi bw'umutima";
+translations.rw["dentistry-title"] = "Ubuvuzi bw'Amenyo";
+translations.rw["dentistry-alt"] = "Ubuvuzi bw'amenyo";
+translations.rw["ophthalmology-title"] = "Ubuvuzi bw'Amaso";
+translations.rw["ophthalmology-alt"] = "Ubuvuzi bw'amasso";
+translations.rw["neurology-title"] = "Ubuvuzi bwo mu Mutwe";
+translations.rw["neurology-alt"] = "Ubuvuzi bwo mu mutwe";
+translations.rw["orthopedics-title"] = "Orthopedics";
+translations.rw["orthopedics-alt"] = "Orthopedics";
+translations.rw["gynecology-title"] = "Gynecology";
+translations.rw["gynecology-alt"] = "Gynecology";
+translations.rw["internal-medicine-title"] = "Ubuvuzi bw'Umubiri";
+translations.rw["internal-medicine-alt"] = "Ubuvuzi bw'umubiri";
+
+// Doctor Details in Kinyarwanda
+translations.rw["view-details-btn"] = "Reba ibisobanuro";
+translations.rw["book-now-btn"] = "Igitego";
         // Doctor data
         const doctors = {
             1: {
