@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pharmacy System - Login</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
+    
+    <style>
+        .login-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .login-card {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            width: 100%;
+            max-width: 400px;
+        }
+        .password-container {
+            position: relative;
+        }
+        .toggle-password {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: #6b7280;
+            cursor: pointer;
+            padding: 4px;
+            transition: color 0.2s;
+        }
+        .toggle-password:hover {
+            color: #3b82f6;
+        }
+    </style>
+</head>
+<body class="bg-gray-200 font-serif">
+    <div class="login-container p-4">
+        <div class="login-card">
+            <div class="p-8">
+                <div class="text-center mb-8">
+                    <h1 class="text-3xl font-bold text-gray-800">Pharmacy System</h1>
+                    <p class="text-gray-600 mt-2">Login to your Pharmacy</p>
+                </div>
+                
+                <form id="loginForm" class="space-y-6">
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Email Address</label>
+                        <input type="email" id="email" required 
+                               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                               placeholder="Enter your email">
+                    </div>
+                    
+                    <div class="password-container">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Password</label>
+                        <input type="password" id="password" required 
+                               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 pr-10"
+                               placeholder="Enter your password">
+                        <button type="button" id="togglePassword" class="absolute inset-y-0 right-0 pr-3 flex items-center">
+                                <i class="fas fa-eye m-3 text-gray-400 hover:text-gray-600"></i>
+                            </button>
+                    </div>
+                    
+                    
+                    
+                    <button type="submit" 
+                            class="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition duration-300 font-medium">
+                         Login
+                    </button>
+                    <div class="flex items-center justify-between"  id="rememberMe" >
+                     
+                    </div>
+                </form>
+                
+                <div id="errorMessage" class="mt-4 p-3 bg-red-100 text-red-700 rounded-lg hidden"></div>
+                <div id="successMessage" class="mt-4 p-3 bg-green-100 text-green-700 rounded-lg hidden"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Forgot Password Modal -->
+    <div id="forgotPasswordModal" class="fixed inset-0 z-50 hidden">
+        <div class="fixed inset-0 bg-black bg-opacity-50" onclick="closeForgotPassword()"></div>
+        <div class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-11/12 max-w-md">
+            <div class="bg-white rounded-lg shadow-lg p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-lg font-bold">Reset Password</h3>
+                    <button onclick="closeForgotPassword()" class="text-gray-500 hover:text-gray-700">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <p class="text-gray-600 mb-4">Enter your email address and we'll send you a link to reset your password.</p>
+                <input type="email" id="resetEmail" placeholder="Enter your email" 
+                       class="w-full px-4 py-3 border border-gray-300 rounded-lg mb-4 focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                <div id="resetMessage" class="mb-4 hidden"></div>
+                <div class="flex justify-end space-x-3">
+                    <button onclick="closeForgotPassword()" class="px-4 py-2 border rounded-lg hover:bg-gray-100">
+                        Cancel
+                    </button>
+                    <button onclick="sendPasswordReset()" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+                        Send Reset Link
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyDt4vs7S3nckO8xxfp1_axHZ76J0cz2qdg",
+            authDomain: "mahamahospital.firebasestorage.app",
+            databaseURL: "https://mahamahospital-default-rtdb.firebaseio.com",
+            projectId: "mahamahospital",
+            storageBucket: "mahamahospital.firebasestorage.app",
+            messagingSenderId: "256305692002",
+            appId: "1:256305692002:web:cfef26992264204be9803b"
+        };
+
+        // Initialize Firebase
+        const firebaseApp = firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+
+        // Check if user is already logged in
+        auth.onAuthStateChanged((user) => {
+            if (user) {
+                // User is already logged in, redirect to pharmacy dashboard
+                window.location.href = 'Pharmacy.html';
+            }
+        });
+
+        // Toggle password visibility
+        document.getElementById('togglePassword').addEventListener('click', function() {
+            const passwordInput = document.getElementById('password');
+            const icon = this.querySelector('i');
+            
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+                this.setAttribute('title', 'Hide password');
+            } else {
+                passwordInput.type = 'password';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+                this.setAttribute('title', 'Show password');
+            }
+        });
+
+        // Use demo credentials
+        function useDemoCredentials() {
+            document.getElementById('email').value = 'admin@pharmacy.com';
+            document.getElementById('password').value = 'admin123';
+            document.getElementById('rememberMe').checked = true;
+            
+            // Show notification
+            showNotification('Demo credentials auto-filled. Click Login to continue.', 'info');
+        }
+
+        // Show forgot password modal
+        function showForgotPassword() {
+            document.getElementById('forgotPasswordModal').classList.remove('hidden');
+        }
+
+        // Close forgot password modal
+        function closeForgotPassword() {
+            document.getElementById('forgotPasswordModal').classList.add('hidden');
+            document.getElementById('resetEmail').value = '';
+            document.getElementById('resetMessage').classList.add('hidden');
+        }
+
+        // Send password reset email
+        function sendPasswordReset() {
+            const email = document.getElementById('resetEmail').value;
+            const resetMessage = document.getElementById('resetMessage');
+            
+            if (!email) {
+                resetMessage.textContent = 'Please enter your email address.';
+                resetMessage.className = 'text-red-600 mb-4';
+                resetMessage.classList.remove('hidden');
+                return;
+            }
+            
+            auth.sendPasswordResetEmail(email)
+                .then(() => {
+                    resetMessage.textContent = 'Password reset email sent! Check your inbox.';
+                    resetMessage.className = 'text-green-600 mb-4';
+                    resetMessage.classList.remove('hidden');
+                    
+                    // Auto-close modal after 3 seconds
+                    setTimeout(() => {
+                        closeForgotPassword();
+                    }, 3000);
+                })
+                .catch((error) => {
+                    let errorMsg = 'Error sending reset email. Please try again.';
+                    
+                    switch (error.code) {
+                        case 'auth/user-not-found':
+                            errorMsg = 'No account found with this email.';
+                            break;
+                        case 'auth/invalid-email':
+                            errorMsg = 'Invalid email address.';
+                            break;
+                        case 'auth/too-many-requests':
+                            errorMsg = 'Too many attempts. Please try again later.';
+                            break;
+                    }
+                    
+                    resetMessage.textContent = errorMsg;
+                    resetMessage.className = 'text-red-600 mb-4';
+                    resetMessage.classList.remove('hidden');
+                });
+        }
+
+        // Show notification
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.className = `fixed top-4 right-4 p-4 rounded-lg shadow-lg z-50 ${
+                type === 'info' ? 'bg-blue-500 text-white' :
+                type === 'success' ? 'bg-green-500 text-white' :
+                'bg-red-500 text-white'
+            }`;
+            notification.textContent = message;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
+
+        // Handle login form submission
+        document.getElementById('loginForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const rememberMe = document.getElementById('rememberMe').checked;
+            const errorMessage = document.getElementById('errorMessage');
+            const successMessage = document.getElementById('successMessage');
+            
+            // Clear previous messages
+            errorMessage.classList.add('hidden');
+            successMessage.classList.add('hidden');
+            
+            // Basic validation
+            if (!email || !password) {
+                errorMessage.textContent = 'Please fill in all fields';
+                errorMessage.classList.remove('hidden');
+                return;
+            }
+            
+            try {
+                // Sign in with email and password
+                const userCredential = await auth.signInWithEmailAndPassword(email, password);
+                const user = userCredential.user;
+                
+                // Store user info if "Remember me" is checked
+                if (rememberMe) {
+                    localStorage.setItem('userEmail', user.email);
+                } else {
+                    sessionStorage.setItem('userEmail', user.email);
+                }
+                
+                // Show success message
+                successMessage.textContent = 'Login successful! Redirecting...';
+                successMessage.classList.remove('hidden');
+                
+                // Redirect to pharmacy dashboard after 1 second
+                setTimeout(() => {
+                    window.location.href = 'Pharmacy.html';
+                }, 1000);
+                
+            } catch (error) {
+                // Handle specific Firebase auth errors
+                let errorMsg = 'Login failed. Please try again.';
+                
+                switch (error.code) {
+                    case 'auth/user-not-found':
+                        errorMsg = 'No account found with this email.';
+                        break;
+                    case 'auth/wrong-password':
+                        errorMsg = 'Incorrect password. Please try again.';
+                        break;
+                    case 'auth/invalid-email':
+                        errorMsg = 'Invalid email address.';
+                        break;
+                    case 'auth/too-many-requests':
+                        errorMsg = 'Too many login attempts. Please try again later.';
+                        break;
+                    case 'auth/user-disabled':
+                        errorMsg = 'This account has been disabled.';
+                        break;
+                }
+                
+                errorMessage.textContent = errorMsg;
+                errorMessage.classList.remove('hidden');
+                
+                console.error('Login error:', error);
+            }
+        });
+
+        // Create demo account on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            const demoEmail = 'admin@pharmacy.com';
+            const demoPassword = 'admin123';
+            
+            auth.fetchSignInMethodsForEmail(demoEmail)
+                .then((signInMethods) => {
+                    if (signInMethods.length === 0) {
+                        // Create demo account
+                        auth.createUserWithEmailAndPassword(demoEmail, demoPassword)
+                            .then(() => {
+                                console.log('Demo account created successfully');
+                            })
+                            .catch((error) => {
+                                console.log('Demo account already exists or error:', error);
+                            });
+                    }
+                })
+                .catch((error) => {
+                    console.log('Error checking demo account:', error);
+                });
+            
+            // Check for stored credentials
+            const storedEmail = localStorage.getItem('userEmail') || sessionStorage.getItem('userEmail');
+            if (storedEmail) {
+                document.getElementById('email').value = storedEmail;
+                document.getElementById('rememberMe').checked = localStorage.getItem('userEmail') !== null;
+            }
+            
+            // Add enter key support
+            document.getElementById('password').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    document.getElementById('loginForm').dispatchEvent(new Event('submit'));
+                }
+            });
+        });
+    </script>
+</body>
+</html>

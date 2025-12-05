@@ -8,6 +8,9 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     
+    <!-- EmailJS SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
@@ -426,6 +429,14 @@
 
     <!-- Firebase Configuration and Dashboard Script -->
     <script>
+        // EmailJS Configuration - Replace these with your actual EmailJS credentials
+        // Get these from: https://www.emailjs.com/
+        const EMAILJS_CONFIG = {
+            PUBLIC_KEY: 'GhBaQI-xJytzUAQjs',  // Replace with your public key
+            SERVICE_ID: 'service_vh1szck',  // Replace with your service ID
+            TEMPLATE_ID: 'template_73c20ql' // Replace with your template ID
+        };
+
         // Firebase Configuration
         const firebaseConfig = {
             apiKey: "AIzaSyDt4vs7S3nckO8xxfp1_axHZ76J0cz2qdg",
@@ -441,6 +452,11 @@
         const firebaseApp = firebase.initializeApp(firebaseConfig);
         const database = firebase.database();
         const auth = firebase.auth();
+
+        // Initialize EmailJS
+        (function() {
+            emailjs.init(EMAILJS_CONFIG.PUBLIC_KEY);
+        })();
 
         // Chart instances
         let servicesChart, monthlyTrendChart, pregnancyStageChart;
@@ -634,7 +650,8 @@
                     const statusColors = {
                         'completed': 'bg-green-100 text-green-800',
                         'rejected': 'bg-red-100 text-red-800',
-                        'pending': 'bg-yellow-100 text-yellow-800'
+                        'pending': 'bg-yellow-100 text-yellow-800',
+                        'accepted': 'bg-blue-100 text-blue-800'
                     };
                     const statusText = status.charAt(0).toUpperCase() + status.slice(1);
                     
@@ -658,8 +675,8 @@
                                 <button onclick="dashboard.showAppointmentDetails('${apt.id}')" class="px-2 py-1 bg-blue-500 text-white text-xs rounded hover:bg-blue-600 transition">
                                     <i class="fas fa-eye mr-1"></i>Details
                                 </button>
-                                <button onclick="dashboard.completeAppointment('${apt.id}')" class="px-2 py-1 bg-green-500 text-white text-xs rounded hover:bg-green-600 transition">
-                                    <i class="fas fa-check mr-1"></i>Complete
+                                <button onclick="dashboard.acceptAppointment('${apt.id}')" class="px-2 py-1 bg-green-500 text-white text-xs rounded hover:bg-green-600 transition">
+                                    <i class="fas fa-check mr-1"></i>Accept
                                 </button>
                                 <button onclick="dashboard.rejectAppointment('${apt.id}')" class="px-2 py-1 bg-red-500 text-white text-xs rounded hover:bg-red-600 transition">
                                     <i class="fas fa-times mr-1"></i>Reject
@@ -713,7 +730,8 @@
                     const statusColors = {
                         'completed': 'bg-green-100 text-green-800',
                         'rejected': 'bg-red-100 text-red-800',
-                        'pending': 'bg-yellow-100 text-yellow-800'
+                        'pending': 'bg-yellow-100 text-yellow-800',
+                        'accepted': 'bg-blue-100 text-blue-800'
                     };
                     const statusText = status.charAt(0).toUpperCase() + status.slice(1);
                     
@@ -737,8 +755,8 @@
                                 <button onclick="dashboard.showAppointmentDetails('${apt.id}')" class="px-2 py-1 bg-blue-500 text-white text-xs rounded hover:bg-blue-600 transition">
                                     <i class="fas fa-eye mr-1"></i>Details
                                 </button>
-                                <button onclick="dashboard.completeAppointment('${apt.id}')" class="px-2 py-1 bg-green-500 text-white text-xs rounded hover:bg-green-600 transition">
-                                    <i class="fas fa-check mr-1"></i>Complete
+                                <button onclick="dashboard.acceptAppointment('${apt.id}')" class="px-2 py-1 bg-green-500 text-white text-xs rounded hover:bg-green-600 transition">
+                                    <i class="fas fa-check mr-1"></i>Accept
                                 </button>
                                 <button onclick="dashboard.rejectAppointment('${apt.id}')" class="px-2 py-1 bg-red-500 text-white text-xs rounded hover:bg-red-600 transition">
                                     <i class="fas fa-times mr-1"></i>Reject
@@ -942,7 +960,115 @@
                 });
             }
 
-            // Admin functions for appointments
+            // Send email notification
+            async sendAppointmentNotification(appointment, action) {
+                try {
+                    const patientName = `${appointment.firstName || ''} ${appointment.lastName || ''}`.trim();
+                    const patientEmail = appointment.email;
+                    
+                    if (!patientEmail) {
+                        console.warn('No email found for patient:', patientName);
+                        return false;
+                    }
+
+                    // Prepare email template parameters
+                    const templateParams = {
+                        to_name: patientName,
+                        to_email: patientEmail,
+                        appointment_date: appointment.preferredDate ? 
+                            this.formatDate(appointment.preferredDate) : 'Not specified',
+                        appointment_time: appointment.preferredTime || 'Not specified',
+                        service_type: appointment.serviceType || 'General Consultation',
+                        pregnancy_week: appointment.pregnancyWeek ? 
+                            `Week ${appointment.pregnancyWeek}` : 'Not specified',
+                        action: action,
+                        status: action === 'accept' ? 'ACCEPTED' : 'REJECTED',
+                        message: action === 'accept' ? 
+                            `Dear ${patientName}, your maternity appointment has been accepted. Please arrive 15 minutes before your scheduled time of ${appointment.preferredTime || 'the scheduled time'} on ${appointment.preferredDate ? this.formatDate(appointment.preferredDate) : 'the scheduled date'}.` :
+                            `Dear ${patientName}, we regret to inform you that your maternity appointment has been rejected. Please contact the hospital for more information.`
+                    };
+
+                    // Send email using EmailJS
+                    const response = await emailjs.send(
+                        EMAILJS_CONFIG.SERVICE_ID,
+                        EMAILJS_CONFIG.TEMPLATE_ID,
+                        templateParams
+                    );
+
+                    console.log('Email sent successfully:', response);
+                    return true;
+                    
+                } catch (error) {
+                    console.error('Failed to send email:', error);
+                    return false;
+                }
+            }
+
+            // Accept appointment with email notification
+            async acceptAppointment(appointmentId) {
+                if (confirm('Accept this appointment and send confirmation email to the patient?')) {
+                    try {
+                        const appointment = this.appointments.find(apt => apt.id === appointmentId);
+                        if (!appointment) {
+                            showNotification('Appointment not found!', 'error');
+                            return;
+                        }
+
+                        // Update appointment status
+                        await database.ref(`maternity-appointments/${appointmentId}`).update({
+                            status: 'accepted',
+                            updatedAt: new Date().toISOString()
+                        });
+
+                        // Send email notification
+                        const emailSent = await this.sendAppointmentNotification(appointment, 'accept');
+                        
+                        if (emailSent) {
+                            showNotification('Appointment accepted and notification email sent!', 'success');
+                        } else {
+                            showNotification('Appointment accepted but email notification failed. Please check patient email address.', 'error');
+                        }
+                        
+                    } catch (error) {
+                        console.error('Error accepting appointment:', error);
+                        showNotification('Error accepting appointment', 'error');
+                    }
+                }
+            }
+
+            // Reject appointment with email notification
+            async rejectAppointment(appointmentId) {
+                if (confirm('Reject this appointment and send notification email to the patient?')) {
+                    try {
+                        const appointment = this.appointments.find(apt => apt.id === appointmentId);
+                        if (!appointment) {
+                            showNotification('Appointment not found!', 'error');
+                            return;
+                        }
+
+                        // Update appointment status
+                        await database.ref(`maternity-appointments/${appointmentId}`).update({
+                            status: 'rejected',
+                            updatedAt: new Date().toISOString()
+                        });
+
+                        // Send email notification
+                        const emailSent = await this.sendAppointmentNotification(appointment, 'reject');
+                        
+                        if (emailSent) {
+                            showNotification('Appointment rejected and notification email sent!', 'success');
+                        } else {
+                            showNotification('Appointment rejected but email notification failed. Please check patient email address.', 'error');
+                        }
+                        
+                    } catch (error) {
+                        console.error('Error rejecting appointment:', error);
+                        showNotification('Error rejecting appointment', 'error');
+                    }
+                }
+            }
+
+            // Complete appointment (kept for backward compatibility)
             async completeAppointment(appointmentId) {
                 if (confirm('Mark this appointment as completed?')) {
                     try {
@@ -954,21 +1080,6 @@
                     } catch (error) {
                         console.error('Error completing appointment:', error);
                         showNotification('Error completing appointment', 'error');
-                    }
-                }
-            }
-
-            async rejectAppointment(appointmentId) {
-                if (confirm('Reject this appointment?')) {
-                    try {
-                        await database.ref(`maternity-appointments/${appointmentId}`).update({
-                            status: 'rejected',
-                            updatedAt: new Date().toISOString()
-                        });
-                        showNotification('Appointment rejected!', 'success');
-                    } catch (error) {
-                        console.error('Error rejecting appointment:', error);
-                        showNotification('Error rejecting appointment', 'error');
                     }
                 }
             }
@@ -1065,7 +1176,8 @@
                 const colors = {
                     'completed': 'bg-green-100 text-green-800',
                     'rejected': 'bg-red-100 text-red-800',
-                    'pending': 'bg-yellow-100 text-yellow-800'
+                    'pending': 'bg-yellow-100 text-yellow-800',
+                    'accepted': 'bg-blue-100 text-blue-800'
                 };
                 return colors[status] || 'bg-gray-100 text-gray-800';
             }
