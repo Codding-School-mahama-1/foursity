@@ -456,6 +456,7 @@
         // Initialize EmailJS
         (function() {
             emailjs.init(EMAILJS_CONFIG.PUBLIC_KEY);
+            console.log('EmailJS initialized with Public Key:', EMAILJS_CONFIG.PUBLIC_KEY);
         })();
 
         // Chart instances
@@ -960,21 +961,39 @@
                 });
             }
 
-            // Send email notification
+            // Send email notification to PATIENT
             async sendAppointmentNotification(appointment, action) {
                 try {
                     const patientName = `${appointment.firstName || ''} ${appointment.lastName || ''}`.trim();
                     const patientEmail = appointment.email;
                     
+                    console.log('=== EMAIL DEBUG INFO ===');
+                    console.log('1. Patient Name:', patientName);
+                    console.log('2. Patient Email (from database):', patientEmail);
+                    console.log('3. EmailJS Template ID:', EMAILJS_CONFIG.TEMPLATE_ID);
+                    console.log('4. Action:', action);
+                    
                     if (!patientEmail) {
-                        console.warn('No email found for patient:', patientName);
+                        console.error('ERROR: No email found for patient:', patientName);
+                        showNotification('Cannot send email: Patient email not found', 'error');
                         return false;
                     }
 
-                    // Prepare email template parameters
+                    // Validate email format
+                    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                    if (!emailRegex.test(patientEmail)) {
+                        console.error('ERROR: Invalid email format for patient:', patientEmail);
+                        showNotification('Cannot send email: Invalid patient email format', 'error');
+                        return false;
+                    }
+
+                    // Prepare email template parameters for PATIENT
                     const templateParams = {
                         to_name: patientName,
-                        to_email: patientEmail,
+                        to_email: patientEmail, // This sends to PATIENT
+                        from_name: 'MahamaCare Hospital',
+                        from_email: 'noreply@mahamacarehospital.com',
+                        reply_to: 'unitycoders2025@gmail.com',
                         appointment_date: appointment.preferredDate ? 
                             this.formatDate(appointment.preferredDate) : 'Not specified',
                         appointment_time: appointment.preferredTime || 'Not specified',
@@ -985,34 +1004,54 @@
                         status: action === 'accept' ? 'ACCEPTED' : 'REJECTED',
                         message: action === 'accept' ? 
                             `Dear ${patientName}, your maternity appointment has been accepted. Please arrive 15 minutes before your scheduled time of ${appointment.preferredTime || 'the scheduled time'} on ${appointment.preferredDate ? this.formatDate(appointment.preferredDate) : 'the scheduled date'}.` :
-                            `Dear ${patientName}, we regret to inform you that your maternity appointment has been rejected. Please contact the hospital for more information.`
+                            `Dear ${patientName}, we regret to inform you that your maternity appointment has been rejected. Please contact the hospital for more information.`,
+                        hospital_name: 'MahamaCare Hospital',
+                        hospital_phone: '+250 000 000',
+                        hospital_email: 'unitycoders2025@gmail.com'
                     };
 
-                    // Send email using EmailJS
+                    console.log('5. Email Template Parameters:', JSON.stringify(templateParams, null, 2));
+                    console.log('6. Sending to patient email:', patientEmail);
+                    console.log('=== END DEBUG INFO ===');
+
+                    // Send email using EmailJS - THIS GOES TO PATIENT
                     const response = await emailjs.send(
                         EMAILJS_CONFIG.SERVICE_ID,
                         EMAILJS_CONFIG.TEMPLATE_ID,
                         templateParams
                     );
 
-                    console.log('Email sent successfully:', response);
+                    console.log('SUCCESS: Email sent to PATIENT:', response);
+                    console.log('Status:', response.status);
+                    console.log('Text:', response.text);
                     return true;
                     
                 } catch (error) {
-                    console.error('Failed to send email:', error);
+                    console.error('FAILED to send email to patient:', error);
+                    console.error('Error details:', {
+                        message: error.message,
+                        text: error.text,
+                        status: error.status
+                    });
                     return false;
                 }
             }
 
-            // Accept appointment with email notification
+            // Accept appointment with email notification to PATIENT
             async acceptAppointment(appointmentId) {
-                if (confirm('Accept this appointment and send confirmation email to the patient?')) {
+                if (confirm('Accept this appointment and send confirmation email to the PATIENT?')) {
                     try {
                         const appointment = this.appointments.find(apt => apt.id === appointmentId);
                         if (!appointment) {
                             showNotification('Appointment not found!', 'error');
                             return;
                         }
+
+                        console.log('Accepting appointment for patient:', {
+                            name: `${appointment.firstName} ${appointment.lastName}`,
+                            email: appointment.email,
+                            id: appointmentId
+                        });
 
                         // Update appointment status
                         await database.ref(`maternity-appointments/${appointmentId}`).update({
@@ -1020,25 +1059,25 @@
                             updatedAt: new Date().toISOString()
                         });
 
-                        // Send email notification
+                        // Send email notification to PATIENT
                         const emailSent = await this.sendAppointmentNotification(appointment, 'accept');
                         
                         if (emailSent) {
-                            showNotification('Appointment accepted and notification email sent!', 'success');
+                            showNotification('Appointment accepted and notification email sent to PATIENT!', 'success');
                         } else {
-                            showNotification('Appointment accepted but email notification failed. Please check patient email address.', 'error');
+                            showNotification('Appointment accepted but email notification failed to PATIENT. Please check patient email address.', 'error');
                         }
                         
                     } catch (error) {
                         console.error('Error accepting appointment:', error);
-                        showNotification('Error accepting appointment', 'error');
+                        showNotification('Error accepting appointment: ' + error.message, 'error');
                     }
                 }
             }
 
-            // Reject appointment with email notification
+            // Reject appointment with email notification to PATIENT
             async rejectAppointment(appointmentId) {
-                if (confirm('Reject this appointment and send notification email to the patient?')) {
+                if (confirm('Reject this appointment and send notification email to the PATIENT?')) {
                     try {
                         const appointment = this.appointments.find(apt => apt.id === appointmentId);
                         if (!appointment) {
@@ -1046,24 +1085,30 @@
                             return;
                         }
 
+                        console.log('Rejecting appointment for patient:', {
+                            name: `${appointment.firstName} ${appointment.lastName}`,
+                            email: appointment.email,
+                            id: appointmentId
+                        });
+
                         // Update appointment status
                         await database.ref(`maternity-appointments/${appointmentId}`).update({
                             status: 'rejected',
                             updatedAt: new Date().toISOString()
                         });
 
-                        // Send email notification
+                        // Send email notification to PATIENT
                         const emailSent = await this.sendAppointmentNotification(appointment, 'reject');
                         
                         if (emailSent) {
-                            showNotification('Appointment rejected and notification email sent!', 'success');
+                            showNotification('Appointment rejected and notification email sent to PATIENT!', 'success');
                         } else {
-                            showNotification('Appointment rejected but email notification failed. Please check patient email address.', 'error');
+                            showNotification('Appointment rejected but email notification failed to PATIENT. Please check patient email address.', 'error');
                         }
                         
                     } catch (error) {
                         console.error('Error rejecting appointment:', error);
-                        showNotification('Error rejecting appointment', 'error');
+                        showNotification('Error rejecting appointment: ' + error.message, 'error');
                     }
                 }
             }
@@ -1358,6 +1403,48 @@
                 }
             }, 5000);
         }
+
+        // Test function for email sending (for debugging)
+        window.testPatientEmail = async function() {
+            try {
+                const testAppointment = {
+                    firstName: 'Test',
+                    lastName: 'Patient',
+                    email: 'testpatient@example.com', // CHANGE THIS TO A REAL PATIENT EMAIL
+                    preferredDate: '2024-12-25',
+                    preferredTime: '10:00 AM',
+                    serviceType: 'Prenatal Care',
+                    pregnancyWeek: '24'
+                };
+                
+                console.log('=== TESTING EMAIL TO PATIENT ===');
+                console.log('Using patient email:', testAppointment.email);
+                
+                const result = await dashboard.sendAppointmentNotification(testAppointment, 'accept');
+                
+                if (result) {
+                    showNotification('Test email sent to PATIENT! Check patient email inbox.', 'success');
+                } else {
+                    showNotification('Test email failed to send to PATIENT', 'error');
+                }
+            } catch (error) {
+                console.error('Test error:', error);
+                showNotification('Test failed: ' + error.message, 'error');
+            }
+        };
+        
+        // Function to check EmailJS template configuration
+        window.checkEmailJSTemplate = function() {
+            console.log('=== EMAILJS TEMPLATE CHECK ===');
+            console.log('1. Go to: https://dashboard.emailjs.com/');
+            console.log('2. Click on "Email Templates"');
+            console.log('3. Find template: ' + EMAILJS_CONFIG.TEMPLATE_ID);
+            console.log('4. Check "To" field - MUST be: {{to_email}}');
+            console.log('5. NOT your email address or {{to_name}}');
+            console.log('6. Save template if changed');
+            console.log('=== END TEMPLATE CHECK ===');
+            showNotification('Check console for EmailJS template instructions', 'success');
+        };
     </script>
 </body>
 </html>

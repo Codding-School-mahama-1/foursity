@@ -7,6 +7,9 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
+    <!-- EmailJS SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
@@ -67,10 +70,10 @@
             font-size: 0.75rem;
             font-weight: 600;
         }
-        .status-pending { background-color: #fef3c7; color: #92400e; }
-        .status-responding { background-color: #dbeafe; color: #1e40af; }
+        .status-new { background-color: #f3f4f6; color: #374151; }
+        .status-under-review { background-color: #dbeafe; color: #1e40af; }
         .status-resolved { background-color: #d1fae5; color: #065f46; }
-        .status-critical { background-color: #fee2e2; color: #991b1b; }
+        .status-rejected { background-color: #fee2e2; color: #991b1b; }
         .priority-high { background-color: #fee2e2; color: #991b1b; }
         .priority-medium { background-color: #fef3c7; color: #92400e; }
         .priority-low { background-color: #d1fae5; color: #065f46; }
@@ -94,6 +97,40 @@
             align-items: center;
             z-index: 9999;
             flex-direction: column;
+        }
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 20px;
+            border-radius: 8px;
+            color: white;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            max-width: 400px;
+            animation: slideIn 0.3s ease-out;
+        }
+        .notification.success {
+            background-color: #10b981;
+        }
+        .notification.error {
+            background-color: #ef4444;
+        }
+        .notification.info {
+            background-color: #3b82f6;
+        }
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
         }
     </style>
 </head>
@@ -295,13 +332,16 @@
                 </div>
             </section>
 
-            <!-- Emergency Reports Section -->
+            <!-- Emergency Reports Section - UPDATED TO LOOK LIKE ACTIVE EMERGENCY MANAGEMENT -->
             <section id="reports" class="mb-12">
                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
                     <h2 class="text-3xl font-bold text-gray-800">Emergency Reports History</h2>
                     <div class="flex gap-2">
                         <button id="refresh-reports" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition duration-300">
                             <i class="fas fa-sync-alt mr-2"></i>Refresh
+                        </button>
+                        <button onclick="simulateEmergencyReport()" class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition duration-300">
+                            <i class="fas fa-plus mr-2"></i>Simulate Report
                         </button>
                         <div class="relative">
                             <input type="text" id="search-reports" placeholder="Search reports..." class="border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
@@ -315,9 +355,10 @@
                             <thead>
                                 <tr class="bg-gray-100">
                                     <th class="border-b border-gray-300 px-4 py-3 text-left font-semibold text-gray-700">Reporter</th>
-                                    <th class="border-b border-gray-300 px-4 py-3 text-left font-semibold text-gray-700">Email</th>
-                                    <th class="border-b border-gray-300 px-4 py-3 text-left font-semibold text-gray-700">Phone</th>
                                     <th class="border-b border-gray-300 px-4 py-3 text-left font-semibold text-gray-700">Emergency Type</th>
+                                    <th class="border-b border-gray-300 px-4 py-3 text-left font-semibold text-gray-700">Email</th>
+                                    <th class="border-b border-gray-300 px-4 py-3 text-left font-semibold text-gray-700">Priority</th>
+                                    <th class="border-b border-gray-300 px-4 py-3 text-left font-semibold text-gray-700">Status</th>
                                     <th class="border-b border-gray-300 px-4 py-3 text-left font-semibold text-gray-700">Reported</th>
                                     <th class="border-b border-gray-300 px-4 py-3 text-left font-semibold text-gray-700">Actions</th>
                                 </tr>
@@ -365,6 +406,10 @@
                             </button>
                             <button onclick="generateEmergencyReport()" class="w-full bg-blue-600 text-white px-4 py-3 rounded-lg hover:bg-blue-700 transition duration-300 text-left">
                                 <i class="fas fa-chart-bar mr-2"></i>Generate Report
+                            </button>
+                            <!-- Add test email button -->
+                            <button onclick="testEmergencyEmail()" class="w-full bg-purple-600 text-white px-4 py-3 rounded-lg hover:bg-purple-700 transition duration-300 text-left">
+                                <i class="fas fa-envelope mr-2"></i>Test Email System
                             </button>
                         </div>
                     </div>
@@ -471,6 +516,13 @@
 
     <!-- Firebase Configuration and Dashboard Script -->
     <script>
+        // EmailJS Configuration - UPDATED
+        const EMAILJS_CONFIG = {
+            PUBLIC_KEY: 'GhBaQI-xJytzUAQjs',
+            SERVICE_ID: 'service_vh1szck',
+            TEMPLATE_ID: 'template_5dwr27s' // Your existing template
+        };
+
         // Firebase Configuration
         const firebaseConfig = {
             apiKey: "AIzaSyDt4vs7S3nckO8xxfp1_axHZ76J0cz2qdg",
@@ -486,6 +538,12 @@
         const firebaseApp = firebase.initializeApp(firebaseConfig);
         const database = firebase.database();
         const auth = firebase.auth();
+
+        // Initialize EmailJS
+        (function() {
+            emailjs.init(EMAILJS_CONFIG.PUBLIC_KEY);
+            console.log('EmailJS initialized with template:', EMAILJS_CONFIG.TEMPLATE_ID);
+        })();
 
         // Emergency System Data Management
         class EmergencySystemData {
@@ -580,6 +638,25 @@
                 }
             }
 
+            async updateReportStatus(reportId, status, priority = null) {
+                try {
+                    const updates = {
+                        status: status,
+                        updatedAt: new Date().toISOString()
+                    };
+                    
+                    if (priority) {
+                        updates.priority = priority;
+                    }
+                    
+                    await this.reportsRef.child(reportId).update(updates);
+                    return { success: true };
+                } catch (error) {
+                    console.error('Error updating report:', error);
+                    return { success: false, error: error.message };
+                }
+            }
+
             async deleteEmergency(emergencyId) {
                 try {
                     await this.emergenciesRef.child(emergencyId).remove();
@@ -649,24 +726,165 @@
         function formatTimestamp(timestamp) {
             if (!timestamp) return 'N/A';
             const date = new Date(timestamp);
-            return date.toLocaleDateString() + ' ' + date.toLocaleTimeString();
+            return date.toLocaleDateString() + ' ' + date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
         }
 
         function showNotification(message, type = 'info') {
+            const existingNotifications = document.querySelectorAll('.notification');
+            existingNotifications.forEach(notification => notification.remove());
+            
             const notification = document.createElement('div');
-            notification.className = `fixed top-4 right-4 p-4 rounded-lg shadow-lg z-50 ${
-                type === 'success' ? 'bg-green-500 text-white' :
-                type === 'error' ? 'bg-red-500 text-white' :
-                'bg-blue-500 text-white'
-            }`;
-            notification.textContent = message;
+            notification.className = `notification ${type}`;
+            
+            const icon = type === 'success' ? 'fa-check-circle' : 
+                        type === 'error' ? 'fa-exclamation-circle' : 'fa-info-circle';
+            notification.innerHTML = `
+                <i class="fas ${icon}"></i>
+                <span>${message}</span>
+            `;
             
             document.body.appendChild(notification);
             
             setTimeout(() => {
-                notification.remove();
+                if (notification.parentNode) {
+                    notification.parentNode.removeChild(notification);
+                }
             }, 5000);
         }
+
+  // SIMPLIFIED Email function - Use only basic variables
+async function sendEmergencyEmailNotification(report, action, additionalNotes = '') {
+    try {
+        const reporterName = `${report.firstName} ${report.lastName || ''}`.trim();
+        const reporterEmail = report.email;
+        
+        console.log('Sending EMERGENCY email to:', reporterEmail);
+        
+        if (!reporterEmail) {
+            showNotification('Cannot send email: No email found', 'error');
+            return false;
+        }
+
+        // Validate email
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(reporterEmail)) {
+            showNotification('Invalid email format', 'error');
+            return false;
+        }
+
+        // Basic emergency info
+        const emergencyType = report.subject || 'General Emergency';
+        const status = action === 'accept' ? 'UNDER REVIEW' : 
+                     action === 'review' ? 'UNDER REVIEW' : 
+                     action === 'resolve' ? 'RESOLVED' : 'REJECTED';
+        
+        // Format dates
+        const reportedDate = formatTimestamp(report.createdAt);
+        const currentDate = new Date().toLocaleDateString();
+        const currentTime = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+        
+        // Create message based on status
+        let messageText = '';
+        if (status === 'UNDER REVIEW') {
+            messageText = 'Your emergency report has been received and is being reviewed by our emergency response team.';
+        } else if (status === 'RESOLVED') {
+            messageText = 'Your emergency report has been successfully resolved by our emergency response team.';
+        } else if (status === 'REJECTED') {
+            messageText = 'Your emergency report has been reviewed but was not accepted for further action.';
+        }
+        
+        if (additionalNotes) {
+            messageText += '\n\nNotes: ' + additionalNotes;
+        }
+
+        // ULTRA SIMPLE template parameters - Using ONLY basic EmailJS variables
+        const templateParams = {
+            // Basic EmailJS required variables
+            to_name: reporterName,
+            to_email: reporterEmail,
+            from_name: 'MahamaCare Hospital',
+            
+            // Simple emergency info
+            name: reporterName,
+            emergency_type: emergencyType,
+            status: status,
+            reported_date: reportedDate,
+            date: currentDate,
+            time: currentTime,
+            message: messageText,
+            
+            // Simple text version (as fallback)
+            notes: additionalNotes || '',
+            hospital_name: 'MahamaCare Hospital',
+            emergency_hotline: '112',
+            
+            // Subject line
+            subject: `Emergency Report ${status}: ${emergencyType}`
+        };
+
+        console.log('Sending email with ULTRA SIMPLE params:', templateParams);
+
+        // Send email
+        const response = await emailjs.send(
+            EMAILJS_CONFIG.SERVICE_ID,
+            EMAILJS_CONFIG.TEMPLATE_ID,
+            templateParams
+        );
+
+        console.log('Emergency email sent successfully!', response);
+        showNotification(`Email sent to ${reporterEmail}`, 'success');
+        return true;
+        
+    } catch (error) {
+        console.error('Failed to send emergency email:', error);
+        console.error('Full error:', error);
+        showNotification('Failed to send email: ' + error.message, 'error');
+        return false;
+    }
+}
+
+
+// Debug function to test EmailJS
+window.debugEmailTemplate = async function() {
+    try {
+        console.log('=== DEBUGGING EMAIL TEMPLATE ===');
+        
+        // Create a simple test email
+        const testParams = {
+            to_name: 'Test User',
+            to_email: 'unitycoders2025@gmail.com',
+            from_name: 'Test System',
+            subject: 'TEST EMAIL',
+            name: 'Test User',
+            emergency_type: 'TEST: Medical Emergency',
+            status: 'UNDER REVIEW',
+            reported_date: new Date().toLocaleString(),
+            date: new Date().toLocaleDateString(),
+            time: new Date().toLocaleTimeString(),
+            message: 'This is a test message to see what variables work.',
+            notes: 'Test notes',
+            hospital_name: 'MahamaCare Hospital',
+            emergency_hotline: '112'
+        };
+        
+        console.log('Test parameters:', testParams);
+        console.log('Using template ID:', EMAILJS_CONFIG.TEMPLATE_ID);
+        
+        const response = await emailjs.send(
+            EMAILJS_CONFIG.SERVICE_ID,
+            EMAILJS_CONFIG.TEMPLATE_ID,
+            testParams
+        );
+        
+        console.log('Test email sent! Response:', response);
+        showNotification('Debug email sent! Check your inbox.', 'success');
+        
+    } catch (error) {
+        console.error('Debug error:', error);
+        console.error('Error text:', error.text);
+        showNotification('Debug failed: ' + error.message, 'error');
+    }
+}
 
         // Dashboard Functions
         async function loadEmergencies() {
@@ -698,6 +916,32 @@
                 document.getElementById('no-reports-message').classList.add('hidden');
                 
                 allReports = await emergencySystemData.getAllReports();
+                // Initialize status and priority if not set
+                allReports.forEach(report => {
+                    if (!report.status) {
+                        report.status = 'new';
+                    }
+                    if (!report.priority) {
+                        // Determine priority based on subject/content
+                        const subject = report.subject || '';
+                        const message = report.message || '';
+                        const emergencyText = (subject + ' ' + message).toLowerCase();
+                        
+                        if (emergencyText.includes('fire') || 
+                            emergencyText.includes('heart attack') || 
+                            emergencyText.includes('bleeding') ||
+                            emergencyText.includes('critical')) {
+                            report.priority = 'high';
+                        } else if (emergencyText.includes('accident') || 
+                                 emergencyText.includes('injury') ||
+                                 emergencyText.includes('emergency')) {
+                            report.priority = 'medium';
+                        } else {
+                            report.priority = 'low';
+                        }
+                    }
+                });
+                
                 filteredReports = [...allReports];
                 
                 displayReports();
@@ -812,23 +1056,54 @@
             const endIndex = Math.min(startIndex + pageSize, filteredReports.length);
             const pageReports = filteredReports.slice(startIndex, endIndex);
             
-            reportsBody.innerHTML = pageReports.map(report => `
-                <tr class="emergency-row border-b border-gray-200">
-                    <td class="px-4 py-3">${escapeHtml(report.firstName)} ${escapeHtml(report.lastName || '')}</td>
-                    <td class="px-4 py-3">${escapeHtml(report.email)}</td>
-                    <td class="px-4 py-3">${escapeHtml(report.phone || 'Not provided')}</td>
-                    <td class="px-4 py-3">${report.subject || 'General Emergency'}</td>
-                    <td class="px-4 py-3 text-sm">${formatTimestamp(report.createdAt)}</td>
-                    <td class="px-4 py-3">
-                        <button onclick="viewEmergencyReport('${report.id}')" class="bg-blue-500 text-white px-2 py-1 rounded text-xs hover:bg-blue-600 mr-1" title="View Report">
-                            <i class="fas fa-eye"></i>
-                        </button>
-                        <button onclick="deleteReport('${report.id}')" class="bg-red-500 text-white px-2 py-1 rounded text-xs hover:bg-red-600" title="Delete Report">
-                            <i class="fas fa-trash"></i>
-                        </button>
-                    </td>
-                </tr>
-            `).join('');
+            reportsBody.innerHTML = pageReports.map(report => {
+                const status = report.status || 'new';
+                const priority = report.priority || 'medium';
+                const statusClass = `status-${status.replace(' ', '-')}`;
+                const priorityClass = `priority-${priority}`;
+                const statusText = status.split('-').map(word => 
+                    word.charAt(0).toUpperCase() + word.slice(1)
+                ).join(' ');
+                const priorityText = priority.charAt(0).toUpperCase() + priority.slice(1);
+                
+                return `
+                    <tr class="emergency-row border-b border-gray-200">
+                        <td class="px-4 py-3">${escapeHtml(report.firstName)} ${escapeHtml(report.lastName || '')}</td>
+                        <td class="px-4 py-3">${report.subject || 'General Emergency'}</td>
+                        <td class="px-4 py-3">${escapeHtml(report.email)}</td>
+                        <td class="px-4 py-3">
+                            <span class="status-badge ${priorityClass}">${priorityText}</span>
+                        </td>
+                        <td class="px-4 py-3">
+                            <span class="status-badge ${statusClass}">${statusText}</span>
+                        </td>
+                        <td class="px-4 py-3 text-sm">${formatTimestamp(report.createdAt)}</td>
+                        <td class="px-4 py-3">
+                            ${status === 'new' ? `
+                                <button onclick="markReportUnderReview('${report.id}')" class="bg-blue-500 text-white px-2 py-1 rounded text-xs hover:bg-blue-600 mr-1" title="Mark as Under Review">
+                                    <i class="fas fa-eye"></i> Review
+                                </button>
+                            ` : ''}
+                            ${status !== 'resolved' ? `
+                                <button onclick="markReportResolved('${report.id}')" class="bg-green-500 text-white px-2 py-1 rounded text-xs hover:bg-green-600 mr-1" title="Mark as Resolved">
+                                    <i class="fas fa-check"></i> Resolve
+                                </button>
+                            ` : ''}
+                            ${status !== 'rejected' ? `
+                                <button onclick="rejectEmergencyReport('${report.id}')" class="bg-red-500 text-white px-2 py-1 rounded text-xs hover:bg-red-600 mr-1" title="Reject Report">
+                                    <i class="fas fa-times"></i> Reject
+                                </button>
+                            ` : ''}
+                            <button onclick="viewEmergencyReport('${report.id}')" class="bg-gray-500 text-white px-2 py-1 rounded text-xs hover:bg-gray-600 mr-1" title="View Report">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            <button onclick="deleteReport('${report.id}')" class="bg-red-500 text-white px-2 py-1 rounded text-xs hover:bg-red-600" title="Delete Report">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
             
             // Update pagination info
             paginationInfo.textContent = `Showing ${startIndex + 1}-${endIndex} of ${filteredReports.length} reports`;
@@ -1001,13 +1276,15 @@
                 
                 // Export reports
                 if (reports.length > 0) {
-                    const reportHeaders = ['First Name', 'Last Name', 'Email', 'Phone', 'Emergency Type', 'Message', 'Created Date'];
+                    const reportHeaders = ['First Name', 'Last Name', 'Email', 'Phone', 'Emergency Type', 'Priority', 'Status', 'Message', 'Created Date'];
                     const reportData = reports.map(report => [
                         report.firstName,
                         report.lastName || '',
                         report.email,
                         report.phone,
                         report.subject,
+                        report.priority || 'medium',
+                        report.status || 'new',
                         report.message,
                         formatTimestamp(report.createdAt)
                     ]);
@@ -1077,14 +1354,134 @@
             const report = allReports.find(r => r.id === reportId);
             if (report) {
                 const message = `
-        Name: ${report.firstName} ${report.lastName || ''}
-        Email: ${report.email}
-        Phone: ${report.phone || 'Not provided'}
-        Emergency Type: ${report.subject || 'General Emergency'}
-        Message: ${report.message}
-        Received: ${formatTimestamp(report.createdAt)}
+Name: ${report.firstName} ${report.lastName || ''}
+Email: ${report.email}
+Phone: ${report.phone || 'Not provided'}
+Emergency Type: ${report.subject || 'General Emergency'}
+Priority: ${report.priority || 'Medium'}
+Status: ${report.status || 'New'}
+Message: ${report.message}
+Received: ${formatTimestamp(report.createdAt)}
+${report.updatedAt ? `Last Updated: ${formatTimestamp(report.updatedAt)}` : ''}
                 `;
                 alert(message);
+            }
+        };
+
+        // Mark report as under review with email notification
+        window.markReportUnderReview = async function(reportId) {
+            const report = allReports.find(r => r.id === reportId);
+            if (!report) {
+                showNotification('Report not found!', 'error');
+                return;
+            }
+
+            const notes = prompt('Enter any additional notes for the reporter (optional):');
+            
+            try {
+                console.log('Marking emergency report as under review for:', {
+                    name: `${report.firstName} ${report.lastName}`,
+                    email: report.email,
+                    emergencyType: report.subject
+                });
+
+                // Update status in database
+                const result = await emergencySystemData.updateReportStatus(reportId, 'under-review');
+                
+                if (result.success) {
+                    // Send email notification to REPORTER
+                    const emailSent = await sendEmergencyEmailNotification(report, 'review', notes);
+                    
+                    if (emailSent) {
+                        showNotification('Emergency report marked as Under Review and notification email sent!', 'success');
+                    } else {
+                        showNotification('Emergency report marked as Under Review but email notification failed.', 'error');
+                    }
+                    
+                    // Reload reports to show updated status
+                    loadReports();
+                }
+            } catch (error) {
+                console.error('Error updating emergency report:', error);
+                showNotification('Error updating emergency report: ' + error.message, 'error');
+            }
+        };
+
+        // Mark report as resolved with email notification
+        window.markReportResolved = async function(reportId) {
+            const report = allReports.find(r => r.id === reportId);
+            if (!report) {
+                showNotification('Report not found!', 'error');
+                return;
+            }
+
+            const resolutionNotes = prompt('Enter resolution notes for the reporter (optional):');
+            
+            try {
+                console.log('Marking emergency report as resolved for:', {
+                    name: `${report.firstName} ${report.lastName}`,
+                    email: report.email,
+                    emergencyType: report.subject
+                });
+
+                // Update status in database
+                const result = await emergencySystemData.updateReportStatus(reportId, 'resolved');
+                
+                if (result.success) {
+                    // Send email notification to REPORTER
+                    const emailSent = await sendEmergencyEmailNotification(report, 'resolve', resolutionNotes);
+                    
+                    if (emailSent) {
+                        showNotification('Emergency report marked as Resolved and notification email sent!', 'success');
+                    } else {
+                        showNotification('Emergency report marked as Resolved but email notification failed.', 'error');
+                    }
+                    
+                    // Reload reports to show updated status
+                    loadReports();
+                }
+            } catch (error) {
+                console.error('Error resolving emergency report:', error);
+                showNotification('Error resolving emergency report: ' + error.message, 'error');
+            }
+        };
+
+        // Reject emergency report with email notification
+        window.rejectEmergencyReport = async function(reportId) {
+            const report = allReports.find(r => r.id === reportId);
+            if (!report) {
+                showNotification('Report not found!', 'error');
+                return;
+            }
+
+            const rejectionReason = prompt('Enter rejection reason for the reporter (optional):');
+            
+            try {
+                console.log('Rejecting emergency report for:', {
+                    name: `${report.firstName} ${report.lastName}`,
+                    email: report.email,
+                    emergencyType: report.subject
+                });
+
+                // Update status in database
+                const result = await emergencySystemData.updateReportStatus(reportId, 'rejected');
+                
+                if (result.success) {
+                    // Send email notification to REPORTER
+                    const emailSent = await sendEmergencyEmailNotification(report, 'reject', rejectionReason);
+                    
+                    if (emailSent) {
+                        showNotification('Emergency report rejected and notification email sent!', 'success');
+                    } else {
+                        showNotification('Emergency report rejected but email notification failed.', 'error');
+                    }
+                    
+                    // Reload reports to show updated status
+                    loadReports();
+                }
+            } catch (error) {
+                console.error('Error rejecting emergency report:', error);
+                showNotification('Error rejecting emergency report: ' + error.message, 'error');
             }
         };
 
@@ -1127,6 +1524,44 @@
             }
         };
 
+        window.simulateEmergencyReport = async function() {
+            const firstNames = ['John', 'Jane', 'Robert', 'Mary', 'David', 'Sarah'];
+            const lastNames = ['Smith', 'Johnson', 'Williams', 'Brown', 'Jones', 'Garcia'];
+            const emergencyTypes = [
+                'Medical Emergency',
+                'Fire Emergency',
+                'Traffic Accident',
+                'Security Threat',
+                'Natural Disaster',
+                'Health Emergency'
+            ];
+            
+            const randomFirstName = firstNames[Math.floor(Math.random() * firstNames.length)];
+            const randomLastName = lastNames[Math.floor(Math.random() * lastNames.length)];
+            const randomType = emergencyTypes[Math.floor(Math.random() * emergencyTypes.length)];
+            
+            const testReport = {
+                firstName: randomFirstName,
+                lastName: randomLastName,
+                email: 'test@example.com',
+                phone: '+250 123 456 789',
+                subject: randomType,
+                message: `This is a simulated emergency report for ${randomType}. Please review and take appropriate action.`,
+                createdAt: new Date().toISOString(),
+                status: 'new'
+            };
+            
+            try {
+                const newReportRef = database.ref('emergencyReports').push();
+                await newReportRef.set(testReport);
+                
+                showNotification('Test emergency report created successfully!', 'success');
+                loadReports();
+            } catch (error) {
+                showNotification('Error simulating emergency report.', 'error');
+            }
+        };
+
         window.clearAllData = function() {
             if (confirm('Are you sure you want to clear ALL emergency data? This action cannot be undone.')) {
                 showNotification('Data clearing functionality would be implemented here.', 'info');
@@ -1139,6 +1574,60 @@
             // In a real implementation, you would generate a detailed emergency report
         };
 
+        // Test function for email sending (for debugging)
+        window.testEmergencyEmail = async function() {
+            try {
+                // Create a test emergency report
+                const testReport = {
+                    firstName: 'Test',
+                    lastName: 'Reporter',
+                    email: 'unitycoders2025@gmail.com', // Use your email for testing
+                    phone: '+250 123 456 789',
+                    subject: 'TEST: Medical Emergency',
+                    message: 'This is a test emergency report to verify email functionality.',
+                    createdAt: new Date().toISOString(),
+                    status: 'new'
+                };
+                
+                console.log('=== TESTING EMERGENCY EMAIL SYSTEM ===');
+                console.log('Using template:', EMAILJS_CONFIG.TEMPLATE_ID);
+                
+                const result = await sendEmergencyEmailNotification(testReport, 'accept', 'This is a test email to verify the system is working.');
+                
+                if (result) {
+                    showNotification('Test emergency email sent! Check your email inbox.', 'success');
+                } else {
+                    showNotification('Test emergency email failed to send', 'error');
+                }
+            } catch (error) {
+                console.error('Test error:', error);
+                showNotification('Test failed: ' + error.message, 'error');
+            }
+        };
+
+        // Debug function to check template variables
+        window.debugTemplate = function() {
+            console.log('=== DEBUG TEMPLATE VARIABLES ===');
+            console.log('Template ID:', EMAILJS_CONFIG.TEMPLATE_ID);
+            console.log('Expected variables in template:');
+            console.log('- to_name');
+            console.log('- to_email');
+            console.log('- from_name');
+            console.log('- subject');
+            console.log('- emergency_type');
+            console.log('- status');
+            console.log('- reported_date');
+            console.log('- reporter_name');
+            console.log('- date');
+            console.log('- time');
+            console.log('- emergency_hotline');
+            console.log('- hospital_name');
+            console.log('- hospital_email');
+            console.log('- hospital_address');
+            console.log('- notes');
+            console.log('- message');
+        };
+
         // Event Listeners and Initialization
         document.addEventListener('DOMContentLoaded', async function() {
             // Check authentication state first
@@ -1146,7 +1635,7 @@
                 if (!user) {
                     // User is not logged in, redirect to login page
                     console.log('No user found, redirecting to login...');
-                    // showNotification('Please login to access the emergency dashboard', 'error');
+                    showNotification('Please login to access the emergency dashboard', 'error');
                     
                     setTimeout(() => {
                         window.location.href = '/login.html';
@@ -1165,7 +1654,10 @@
                 setupEventListeners();
                 
                 // Show welcome notification
-                // showNotification(`Welcome, ${user.email}! Emergency dashboard loaded.`, 'success');
+                showNotification(`Welcome, ${user.email}! Emergency dashboard loaded.`, 'success');
+                
+                // Debug template
+                debugTemplate();
             });
 
             // Fixed Logout functionality
@@ -1174,7 +1666,7 @@
                 
                 try {
                     // Show loading state
-                    // showNotification('Logging out...', 'success');
+                    showNotification('Logging out...', 'info');
                     
                     // Sign out from Firebase
                     await auth.signOut();
@@ -1185,7 +1677,7 @@
                     sessionStorage.clear();
                     
                     // Show success message
-                    // showNotification('Logged out successfully! Redirecting to login...', 'success');
+                    showNotification('Logged out successfully! Redirecting to login...', 'success');
                     
                     // Redirect to login page after a short delay
                     setTimeout(() => {
@@ -1251,7 +1743,8 @@
                             report.firstName?.toLowerCase().includes(searchTerm) ||
                             report.lastName?.toLowerCase().includes(searchTerm) ||
                             report.email?.toLowerCase().includes(searchTerm) ||
-                            report.subject?.toLowerCase().includes(searchTerm)
+                            report.subject?.toLowerCase().includes(searchTerm) ||
+                            report.status?.toLowerCase().includes(searchTerm)
                         );
                     } else {
                         filteredReports = [...allReports];

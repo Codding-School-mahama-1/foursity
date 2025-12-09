@@ -366,3 +366,81 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Make the updateLanguage function available globally
 window.updateLanguage = updateLanguage;
+
+
+
+
+// Save to Firebase
+db.ref('maternity-appointments/' + appointmentId).set(formData)
+    .then(() => {
+        console.log('Appointment saved successfully');
+        
+        // Send admin notification
+        sendAdminNotification(formData, appointmentId);
+        
+        showNotification(
+            currentLanguage === 'rw' 
+                ? '✅ Booking y\'ububyeyi yakiriwe! Turazagutabira.' 
+                : '✅ Maternity appointment request submitted successfully! We will contact you soon.', 
+            'success'
+        );
+        maternityForm.reset();
+    })
+    .catch((error) => {
+        console.error('Error saving appointment:', error);
+        showNotification(
+            currentLanguage === 'rw'
+                ? '❌ Ikosa mu kohereza booking. Ongera ugerageze.'
+                : '❌ Error submitting appointment request. Please try again.',
+            'error'
+        );
+    });
+
+
+    // Function to send admin notification
+async function sendAdminNotification(appointmentData, appointmentId) {
+    try {
+        // EmailJS Configuration
+        const EMAILJS_CONFIG = {
+            PUBLIC_KEY: 'GhBaQI-xJytzUAQjs',
+            SERVICE_ID: 'service_vh1szck',
+            ADMIN_TEMPLATE_ID: 'template_73c20ql' // Same or different template
+        };
+        
+        const ADMIN_EMAIL = 'your-email@example.com'; // ← REPLACE WITH YOUR EMAIL
+        
+        // Initialize EmailJS
+        emailjs.init(EMAILJS_CONFIG.PUBLIC_KEY);
+        
+        const patientName = `${appointmentData.firstName || ''} ${appointmentData.lastName || ''}`.trim();
+        
+        // Prepare email template parameters for ADMIN
+        const adminTemplateParams = {
+            to_name: 'Admin',
+            to_email: ADMIN_EMAIL,
+            patient_name: patientName,
+            patient_email: appointmentData.email || 'Not provided',
+            patient_phone: appointmentData.phone || 'Not provided',
+            appointment_date: appointmentData.preferredDate || 'Not specified',
+            appointment_time: 'Not specified', // Add time field if needed
+            service_type: appointmentData.serviceType || 'General Consultation',
+            pregnancy_week: appointmentData.pregnancyWeek || 'Not specified',
+            appointment_id: appointmentId,
+            created_at: new Date().toLocaleString(),
+            message: `NEW APPOINTMENT: ${patientName} has requested a maternity appointment for ${appointmentData.serviceType || 'General Consultation'}.`
+        };
+
+        // Send email to ADMIN
+        const response = await emailjs.send(
+            EMAILJS_CONFIG.SERVICE_ID,
+            EMAILJS_CONFIG.ADMIN_TEMPLATE_ID,
+            adminTemplateParams
+        );
+
+        console.log('Admin notification sent:', response);
+        
+    } catch (error) {
+        console.error('Failed to send admin notification:', error);
+        // Don't show error to user, just log it
+    }
+}

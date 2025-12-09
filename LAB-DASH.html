@@ -1,0 +1,2794 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hospital Lab Management System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        @keyframes slideOut {
+            from { transform: translateX(0); opacity: 1; }
+            to { transform: translateX(100%); opacity: 0; }
+        }
+        
+        .status-badge {
+            padding: 0.25rem 0.5rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+        }
+        
+        .status-badge::before {
+            content: '●';
+            margin-right: 0.25rem;
+        }
+        
+        .status-active {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        
+        .status-pending {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+        
+        .status-critical {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        
+        .status-completed {
+            background-color: #d1ecf1;
+            color: #0c5460;
+        }
+        
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 50;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal-overlay.active {
+            display: flex;
+        }
+        
+        .distribution-form {
+            display: none;
+        }
+        
+        .option-card.selected .distribution-form {
+            display: block;
+        }
+        
+        .selected-item {
+            background-color: white;
+            padding: 0.5rem 0.75rem;
+            border-radius: 0.375rem;
+            display: inline-block;
+            margin: 0.25rem;
+            border: 1px solid #e5e7eb;
+            font-size: 0.875rem;
+        }
+        
+        .test-results-form {
+            background-color: #f8f9fa;
+            padding: 1.25rem;
+            border-radius: 0.5rem;
+            margin-bottom: 1.25rem;
+            border: 2px solid #e5e7eb;
+        }
+        
+        .form-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.25rem;
+        }
+        
+        .form-row {
+            display: flex;
+            gap: 1.25rem;
+            margin-bottom: 1.25rem;
+        }
+        
+        @media (max-width: 768px) {
+            .form-row {
+                flex-direction: column;
+                gap: 0.75rem;
+            }
+        }
+        
+        .btn-action {
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.25rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-right: 0.25rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+            cursor: pointer;
+            border: none;
+        }
+        
+        .btn-edit {
+            background-color: #ffc107;
+            color: #333;
+        }
+        
+        .btn-delete {
+            background-color: #dc3545;
+            color: white;
+        }
+        
+        .btn-view {
+            background-color: #17a2b8;
+            color: white;
+        }
+        
+        .btn-send {
+            background-color: #28a745;
+            color: white;
+        }
+        
+        .option-card {
+            transition: all 0.3s ease;
+            border: 2px solid #e5e7eb;
+        }
+        
+        .option-card:hover {
+            border-color: #1a5f7a;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+        
+        .option-card.selected {
+            border-color: #1a5f7a;
+            background-color: #f0f9ff;
+        }
+        
+        /* Role-based styles */
+        .role-admin {
+            border-left: 4px solid #dc3545;
+        }
+        
+        .role-doctor {
+            border-left: 4px solid #007bff;
+        }
+        
+        .role-labtech {
+            border-left: 4px solid #28a745;
+        }
+        
+        .role-viewer {
+            border-left: 4px solid #6c757d;
+        }
+        
+        /* Alert styles */
+        .alert-critical {
+            animation: pulse 2s infinite;
+            border: 2px solid #dc3545;
+        }
+        
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(220, 53, 69, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(220, 53, 69, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(220, 53, 69, 0); }
+        }
+        
+        /* Chart container */
+        .chart-container {
+            position: relative;
+            height: 300px;
+            width: 100%;
+        }
+        
+        /* Login page styles */
+        .login-container {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #1a5f7a 0%, #159895 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+        
+        /* Make sure all content is visible */
+        .section {
+            background-color: white;
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        /* Modal styles */
+        .modal-content {
+            background-color: white;
+            border-radius: 1rem;
+            padding: 2rem;
+            max-width: 42rem;
+            width: 100%;
+            margin: 1rem;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        
+        /* Mobile optimizations */
+        @media (max-width: 640px) {
+            .mobile-stack {
+                flex-direction: column !important;
+            }
+            
+            .mobile-full {
+                width: 100% !important;
+            }
+            
+            .mobile-text-center {
+                text-align: center;
+            }
+            
+            .mobile-p-2 {
+                padding: 0.5rem !important;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+    <!-- Login Screen (Initially shown) -->
+    <div id="loginScreen" class="login-container">
+        <div class="bg-white rounded-2xl shadow-2xl p-8 w-full max-w-md">
+            <div class="text-center mb-8">
+                <div class="flex justify-center mb-4">
+                    <i class="fas fa-flask text-4xl text-blue-700"></i>
+                </div>
+                <h1 class="text-3xl font-bold text-blue-800">Hospital Lab System</h1>
+                <p class="text-gray-600 mt-2">Secure Login Required</p>
+            </div>
+            
+            <form id="loginForm" onsubmit="login(event)">
+                <div class="mb-6">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">
+                        <i class="fas fa-user mr-2"></i>Username
+                    </label>
+                    <input type="text" id="username" placeholder="Enter username" required 
+                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                </div>
+                
+                <div class="mb-6">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">
+                        <i class="fas fa-lock mr-2"></i>Password
+                    </label>
+                    <input type="password" id="password" placeholder="Enter password" required 
+                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                </div>
+                
+                <div class="mb-6">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">
+                        <i class="fas fa-user-tag mr-2"></i>Role
+                    </label>
+                    <select id="userRole" required 
+                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                        <option value="">Select Role</option>
+                        <option value="admin">Administrator</option>
+                        <option value="doctor">Doctor</option>
+                        <option value="labtech">Lab Technician</option>
+                        <option value="viewer">Viewer</option>
+                    </select>
+                </div>
+                
+                <button type="submit" class="w-full bg-blue-800 hover:bg-blue-900 text-white py-3 rounded-lg font-semibold text-lg transition-colors">
+                    <i class="fas fa-sign-in-alt mr-2"></i> Login
+                </button>
+                
+                <div class="mt-6 text-center text-sm text-gray-600">
+                    <p>Demo Credentials:</p>
+                    <p class="mt-1">Admin: admin / admin123</p>
+                    <p>Doctor: doctor / doctor123</p>
+                    <p>Lab Tech: labtech / lab123</p>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Main Dashboard (Initially hidden) -->
+    <div id="dashboard" class="min-h-screen p-4 md:p-6" style="display: none;">
+        <!-- Dashboard Container -->
+        <div class="max-w-7xl mx-auto">
+            
+            <!-- Header -->
+            <header class="bg-gradient-to-r from-blue-800 to-teal-600 text-white p-6 rounded-2xl shadow-lg mb-8">
+                <div class="flex flex-col md:flex-row justify-between items-center gap-4">
+                    <div class="flex items-center gap-3">
+                        <i class="fas fa-flask text-3xl"></i>
+                        <div>
+                            <h1 class="text-2xl md:text-3xl font-bold">Hospital Lab Management System</h1>
+                            <div class="flex items-center gap-2 mt-1">
+                                <span class="text-sm opacity-90">Logged in as:</span>
+                                <span id="currentUserRole" class="px-2 py-1 rounded-full text-xs font-bold bg-white/20"></span>
+                                <span id="currentUserName" class="font-medium"></span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center gap-4">
+                        <button id="alertsButton" class="relative" onclick="showAlerts()">
+                            <i class="fas fa-bell text-xl"></i>
+                            <span id="alertBadge" class="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold">0</span>
+                        </button>
+                        
+                        <div id="userProfile" class="flex items-center gap-2 bg-white/20 px-4 py-2 rounded-full cursor-pointer" onclick="toggleUserMenu()">
+                            <i class="fas fa-user-md"></i>
+                            <span id="userDisplayName" class="font-medium"></span>
+                            <i class="fas fa-chevron-down ml-2"></i>
+                        </div>
+                        
+                        <!-- User Menu Dropdown -->
+                        <div id="userMenu" class="absolute mt-2 right-4 bg-white rounded-lg shadow-xl z-50 hidden" style="top: 120px;">
+                            <div class="py-2">
+                                <div class="px-4 py-2 border-b">
+                                    <p class="font-semibold" id="menuUserName"></p>
+                                    <p class="text-sm text-gray-500" id="menuUserRole"></p>
+                                </div>
+                                <a href="#" class="block px-4 py-2 hover:bg-gray-100" onclick="switchRole()">
+                                    <i class="fas fa-exchange-alt mr-2"></i>Switch Role
+                                </a>
+                                <a href="#" class="block px-4 py-2 hover:bg-gray-100" onclick="showAnalytics()">
+                                    <i class="fas fa-chart-bar mr-2"></i>Analytics
+                                </a>
+                                <a href="#" class="block px-4 py-2 hover:bg-gray-100" onclick="showReportTemplates()">
+                                    <i class="fas fa-file-alt mr-2"></i>Report Templates
+                                </a>
+                                <a href="#" class="block px-4 py-2 hover:bg-gray-100" onclick="showSettings()">
+                                    <i class="fas fa-cog mr-2"></i>Settings
+                                </a>
+                                <div class="border-t">
+                                    <a href="#" class="block px-4 py-2 text-red-600 hover:bg-red-50" onclick="logout()">
+                                        <i class="fas fa-sign-out-alt mr-2"></i>Logout
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Critical Alerts Banner -->
+            <div id="criticalAlerts" class="bg-red-50 border-l-4 border-red-500 p-4 mb-6 rounded-r-lg hidden">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center">
+                        <i class="fas fa-exclamation-triangle text-red-500 text-xl mr-3"></i>
+                        <div>
+                            <h3 class="font-bold text-red-700">Critical Results Alert</h3>
+                            <p id="alertMessage" class="text-red-600 text-sm">You have <span id="criticalCountAlert">0</span> critical results requiring immediate attention</p>
+                        </div>
+                    </div>
+                    <button onclick="viewCriticalResults()" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg font-semibold text-sm">
+                        <i class="fas fa-eye mr-2"></i>View Now
+                    </button>
+                </div>
+            </div>
+
+            <!-- Stats Panel -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                <div class="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow">
+                    <h3 class="text-gray-600 text-sm font-medium mb-2">Today's Shifts</h3>
+                    <div class="text-4xl font-bold text-blue-800 mb-1" id="shiftCount">0</div>
+                    <div class="text-gray-500 text-sm">Doctors on duty</div>
+                </div>
+                
+                <div class="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow">
+                    <h3 class="text-gray-600 text-sm font-medium mb-2">Pending Results</h3>
+                    <div class="text-4xl font-bold text-yellow-600 mb-1" id="pendingCount">0</div>
+                    <div class="text-gray-500 text-sm">Awaiting processing</div>
+                </div>
+                
+                <div class="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow">
+                    <h3 class="text-gray-600 text-sm font-medium mb-2">Results Today</h3>
+                    <div class="text-4xl font-bold text-green-600 mb-1" id="resultsCount">0</div>
+                    <div class="text-gray-500 text-sm">Tests completed</div>
+                </div>
+                
+                <div class="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow">
+                    <h3 class="text-gray-600 text-sm font-medium mb-2">Critical Results</h3>
+                    <div class="text-4xl font-bold text-red-600 mb-1" id="criticalCount">0</div>
+                    <div class="text-gray-500 text-sm">Require immediate attention</div>
+                </div>
+            </div>
+
+            <!-- Analytics Charts Section -->
+            <section id="analyticsSection" class="bg-white rounded-2xl shadow-lg p-6 mb-8">
+                <div class="flex items-center justify-between mb-6 pb-4 border-b">
+                    <div class="flex items-center gap-2">
+                        <i class="fas fa-chart-bar text-blue-700 text-xl"></i>
+                        <h2 class="text-xl font-bold text-blue-800">Analytics Dashboard</h2>
+                    </div>
+                    <div class="flex gap-2">
+                        <select id="chartPeriod" onchange="updateCharts()" class="px-3 py-1 border border-gray-300 rounded-lg text-sm">
+                            <option value="day">Today</option>
+                            <option value="week">This Week</option>
+                            <option value="month">This Month</option>
+                            <option value="year">This Year</option>
+                        </select>
+                        <button onclick="exportAnalytics()" class="bg-blue-800 hover:bg-blue-900 text-white px-3 py-1 rounded-lg font-semibold text-sm flex items-center gap-1">
+                            <i class="fas fa-download"></i> Export
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <!-- Test Volume Chart -->
+                    <div class="bg-gray-50 p-4 rounded-xl">
+                        <h3 class="font-semibold text-gray-700 mb-4">Test Volume by Type</h3>
+                        <div class="chart-container">
+                            <canvas id="testVolumeChart"></canvas>
+                        </div>
+                    </div>
+                    
+                    <!-- Result Status Chart -->
+                    <div class="bg-gray-50 p-4 rounded-xl">
+                        <h3 class="font-semibold text-gray-700 mb-4">Result Status Distribution</h3>
+                        <div class="chart-container">
+                            <canvas id="statusChart"></canvas>
+                        </div>
+                    </div>
+                    
+                    <!-- Turnaround Time -->
+                    <div class="bg-gray-50 p-4 rounded-xl">
+                        <h3 class="font-semibold text-gray-700 mb-4">Average Turnaround Time (Hours)</h3>
+                        <div class="chart-container">
+                            <canvas id="turnaroundChart"></canvas>
+                        </div>
+                    </div>
+                    
+                    <!-- Critical Results Trend -->
+                    <div class="bg-gray-50 p-4 rounded-xl">
+                        <h3 class="font-semibold text-gray-700 mb-4">Critical Results Trend</h3>
+                        <div class="chart-container">
+                            <canvas id="criticalTrendChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Doctor Shift Management Section -->
+            <section id="shiftSection" class="bg-white rounded-2xl shadow-lg p-6 mb-8 role-admin role-doctor">
+                <div class="flex items-center gap-2 mb-6 pb-4 border-b">
+                    <i class="fas fa-user-md text-blue-700 text-xl"></i>
+                    <h2 class="text-xl font-bold text-blue-800">Doctor Shift Schedule</h2>
+                </div>
+                
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
+                    <button onclick="openShiftModal()" class="bg-blue-800 hover:bg-blue-900 text-white px-4 py-2 rounded-lg font-semibold flex items-center gap-2 transition-colors">
+                        <i class="fas fa-plus"></i> Add New Shift
+                    </button>
+                    
+                    <div class="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
+                        <select id="dateFilter" onchange="filterShifts()" class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                            <option value="today">Today</option>
+                            <option value="week">This Week</option>
+                            <option value="month">This Month</option>
+                            <option value="all">All Shifts</option>
+                        </select>
+                        
+                        <input type="text" id="searchDoctor" placeholder="Search doctor..." onkeyup="searchDoctors()" 
+                               class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 w-full sm:w-64">
+                    </div>
+                </div>
+                
+                <div class="overflow-x-auto">
+                    <table class="w-full">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="py-3 px-4 text-left font-semibold text-gray-700">Doctor ID</th>
+                                <th class="py-3 px-4 text-left font-semibold text-gray-700">Doctor Name</th>
+                                <th class="py-3 px-4 text-left font-semibold text-gray-700">Department</th>
+                                <th class="py-3 px-4 text-left font-semibold text-gray-700">Shift Type</th>
+                                <th class="py-3 px-4 text-left font-semibold text-gray-700">Start Time</th>
+                                <th class="py-3 px-4 text-left font-semibold text-gray-700">End Time</th>
+                                <th class="py-3 px-4 text-left font-semibold text-gray-700">Status</th>
+                                <th class="py-3 px-4 text-left font-semibold text-gray-700">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="shiftTableBody" class="divide-y divide-gray-200">
+                            <!-- Shifts will be populated by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Lab Results Management Section -->
+            <section id="resultsSection" class="bg-white rounded-2xl shadow-lg p-6 mb-8 role-admin role-doctor role-labtech">
+                <div class="flex items-center gap-2 mb-6 pb-4 border-b">
+                    <i class="fas fa-file-medical-alt text-blue-700 text-xl"></i>
+                    <h2 class="text-xl font-bold text-blue-800">Lab Results Queue</h2>
+                </div>
+                
+                <!-- New Test Result Entry Form -->
+                <div class="test-results-form role-admin role-labtech">
+                    <div class="form-header">
+                        <h3 class="text-lg font-semibold text-blue-800 flex items-center gap-2">
+                            <i class="fas fa-plus-circle"></i> Register New Lab Result
+                        </h3>
+                        <button onclick="clearResultForm()" class="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-lg font-semibold flex items-center gap-2 transition-colors">
+                            <i class="fas fa-times"></i> Clear Form
+                        </button>
+                    </div>
+                    
+                    <form id="resultForm" onsubmit="saveResult(event)">
+                        <div class="form-row">
+                            <div class="flex-1">
+                                <label for="patientId" class="block text-sm font-medium text-gray-700 mb-1">Patient ID *</label>
+                                <input type="text" id="patientId" placeholder="PT-XXXX" required 
+                                       class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                            </div>
+                            <div class="flex-1">
+                                <label for="patientName" class="block text-sm font-medium text-gray-700 mb-1">Patient Name *</label>
+                                <input type="text" id="patientName" placeholder="Full name" required 
+                                       class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="flex-1">
+                                <label for="testType" class="block text-sm font-medium text-gray-700 mb-1">Test Type *</label>
+                                <select id="testType" required 
+                                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                                    <option value="">Select Test Type</option>
+                                    <option value="Complete Blood Count">Complete Blood Count</option>
+                                    <option value="Urinalysis">Urinalysis</option>
+                                    <option value="Blood Culture">Blood Culture</option>
+                                    <option value="Liver Function Test">Liver Function Test</option>
+                                    <option value="Tissue Biopsy">Tissue Biopsy</option>
+                                    <option value="Glucose Test">Glucose Test</option>
+                                    <option value="Cholesterol Test">Cholesterol Test</option>
+                                    <option value="HIV Test">HIV Test</option>
+                                    <option value="COVID-19 PCR">COVID-19 PCR</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </div>
+                            <div class="flex-1">
+                                <label for="testCategory" class="block text-sm font-medium text-gray-700 mb-1">Test Category *</label>
+                                <select id="testCategory" required 
+                                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                                    <option value="">Select Category</option>
+                                    <option value="blood">Blood Test</option>
+                                    <option value="urine">Urinalysis</option>
+                                    <option value="culture">Culture</option>
+                                    <option value="biopsy">Biopsy</option>
+                                    <option value="molecular">Molecular Test</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="flex-1">
+                                <label for="requestingDoctor" class="block text-sm font-medium text-gray-700 mb-1">Requesting Doctor *</label>
+                                <select id="requestingDoctor" required 
+                                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                                    <!-- Doctors will be populated dynamically -->
+                                </select>
+                            </div>
+                            <div class="flex-1">
+                                <label for="resultStatus" class="block text-sm font-medium text-gray-700 mb-1">Result Status *</label>
+                                <select id="resultStatus" required 
+                                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                                    <option value="pending">Pending</option>
+                                    <option value="completed">Completed</option>
+                                    <option value="critical">Critical</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label for="testResults" class="block text-sm font-medium text-gray-700 mb-1">Test Results</label>
+                            <textarea id="testResults" placeholder="Enter test findings and observations..." rows="3"
+                                      class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"></textarea>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="flex-1">
+                                <label for="labTechnician" class="block text-sm font-medium text-gray-700 mb-1">Lab Technician</label>
+                                <input type="text" id="labTechnician" placeholder="Technician name"
+                                       class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                            </div>
+                            <div class="flex-1">
+                                <label for="completionTime" class="block text-sm font-medium text-gray-700 mb-1">Completion Time</label>
+                                <input type="datetime-local" id="completionTime"
+                                       class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                            </div>
+                        </div>
+                        
+                        <div class="mb-6">
+                            <label class="flex items-center">
+                                <input type="checkbox" id="isCritical" class="rounded text-blue-600 focus:ring-blue-500">
+                                <span class="ml-2 text-sm text-gray-700">Mark as Critical Result</span>
+                            </label>
+                        </div>
+                        
+                        <div class="flex justify-end gap-3">
+                            <button type="button" onclick="clearResultForm()" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg font-semibold transition-colors">
+                                Clear
+                            </button>
+                            <button type="submit" class="bg-blue-800 hover:bg-blue-900 text-white px-4 py-2 rounded-lg font-semibold flex items-center gap-2 transition-colors">
+                                <i class="fas fa-save"></i> Save Result
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                
+                <!-- Results Table Controls -->
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
+                    <button onclick="openQuickResultModal()" class="bg-blue-800 hover:bg-blue-900 text-white px-4 py-2 rounded-lg font-semibold flex items-center gap-2 transition-colors">
+                        <i class="fas fa-plus"></i> Quick Add Result
+                    </button>
+                    
+                    <div class="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
+                        <input type="text" id="searchResults" placeholder="Search by Patient ID/Name" onkeyup="searchResults()"
+                               class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 w-full sm:w-64">
+                        
+                        <select id="resultStatusFilter" onchange="filterResults()"
+                                class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                            <option value="all">All Results</option>
+                            <option value="pending">Pending</option>
+                            <option value="completed">Completed</option>
+                            <option value="critical">Critical</option>
+                        </select>
+                        
+                        <select id="testTypeFilter" onchange="filterResults()"
+                                class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                            <option value="all">All Test Types</option>
+                            <option value="blood">Blood Test</option>
+                            <option value="urine">Urinalysis</option>
+                            <option value="culture">Culture</option>
+                            <option value="biopsy">Biopsy</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <!-- Results Table -->
+                <div class="overflow-x-auto">
+                    <table class="w-full">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="py-3 px-4 text-left">
+                                    <input type="checkbox" id="selectAll" onclick="toggleSelectAll()" class="rounded text-blue-600 focus:ring-blue-500">
+                                </th>
+                                <th class="py-3 px-4 text-left font-semibold text-gray-700">Result ID</th>
+                                <th class="py-3 px-4 text-left font-semibold text-gray-700">Patient Name</th>
+                                <th class="py-3 px-4 text-left font-semibold text-gray-700">Test Type</th>
+                                <th class="py-3 px-4 text-left font-semibold text-gray-700">Requesting Doctor</th>
+                                <th class="py-3 px-4 text-left font-semibold text-gray-700">Status</th>
+                                <th class="py-3 px-4 text-left font-semibold text-gray-700">Completed Time</th>
+                                <th class="py-3 px-4 text-left font-semibold text-gray-700">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="resultsTableBody" class="divide-y divide-gray-200">
+                            <!-- Results will be populated by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Result Distribution Section -->
+            <section id="distributionSection" class="bg-white rounded-2xl shadow-lg p-6 mb-8 role-admin role-doctor role-labtech">
+                <div class="flex items-center gap-2 mb-6 pb-4 border-b">
+                    <i class="fas fa-share-square text-blue-700 text-xl"></i>
+                    <h2 class="text-xl font-bold text-blue-800">Distribute Results</h2>
+                </div>
+                
+                <!-- Report Template Selection -->
+                <div class="mb-6 bg-gray-50 p-4 rounded-xl">
+                    <h4 class="font-semibold text-gray-700 mb-3">Report Template</h4>
+                    <div class="flex flex-wrap gap-3">
+                        <label class="flex items-center">
+                            <input type="radio" name="reportTemplate" value="standard" checked class="mr-2">
+                            <span class="text-sm">Standard Report</span>
+                        </label>
+                        <label class="flex items-center">
+                            <input type="radio" name="reportTemplate" value="detailed" class="mr-2">
+                            <span class="text-sm">Detailed with Ranges</span>
+                        </label>
+                        <label class="flex items-center">
+                            <input type="radio" name="reportTemplate" value="summary" class="mr-2">
+                            <span class="text-sm">Executive Summary</span>
+                        </label>
+                        <label class="flex items-center">
+                            <input type="radio" name="reportTemplate" value="custom" class="mr-2">
+                            <span class="text-sm">Custom Template</span>
+                        </label>
+                    </div>
+                </div>
+                
+                <!-- Selected Results -->
+                <div class="bg-gray-50 p-4 rounded-xl border-2 border-dashed border-gray-300 mb-6 min-h-[100px]">
+                    <h4 class="font-semibold text-gray-700 mb-2">Selected Results for Distribution (<span id="selectedCount">0</span>)</h4>
+                    <div id="selectedItemsContainer" class="flex flex-wrap gap-2">
+                        <!-- Selected items will appear here -->
+                    </div>
+                </div>
+                
+                <!-- Distribution Options -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <!-- Email Option -->
+                    <div class="option-card border-2 border-gray-200 p-5 rounded-xl cursor-pointer transition-all"
+                         onclick="selectDistributionMethod('email')" id="emailOption">
+                        <div class="text-4xl mb-4">📧</div>
+                        <h4 class="text-lg font-semibold text-blue-800 mb-2">Send via Email</h4>
+                        <p class="text-gray-600 text-sm">Direct email to doctor's inbox</p>
+                        
+                        <div class="distribution-form mt-4 pt-4 border-t border-gray-200" id="emailForm">
+                            <div class="mb-4">
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Doctor's Email:</label>
+                                <input type="email" id="doctorEmail" placeholder="doctor@hospital.com"
+                                       class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                            </div>
+                            <div class="mb-4">
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Subject:</label>
+                                <input type="text" id="emailSubject" value="Lab Results - Urgent Review Required"
+                                       class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                            </div>
+                            <div class="mb-4">
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Additional Notes:</label>
+                                <textarea id="emailMessage" rows="3" placeholder="Add any additional notes for the doctor..."
+                                          class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"></textarea>
+                            </div>
+                            <button onclick="sendViaEmail()" class="bg-blue-800 hover:bg-blue-900 text-white px-4 py-2 rounded-lg font-semibold w-full flex items-center justify-center gap-2 transition-colors">
+                                <i class="fas fa-paper-plane"></i> Send Email
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Print Option -->
+                    <div class="option-card border-2 border-gray-200 p-5 rounded-xl cursor-pointer transition-all"
+                         onclick="selectDistributionMethod('print')" id="printOption">
+                        <div class="text-4xl mb-4">🖨️</div>
+                        <h4 class="text-lg font-semibold text-blue-800 mb-2">Print Results</h4>
+                        <p class="text-gray-600 text-sm">Generate printable report</p>
+                        
+                        <div class="distribution-form mt-4 pt-4 border-t border-gray-200" id="printForm">
+                            <div class="mb-4">
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Report Format:</label>
+                                <select id="printFormat" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                                    <option value="standard">Standard Report</option>
+                                    <option value="detailed">Detailed Report</option>
+                                    <option value="summary">Summary Only</option>
+                                </select>
+                            </div>
+                            <button onclick="printResults()" class="bg-blue-800 hover:bg-blue-900 text-white px-4 py-2 rounded-lg font-semibold w-full flex items-center justify-center gap-2 transition-colors">
+                                <i class="fas fa-print"></i> Generate & Print
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Doctor Portal Option -->
+                    <div class="option-card border-2 border-gray-200 p-5 rounded-xl cursor-pointer transition-all"
+                         onclick="selectDistributionMethod('portal')" id="portalOption">
+                        <div class="text-4xl mb-4">💻</div>
+                        <h4 class="text-lg font-semibold text-blue-800 mb-2">Send to Doctor's Portal</h4>
+                        <p class="text-gray-600 text-sm">Direct upload to doctor's dashboard</p>
+                        
+                        <div class="distribution-form mt-4 pt-4 border-t border-gray-200" id="portalForm">
+                            <div class="mb-4">
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Select Doctor:</label>
+                                <select id="selectDoctor" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                                    <!-- Doctors will be populated dynamically -->
+                                </select>
+                            </div>
+                            <div class="mb-4">
+                                <label class="flex items-center">
+                                    <input type="checkbox" id="notifyDoctor" checked class="rounded text-blue-600 focus:ring-blue-500">
+                                    <span class="ml-2 text-sm text-gray-700">Send Notification</span>
+                                </label>
+                            </div>
+                            <button onclick="sendToPortal()" class="bg-blue-800 hover:bg-blue-900 text-white px-4 py-2 rounded-lg font-semibold w-full flex items-center justify-center gap-2 transition-colors">
+                                <i class="fas fa-upload"></i> Send to Portal
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <!-- Shift Management Modal -->
+    <div class="modal-overlay" id="shiftModal">
+        <div class="modal-content">
+            <div class="flex items-center justify-between mb-6">
+                <h3 class="text-2xl font-bold text-blue-800" id="shiftModalTitle">Add New Shift</h3>
+                <button onclick="closeShiftModal()" class="text-gray-500 hover:text-gray-700">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            
+            <form id="shiftForm" onsubmit="saveShift(event)">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Doctor *</label>
+                        <select id="shiftDoctorId" required class="w-full px-4 py-2 border border-gray-300 rounded-lg">
+                            <option value="">Select Doctor</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Department *</label>
+                        <input type="text" id="shiftDepartment" required placeholder="Cardiology"
+                               class="w-full px-4 py-2 border border-gray-300 rounded-lg">
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Shift Date *</label>
+                        <input type="date" id="shiftDate" required 
+                               class="w-full px-4 py-2 border border-gray-300 rounded-lg">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Shift Type *</label>
+                        <select id="shiftType" required class="w-full px-4 py-2 border border-gray-300 rounded-lg">
+                            <option value="">Select Type</option>
+                            <option value="Morning">Morning (8 AM - 4 PM)</option>
+                            <option value="Evening">Evening (4 PM - 12 AM)</option>
+                            <option value="Night">Night (12 AM - 8 AM)</option>
+                            <option value="On-Call">On-Call</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Start Time *</label>
+                        <input type="time" id="shiftStartTime" required 
+                               class="w-full px-4 py-2 border border-gray-300 rounded-lg">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">End Time *</label>
+                        <input type="time" id="shiftEndTime" required 
+                               class="w-full px-4 py-2 border border-gray-300 rounded-lg">
+                    </div>
+                </div>
+                
+                <div class="mb-6">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Status *</label>
+                    <select id="shiftStatus" required class="w-full px-4 py-2 border border-gray-300 rounded-lg">
+                        <option value="active">Active</option>
+                        <option value="upcoming">Upcoming</option>
+                        <option value="completed">Completed</option>
+                        <option value="cancelled">Cancelled</option>
+                    </select>
+                </div>
+                
+                <div class="flex justify-end gap-3">
+                    <button type="button" onclick="closeShiftModal()" class="px-4 py-2 border border-gray-300 rounded-lg font-semibold">
+                        Cancel
+                    </button>
+                    <button type="submit" class="bg-blue-800 hover:bg-blue-900 text-white px-4 py-2 rounded-lg font-semibold">
+                        Save Shift
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Quick Result Modal -->
+    <div class="modal-overlay" id="quickResultModal">
+        <div class="modal-content">
+            <div class="flex items-center justify-between mb-6">
+                <h3 class="text-2xl font-bold text-blue-800">Quick Add Result</h3>
+                <button onclick="closeQuickResultModal()" class="text-gray-500 hover:text-gray-700">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            
+            <form id="quickResultForm" onsubmit="saveQuickResult(event)">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Patient ID *</label>
+                        <input type="text" id="quickPatientId" required placeholder="PT-XXXX"
+                               class="w-full px-4 py-2 border border-gray-300 rounded-lg">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Patient Name *</label>
+                        <input type="text" id="quickPatientName" required placeholder="Full name"
+                               class="w-full px-4 py-2 border border-gray-300 rounded-lg">
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Test Type *</label>
+                        <select id="quickTestType" required class="w-full px-4 py-2 border border-gray-300 rounded-lg">
+                            <option value="">Select Test</option>
+                            <option value="Complete Blood Count">Complete Blood Count</option>
+                            <option value="Urinalysis">Urinalysis</option>
+                            <option value="Blood Culture">Blood Culture</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Requesting Doctor *</label>
+                        <select id="quickRequestingDoctor" required class="w-full px-4 py-2 border border-gray-300 rounded-lg">
+                            <option value="">Select Doctor</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="mb-6">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Test Results</label>
+                    <textarea id="quickTestResults" rows="3" placeholder="Enter test findings..."
+                              class="w-full px-4 py-2 border border-gray-300 rounded-lg"></textarea>
+                </div>
+                
+                <div class="flex justify-end gap-3">
+                    <button type="button" onclick="closeQuickResultModal()" class="px-4 py-2 border border-gray-300 rounded-lg font-semibold">
+                        Cancel
+                    </button>
+                    <button type="submit" class="bg-blue-800 hover:bg-blue-900 text-white px-4 py-2 rounded-lg font-semibold">
+                        Save Result
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Add Doctor Modal -->
+    <div class="modal-overlay" id="addDoctorModal">
+        <div class="modal-content">
+            <div class="flex items-center justify-between mb-6">
+                <h3 class="text-2xl font-bold text-blue-800">Add New Doctor</h3>
+                <button onclick="closeAddDoctorModal()" class="text-gray-500 hover:text-gray-700">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            
+            <form id="addDoctorForm" onsubmit="saveNewDoctor(event)">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Doctor ID *</label>
+                        <input type="text" id="newDoctorId" required placeholder="DOC-XXX"
+                               class="w-full px-4 py-2 border border-gray-300 rounded-lg">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Full Name *</label>
+                        <input type="text" id="newDoctorName" required placeholder="Dr. First Last"
+                               class="w-full px-4 py-2 border border-gray-300 rounded-lg">
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Department *</label>
+                        <select id="newDoctorDepartment" required class="w-full px-4 py-2 border border-gray-300 rounded-lg">
+                            <option value="">Select Department</option>
+                            <option value="Cardiology">Cardiology</option>
+                            <option value="Neurology">Neurology</option>
+                            <option value="Orthopedics">Orthopedics</option>
+                            <option value="Pediatrics">Pediatrics</option>
+                            <option value="Pathology">Pathology</option>
+                            <option value="Hematology">Hematology</option>
+                            <option value="Microbiology">Microbiology</option>
+                            <option value="Biochemistry">Biochemistry</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Email *</label>
+                        <input type="email" id="newDoctorEmail" required placeholder="doctor@hospital.com"
+                               class="w-full px-4 py-2 border border-gray-300 rounded-lg">
+                    </div>
+                </div>
+                
+                <div class="mb-6">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Specialization</label>
+                    <input type="text" id="newDoctorSpecialization" placeholder="e.g., Cardiology, Pediatrics"
+                           class="w-full px-4 py-2 border border-gray-300 rounded-lg">
+                </div>
+                
+                <div class="flex justify-end gap-3">
+                    <button type="button" onclick="closeAddDoctorModal()" class="px-4 py-2 border border-gray-300 rounded-lg font-semibold">
+                        Cancel
+                    </button>
+                    <button type="submit" class="bg-blue-800 hover:bg-blue-900 text-white px-4 py-2 rounded-lg font-semibold">
+                        Add Doctor
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Alerts Modal -->
+    <div class="modal-overlay" id="alertsModal">
+        <div class="modal-content max-w-3xl">
+            <div class="flex items-center justify-between mb-6">
+                <div class="flex items-center gap-2">
+                    <i class="fas fa-bell text-blue-700 text-2xl"></i>
+                    <h3 class="text-2xl font-bold text-blue-800">Critical Alerts</h3>
+                </div>
+                <button onclick="closeAlertsModal()" class="text-gray-500 hover:text-gray-700">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            
+            <div id="alertsList" class="space-y-4">
+                <!-- Alerts will be populated here -->
+            </div>
+            
+            <div class="mt-6 pt-6 border-t border-gray-200">
+                <div class="flex justify-between items-center">
+                    <div>
+                        <label class="flex items-center">
+                            <input type="checkbox" id="autoEscalate" class="mr-2 rounded">
+                            <span class="text-sm text-gray-700">Auto-escalate after 30 minutes</span>
+                        </label>
+                    </div>
+                    <button onclick="acknowledgeAllAlerts()" class="bg-blue-800 hover:bg-blue-900 text-white px-4 py-2 rounded-lg font-semibold">
+                        <i class="fas fa-check mr-2"></i> Acknowledge All
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Settings Modal -->
+    <div class="modal-overlay" id="settingsModal">
+        <div class="modal-content max-w-3xl">
+            <div class="flex items-center justify-between mb-6">
+                <div class="flex items-center gap-2">
+                    <i class="fas fa-cog text-blue-700 text-2xl"></i>
+                    <h3 class="text-2xl font-bold text-blue-800">System Settings</h3>
+                </div>
+                <button onclick="closeSettings()" class="text-gray-500 hover:text-gray-700">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            
+            <div class="space-y-6">
+                <div>
+                    <h4 class="font-semibold text-gray-700 mb-3">Notification Settings</h4>
+                    <div class="space-y-3">
+                        <label class="flex items-center">
+                            <input type="checkbox" checked class="mr-3 rounded">
+                            <span>Email notifications for critical results</span>
+                        </label>
+                        <label class="flex items-center">
+                            <input type="checkbox" checked class="mr-3 rounded">
+                            <span>SMS alerts for urgent cases</span>
+                        </label>
+                        <label class="flex items-center">
+                            <input type="checkbox" class="mr-3 rounded">
+                            <span>Push notifications</span>
+                        </label>
+                    </div>
+                </div>
+                
+                <div>
+                    <h4 class="font-semibold text-gray-700 mb-3">Report Templates</h4>
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between p-3 border rounded-lg">
+                            <div>
+                                <p class="font-medium">Standard Lab Report</p>
+                                <p class="text-sm text-gray-500">Basic results with normal ranges</p>
+                            </div>
+                            <button class="text-blue-600 hover:text-blue-800">
+                                <i class="fas fa-edit"></i> Edit
+                            </button>
+                        </div>
+                        <div class="flex items-center justify-between p-3 border rounded-lg">
+                            <div>
+                                <p class="font-medium">Detailed Clinical Report</p>
+                                <p class="text-sm text-gray-500">Comprehensive analysis with interpretations</p>
+                            </div>
+                            <button class="text-blue-600 hover:text-blue-800">
+                                <i class="fas fa-edit"></i> Edit
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div>
+                    <h4 class="font-semibold text-gray-700 mb-3">Role Permissions</h4>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th class="py-2 px-3 text-left">Role</th>
+                                    <th class="py-2 px-3 text-left">View Results</th>
+                                    <th class="py-2 px-3 text-left">Add Results</th>
+                                    <th class="py-2 px-3 text-left">Edit Results</th>
+                                    <th class="py-2 px-3 text-left">Manage Users</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="border-b">
+                                    <td class="py-2 px-3">Administrator</td>
+                                    <td class="py-2 px-3"><i class="fas fa-check text-green-500"></i></td>
+                                    <td class="py-2 px-3"><i class="fas fa-check text-green-500"></i></td>
+                                    <td class="py-2 px-3"><i class="fas fa-check text-green-500"></i></td>
+                                    <td class="py-2 px-3"><i class="fas fa-check text-green-500"></i></td>
+                                </tr>
+                                <tr class="border-b">
+                                    <td class="py-2 px-3">Doctor</td>
+                                    <td class="py-2 px-3"><i class="fas fa-check text-green-500"></i></td>
+                                    <td class="py-2 px-3"><i class="fas fa-check text-green-500"></i></td>
+                                    <td class="py-2 px-3"><i class="fas fa-times text-red-500"></i></td>
+                                    <td class="py-2 px-3"><i class="fas fa-times text-red-500"></i></td>
+                                </tr>
+                                <tr class="border-b">
+                                    <td class="py-2 px-3">Lab Technician</td>
+                                    <td class="py-2 px-3"><i class="fas fa-check text-green-500"></i></td>
+                                    <td class="py-2 px-3"><i class="fas fa-check text-green-500"></i></td>
+                                    <td class="py-2 px-3"><i class="fas fa-check text-green-500"></i></td>
+                                    <td class="py-2 px-3"><i class="fas fa-times text-red-500"></i></td>
+                                </tr>
+                                <tr>
+                                    <td class="py-2 px-3">Viewer</td>
+                                    <td class="py-2 px-3"><i class="fas fa-check text-green-500"></i></td>
+                                    <td class="py-2 px-3"><i class="fas fa-times text-red-500"></i></td>
+                                    <td class="py-2 px-3"><i class="fas fa-times text-red-500"></i></td>
+                                    <td class="py-2 px-3"><i class="fas fa-times text-red-500"></i></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-8 flex justify-end gap-3">
+                <button onclick="closeSettings()" class="px-4 py-2 border border-gray-300 rounded-lg font-semibold">
+                    Cancel
+                </button>
+                <button onclick="saveSettings()" class="bg-blue-800 hover:bg-blue-900 text-white px-4 py-2 rounded-lg font-semibold">
+                    Save Settings
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Report Templates Modal -->
+    <div class="modal-overlay" id="templatesModal">
+        <div class="modal-content max-w-4xl">
+            <div class="flex items-center justify-between mb-6">
+                <div class="flex items-center gap-2">
+                    <i class="fas fa-file-alt text-blue-700 text-2xl"></i>
+                    <h3 class="text-2xl font-bold text-blue-800">Report Templates</h3>
+                </div>
+                <button onclick="closeTemplatesModal()" class="text-gray-500 hover:text-gray-700">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                <div class="border rounded-xl p-5 hover:border-blue-500 cursor-pointer" onclick="selectTemplate('standard')">
+                    <div class="flex items-center gap-3 mb-3">
+                        <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-file-medical text-blue-600"></i>
+                        </div>
+                        <h4 class="font-semibold text-gray-800">Standard Lab Report</h4>
+                    </div>
+                    <p class="text-gray-600 text-sm mb-3">Basic results format with normal reference ranges</p>
+                    <div class="text-xs text-gray-500">
+                        <span class="inline-block bg-gray-100 px-2 py-1 rounded mr-2">Header</span>
+                        <span class="inline-block bg-gray-100 px-2 py-1 rounded mr-2">Results Table</span>
+                        <span class="inline-block bg-gray-100 px-2 py-1 rounded">Normal Ranges</span>
+                    </div>
+                </div>
+                
+                <div class="border rounded-xl p-5 hover:border-blue-500 cursor-pointer" onclick="selectTemplate('detailed')">
+                    <div class="flex items-center gap-3 mb-3">
+                        <div class="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-chart-line text-green-600"></i>
+                        </div>
+                        <h4 class="font-semibold text-gray-800">Detailed Clinical Report</h4>
+                    </div>
+                    <p class="text-gray-600 text-sm mb-3">Comprehensive analysis with interpretations and trends</p>
+                    <div class="text-xs text-gray-500">
+                        <span class="inline-block bg-gray-100 px-2 py-1 rounded mr-2">Interpretation</span>
+                        <span class="inline-block bg-gray-100 px-2 py-1 rounded mr-2">Trend Graphs</span>
+                        <span class="inline-block bg-gray-100 px-2 py-1 rounded">Recommendations</span>
+                    </div>
+                </div>
+                
+                <div class="border rounded-xl p-5 hover:border-blue-500 cursor-pointer" onclick="selectTemplate('summary')">
+                    <div class="flex items-center gap-3 mb-3">
+                        <div class="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-briefcase-medical text-purple-600"></i>
+                        </div>
+                        <h4 class="font-semibold text-gray-800">Executive Summary</h4>
+                    </div>
+                    <p class="text-gray-600 text-sm mb-3">High-level summary for management and administrators</p>
+                    <div class="text-xs text-gray-500">
+                        <span class="inline-block bg-gray-100 px-2 py-1 rounded mr-2">Key Findings</span>
+                        <span class="inline-block bg-gray-100 px-2 py-1 rounded mr-2">Statistics</span>
+                        <span class="inline-block bg-gray-100 px-2 py-1 rounded">Action Items</span>
+                    </div>
+                </div>
+                
+                <div class="border rounded-xl p-5 hover:border-blue-500 cursor-pointer" onclick="selectTemplate('custom')">
+                    <div class="flex items-center gap-3 mb-3">
+                        <div class="w-10 h-10 bg-yellow-100 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-edit text-yellow-600"></i>
+                        </div>
+                        <h4 class="font-semibold text-gray-800">Custom Template</h4>
+                    </div>
+                    <p class="text-gray-600 text-sm mb-3">Create your own template with custom sections</p>
+                    <div class="text-xs text-gray-500">
+                        <span class="inline-block bg-gray-100 px-2 py-1 rounded mr-2">Customizable</span>
+                        <span class="inline-block bg-gray-100 px-2 py-1 rounded mr-2">Branding</span>
+                        <span class="inline-block bg-gray-100 px-2 py-1 rounded">Flexible Layout</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="border-t pt-6">
+                <h4 class="font-semibold text-gray-700 mb-3">Template Preview</h4>
+                <div id="templatePreview" class="bg-gray-50 p-4 rounded-lg min-h-[200px] border">
+                    <p class="text-gray-500 text-center py-8">Select a template to preview</p>
+                </div>
+            </div>
+            
+            <div class="mt-6 flex justify-end gap-3">
+                <button onclick="closeTemplatesModal()" class="px-4 py-2 border border-gray-300 rounded-lg font-semibold">
+                    Close
+                </button>
+                <button onclick="applyTemplate()" class="bg-blue-800 hover:bg-blue-900 text-white px-4 py-2 rounded-lg font-semibold">
+                    Apply Template
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile Navigation Bottom Bar -->
+    <div class="lg:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 py-2 px-4 flex justify-around items-center z-40">
+        <button onclick="scrollToSection('analyticsSection')" class="flex flex-col items-center p-2">
+            <i class="fas fa-chart-bar text-gray-600"></i>
+            <span class="text-xs mt-1">Analytics</span>
+        </button>
+        <button onclick="scrollToSection('resultsSection')" class="flex flex-col items-center p-2">
+            <i class="fas fa-flask text-gray-600"></i>
+            <span class="text-xs mt-1">Results</span>
+        </button>
+        <button onclick="openQuickResultModal()" class="flex flex-col items-center p-2 bg-blue-800 text-white rounded-full px-4 py-3 -mt-4">
+            <i class="fas fa-plus text-lg"></i>
+            <span class="text-xs mt-1">Add</span>
+        </button>
+        <button onclick="scrollToSection('distributionSection')" class="flex flex-col items-center p-2">
+            <i class="fas fa-share-square text-gray-600"></i>
+            <span class="text-xs mt-1">Distribute</span>
+        </button>
+        <button onclick="toggleUserMenu()" class="flex flex-col items-center p-2">
+            <i class="fas fa-user text-gray-600"></i>
+            <span class="text-xs mt-1">Profile</span>
+        </button>
+    </div>
+
+    <script>
+        // User Management System
+        const users = {
+            admin: { username: 'admin', password: 'admin123', name: 'System Administrator', role: 'admin' },
+            doctor: { username: 'doctor', password: 'doctor123', name: 'Dr. Sarah Johnson', role: 'doctor' },
+            labtech: { username: 'labtech', password: 'lab123', name: 'Michael Chen', role: 'labtech' },
+            viewer: { username: 'viewer', password: 'viewer123', name: 'Lisa Rodriguez', role: 'viewer' }
+        };
+
+        let currentUser = null;
+        let userCharts = {};
+        let criticalAlerts = [];
+        let alertCheckInterval = null;
+
+        // Lab Data
+        let labData = {
+            doctors: [
+                {
+                    id: "DOC-001",
+                    name: "Dr. Sarah Johnson",
+                    department: "Pathology",
+                    email: "s.johnson@hospital.com",
+                    specialization: "Pathology",
+                    shifts: [
+                        { id: "SHIFT-001", date: "2024-01-15", start: "08:00", end: "16:00", type: "Morning", status: "active" }
+                    ]
+                },
+                {
+                    id: "DOC-002",
+                    name: "Dr. Michael Chen",
+                    department: "Hematology",
+                    email: "m.chen@hospital.com",
+                    specialization: "Hematology",
+                    shifts: [
+                        { id: "SHIFT-002", date: "2024-01-15", start: "16:00", end: "00:00", type: "Evening", status: "upcoming" }
+                    ]
+                },
+                {
+                    id: "DOC-003",
+                    name: "Dr. Lisa Rodriguez",
+                    department: "Microbiology",
+                    email: "l.rodriguez@hospital.com",
+                    specialization: "Microbiology",
+                    shifts: [
+                        { id: "SHIFT-003", date: "2024-01-15", start: "00:00", end: "08:00", type: "Night", status: "completed" }
+                    ]
+                },
+                {
+                    id: "DOC-004",
+                    name: "Dr. James Wilson",
+                    department: "Biochemistry",
+                    email: "j.wilson@hospital.com",
+                    specialization: "Biochemistry",
+                    shifts: [
+                        { id: "SHIFT-004", date: "2024-01-15", start: "08:00", end: "16:00", type: "Morning", status: "active" }
+                    ]
+                }
+            ],
+            
+            results: [
+                {
+                    id: "RES-1001",
+                    patientName: "John Doe",
+                    patientId: "PT-5001",
+                    testType: "Complete Blood Count",
+                    testCategory: "blood",
+                    testResults: "WBC: 7.5 x10^9/L, RBC: 5.2 x10^12/L, HGB: 15.2 g/dL",
+                    requestingDoctor: "DOC-001",
+                    status: "completed",
+                    timestamp: "2024-01-15 10:30",
+                    critical: false,
+                    labTechnician: "Lisa Smith",
+                    selected: false,
+                    acknowledged: true
+                },
+                {
+                    id: "RES-1002",
+                    patientName: "Maria Garcia",
+                    patientId: "PT-5002",
+                    testType: "Urinalysis",
+                    testCategory: "urine",
+                    testResults: "Color: Yellow, Appearance: Clear, pH: 6.5",
+                    requestingDoctor: "DOC-002",
+                    status: "pending",
+                    timestamp: "2024-01-15 11:15",
+                    critical: false,
+                    labTechnician: "",
+                    selected: false,
+                    acknowledged: true
+                },
+                {
+                    id: "RES-1003",
+                    patientName: "Robert Smith",
+                    patientId: "PT-5003",
+                    testType: "Blood Culture",
+                    testCategory: "culture",
+                    testResults: "Gram-positive cocci detected. Culture pending.",
+                    requestingDoctor: "DOC-003",
+                    status: "critical",
+                    timestamp: "2024-01-15 09:45",
+                    critical: true,
+                    labTechnician: "John Davis",
+                    selected: false,
+                    acknowledged: false
+                },
+                {
+                    id: "RES-1004",
+                    patientName: "Emily Brown",
+                    patientId: "PT-5004",
+                    testType: "Liver Function Test",
+                    testCategory: "blood",
+                    testResults: "ALT: 45 U/L, AST: 38 U/L, ALP: 110 U/L",
+                    requestingDoctor: "DOC-001",
+                    status: "completed",
+                    timestamp: "2024-01-15 14:20",
+                    critical: false,
+                    labTechnician: "Mike Johnson",
+                    selected: false,
+                    acknowledged: true
+                },
+                {
+                    id: "RES-1005",
+                    patientName: "David Miller",
+                    patientId: "PT-5005",
+                    testType: "Tissue Biopsy",
+                    testCategory: "biopsy",
+                    testResults: "Biopsy specimen received. Processing.",
+                    requestingDoctor: "DOC-004",
+                    status: "pending",
+                    timestamp: "2024-01-15 13:10",
+                    critical: true,
+                    labTechnician: "",
+                    selected: false,
+                    acknowledged: false
+                }
+            ],
+            
+            selectedResults: [],
+            filteredShifts: [],
+            filteredResults: [],
+            editingResultId: null,
+            editingShiftId: null
+        };
+
+        // Login Function
+        function login(event) {
+            event.preventDefault();
+            
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const role = document.getElementById('userRole').value;
+            
+            // Validate credentials
+            if (users[role] && users[role].username === username && users[role].password === password) {
+                currentUser = users[role];
+                showDashboard();
+                setupRoleBasedAccess();
+                initializeDashboard();
+                startAlertMonitoring();
+                showNotification(`Welcome, ${currentUser.name}!`);
+            } else {
+                alert('Invalid credentials. Please try again.');
+            }
+        }
+
+        function showDashboard() {
+            document.getElementById('loginScreen').style.display = 'none';
+            document.getElementById('dashboard').style.display = 'block';
+            
+            // Update user display
+            document.getElementById('currentUserName').textContent = currentUser.name;
+            document.getElementById('currentUserRole').textContent = currentUser.role.toUpperCase();
+            document.getElementById('userDisplayName').textContent = currentUser.name.split(' ')[0]; // First name
+            document.getElementById('menuUserName').textContent = currentUser.name;
+            document.getElementById('menuUserRole').textContent = currentUser.role.charAt(0).toUpperCase() + currentUser.role.slice(1);
+            
+            // Update role badge color
+            const roleBadge = document.getElementById('currentUserRole');
+            roleBadge.className = 'px-2 py-1 rounded-full text-xs font-bold ';
+            if (currentUser.role === 'admin') roleBadge.className += 'bg-red-100 text-red-800';
+            else if (currentUser.role === 'doctor') roleBadge.className += 'bg-blue-100 text-blue-800';
+            else if (currentUser.role === 'labtech') roleBadge.className += 'bg-green-100 text-green-800';
+            else roleBadge.className += 'bg-gray-100 text-gray-800';
+        }
+
+        function setupRoleBasedAccess() {
+            // Hide all sections first
+            const sections = ['shiftSection', 'resultsSection', 'distributionSection', 'analyticsSection'];
+            sections.forEach(section => {
+                const element = document.getElementById(section);
+                if (element) element.style.display = 'none';
+            });
+            
+            // Show sections based on role
+            const userRole = currentUser.role;
+            
+            // Everyone can see analytics
+            document.getElementById('analyticsSection').style.display = 'block';
+            
+            // Role-based access
+            if (userRole === 'admin') {
+                // Admin sees everything
+                sections.forEach(section => {
+                    const element = document.getElementById(section);
+                    if (element) element.style.display = 'block';
+                });
+            } else if (userRole === 'doctor') {
+                document.getElementById('shiftSection').style.display = 'block';
+                document.getElementById('resultsSection').style.display = 'block';
+                document.getElementById('distributionSection').style.display = 'block';
+                // Hide add result form for doctors
+                const resultForm = document.querySelector('.test-results-form');
+                if (resultForm) resultForm.style.display = 'none';
+            } else if (userRole === 'labtech') {
+                document.getElementById('resultsSection').style.display = 'block';
+                document.getElementById('distributionSection').style.display = 'block';
+                // Hide shift management for lab techs
+                document.getElementById('shiftSection').style.display = 'none';
+            } else if (userRole === 'viewer') {
+                // Viewer only sees results (read-only)
+                document.getElementById('resultsSection').style.display = 'block';
+                // Hide forms and actions
+                const resultForm = document.querySelector('.test-results-form');
+                if (resultForm) resultForm.style.display = 'none';
+                document.getElementById('distributionSection').style.display = 'none';
+                document.getElementById('shiftSection').style.display = 'none';
+                
+                // Disable edit/delete buttons
+                setTimeout(() => {
+                    const actionButtons = document.querySelectorAll('.btn-edit, .btn-delete, .btn-send');
+                    actionButtons.forEach(btn => {
+                        btn.disabled = true;
+                        btn.style.opacity = '0.5';
+                        btn.style.cursor = 'not-allowed';
+                    });
+                }, 100);
+            }
+        }
+
+        function toggleUserMenu() {
+            const menu = document.getElementById('userMenu');
+            menu.classList.toggle('hidden');
+        }
+
+        function switchRole() {
+            if (confirm('Switch to another role? You will need to login again.')) {
+                logout();
+            }
+        }
+
+        function logout() {
+            currentUser = null;
+            document.getElementById('dashboard').style.display = 'none';
+            document.getElementById('loginScreen').style.display = 'flex';
+            document.getElementById('loginForm').reset();
+            stopAlertMonitoring();
+            showNotification('Logged out successfully');
+        }
+
+        // Alert System
+        function startAlertMonitoring() {
+            alertCheckInterval = setInterval(checkCriticalResults, 30000); // Check every 30 seconds
+            checkCriticalResults(); // Initial check
+        }
+
+        function stopAlertMonitoring() {
+            if (alertCheckInterval) {
+                clearInterval(alertCheckInterval);
+            }
+        }
+
+        function checkCriticalResults() {
+            const criticalResults = labData.results.filter(r => r.status === 'critical' && !r.acknowledged);
+            
+            // Update alert badge
+            document.getElementById('alertBadge').textContent = criticalResults.length;
+            
+            // Show/hide critical alert banner
+            const alertBanner = document.getElementById('criticalAlerts');
+            if (criticalResults.length > 0) {
+                alertBanner.classList.remove('hidden');
+                document.getElementById('criticalCountAlert').textContent = criticalResults.length;
+                
+                // Add pulse animation
+                alertBanner.classList.add('alert-critical');
+            } else {
+                alertBanner.classList.add('hidden');
+                alertBanner.classList.remove('alert-critical');
+            }
+            
+            // Store alerts
+            criticalAlerts = criticalResults;
+        }
+
+        function showAlerts() {
+            const modal = document.getElementById('alertsModal');
+            const alertsList = document.getElementById('alertsList');
+            
+            alertsList.innerHTML = '';
+            
+            if (criticalAlerts.length === 0) {
+                alertsList.innerHTML = '<p class="text-center text-gray-500 py-8">No critical alerts at this time</p>';
+            } else {
+                criticalAlerts.forEach(alert => {
+                    const alertItem = document.createElement('div');
+                    alertItem.className = 'bg-red-50 border border-red-200 rounded-lg p-4';
+                    alertItem.innerHTML = `
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <div class="flex items-center gap-2 mb-2">
+                                    <i class="fas fa-exclamation-triangle text-red-500"></i>
+                                    <span class="font-semibold text-red-700">CRITICAL RESULT</span>
+                                    <span class="text-xs text-gray-500">${formatDateTime(alert.timestamp)}</span>
+                                </div>
+                                <p class="text-gray-700"><strong>${alert.patientName}</strong> (${alert.patientId})</p>
+                                <p class="text-gray-600 text-sm">${alert.testType} - ${alert.testResults?.substring(0, 100)}...</p>
+                                <p class="text-sm text-gray-500 mt-2">Requested by: ${getDoctorName(alert.requestingDoctor)}</p>
+                            </div>
+                            <div>
+                                <button onclick="acknowledgeAlert('${alert.id}')" class="text-sm bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded">
+                                    Acknowledge
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                    alertsList.appendChild(alertItem);
+                });
+            }
+            
+            modal.classList.add('active');
+        }
+
+        function acknowledgeAlert(resultId) {
+            const result = labData.results.find(r => r.id === resultId);
+            if (result) {
+                result.acknowledged = true;
+                checkCriticalResults();
+                showAlerts(); // Refresh alerts list
+                showNotification('Alert acknowledged');
+            }
+        }
+
+        function acknowledgeAllAlerts() {
+            criticalAlerts.forEach(alert => {
+                const result = labData.results.find(r => r.id === alert.id);
+                if (result) result.acknowledged = true;
+            });
+            checkCriticalResults();
+            closeAlertsModal();
+            showNotification('All alerts acknowledged');
+        }
+
+        function closeAlertsModal() {
+            document.getElementById('alertsModal').classList.remove('active');
+        }
+
+        function viewCriticalResults() {
+            // Filter to show only critical results
+            document.getElementById('resultStatusFilter').value = 'critical';
+            filterResults();
+            scrollToSection('resultsSection');
+        }
+
+        // Analytics Charts
+        function initializeCharts() {
+            // Test Volume Chart
+            const testVolumeCtx = document.getElementById('testVolumeChart').getContext('2d');
+            userCharts.testVolume = new Chart(testVolumeCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Blood Test', 'Urinalysis', 'Culture', 'Biopsy', 'Molecular'],
+                    datasets: [{
+                        label: 'Test Volume',
+                        data: [45, 28, 32, 12, 18],
+                        backgroundColor: [
+                            'rgba(54, 162, 235, 0.7)',
+                            'rgba(75, 192, 192, 0.7)',
+                            'rgba(255, 206, 86, 0.7)',
+                            'rgba(153, 102, 255, 0.7)',
+                            'rgba(255, 159, 64, 0.7)'
+                        ]
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Number of Tests'
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Status Distribution Chart
+            const statusCtx = document.getElementById('statusChart').getContext('2d');
+            userCharts.status = new Chart(statusCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Completed', 'Pending', 'Critical'],
+                    datasets: [{
+                        data: [65, 25, 10],
+                        backgroundColor: [
+                            'rgba(40, 167, 69, 0.7)',
+                            'rgba(255, 193, 7, 0.7)',
+                            'rgba(220, 53, 69, 0.7)'
+                        ]
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        }
+                    }
+                }
+            });
+
+            // Turnaround Time Chart
+            const turnaroundCtx = document.getElementById('turnaroundChart').getContext('2d');
+            userCharts.turnaround = new Chart(turnaroundCtx, {
+                type: 'line',
+                data: {
+                    labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                    datasets: [{
+                        label: 'Average Hours',
+                        data: [2.5, 3.1, 2.8, 3.5, 2.9, 4.2, 3.8],
+                        borderColor: 'rgb(54, 162, 235)',
+                        backgroundColor: 'rgba(54, 162, 235, 0.1)',
+                        fill: true,
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Hours'
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Critical Trend Chart
+            const criticalCtx = document.getElementById('criticalTrendChart').getContext('2d');
+            userCharts.critical = new Chart(criticalCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
+                    datasets: [{
+                        label: 'Critical Results',
+                        data: [3, 5, 2, 4],
+                        backgroundColor: 'rgba(220, 53, 69, 0.7)'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Number of Critical Results'
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function updateCharts() {
+            // In a real app, this would fetch new data based on selected period
+            const period = document.getElementById('chartPeriod').value;
+            showNotification(`Charts updated for ${period} period`);
+        }
+
+        function exportAnalytics() {
+            // Create a data URL for download
+            const data = {
+                charts: {
+                    testVolume: userCharts.testVolume?.data,
+                    status: userCharts.status?.data,
+                    turnaround: userCharts.turnaround?.data,
+                    critical: userCharts.critical?.data
+                },
+                exportDate: new Date().toISOString()
+            };
+            
+            const dataStr = JSON.stringify(data, null, 2);
+            const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+            
+            const exportFileDefaultName = `lab-analytics-${new Date().toISOString().split('T')[0]}.json`;
+            
+            const linkElement = document.createElement('a');
+            linkElement.setAttribute('href', dataUri);
+            linkElement.setAttribute('download', exportFileDefaultName);
+            linkElement.click();
+            
+            showNotification('Analytics data exported');
+        }
+
+        // Report Templates
+        function showReportTemplates() {
+            document.getElementById('templatesModal').classList.add('active');
+        }
+
+        function closeTemplatesModal() {
+            document.getElementById('templatesModal').classList.remove('active');
+        }
+
+        function selectTemplate(templateType) {
+            const preview = document.getElementById('templatePreview');
+            let templateHTML = '';
+            
+            switch(templateType) {
+                case 'standard':
+                    templateHTML = `
+                        <div class="space-y-4">
+                            <div class="border-b pb-3">
+                                <h4 class="font-bold text-lg">Standard Lab Report</h4>
+                                <p class="text-sm text-gray-600">Includes patient info, test results, and normal ranges</p>
+                            </div>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <p class="text-sm font-medium">Patient Information</p>
+                                    <p class="text-xs text-gray-500">Name, ID, Age, Gender</p>
+                                </div>
+                                <div>
+                                    <p class="text-sm font-medium">Test Results Table</p>
+                                    <p class="text-xs text-gray-500">Values, Units, Normal Ranges</p>
+                                </div>
+                                <div>
+                                    <p class="text-sm font-medium">Interpretation</p>
+                                    <p class="text-xs text-gray-500">Basic findings summary</p>
+                                </div>
+                                <div>
+                                    <p class="text-sm font-medium">Lab Details</p>
+                                    <p class="text-xs text-gray-500">Technician, Date, Lab Location</p>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    break;
+                case 'detailed':
+                    templateHTML = `
+                        <div class="space-y-4">
+                            <div class="border-b pb-3">
+                                <h4 class="font-bold text-lg">Detailed Clinical Report</h4>
+                                <p class="text-sm text-gray-600">Comprehensive analysis with graphs and recommendations</p>
+                            </div>
+                            <div class="space-y-3">
+                                <div>
+                                    <p class="text-sm font-medium">Executive Summary</p>
+                                    <p class="text-xs text-gray-500">Key findings and clinical significance</p>
+                                </div>
+                                <div>
+                                    <p class="text-sm font-medium">Detailed Analysis</p>
+                                    <p class="text-xs text-gray-500">Parameter-by-parameter interpretation</p>
+                                </div>
+                                <div>
+                                    <p class="text-sm font-medium">Trend Graphs</p>
+                                    <p class="text-xs text-gray-500">Historical comparison charts</p>
+                                </div>
+                                <div>
+                                    <p class="text-sm font-medium">Clinical Recommendations</p>
+                                    <p class="text-xs text-gray-500">Actionable medical advice</p>
+                                </div>
+                                <div>
+                                    <p class="text-sm font-medium">References</p>
+                                    <p class="text-xs text-gray-500">Scientific references and notes</p>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    break;
+                case 'summary':
+                    templateHTML = `
+                        <div class="space-y-4">
+                            <div class="border-b pb-3">
+                                <h4 class="font-bold text-lg">Executive Summary</h4>
+                                <p class="text-sm text-gray-600">High-level overview for management review</p>
+                            </div>
+                            <div class="space-y-3">
+                                <div>
+                                    <p class="text-sm font-medium">Key Metrics</p>
+                                    <p class="text-xs text-gray-500">Volume, turnaround time, critical rates</p>
+                                </div>
+                                <div>
+                                    <p class="text-sm font-medium">Performance Summary</p>
+                                    <p class="text-xs text-gray-500">Achievements and areas for improvement</p>
+                                </div>
+                                <div>
+                                    <p class="text-sm font-medium">Financial Overview</p>
+                                    <p class="text-xs text-gray-500">Test volume, revenue, costs</p>
+                                </div>
+                                <div>
+                                    <p class="text-sm font-medium">Action Items</p>
+                                    <p class="text-xs text-gray-500">Priority tasks and recommendations</p>
+                                </div>
+                                <div>
+                                    <p class="text-sm font-medium">Next Steps</p>
+                                    <p class="text-xs text-gray-500">Strategic recommendations</p>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    break;
+                case 'custom':
+                    templateHTML = `
+                        <div class="space-y-4">
+                            <div class="border-b pb-3">
+                                <h4 class="font-bold text-lg">Custom Template Builder</h4>
+                                <p class="text-sm text-gray-600">Create your own template with drag-and-drop sections</p>
+                            </div>
+                            <div class="space-y-3">
+                                <div class="flex items-center gap-2">
+                                    <input type="checkbox" checked class="rounded">
+                                    <span class="text-sm">Patient Information</span>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <input type="checkbox" checked class="rounded">
+                                    <span class="text-sm">Test Results</span>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <input type="checkbox" class="rounded">
+                                    <span class="text-sm">Interpretation Section</span>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <input type="checkbox" class="rounded">
+                                    <span class="text-sm">Trend Analysis</span>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <input type="checkbox" checked class="rounded">
+                                    <span class="text-sm">Lab Details</span>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <input type="checkbox" class="rounded">
+                                    <span class="text-sm">Custom Branding</span>
+                                </div>
+                                <div class="mt-4">
+                                    <label class="block text-sm font-medium mb-1">Template Name:</label>
+                                    <input type="text" placeholder="My Custom Template" class="w-full px-3 py-2 border rounded">
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    break;
+            }
+            
+            preview.innerHTML = templateHTML;
+            
+            // Update radio selection
+            document.querySelectorAll('input[name="reportTemplate"]').forEach(radio => {
+                radio.checked = radio.value === templateType;
+            });
+        }
+
+        function applyTemplate() {
+            const selectedTemplate = document.querySelector('input[name="reportTemplate"]:checked').value;
+            showNotification(`${selectedTemplate} template applied to reports`);
+            closeTemplatesModal();
+        }
+
+        // Settings
+        function showSettings() {
+            document.getElementById('settingsModal').classList.add('active');
+        }
+
+        function closeSettings() {
+            document.getElementById('settingsModal').classList.remove('active');
+        }
+
+        function saveSettings() {
+            showNotification('Settings saved successfully');
+            closeSettings();
+        }
+
+        // Mobile Navigation
+        function scrollToSection(sectionId) {
+            const element = document.getElementById(sectionId);
+            if (element) {
+                element.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        function showAnalytics() {
+            scrollToSection('analyticsSection');
+        }
+
+        // Utility function
+        function showNotification(message) {
+            // Create notification element
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: #28a745;
+                color: white;
+                padding: 15px 25px;
+                border-radius: 5px;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+                z-index: 10000;
+                animation: slideIn 0.3s ease;
+            `;
+            
+            notification.innerHTML = `
+                <i class="fas fa-check-circle"></i> ${message}
+            `;
+            
+            document.body.appendChild(notification);
+            
+            // Remove after 3 seconds
+            setTimeout(() => {
+                notification.style.animation = 'slideOut 0.3s ease';
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 300);
+            }, 3000);
+        }
+
+        // Initialize Dashboard
+        function initializeDashboard() {
+            // Initialize filtered data
+            labData.filteredShifts = getAllShifts();
+            labData.filteredResults = [...labData.results];
+            
+            renderShiftTable();
+            renderResultsTable();
+            updateStats();
+            populateDoctorDropdowns();
+            initializeCharts();
+            
+            // Set default distribution method
+            selectDistributionMethod('email');
+        }
+
+        // Shift Management Functions
+        function getAllShifts() {
+            let allShifts = [];
+            labData.doctors.forEach(doctor => {
+                doctor.shifts.forEach(shift => {
+                    allShifts.push({
+                        ...shift,
+                        doctorId: doctor.id,
+                        doctorName: doctor.name,
+                        department: doctor.department
+                    });
+                });
+            });
+            return allShifts;
+        }
+
+        function renderShiftTable() {
+            const tbody = document.getElementById('shiftTableBody');
+            tbody.innerHTML = '';
+            
+            labData.filteredShifts.forEach(shift => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td class="py-3 px-4">${shift.doctorId}</td>
+                    <td class="py-3 px-4 font-medium">${shift.doctorName}</td>
+                    <td class="py-3 px-4">${shift.department}</td>
+                    <td class="py-3 px-4">
+                        <span class="px-2 py-1 rounded-full text-xs font-medium ${getShiftTypeClass(shift.type)}">
+                            ${shift.type}
+                        </span>
+                    </td>
+                    <td class="py-3 px-4">${formatTime(shift.start)}</td>
+                    <td class="py-3 px-4">${formatTime(shift.end)}</td>
+                    <td class="py-3 px-4">
+                        <span class="status-badge ${getStatusClass(shift.status)}">
+                            ${shift.status}
+                        </span>
+                    </td>
+                    <td class="py-3 px-4">
+                        <button onclick="editShift('${shift.id}')" class="btn-action btn-edit">
+                            <i class="fas fa-edit"></i> Edit
+                        </button>
+                        <button onclick="deleteShift('${shift.id}')" class="btn-action btn-delete">
+                            <i class="fas fa-trash"></i> Delete
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        function openShiftModal(shiftId = null) {
+            const modal = document.getElementById('shiftModal');
+            const modalTitle = document.getElementById('shiftModalTitle');
+            const doctorSelect = document.getElementById('shiftDoctorId');
+            
+            // Clear form
+            document.getElementById('shiftForm').reset();
+            
+            // Populate doctor dropdown
+            doctorSelect.innerHTML = '<option value="">Select Doctor</option>';
+            labData.doctors.forEach(doctor => {
+                doctorSelect.innerHTML += `<option value="${doctor.id}">${doctor.name} (${doctor.department})</option>`;
+            });
+            
+            // Set editing mode
+            labData.editingShiftId = shiftId;
+            
+            if (shiftId) {
+                modalTitle.textContent = 'Edit Shift';
+                const shift = labData.filteredShifts.find(s => s.id === shiftId);
+                if (shift) {
+                    document.getElementById('shiftDoctorId').value = shift.doctorId;
+                    document.getElementById('shiftDepartment').value = shift.department;
+                    document.getElementById('shiftDate').value = shift.date;
+                    document.getElementById('shiftType').value = shift.type;
+                    document.getElementById('shiftStartTime').value = shift.start;
+                    document.getElementById('shiftEndTime').value = shift.end;
+                    document.getElementById('shiftStatus').value = shift.status;
+                }
+            } else {
+                modalTitle.textContent = 'Add New Shift';
+                // Set default values
+                const today = new Date().toISOString().split('T')[0];
+                document.getElementById('shiftDate').value = today;
+                document.getElementById('shiftStartTime').value = '08:00';
+                document.getElementById('shiftEndTime').value = '16:00';
+            }
+            
+            modal.classList.add('active');
+        }
+
+        function closeShiftModal() {
+            document.getElementById('shiftModal').classList.remove('active');
+            labData.editingShiftId = null;
+        }
+
+        function saveShift(event) {
+            event.preventDefault();
+            
+            const doctorId = document.getElementById('shiftDoctorId').value;
+            const department = document.getElementById('shiftDepartment').value;
+            const date = document.getElementById('shiftDate').value;
+            const type = document.getElementById('shiftType').value;
+            const start = document.getElementById('shiftStartTime').value;
+            const end = document.getElementById('shiftEndTime').value;
+            const status = document.getElementById('shiftStatus').value;
+            
+            const doctor = labData.doctors.find(d => d.id === doctorId);
+            if (!doctor) {
+                alert('Doctor not found');
+                return;
+            }
+            
+            if (labData.editingShiftId) {
+                // Update existing shift
+                const shiftIndex = doctor.shifts.findIndex(s => s.id === labData.editingShiftId);
+                if (shiftIndex > -1) {
+                    doctor.shifts[shiftIndex] = {
+                        ...doctor.shifts[shiftIndex],
+                        date, type, start, end, status
+                    };
+                }
+                showNotification('Shift updated successfully');
+            } else {
+                // Add new shift
+                const newShift = {
+                    id: 'SHIFT-' + Date.now(),
+                    date,
+                    start,
+                    end,
+                    type,
+                    status
+                };
+                doctor.shifts.push(newShift);
+                showNotification('Shift added successfully');
+            }
+            
+            closeShiftModal();
+            labData.filteredShifts = getAllShifts();
+            renderShiftTable();
+            updateStats();
+            populateDoctorDropdowns();
+        }
+
+        function editShift(shiftId) {
+            openShiftModal(shiftId);
+        }
+
+        function deleteShift(shiftId) {
+            if (confirm('Are you sure you want to delete this shift?')) {
+                for (const doctor of labData.doctors) {
+                    const shiftIndex = doctor.shifts.findIndex(s => s.id === shiftId);
+                    if (shiftIndex > -1) {
+                        doctor.shifts.splice(shiftIndex, 1);
+                        break;
+                    }
+                }
+                
+                labData.filteredShifts = getAllShifts();
+                renderShiftTable();
+                updateStats();
+                showNotification('Shift deleted successfully');
+            }
+        }
+
+        function filterShifts() {
+            const filter = document.getElementById('dateFilter').value;
+            const search = document.getElementById('searchDoctor').value.toLowerCase();
+            
+            let filtered = getAllShifts();
+            
+            // Apply date filter
+            if (filter !== 'all') {
+                const today = new Date().toISOString().split('T')[0];
+                filtered = filtered.filter(shift => {
+                    if (filter === 'today') return shift.date === today;
+                    // Add week/month filtering logic here
+                    return true;
+                });
+            }
+            
+            // Apply search filter
+            if (search) {
+                filtered = filtered.filter(shift => 
+                    shift.doctorName.toLowerCase().includes(search) ||
+                    shift.doctorId.toLowerCase().includes(search)
+                );
+            }
+            
+            labData.filteredShifts = filtered;
+            renderShiftTable();
+        }
+
+        function searchDoctors() {
+            filterShifts();
+        }
+
+        // Add Doctor Functions
+        function openAddDoctorModal() {
+            document.getElementById('addDoctorModal').classList.add('active');
+        }
+
+        function closeAddDoctorModal() {
+            document.getElementById('addDoctorModal').classList.remove('active');
+            document.getElementById('addDoctorForm').reset();
+        }
+
+        function saveNewDoctor(event) {
+            event.preventDefault();
+            
+            const doctorId = document.getElementById('newDoctorId').value;
+            const name = document.getElementById('newDoctorName').value;
+            const department = document.getElementById('newDoctorDepartment').value;
+            const email = document.getElementById('newDoctorEmail').value;
+            const specialization = document.getElementById('newDoctorSpecialization').value;
+            
+            // Check if doctor ID already exists
+            if (labData.doctors.some(d => d.id === doctorId)) {
+                alert('Doctor ID already exists. Please use a different ID.');
+                return;
+            }
+            
+            const newDoctor = {
+                id: doctorId,
+                name: name,
+                department: department,
+                email: email,
+                specialization: specialization || department,
+                shifts: []
+            };
+            
+            labData.doctors.push(newDoctor);
+            
+            closeAddDoctorModal();
+            showNotification('Doctor added successfully');
+            
+            // Update all doctor dropdowns
+            populateDoctorDropdowns();
+            
+            // Update shift table
+            labData.filteredShifts = getAllShifts();
+            renderShiftTable();
+        }
+
+        // Results Management Functions
+        function populateDoctorDropdowns() {
+            // Main form doctor dropdown
+            const requestingDoctorSelect = document.getElementById('requestingDoctor');
+            requestingDoctorSelect.innerHTML = '<option value="">Select Doctor</option>';
+            
+            // Quick form doctor dropdown
+            const quickDoctorSelect = document.getElementById('quickRequestingDoctor');
+            if (quickDoctorSelect) {
+                quickDoctorSelect.innerHTML = '<option value="">Select Doctor</option>';
+            }
+            
+            // Distribution doctor dropdown
+            const distributionDoctorSelect = document.getElementById('selectDoctor');
+            if (distributionDoctorSelect) {
+                distributionDoctorSelect.innerHTML = '<option value="">Select Doctor</option>';
+            }
+            
+            labData.doctors.forEach(doctor => {
+                requestingDoctorSelect.innerHTML += `<option value="${doctor.id}">${doctor.name} (${doctor.department})</option>`;
+                
+                if (quickDoctorSelect) {
+                    quickDoctorSelect.innerHTML += `<option value="${doctor.id}">${doctor.name} (${doctor.department})</option>`;
+                }
+                
+                if (distributionDoctorSelect) {
+                    distributionDoctorSelect.innerHTML += `<option value="${doctor.id}">${doctor.name}</option>`;
+                }
+            });
+        }
+
+        function saveResult(event) {
+            event.preventDefault();
+            
+            const resultId = labData.editingResultId || 'RES-' + Date.now();
+            const status = document.getElementById('resultStatus').value;
+            const isCritical = document.getElementById('isCritical').checked;
+            
+            const result = {
+                id: resultId,
+                patientId: document.getElementById('patientId').value,
+                patientName: document.getElementById('patientName').value,
+                testType: document.getElementById('testType').value,
+                testCategory: document.getElementById('testCategory').value,
+                testResults: document.getElementById('testResults').value,
+                requestingDoctor: document.getElementById('requestingDoctor').value,
+                status: isCritical ? 'critical' : status,
+                timestamp: new Date().toISOString().split('.')[0].replace('T', ' '),
+                critical: isCritical,
+                labTechnician: document.getElementById('labTechnician').value || currentUser.name,
+                selected: false,
+                acknowledged: false
+            };
+            
+            if (labData.editingResultId) {
+                // Update existing result
+                const index = labData.results.findIndex(r => r.id === resultId);
+                if (index > -1) {
+                    labData.results[index] = result;
+                }
+                showNotification('Result updated successfully');
+                labData.editingResultId = null;
+            } else {
+                // Add new result
+                labData.results.push(result);
+                showNotification('Result saved successfully');
+            }
+            
+            clearResultForm();
+            labData.filteredResults = [...labData.results];
+            renderResultsTable();
+            updateStats();
+            checkCriticalResults();
+        }
+
+        function clearResultForm() {
+            document.getElementById('resultForm').reset();
+            labData.editingResultId = null;
+            document.getElementById('completionTime').value = new Date().toISOString().slice(0, 16);
+        }
+
+        function renderResultsTable() {
+            const tbody = document.getElementById('resultsTableBody');
+            tbody.innerHTML = '';
+            
+            labData.filteredResults.forEach(result => {
+                const row = document.createElement('tr');
+                row.className = result.critical ? 'bg-red-50' : '';
+                
+                row.innerHTML = `
+                    <td class="py-3 px-4">
+                        <input type="checkbox" class="result-checkbox" ${result.selected ? 'checked' : ''} 
+                               onchange="toggleResultSelection('${result.id}', this.checked)">
+                    </td>
+                    <td class="py-3 px-4 font-mono">${result.id}</td>
+                    <td class="py-3 px-4">
+                        <div class="font-medium">${result.patientName}</div>
+                        <div class="text-sm text-gray-500">${result.patientId}</div>
+                    </td>
+                    <td class="py-3 px-4">${result.testType}</td>
+                    <td class="py-3 px-4">${getDoctorName(result.requestingDoctor)}</td>
+                    <td class="py-3 px-4">
+                        <span class="status-badge ${getStatusClass(result.status)}">
+                            ${result.status}
+                        </span>
+                    </td>
+                    <td class="py-3 px-4">${formatDateTime(result.timestamp)}</td>
+                    <td class="py-3 px-4">
+                        <button onclick="editResult('${result.id}')" class="btn-action btn-edit">
+                            <i class="fas fa-edit"></i> Edit
+                        </button>
+                        <button onclick="deleteResult('${result.id}')" class="btn-action btn-delete">
+                            <i class="fas fa-trash"></i> Delete
+                        </button>
+                        <button onclick="sendResult('${result.id}')" class="btn-action btn-send">
+                            <i class="fas fa-paper-plane"></i> Send
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+            
+            updateSelectedCount();
+        }
+
+        function editResult(resultId) {
+            const result = labData.results.find(r => r.id === resultId);
+            if (result) {
+                document.getElementById('patientId').value = result.patientId;
+                document.getElementById('patientName').value = result.patientName;
+                document.getElementById('testType').value = result.testType;
+                document.getElementById('testCategory').value = result.testCategory;
+                document.getElementById('requestingDoctor').value = result.requestingDoctor;
+                document.getElementById('resultStatus').value = result.status;
+                document.getElementById('testResults').value = result.testResults;
+                document.getElementById('labTechnician').value = result.labTechnician;
+                document.getElementById('isCritical').checked = result.critical;
+                document.getElementById('completionTime').value = result.timestamp ? result.timestamp.replace(' ', 'T') : '';
+                
+                labData.editingResultId = resultId;
+                
+                // Scroll to form
+                document.getElementById('resultForm').scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        function deleteResult(resultId) {
+            if (confirm('Are you sure you want to delete this result?')) {
+                const index = labData.results.findIndex(r => r.id === resultId);
+                if (index > -1) {
+                    labData.results.splice(index, 1);
+                    labData.filteredResults = [...labData.results];
+                    renderResultsTable();
+                    updateStats();
+                    checkCriticalResults();
+                    showNotification('Result deleted successfully');
+                }
+            }
+        }
+
+        function toggleSelectAll() {
+            const selectAll = document.getElementById('selectAll').checked;
+            labData.filteredResults.forEach(result => {
+                result.selected = selectAll;
+            });
+            renderResultsTable();
+        }
+
+        function toggleResultSelection(resultId, isSelected) {
+            const result = labData.results.find(r => r.id === resultId);
+            if (result) {
+                result.selected = isSelected;
+            }
+            
+            // Update selected results for distribution
+            labData.selectedResults = labData.results.filter(r => r.selected);
+            updateSelectedCount();
+        }
+
+        function updateSelectedCount() {
+            const selectedCount = labData.results.filter(r => r.selected).length;
+            document.getElementById('selectedCount').textContent = selectedCount;
+            
+            const container = document.getElementById('selectedItemsContainer');
+            container.innerHTML = '';
+            
+            labData.selectedResults.forEach(result => {
+                const item = document.createElement('div');
+                item.className = 'selected-item';
+                item.innerHTML = `
+                    ${result.patientName} (${result.testType})
+                    <button onclick="deselectResult('${result.id}')" class="ml-2 text-red-500">
+                        <i class="fas fa-times"></i>
+                    </button>
+                `;
+                container.appendChild(item);
+            });
+        }
+
+        function deselectResult(resultId) {
+            const result = labData.results.find(r => r.id === resultId);
+            if (result) {
+                result.selected = false;
+            }
+            renderResultsTable();
+        }
+
+        function filterResults() {
+            const statusFilter = document.getElementById('resultStatusFilter').value;
+            const typeFilter = document.getElementById('testTypeFilter').value;
+            const search = document.getElementById('searchResults').value.toLowerCase();
+            
+            labData.filteredResults = labData.results.filter(result => {
+                // Status filter
+                if (statusFilter !== 'all' && result.status !== statusFilter) {
+                    return false;
+                }
+                
+                // Type filter
+                if (typeFilter !== 'all' && result.testCategory !== typeFilter) {
+                    return false;
+                }
+                
+                // Search filter
+                if (search && !result.patientName.toLowerCase().includes(search) && 
+                    !result.patientId.toLowerCase().includes(search) &&
+                    !result.testType.toLowerCase().includes(search)) {
+                    return false;
+                }
+                
+                return true;
+            });
+            
+            renderResultsTable();
+        }
+
+        function searchResults() {
+            filterResults();
+        }
+
+        // Quick Result Functions
+        function openQuickResultModal() {
+            const modal = document.getElementById('quickResultModal');
+            modal.classList.add('active');
+        }
+
+        function closeQuickResultModal() {
+            document.getElementById('quickResultModal').classList.remove('active');
+            document.getElementById('quickResultForm').reset();
+        }
+
+        function saveQuickResult(event) {
+            event.preventDefault();
+            
+            const result = {
+                id: 'RES-' + Date.now(),
+                patientId: document.getElementById('quickPatientId').value,
+                patientName: document.getElementById('quickPatientName').value,
+                testType: document.getElementById('quickTestType').value,
+                testCategory: getTestCategory(document.getElementById('quickTestType').value),
+                testResults: document.getElementById('quickTestResults').value,
+                requestingDoctor: document.getElementById('quickRequestingDoctor').value,
+                status: 'pending',
+                timestamp: new Date().toISOString().split('.')[0].replace('T', ' '),
+                critical: false,
+                labTechnician: currentUser.name,
+                selected: false,
+                acknowledged: false
+            };
+            
+            labData.results.push(result);
+            labData.filteredResults = [...labData.results];
+            renderResultsTable();
+            updateStats();
+            closeQuickResultModal();
+            showNotification('Quick result added successfully');
+        }
+
+        // Distribution Functions
+        function selectDistributionMethod(method) {
+            // Remove selected class from all options
+            document.querySelectorAll('.option-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            
+            // Add selected class to clicked option
+            document.getElementById(method + 'Option').classList.add('selected');
+            
+            // Hide all forms
+            document.querySelectorAll('.distribution-form').forEach(form => {
+                form.style.display = 'none';
+            });
+            
+            // Show selected form
+            document.getElementById(method + 'Form').style.display = 'block';
+        }
+
+        function sendViaEmail() {
+            if (labData.selectedResults.length === 0) {
+                alert('Please select results to send');
+                return;
+            }
+            
+            const email = document.getElementById('doctorEmail').value;
+            const subject = document.getElementById('emailSubject').value;
+            const message = document.getElementById('emailMessage').value;
+            
+            // Simulate sending email
+            showNotification(`Results sent to ${email}`);
+            
+            // Clear selection after sending
+            labData.selectedResults.forEach(result => {
+                result.selected = false;
+            });
+            renderResultsTable();
+        }
+
+        function printResults() {
+            if (labData.selectedResults.length === 0) {
+                alert('Please select results to print');
+                return;
+            }
+            
+            const format = document.getElementById('printFormat').value;
+            
+            // Create printable content
+            let printContent = `
+                <html>
+                <head>
+                    <title>Lab Results Report</title>
+                    <style>
+                        body { font-family: Arial, sans-serif; margin: 20px; }
+                        h1 { color: #1a5f7a; }
+                        table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+                        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+                        th { background-color: #f2f2f2; }
+                        .critical { background-color: #ffebee; }
+                    </style>
+                </head>
+                <body>
+                    <h1>Lab Results Report</h1>
+                    <p>Generated: ${new Date().toLocaleString()}</p>
+                    <p>Generated by: ${currentUser.name}</p>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Patient Name</th>
+                                <th>Patient ID</th>
+                                <th>Test Type</th>
+                                <th>Results</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+            `;
+            
+            labData.selectedResults.forEach(result => {
+                printContent += `
+                    <tr class="${result.critical ? 'critical' : ''}">
+                        <td>${result.patientName}</td>
+                        <td>${result.patientId}</td>
+                        <td>${result.testType}</td>
+                        <td>${result.testResults}</td>
+                        <td>${result.status}</td>
+                    </tr>
+                `;
+            });
+            
+            printContent += `
+                        </tbody>
+                    </table>
+                </body>
+                </html>
+            `;
+            
+            // Open print window
+            const printWindow = window.open('', '_blank');
+            printWindow.document.write(printContent);
+            printWindow.document.close();
+            printWindow.print();
+            
+            showNotification('Print job sent');
+        }
+
+        function sendToPortal() {
+            if (labData.selectedResults.length === 0) {
+                alert('Please select results to send');
+                return;
+            }
+            
+            const doctorId = document.getElementById('selectDoctor').value;
+            const notify = document.getElementById('notifyDoctor').checked;
+            
+            const doctor = labData.doctors.find(d => d.id === doctorId);
+            if (!doctor) {
+                alert('Please select a doctor');
+                return;
+            }
+            
+            showNotification(`Results sent to ${doctor.name}'s portal${notify ? ' with notification' : ''}`);
+            
+            // Clear selection after sending
+            labData.selectedResults.forEach(result => {
+                result.selected = false;
+            });
+            renderResultsTable();
+        }
+
+        // Utility Functions
+        function formatTime(time) {
+            if (!time) return '';
+            const [hours, minutes] = time.split(':');
+            const hour = parseInt(hours);
+            const ampm = hour >= 12 ? 'PM' : 'AM';
+            const formattedHour = hour % 12 || 12;
+            return `${formattedHour}:${minutes} ${ampm}`;
+        }
+
+        function formatDateTime(datetime) {
+            if (!datetime) return '';
+            return new Date(datetime).toLocaleString();
+        }
+
+        function getDoctorName(doctorId) {
+            const doctor = labData.doctors.find(d => d.id === doctorId);
+            return doctor ? doctor.name : 'Unknown Doctor';
+        }
+
+        function getStatusClass(status) {
+            switch(status) {
+                case 'active': return 'status-active';
+                case 'pending': return 'status-pending';
+                case 'critical': return 'status-critical';
+                case 'completed': return 'status-completed';
+                default: return '';
+            }
+        }
+
+        function getShiftTypeClass(type) {
+            switch(type) {
+                case 'Morning': return 'bg-blue-100 text-blue-800';
+                case 'Evening': return 'bg-purple-100 text-purple-800';
+                case 'Night': return 'bg-gray-100 text-gray-800';
+                case 'On-Call': return 'bg-yellow-100 text-yellow-800';
+                default: return 'bg-gray-100 text-gray-800';
+            }
+        }
+
+        function getTestCategory(testType) {
+            const testMap = {
+                'Complete Blood Count': 'blood',
+                'Liver Function Test': 'blood',
+                'Glucose Test': 'blood',
+                'Cholesterol Test': 'blood',
+                'Urinalysis': 'urine',
+                'Blood Culture': 'culture',
+                'Tissue Biopsy': 'biopsy',
+                'HIV Test': 'molecular',
+                'COVID-19 PCR': 'molecular'
+            };
+            return testMap[testType] || 'other';
+        }
+
+        function updateStats() {
+            const activeShifts = labData.doctors.reduce((count, doctor) => {
+                return count + doctor.shifts.filter(shift => shift.status === 'active').length;
+            }, 0);
+            
+            const pendingResults = labData.results.filter(r => r.status === 'pending').length;
+            const completedResults = labData.results.filter(r => r.status === 'completed').length;
+            const criticalResults = labData.results.filter(r => r.critical).length;
+            
+            document.getElementById('shiftCount').textContent = activeShifts;
+            document.getElementById('pendingCount').textContent = pendingResults;
+            document.getElementById('resultsCount').textContent = completedResults;
+            document.getElementById('criticalCount').textContent = criticalResults;
+            
+            // Update alerts
+            checkCriticalResults();
+        }
+
+        // Close user menu when clicking outside
+        document.addEventListener('click', function(event) {
+            const userMenu = document.getElementById('userMenu');
+            const userProfile = document.getElementById('userProfile');
+            
+            if (userMenu && !userMenu.contains(event.target) && userProfile && !userProfile.contains(event.target)) {
+                userMenu.classList.add('hidden');
+            }
+            
+            // Close modals when clicking outside
+            const modals = document.querySelectorAll('.modal-overlay.active');
+            modals.forEach(modal => {
+                if (!modal.contains(event.target) && !event.target.closest('button[onclick*="Modal"]')) {
+                    modal.classList.remove('active');
+                }
+            });
+        });
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            // Make sure modals are hidden initially
+            const modals = document.querySelectorAll('.modal-overlay');
+            modals.forEach(modal => modal.classList.remove('active'));
+            
+            // Set up demo credentials
+            document.getElementById('username').value = 'admin';
+            document.getElementById('password').value = 'admin123';
+            document.getElementById('userRole').value = 'admin';
+            
+            // Add button for adding new doctors in shift section
+            const shiftHeader = document.querySelector('#shiftSection .flex.items-center.justify-between');
+            if (shiftHeader) {
+                const addDoctorBtn = document.createElement('button');
+                addDoctorBtn.className = 'bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg font-semibold flex items-center gap-2 transition-colors';
+                addDoctorBtn.innerHTML = '<i class="fas fa-user-plus"></i> Add Doctor';
+                addDoctorBtn.onclick = openAddDoctorModal;
+                shiftHeader.insertBefore(addDoctorBtn, shiftHeader.firstChild);
+            }
+        });
+    </script>
+</body>
+</html>
