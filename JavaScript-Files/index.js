@@ -521,7 +521,7 @@ function updateServicesCards(lang) {
                 alt: "Maternity",
                 title: "Maternity & Birth Services",
                 text: "Providing prenatal care, safe deliveries, and postnatal support for mothers and newborns.",
-                link: "./Servscies/Maternity&Brith Servecises.html"
+                link: "/Services/Maternity&Brith Services.html"
             },
             {
                 img: "./img/emer.webp",
@@ -535,28 +535,28 @@ function updateServicesCards(lang) {
                 alt: "Vaccination",
                 title: "Vaccination Programs",
                 text: "Regular vaccination campaigns for children and adults to prevent infectious diseases.",
-                link: "/Servscies/veccination.html"
+                link: "/Services/veccination.html"
             },
             {
                 img: "./img/mentl.webp",
                 alt: "Mental Health",
                 title: "Mental Health Support",
                 text: "Counseling and support services for mental well-being and trauma recovery.",
-                link: "/Servscies/mentalhealth.html"
+                link: "/Services/mentalhealth.html"
             },
             {
                 img: "./img/chro.webp",
                 alt: "Chronic Care",
                 title: "Chronic Disease Care",
                 text: "Management and monitoring of chronic diseases like diabetes, hypertension, TB, and HIV.",
-                link: "/Servscies/NCD.html"
+                link: "/Services/NCD.html"
             },
             {
                 img: "/img/awernees.webp",
                 alt: "Health Education",
                 title: "Health Awareness & Education",
                 text: "Educational resources about hygiene, nutrition, pregnancy, child care, and disease prevention.",
-                link: "/Servscies/Health Education.html"
+                link: "/Services/Health Education.html"
             }
         ],
         rw: [
@@ -565,7 +565,7 @@ function updateServicesCards(lang) {
                 alt: "Ubyeyi",
                 title: "Serivisi z'ububyeyi no kubyara",
                 text: "Gutanga ubuvuzi bw'umubyeyi, kubya neza, no gufasha ababyeyi n'abana bashya.",
-                link: "./Servscies/Maternity&Brith Servecises.html"
+                link: "./Servives/Maternity&Brith Servecises.html"
             },
             {
                 img: "./img/emer.webp",
@@ -579,28 +579,28 @@ function updateServicesCards(lang) {
                 alt: "Guhumurizwa",
                 title: "Guhumurizwa",
                 text: "Kurwanya indwara zandura ku bana n'abantu.",
-                link: "/Servscies/veccination.html"
+                link: "/Services/veccination.html"
             },
             {
                 img: "./img/mentl.webp",
                 alt: "Ubuzima bwo mu mutwe",
                 title: "Ubuzima bwo mu mutwe",
                 text: "Ubufasha n'ubuvuzi ku bantu bafite amakuba.",
-                link: "/Servscies/mentalhealth.html"
+                link: "/Services/mentalhealth.html"
             },
             {
                 img: "./img/chro.webp",
                 alt: "Uburwayi butatana",
                 title: "Uburwayi butatana",
                 text: "Kurwanya indwara zitandukanye nka diabète, hypertension, TB, na SIDA.",
-                link: "/Servscies/NCD.html"
+                link: "/Services/NCD.html"
             },
             {
                 img: "/img/awernees.webp",
                 alt: "Ubumenyi",
                 title: "Ubumenyi n'amahugurwa",
                 text: "Amahugurwa ku bijyanye n'ubuzima, ibiribwa, ububyeyi, kurera abana, no kurwanya indwara.",
-                link: "/Servscies/Health Education.html"
+                link: "/Services/Health Education.html"
             }
         ]
     };
