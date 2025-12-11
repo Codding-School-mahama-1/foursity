@@ -332,7 +332,7 @@
                 </div>
             </section>
 
-            <!-- Emergency Reports Section - UPDATED TO LOOK LIKE ACTIVE EMERGENCY MANAGEMENT -->
+            <!-- Emergency Reports Section -->
             <section id="reports" class="mb-12">
                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
                     <h2 class="text-3xl font-bold text-gray-800">Emergency Reports History</h2>
@@ -407,7 +407,6 @@
                             <button onclick="generateEmergencyReport()" class="w-full bg-blue-600 text-white px-4 py-3 rounded-lg hover:bg-blue-700 transition duration-300 text-left">
                                 <i class="fas fa-chart-bar mr-2"></i>Generate Report
                             </button>
-                            <!-- Add test email button -->
                             <button onclick="testEmergencyEmail()" class="w-full bg-purple-600 text-white px-4 py-3 rounded-lg hover:bg-purple-700 transition duration-300 text-left">
                                 <i class="fas fa-envelope mr-2"></i>Test Email System
                             </button>
@@ -516,11 +515,11 @@
 
     <!-- Firebase Configuration and Dashboard Script -->
     <script>
-        // EmailJS Configuration - UPDATED
+        // EmailJS Configuration - Use your NEW template ID
         const EMAILJS_CONFIG = {
             PUBLIC_KEY: 'GhBaQI-xJytzUAQjs',
             SERVICE_ID: 'service_vh1szck',
-            TEMPLATE_ID: 'template_5dwr27s' // Your existing template
+            TEMPLATE_ID: 'template_5dwr27s' // Make sure this matches your template ID
         };
 
         // Firebase Configuration
@@ -752,139 +751,107 @@
             }, 5000);
         }
 
-  // SIMPLIFIED Email function - Use only basic variables
-async function sendEmergencyEmailNotification(report, action, additionalNotes = '') {
-    try {
-        const reporterName = `${report.firstName} ${report.lastName || ''}`.trim();
-        const reporterEmail = report.email;
-        
-        console.log('Sending EMERGENCY email to:', reporterEmail);
-        
-        if (!reporterEmail) {
-            showNotification('Cannot send email: No email found', 'error');
-            return false;
+        // Updated Email function for NEW template format
+        async function sendEmergencyEmailNotification(report, action, additionalNotes = '') {
+            try {
+                const reporterName = `${report.firstName} ${report.lastName || ''}`.trim();
+                const reporterEmail = report.email;
+                
+                console.log('Sending emergency email to:', reporterEmail);
+                
+                if (!reporterEmail) {
+                    showNotification('Cannot send email: No email found', 'error');
+                    return false;
+                }
+
+                // Validate email
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!emailRegex.test(reporterEmail)) {
+                    showNotification('Invalid email format', 'error');
+                    return false;
+                }
+
+                // Determine status based on action
+                let status;
+                let messageType;
+                if (action === 'review') {
+                    status = 'UNDER REVIEW';
+                    messageType = 'Emergency Report Update';
+                } else if (action === 'resolve') {
+                    status = 'RESOLVED';
+                    messageType = 'Emergency Report Resolved';
+                } else if (action === 'reject') {
+                    status = 'REJECTED';
+                    messageType = 'Emergency Report Status';
+                } else {
+                    status = 'RECEIVED';
+                    messageType = 'Emergency Report Confirmation';
+                }
+                
+                // Format dates
+                const reportedDate = formatTimestamp(report.createdAt);
+                const currentDate = new Date().toLocaleDateString();
+                const currentTime = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+                
+                // Create message based on status
+                let messageText = '';
+                if (status === 'UNDER REVIEW') {
+                    messageText = 'Your emergency report has been received and is being reviewed by our emergency response team. We will contact you with updates.';
+                } else if (status === 'RESOLVED') {
+                    messageText = 'Your emergency report has been successfully resolved by our emergency response team. Thank you for bringing this to our attention.';
+                } else if (status === 'REJECTED') {
+                    messageText = 'Your emergency report has been reviewed but was not accepted for further action. If you believe this is an error, please contact our emergency hotline.';
+                } else {
+                    messageText = 'Thank you for reporting this emergency. Our team has received your report and will respond accordingly.';
+                }
+                
+                if (additionalNotes) {
+                    messageText += '\n\n' + additionalNotes;
+                }
+
+                // Prepare template parameters for NEW template format
+                const templateParams = {
+                    // Basic variables from your template
+                    name: reporterName,
+                    message_type: messageType,
+                    date: `${currentDate} at ${currentTime}`,
+                    
+                    // Emergency specific variables
+                    emergency_type: report.subject || 'General Emergency',
+                    status: status,
+                    notes: additionalNotes || '',
+                    message: messageText,
+                    
+                    // Additional variables
+                    to_email: reporterEmail,
+                    subject: `${messageType}: ${report.subject || 'Emergency Report'}`,
+                    
+                    // Conditionals - set patient_info to false since we don't have patient data in emergency reports
+                    patient_info: false,
+                    patient_id: '',
+                    patient_name: ''
+                };
+
+                console.log('Sending email with NEW template parameters:', templateParams);
+
+                // Send email using your template
+                const response = await emailjs.send(
+                    EMAILJS_CONFIG.SERVICE_ID,
+                    EMAILJS_CONFIG.TEMPLATE_ID,
+                    templateParams
+                );
+
+                console.log('Emergency email sent successfully!', response);
+                showNotification(`Email notification sent to ${reporterEmail}`, 'success');
+                return true;
+                
+            } catch (error) {
+                console.error('Failed to send emergency email:', error);
+                console.error('Full error:', error);
+                showNotification('Failed to send email: ' + error.message, 'error');
+                return false;
+            }
         }
-
-        // Validate email
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRegex.test(reporterEmail)) {
-            showNotification('Invalid email format', 'error');
-            return false;
-        }
-
-        // Basic emergency info
-        const emergencyType = report.subject || 'General Emergency';
-        const status = action === 'accept' ? 'UNDER REVIEW' : 
-                     action === 'review' ? 'UNDER REVIEW' : 
-                     action === 'resolve' ? 'RESOLVED' : 'REJECTED';
-        
-        // Format dates
-        const reportedDate = formatTimestamp(report.createdAt);
-        const currentDate = new Date().toLocaleDateString();
-        const currentTime = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-        
-        // Create message based on status
-        let messageText = '';
-        if (status === 'UNDER REVIEW') {
-            messageText = 'Your emergency report has been received and is being reviewed by our emergency response team.';
-        } else if (status === 'RESOLVED') {
-            messageText = 'Your emergency report has been successfully resolved by our emergency response team.';
-        } else if (status === 'REJECTED') {
-            messageText = 'Your emergency report has been reviewed but was not accepted for further action.';
-        }
-        
-        if (additionalNotes) {
-            messageText += '\n\nNotes: ' + additionalNotes;
-        }
-
-        // ULTRA SIMPLE template parameters - Using ONLY basic EmailJS variables
-        const templateParams = {
-            // Basic EmailJS required variables
-            to_name: reporterName,
-            to_email: reporterEmail,
-            from_name: 'MahamaCare Hospital',
-            
-            // Simple emergency info
-            name: reporterName,
-            emergency_type: emergencyType,
-            status: status,
-            reported_date: reportedDate,
-            date: currentDate,
-            time: currentTime,
-            message: messageText,
-            
-            // Simple text version (as fallback)
-            notes: additionalNotes || '',
-            hospital_name: 'MahamaCare Hospital',
-            emergency_hotline: '112',
-            
-            // Subject line
-            subject: `Emergency Report ${status}: ${emergencyType}`
-        };
-
-        console.log('Sending email with ULTRA SIMPLE params:', templateParams);
-
-        // Send email
-        const response = await emailjs.send(
-            EMAILJS_CONFIG.SERVICE_ID,
-            EMAILJS_CONFIG.TEMPLATE_ID,
-            templateParams
-        );
-
-        console.log('Emergency email sent successfully!', response);
-        showNotification(`Email sent to ${reporterEmail}`, 'success');
-        return true;
-        
-    } catch (error) {
-        console.error('Failed to send emergency email:', error);
-        console.error('Full error:', error);
-        showNotification('Failed to send email: ' + error.message, 'error');
-        return false;
-    }
-}
-
-
-// Debug function to test EmailJS
-window.debugEmailTemplate = async function() {
-    try {
-        console.log('=== DEBUGGING EMAIL TEMPLATE ===');
-        
-        // Create a simple test email
-        const testParams = {
-            to_name: 'Test User',
-            to_email: 'unitycoders2025@gmail.com',
-            from_name: 'Test System',
-            subject: 'TEST EMAIL',
-            name: 'Test User',
-            emergency_type: 'TEST: Medical Emergency',
-            status: 'UNDER REVIEW',
-            reported_date: new Date().toLocaleString(),
-            date: new Date().toLocaleDateString(),
-            time: new Date().toLocaleTimeString(),
-            message: 'This is a test message to see what variables work.',
-            notes: 'Test notes',
-            hospital_name: 'MahamaCare Hospital',
-            emergency_hotline: '112'
-        };
-        
-        console.log('Test parameters:', testParams);
-        console.log('Using template ID:', EMAILJS_CONFIG.TEMPLATE_ID);
-        
-        const response = await emailjs.send(
-            EMAILJS_CONFIG.SERVICE_ID,
-            EMAILJS_CONFIG.TEMPLATE_ID,
-            testParams
-        );
-        
-        console.log('Test email sent! Response:', response);
-        showNotification('Debug email sent! Check your inbox.', 'success');
-        
-    } catch (error) {
-        console.error('Debug error:', error);
-        console.error('Error text:', error.text);
-        showNotification('Debug failed: ' + error.message, 'error');
-    }
-}
 
         // Dashboard Functions
         async function loadEmergencies() {
@@ -1389,7 +1356,7 @@ ${report.updatedAt ? `Last Updated: ${formatTimestamp(report.updatedAt)}` : ''}
                 const result = await emergencySystemData.updateReportStatus(reportId, 'under-review');
                 
                 if (result.success) {
-                    // Send email notification to REPORTER
+                    // Send email notification to REPORTER using new template format
                     const emailSent = await sendEmergencyEmailNotification(report, 'review', notes);
                     
                     if (emailSent) {
@@ -1428,7 +1395,7 @@ ${report.updatedAt ? `Last Updated: ${formatTimestamp(report.updatedAt)}` : ''}
                 const result = await emergencySystemData.updateReportStatus(reportId, 'resolved');
                 
                 if (result.success) {
-                    // Send email notification to REPORTER
+                    // Send email notification to REPORTER using new template format
                     const emailSent = await sendEmergencyEmailNotification(report, 'resolve', resolutionNotes);
                     
                     if (emailSent) {
@@ -1467,7 +1434,7 @@ ${report.updatedAt ? `Last Updated: ${formatTimestamp(report.updatedAt)}` : ''}
                 const result = await emergencySystemData.updateReportStatus(reportId, 'rejected');
                 
                 if (result.success) {
-                    // Send email notification to REPORTER
+                    // Send email notification to REPORTER using new template format
                     const emailSent = await sendEmergencyEmailNotification(report, 'reject', rejectionReason);
                     
                     if (emailSent) {
@@ -1592,7 +1559,7 @@ ${report.updatedAt ? `Last Updated: ${formatTimestamp(report.updatedAt)}` : ''}
                 console.log('=== TESTING EMERGENCY EMAIL SYSTEM ===');
                 console.log('Using template:', EMAILJS_CONFIG.TEMPLATE_ID);
                 
-                const result = await sendEmergencyEmailNotification(testReport, 'accept', 'This is a test email to verify the system is working.');
+                const result = await sendEmergencyEmailNotification(testReport, 'review', 'This is a test email to verify the system is working.');
                 
                 if (result) {
                     showNotification('Test emergency email sent! Check your email inbox.', 'success');
@@ -1603,29 +1570,6 @@ ${report.updatedAt ? `Last Updated: ${formatTimestamp(report.updatedAt)}` : ''}
                 console.error('Test error:', error);
                 showNotification('Test failed: ' + error.message, 'error');
             }
-        };
-
-        // Debug function to check template variables
-        window.debugTemplate = function() {
-            console.log('=== DEBUG TEMPLATE VARIABLES ===');
-            console.log('Template ID:', EMAILJS_CONFIG.TEMPLATE_ID);
-            console.log('Expected variables in template:');
-            console.log('- to_name');
-            console.log('- to_email');
-            console.log('- from_name');
-            console.log('- subject');
-            console.log('- emergency_type');
-            console.log('- status');
-            console.log('- reported_date');
-            console.log('- reporter_name');
-            console.log('- date');
-            console.log('- time');
-            console.log('- emergency_hotline');
-            console.log('- hospital_name');
-            console.log('- hospital_email');
-            console.log('- hospital_address');
-            console.log('- notes');
-            console.log('- message');
         };
 
         // Event Listeners and Initialization
@@ -1655,9 +1599,6 @@ ${report.updatedAt ? `Last Updated: ${formatTimestamp(report.updatedAt)}` : ''}
                 
                 // Show welcome notification
                 showNotification(`Welcome, ${user.email}! Emergency dashboard loaded.`, 'success');
-                
-                // Debug template
-                debugTemplate();
             });
 
             // Fixed Logout functionality
