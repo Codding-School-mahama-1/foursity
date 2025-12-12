@@ -1018,7 +1018,11 @@
           'template_5dwr27s',    // Your Template ID
           templateParams
         );
-        
+        emailjs.send('service_id', 'template_id', {
+  subject: "Test Subject", // Add this
+  name: "Test",
+  // ... all other variables
+});
         console.log("Email sent successfully:", response);
         return {
           success: true,
@@ -1289,8 +1293,7 @@
         if (currentPatientData.email) {
           try {
             const emailSubject = `Transfer Request Notification - ${currentPatientData.name}`;
-            const emailMessage = `
-Dear ${currentPatientData.name},
+            const emailMessage = ` ${currentPatientData.name},
 
 A transfer request has been initiated for you from MCH Hospital to ${toHospital}.
 
