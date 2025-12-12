@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Total Appointments Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
+    
+    <style>
+        .stat-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        .sidebar-fixed {
+            position: fixed;
+            left: 0;
+            top: 0;
+            height: 100vh;
+            width: 14rem;
+            z-index: 40;
+        }
+        .main-content {
+            margin-left: 14rem;
+            min-height: 100vh;
+        }
+        @media (max-width: 768px) {
+            .sidebar-fixed {
+                width: 100%;
+                height: auto;
+                position: relative;
+            }
+            .main-content {
+                margin-left: 0;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen font-serif">
+    <!-- Loading overlay -->
+    <div id="loadingOverlay" class="fixed inset-0 bg-white flex items-center justify-center z-50">
+        <div class="text-center">
+            <div class="loading-spinner"></div>
+            <p class="mt-4 text-gray-600">Loading total appointments dashboard...</p>
+        </div>
+    </div>
+
+    <!-- Fixed Sidebar -->
+    <aside class="sidebar-fixed bg-gradient-to-b from-blue-500 to-blue-600 text-white flex flex-col shadow-xl">
+        <div class="text-xl font-bold p-6 border-b border-blue-400 bg-blue-600">Hospital Admin</div>
+        
+        <!-- Navigation Menu -->
+        <nav class="flex-1 p-5 space-y-3">
+            <!-- Logout Button -->
+            <a href="#" id="logoutBtn" class="flex items-center p-3 rounded-xl hover:bg-blue-400 transition-all duration-200 text-red-100 bg-blue-700/30">
+                <i class="fa-solid fa-right-from-bracket text-xl mr-3"></i>
+                <span class="font-medium">Logout</span>
+            </a>
+            
+            <!-- Main Dashboard -->
+            <a href="/Dashboard.html" class="flex items-center p-3 rounded-xl hover:bg-blue-400 transition-all duration-200 bg-white/10">
+                <i class="fa-solid fa-user text-yellow-400 text-2xl mr-3"></i>
+                <span class="font-medium">Birth & Patient</span>
+            </a>
+            
+            <!-- Maternity -->
+            <a href="/Dashboard/maternity.html" class="flex items-center p-3 rounded-xl hover:bg-blue-400 transition-all duration-200 bg-white/10">
+                <i class="fa-solid fa-user-injured text-yellow-400 text-2xl mr-3"></i>
+                <span class="font-medium">Maternity</span>
+            </a>
+            
+            <!-- Emergency -->
+            <a href="/Dashboard/Emergency2.html" class="flex items-center p-3 rounded-xl hover:bg-blue-400 transition-all duration-200 bg-white/10">
+                <i class="fas fa-truck-medical mr-2 text-yellow-400 text-2xl"></i>
+                <span class="font-medium">Emergency</span>
+            </a>
+            
+            <!-- Vaccination -->
+            <a href="/Dashboard/vaccination2.html" class="flex items-center p-3 rounded-xl hover:bg-blue-400 transition-all duration-200 bg-white/10">
+                <i class="fas fa-syringe text-yellow-400 text-2xl mr-3"></i>
+                <span class="font-medium">Vaccination</span>
+            </a>
+            
+            <!-- Mental Health -->
+            <a href="/Dashboard/mental heath.html" class="flex items-center p-3 rounded-xl hover:bg-blue-400 transition-all duration-200 bg-white/10">
+                <i class="fa-solid fa-head-side-brain mr-2 text-yellow-400 text-2x"></i>
+                <span class="font-medium">Mental Health</span>
+            </a>
+            
+            <!-- NCD -->
+            <a href="/Dashboard/NCD_Dashboard.html" class="flex items-center p-3 rounded-xl hover:bg-blue-400 transition-all duration-200 bg-white/10">
+                <i class="fas fa-heartbeat mr-2 text-yellow-400 text-2xl"></i> 
+                <span class="font-medium">NCD</span>
+            </a>
+            
+            <!-- Disability -->
+            <a href="/Dashboard/Disability2.html" class="flex items-center p-3 rounded-xl hover:bg-blue-400 transition-all duration-200 bg-white/10">
+                <i class="fa-solid fa-wheelchair text-yellow-400 text-2xl mr-3"></i>
+                <span class="font-medium">Disability</span>
+            </a>
+            
+            <!-- Complain -->
+            <a href="/Dashboard/complain_Dashboard.html" class="flex items-center p-3 rounded-xl hover:bg-blue-400 transition-all duration-200 bg-white/10">
+                <i class="fas fa-headset mr-2 text-yellow-400 text-2xl"></i>
+                <span class="font-medium">Complain</span>
+            </a>
+        </nav>
+        
+        <div class="p-4 border-t border-blue-400 bg-blue-600/50 rounded-br-3xl">
+            <div class="text-sm text-blue-100 text-center">
+                <i class="fa-solid fa-shield-heart mr-2"></i>
+                Secure System
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <div class="main-content">
+        <!-- Header -->
+        <header class="bg-white shadow-md sticky top-0 z-30">
+            <div class="container mx-auto px-4">
+                <div class="flex justify-between items-center py-4">
+                    <div class="flex items-center">
+                        <span class="text-2xl font-bold text-blue-600"><a href="/index.html">🏥 MCH </a>Total Appointments Dashboard</span>
+                    </div>
+                    
+                    <nav class="hidden md:flex items-center space-x-6">
+                        <a href="#today" class="text-gray-700 hover:text-blue-600 transition duration-300">Today</a>
+                        <a href="#departments" class="text-gray-700 hover:text-blue-600 transition duration-300">By Department</a>
+                        <a href="#monthly" class="text-gray-700 hover:text-blue-600 transition duration-300">Monthly</a>
+                    </nav>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="container mx-auto px-4 py-8">
+            <!-- Total Statistics -->
+            <section id="total-stats" class="mb-12">
+                <h2 class="text-3xl font-bold text-gray-800 mb-6">Total Appointments Overview</h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                    <div class="stat-card bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-xl shadow-lg p-6 text-center">
+                        <div class="text-3xl font-bold mb-2" id="total-appointments-all">0</div>
+                        <div class="text-blue-100">Total Appointments</div>
+                        <div class="text-sm text-blue-200 mt-2">All Departments</div>
+                    </div>
+                    
+                    <div class="stat-card bg-gradient-to-r from-green-500 to-green-600 text-white rounded-xl shadow-lg p-6 text-center">
+                        <div class="text-3xl font-bold mb-2" id="today-appointments-all">0</div>
+                        <div class="text-green-100">Today's Appointments</div>
+                        <div class="text-sm text-green-200 mt-2" id="today-date">Loading...</div>
+                    </div>
+                    
+                    <div class="stat-card bg-gradient-to-r from-purple-500 to-purple-600 text-white rounded-xl shadow-lg p-6 text-center">
+                        <div class="text-3xl font-bold mb-2" id="pending-appointments-all">0</div>
+                        <div class="text-purple-100">Pending Appointments</div>
+                        <div class="text-sm text-purple-200 mt-2" id="pending-percent">0% of total</div>
+                    </div>
+                    
+                    <div class="stat-card bg-gradient-to-r from-orange-500 to-orange-600 text-white rounded-xl shadow-lg p-6 text-center">
+                        <div class="text-3xl font-bold mb-2" id="completed-appointments-all">0</div>
+                        <div class="text-orange-100">Completed Appointments</div>
+                        <div class="text-sm text-orange-200 mt-2" id="completed-percent">0% of total</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Department Breakdown -->
+            <section id="departments" class="mb-12">
+                <h2 class="text-3xl font-bold text-gray-800 mb-6">Appointments by Department</h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                    <div class="stat-card bg-white rounded-xl shadow-lg p-6 text-center">
+                        <i class="fas fa-user-injured text-3xl text-pink-500 mb-3"></i>
+                        <div class="text-2xl font-bold text-gray-800 mb-1" id="maternity-count">0</div>
+                        <div class="text-gray-600">Maternity</div>
+                        <div class="text-sm text-gray-500 mt-2" id="maternity-percent">0% of total</div>
+                    </div>
+                    
+                    <div class="stat-card bg-white rounded-xl shadow-lg p-6 text-center">
+                        <i class="fas fa-heartbeat text-3xl text-red-500 mb-3"></i>
+                        <div class="text-2xl font-bold text-gray-800 mb-1" id="ncd-count">0</div>
+                        <div class="text-gray-600">NCD Care</div>
+                        <div class="text-sm text-gray-500 mt-2" id="ncd-percent">0% of total</div>
+                    </div>
+                    
+                    <div class="stat-card bg-white rounded-xl shadow-lg p-6 text-center">
+                        <i class="fas fa-wheelchair text-3xl text-blue-500 mb-3"></i>
+                        <div class="text-2xl font-bold text-gray-800 mb-1" id="disability-count">0</div>
+                        <div class="text-gray-600">Disability Care</div>
+                        <div class="text-sm text-gray-500 mt-2" id="disability-percent">0% of total</div>
+                    </div>
+                    
+                    <div class="stat-card bg-white rounded-xl shadow-lg p-6 text-center">
+                        <i class="fas fa-syringe text-3xl text-green-500 mb-3"></i>
+                        <div class="text-2xl font-bold text-gray-800 mb-1" id="vaccination-count">0</div>
+                        <div class="text-gray-600">Vaccination</div>
+                        <div class="text-sm text-gray-500 mt-2" id="vaccination-percent">0% of total</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Today's Appointments -->
+            <section id="today" class="mb-12">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
+                    <h2 class="text-3xl font-bold text-gray-800">Today's Appointments</h2>
+                    <button onclick="refreshAllData()" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition duration-300">
+                        <i class="fas fa-sync-alt mr-2"></i>Refresh Data
+                    </button>
+                </div>
+                
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="w-full border-collapse">
+                            <thead>
+                                <tr class="bg-gray-100">
+                                    <th class="border-b border-gray-300 px-4 py-3 text-left font-semibold text-gray-700">Department</th>
+                                    <th class="border-b border-gray-300 px-4 py-3 text-left font-semibold text-gray-700">Patient Name</th>
+                                    <th class="border-b border-gray-300 px-4 py-3 text-left font-semibold text-gray-700">Time</th>
+                                    <th class="border-b border-gray-300 px-4 py-3 text-left font-semibold text-gray-700">Contact</th>
+                                    <th class="border-b border-gray-300 px-4 py-3 text-left font-semibold text-gray-700">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="today-appointments-body">
+                                <!-- Today's appointments will be populated here -->
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div id="no-today-appointments" class="text-center py-8 text-gray-500">
+                        <i class="fas fa-calendar-check text-4xl mb-4"></i>
+                        <p>No appointments scheduled for today.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Monthly Trends -->
+            <section id="monthly" class="mb-12">
+                <h2 class="text-3xl font-bold text-gray-800 mb-6">Monthly Appointment Trends</h2>
+                
+                <div class="bg-white rounded-xl shadow-lg p-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <div class="text-center">
+                            <div class="text-2xl font-bold text-blue-600" id="this-month-total">0</div>
+                            <div class="text-gray-600">This Month</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-2xl font-bold text-green-600" id="last-month-total">0</div>
+                            <div class="text-gray-600">Last Month</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-2xl font-bold text-purple-600" id="avg-daily">0</div>
+                            <div class="text-gray-600">Average Daily</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="bg-gray-800 text-white py-8 mt-12">
+            <div class="container mx-auto px-4">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div>
+                        <h3 class="text-xl font-bold mb-4">MahamaCare Hospital</h3>
+                        <p class="text-gray-400">Comprehensive healthcare management system.</p>
+                    </div>
+                    
+                    <div>
+                        <h4 class="text-lg font-semibold mb-4">Quick Stats</h4>
+                        <div class="text-gray-400 space-y-2">
+                            <p>Total Appointments: <span id="footer-total" class="font-bold">0</span></p>
+                            <p>Today: <span id="footer-today" class="font-bold">0</span></p>
+                            <p>Most Active: <span id="footer-active-dept" class="font-bold">-</span></p>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h4 class="text-lg font-semibold mb-4">Export</h4>
+                        <button onclick="exportAllAppointments()" class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition duration-300 w-full">
+                            <i class="fas fa-download mr-2"></i>Export All Data
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-500">
+                    <p>&copy; 2025 MahamaCare Hospital. All rights reserved.</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyDt4vs7S3nckO8xxfp1_axHZ76J0cz2qdg",
+            authDomain: "mahamahospital.firebasestorage.app",
+            databaseURL: "https://mahamahospital-default-rtdb.firebaseio.com",
+            projectId: "mahamahospital",
+            storageBucket: "mahamahospital.firebasestorage.app",
+            messagingSenderId: "256305692002",
+            appId: "1:256305692002:web:cfef26992264204be9803b"
+        };
+
+        // Initialize Firebase
+        const firebaseApp = firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+        const auth = firebase.auth();
+
+        // Global Data
+        let allAppointments = [];
+        let todayAppointments = [];
+        let departmentStats = {};
+
+        // Initialize Dashboard
+        document.addEventListener('DOMContentLoaded', async function() {
+            // Check authentication
+            auth.onAuthStateChanged(async (user) => {
+                if (!user) {
+                    window.location.href = '/login.html';
+                    return;
+                }
+                
+                // Hide loading overlay
+                document.getElementById('loadingOverlay').style.display = 'none';
+                
+                // Set today's date
+                const today = new Date();
+                document.getElementById('today-date').textContent = today.toLocaleDateString('en-US', { 
+                    weekday: 'long', 
+                    year: 'numeric', 
+                    month: 'long', 
+                    day: 'numeric' 
+                });
+                
+                // Load all data
+                await loadAllAppointments();
+                
+                // Setup real-time listeners
+                setupRealtimeListeners();
+            });
+        });
+
+        // Load all appointments from different departments
+        async function loadAllAppointments() {
+            try {
+                // Load from different database paths
+                const [
+                    maternityData,
+                    ncdData,
+                    disabilityData,
+                    vaccinationData,
+                    emergencyData,
+                    mentalHealthData
+                ] = await Promise.all([
+                    loadDepartmentData('maternity-appointments'),
+                    loadDepartmentData('appointments', 'NCD'),
+                    loadDepartmentData('appointments', 'Disability'),
+                    loadDepartmentData('vaccinationRegistrations'),
+                    loadDepartmentData('emergencies'),
+                    loadDepartmentData('mentalHealthContacts')
+                ]);
+                
+                // Process all appointments
+                allAppointments = [
+                    ...maternityData.map(app => ({...app, department: 'Maternity'})),
+                    ...ncdData.map(app => ({...app, department: 'NCD'})),
+                    ...disabilityData.map(app => ({...app, department: 'Disability'})),
+                    ...vaccinationData.map(app => ({...app, department: 'Vaccination'})),
+                    ...emergencyData.map(app => ({...app, department: 'Emergency'})),
+                    ...mentalHealthData.map(app => ({...app, department: 'Mental Health'}))
+                ];
+                
+                updateDashboard();
+                
+            } catch (error) {
+                console.error('Error loading appointments:', error);
+                showNotification('Error loading appointment data', 'error');
+            }
+        }
+
+        // Load data from a specific department
+        async function loadDepartmentData(path, department = null) {
+            try {
+                const snapshot = await database.ref(path).once('value');
+                const data = snapshot.val();
+                
+                if (!data) return [];
+                
+                // Convert to array and add department info
+                return Object.entries(data).map(([id, item]) => ({
+                    id,
+                    ...item,
+                    department: department || path
+                }));
+            } catch (error) {
+                console.error(`Error loading ${path}:`, error);
+                return [];
+            }
+        }
+
+        // Update dashboard with all data
+        function updateDashboard() {
+            updateTotalStats();
+            updateDepartmentStats();
+            updateTodayAppointments();
+            updateMonthlyTrends();
+            updateFooter();
+        }
+
+        // Update total statistics
+        function updateTotalStats() {
+            const total = allAppointments.length;
+            
+            // Today's appointments
+            const today = new Date().toISOString().split('T')[0];
+            const todayApps = allAppointments.filter(app => {
+                const appDate = app.appointmentDate || app.preferredDate || app.createdAt;
+                return appDate && appDate.toString().includes(today);
+            });
+            
+            // Count by status
+            const pending = allAppointments.filter(app => 
+                app.status === 'pending' || app.status === 'new'
+            ).length;
+            
+            const completed = allAppointments.filter(app => 
+                app.status === 'completed' || app.status === 'resolved'
+            ).length;
+            
+            // Update DOM
+            document.getElementById('total-appointments-all').textContent = total;
+            document.getElementById('today-appointments-all').textContent = todayApps.length;
+            document.getElementById('pending-appointments-all').textContent = pending;
+            document.getElementById('completed-appointments-all').textContent = completed;
+            
+            // Update percentages
+            document.getElementById('pending-percent').textContent = 
+                total > 0 ? `${Math.round((pending / total) * 100)}% of total` : '0% of total';
+            document.getElementById('completed-percent').textContent = 
+                total > 0 ? `${Math.round((completed / total) * 100)}% of total` : '0% of total';
+        }
+
+        // Update department statistics
+        function updateDepartmentStats() {
+            // Group by department
+            const deptCounts = {};
+            allAppointments.forEach(app => {
+                const dept = app.department;
+                deptCounts[dept] = (deptCounts[dept] || 0) + 1;
+            });
+            
+            // Update each department card
+            const departments = {
+                'Maternity': { element: 'maternity-count', percent: 'maternity-percent' },
+                'NCD': { element: 'ncd-count', percent: 'ncd-percent' },
+                'Disability': { element: 'disability-count', percent: 'disability-percent' },
+                'Vaccination': { element: 'vaccination-count', percent: 'vaccination-percent' }
+            };
+            
+            Object.entries(departments).forEach(([dept, ids]) => {
+                const count = deptCounts[dept] || 0;
+                const percent = allAppointments.length > 0 ? 
+                    Math.round((count / allAppointments.length) * 100) : 0;
+                
+                document.getElementById(ids.element).textContent = count;
+                document.getElementById(ids.percent).textContent = `${percent}% of total`;
+            });
+            
+            departmentStats = deptCounts;
+        }
+
+        // Update today's appointments table
+        function updateTodayAppointments() {
+            const today = new Date().toISOString().split('T')[0];
+            const todayApps = allAppointments.filter(app => {
+                const appDate = app.appointmentDate || app.preferredDate || app.createdAt;
+                return appDate && appDate.toString().includes(today);
+            }).slice(0, 10); // Limit to 10 for display
+            
+            const tbody = document.getElementById('today-appointments-body');
+            const noData = document.getElementById('no-today-appointments');
+            
+            if (todayApps.length === 0) {
+                tbody.innerHTML = '';
+                noData.classList.remove('hidden');
+                return;
+            }
+            
+            noData.classList.add('hidden');
+            tbody.innerHTML = todayApps.map(app => {
+                const name = app.patientName || app.fullName || app.firstName + ' ' + app.lastName || 'Unknown';
+                const time = app.appointmentTime || app.preferredTime || 'Not specified';
+                const contact = app.phone || app.contact || 'Not provided';
+                const status = app.status || 'pending';
+                
+                return `
+                <tr class="border-b border-gray-200 hover:bg-gray-50">
+                    <td class="px-4 py-3">
+                        <span class="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-xs">
+                            ${app.department}
+                        </span>
+                    </td>
+                    <td class="px-4 py-3">${name}</td>
+                    <td class="px-4 py-3">${time}</td>
+                    <td class="px-4 py-3">${contact}</td>
+                    <td class="px-4 py-3">
+                        <span class="px-2 py-1 rounded-full text-xs ${
+                            status === 'completed' ? 'bg-green-100 text-green-800' :
+                            status === 'pending' ? 'bg-yellow-100 text-yellow-800' :
+                            'bg-gray-100 text-gray-800'
+                        }">
+                            ${status}
+                        </span>
+                    </td>
+                </tr>
+                `;
+            }).join('');
+        }
+
+        // Update monthly trends
+        function updateMonthlyTrends() {
+            const now = new Date();
+            const currentMonth = now.getMonth();
+            const currentYear = now.getFullYear();
+            const lastMonth = currentMonth === 0 ? 11 : currentMonth - 1;
+            const lastMonthYear = currentMonth === 0 ? currentYear - 1 : currentYear;
+            
+            // This month's appointments
+            const thisMonthApps = allAppointments.filter(app => {
+                const appDate = new Date(app.createdAt || app.appointmentDate || now);
+                return appDate.getMonth() === currentMonth && 
+                       appDate.getFullYear() === currentYear;
+            });
+            
+            // Last month's appointments
+            const lastMonthApps = allAppointments.filter(app => {
+                const appDate = new Date(app.createdAt || app.appointmentDate || now);
+                return appDate.getMonth() === lastMonth && 
+                       appDate.getFullYear() === lastMonthYear;
+            });
+            
+            // Average daily (this month)
+            const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+            const avgDaily = Math.round(thisMonthApps.length / daysInMonth);
+            
+            document.getElementById('this-month-total').textContent = thisMonthApps.length;
+            document.getElementById('last-month-total').textContent = lastMonthApps.length;
+            document.getElementById('avg-daily').textContent = avgDaily;
+        }
+
+        // Update footer
+        function updateFooter() {
+            const total = allAppointments.length;
+            const today = new Date().toISOString().split('T')[0];
+            const todayCount = allAppointments.filter(app => {
+                const appDate = app.appointmentDate || app.preferredDate || app.createdAt;
+                return appDate && appDate.toString().includes(today);
+            }).length;
+            
+            // Find most active department
+            let mostActive = '-';
+            let maxCount = 0;
+            Object.entries(departmentStats).forEach(([dept, count]) => {
+                if (count > maxCount) {
+                    maxCount = count;
+                    mostActive = dept;
+                }
+            });
+            
+            document.getElementById('footer-total').textContent = total;
+            document.getElementById('footer-today').textContent = todayCount;
+            document.getElementById('footer-active-dept').textContent = mostActive;
+        }
+
+        // Setup real-time listeners
+        function setupRealtimeListeners() {
+            // Listen to all appointment paths
+            const paths = [
+                'maternity-appointments',
+                'appointments',
+                'vaccinationRegistrations',
+                'emergencies',
+                'mentalHealthContacts'
+            ];
+            
+            paths.forEach(path => {
+                database.ref(path).on('value', () => {
+                    loadAllAppointments(); // Reload all data
+                });
+            });
+        }
+
+        // Refresh all data
+        function refreshAllData() {
+            showNotification('Refreshing data...', 'info');
+            loadAllAppointments();
+        }
+
+        // Export all appointments
+        function exportAllAppointments() {
+            if (allAppointments.length === 0) {
+                showNotification('No data to export', 'error');
+                return;
+            }
+            
+            try {
+                // Prepare CSV content
+                const headers = ['Department', 'Patient Name', 'Contact', 'Appointment Date', 'Status', 'Created At'];
+                const csvContent = [
+                    headers.join(','),
+                    ...allAppointments.map(app => [
+                        app.department,
+                        app.patientName || app.fullName || app.firstName + ' ' + app.lastName || 'Unknown',
+                        app.phone || app.contact || 'Not provided',
+                        app.appointmentDate || app.preferredDate || 'N/A',
+                        app.status || 'pending',
+                        app.createdAt ? new Date(app.createdAt).toLocaleDateString() : 'N/A'
+                    ].map(field => `"${field}"`).join(','))
+                ].join('\n');
+                
+                // Create download link
+                const blob = new Blob([csvContent], { type: 'text/csv' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `all-appointments-${new Date().toISOString().split('T')[0]}.csv`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+                
+                showNotification('All appointments exported successfully!', 'success');
+            } catch (error) {
+                console.error('Error exporting appointments:', error);
+                showNotification('Error exporting data', 'error');
+            }
+        }
+
+        // Notification function
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.className = `fixed top-4 right-4 p-4 rounded-lg shadow-lg z-50 ${
+                type === 'success' ? 'bg-green-500 text-white' :
+                type === 'error' ? 'bg-red-500 text-white' :
+                'bg-blue-500 text-white'
+            }`;
+            notification.textContent = message;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 5000);
+        }
+
+        // Logout functionality
+        document.getElementById('logoutBtn').addEventListener('click', async function(e) {
+            e.preventDefault();
+            
+            try {
+                await auth.signOut();
+                window.location.href = '/login.html';
+            } catch (error) {
+                console.error('Logout error:', error);
+                showNotification('Error during logout', 'error');
+            }
+        });
+    </script>
+</body>
+</html>
