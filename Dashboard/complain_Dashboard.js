@@ -1,7 +1,3 @@
-
-
-
-    
  
         // Firebase Configuration
         const firebaseConfig = {
@@ -17,6 +13,7 @@
         // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
         const database = firebase.database();
+        const auth = firebase.auth();
 
         // Global variables
         let complaintsData = [];
@@ -42,25 +39,85 @@
         const nextComplaintsPageBtn = document.getElementById('next-complaints-page');
         const complaintsPaginationInfo = document.getElementById('complaints-pagination-info');
 
-        // Initialize the dashboard
+        // Check authentication on page load
         document.addEventListener('DOMContentLoaded', function() {
-            // Set today's date
-            const today = new Date();
-            todayDateEl.textContent = today.toLocaleDateString('en-US', { 
-                weekday: 'long', 
-                year: 'numeric', 
-                month: 'long', 
-                day: 'numeric' 
+            auth.onAuthStateChanged(async (user) => {
+                if (!user) {
+                    // User is not logged in, redirect to login page
+                    console.log('No user found, redirecting to login...');
+                    // showNotification('Please login to access the complaints dashboard', 'error');
+                    
+                    setTimeout(() => {
+                        window.location.href = '/login.html';
+                    }, 2000);
+                    return;
+                }
+                
+                // User is logged in, hide loading overlay
+                document.getElementById('loadingOverlay').style.display = 'none';
+                
+                // Set today's date
+                const today = new Date();
+                todayDateEl.textContent = today.toLocaleDateString('en-US', { 
+                    weekday: 'long', 
+                    year: 'numeric', 
+                    month: 'long', 
+                    day: 'numeric' 
+                });
+
+                // Load data
+                loadComplaintsData();
+                
+                // Set up event listeners
+                refreshDataBtn.addEventListener('click', loadComplaintsData);
+                searchComplaintsEl.addEventListener('input', filterComplaints);
+                prevComplaintsPageBtn.addEventListener('click', goToPrevPage);
+                nextComplaintsPageBtn.addEventListener('click', goToNextPage);
+                
+                // Mobile menu toggle
+                document.getElementById('mobile-menu-button').addEventListener('click', function() {
+                    const mobileMenu = document.getElementById('mobile-menu');
+                    mobileMenu.classList.toggle('hidden');
+                });
+                
+                // Show welcome notification
+                // showNotification(`Welcome, ${user.email}! Complaints dashboard loaded.`, 'success');
             });
 
-            // Load data
-            loadComplaintsData();
-            
-            // Set up event listeners
-            refreshDataBtn.addEventListener('click', loadComplaintsData);
-            searchComplaintsEl.addEventListener('input', filterComplaints);
-            prevComplaintsPageBtn.addEventListener('click', goToPrevPage);
-            nextComplaintsPageBtn.addEventListener('click', goToNextPage);
+            // Logout functionality
+            document.getElementById('logoutBtn').addEventListener('click', async function(e) {
+                e.preventDefault();
+                
+                try {
+                    // Show loading state
+                    // showNotification('Logging out...', 'success');
+                    
+                    // Sign out from Firebase
+                    await auth.signOut();
+                    console.log('User signed out successfully');
+                    
+                    // Clear any stored data
+                    localStorage.removeItem('userEmail');
+                    sessionStorage.clear();
+                    
+                    // Show success message
+                    // showNotification('Logged out successfully! Redirecting to login...', 'success');
+                    
+                    // Redirect to login page after a short delay
+                    setTimeout(() => {
+                        window.location.href = '/login.html';
+                    }, 1500);
+                    
+                } catch (error) {
+                    console.error('Logout error:', error);
+                    showNotification('Error during logout. Please try again.', 'error');
+                    
+                    // Still redirect even if there's an error
+                    setTimeout(() => {
+                        window.location.href = '/login.html';
+                    }, 2000);
+                }
+            });
         });
 
         // Load complaints data from Firebase
@@ -97,6 +154,7 @@
             updateStatistics();
             updateComplaintsTable();
             updateCategoryStats();
+            updateSystemInfo();
         }
 
         // Update statistics cards
@@ -127,6 +185,47 @@
             complaintsChangeEl.textContent = `+${todayCount} today`;
             pendingPercentEl.textContent = total > 0 ? `${Math.round((pendingCount / total) * 100)}% of total` : '0% of total';
             resolvedPercentEl.textContent = total > 0 ? `${Math.round((resolvedCount / total) * 100)}% of total` : '0% of total';
+        }
+
+        // Update system information
+        function updateSystemInfo() {
+            const total = complaintsData.length;
+            
+            // Calculate new complaints in last 7 days
+            const sevenDaysAgo = new Date();
+            sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+            
+            const newComplaints = complaintsData.filter(comp => {
+                const compDate = new Date(comp.createdAt);
+                return compDate >= sevenDaysAgo;
+            }).length;
+            
+            // Calculate resolution rate
+            const resolvedCount = complaintsData.filter(comp => comp.status === 'resolved').length;
+            const resolutionRate = total > 0 ? Math.round((resolvedCount / total) * 100) : 0;
+            
+            // Find most common category
+            const categoryCounts = {};
+            complaintsData.forEach(comp => {
+                const category = comp.category || 'Unknown';
+                categoryCounts[category] = (categoryCounts[category] || 0) + 1;
+            });
+            
+            let popularCategory = '-';
+            let maxCount = 0;
+            
+            Object.entries(categoryCounts).forEach(([category, count]) => {
+                if (count > maxCount) {
+                    maxCount = count;
+                    popularCategory = formatCategory(category);
+                }
+            });
+            
+            // Update DOM elements
+            document.getElementById('total-messages').textContent = total;
+            document.getElementById('new-complaints').textContent = newComplaints;
+            document.getElementById('resolution-rate').textContent = `${resolutionRate}%`;
+            document.getElementById('popular-category').textContent = popularCategory;
         }
 
         // Update category statistics
@@ -227,6 +326,9 @@
                                 <button onclick="updateComplaintStatus('${complaint.id}', 'resolved')" class="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded text-sm">
                                     <i class="fas fa-check mr-1"></i> Resolve
                                 </button>
+                                <button onclick="deleteComplaint('${complaint.id}')" class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-sm">
+                                    <i class="fas fa-trash mr-1"></i> Delete
+                                </button>
                             </div>
                         </td>
                     `;
@@ -238,6 +340,25 @@
                 complaintsPaginationInfo.textContent = `Showing ${startIndex + 1}-${endIndex} of ${filteredComplaints.length} complaints`;
                 prevComplaintsPageBtn.disabled = currentPage === 1;
                 nextComplaintsPageBtn.disabled = currentPage === totalPages;
+            }
+        }
+
+        // Delete complaint function
+        function deleteComplaint(complaintId) {
+            if (confirm('Are you sure you want to delete this complaint? This action cannot be undone.')) {
+                database.ref('complaints/' + complaintId).remove()
+                    .then(() => {
+                        showSuccess('Complaint deleted successfully');
+                        loadComplaintsData(); // Reload data to reflect changes
+                        
+                        // Close any open modals
+                        const modals = document.querySelectorAll('.fixed.inset-0');
+                        modals.forEach(modal => modal.remove());
+                    })
+                    .catch((error) => {
+                        console.error('Error deleting complaint:', error);
+                        showError('Failed to delete complaint');
+                    });
             }
         }
 
@@ -303,6 +424,9 @@
                             </button>
                             <button onclick="updateComplaintStatus('${complaint.id}', 'resolved')" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded">
                                 Mark Resolved
+                            </button>
+                            <button onclick="deleteComplaint('${complaint.id}')" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded">
+                                <i class="fas fa-trash mr-1"></i> Delete
                             </button>
                             <button onclick="this.parentElement.parentElement.parentElement.remove()" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">
                                 Close
@@ -401,6 +525,26 @@
             }
         }
 
+        // Clear all data
+        function clearAllData() {
+            if (confirm('Are you sure you want to delete ALL complaints data? This action cannot be undone.')) {
+                showLoading();
+                
+                database.ref('complaints').remove()
+                    .then(() => {
+                        complaintsData = [];
+                        updateDashboard();
+                        hideLoading();
+                        showSuccess('All complaints data has been cleared');
+                    })
+                    .catch((error) => {
+                        console.error('Error clearing data:', error);
+                        hideLoading();
+                        showError('Failed to clear data');
+                    });
+            }
+        }
+
         // Helper functions
         function formatCategory(category) {
             const categoryMap = {
@@ -490,3 +634,4 @@
                 notification.remove();
             }, 3000);
         }
+    

@@ -1,7 +1,8 @@
-  // Firebase Configuration
+  
+        // Firebase Configuration
         const firebaseConfig = {
             apiKey: "AIzaSyDt4vs7S3nckO8xxfp1_axHZ76J0cz2qdg",
-            authDomain: "mahamahospital.firebaseapp.com",
+            authDomain: "mahamahospital.firebasestorage.app",
             databaseURL: "https://mahamahospital-default-rtdb.firebaseio.com",
             projectId: "mahamahospital",
             storageBucket: "mahamahospital.firebasestorage.app",
@@ -10,8 +11,9 @@
         };
 
         // Initialize Firebase
-        firebase.initializeApp(firebaseConfig);
+        const firebaseApp = firebase.initializeApp(firebaseConfig);
         const database = firebase.database();
+        const auth = firebase.auth();
 
         // Disability Care Data Management
         class DisabilityCareData {
@@ -136,10 +138,8 @@
         let allAppointments = [];
         let allContacts = [];
         let currentAppointmentsPage = 1;
-        let currentContactsPage = 1;
         const pageSize = 10;
         let filteredAppointments = [];
-        let filteredContacts = [];
 
         // Utility Functions
         function escapeHtml(unsafe) {
@@ -206,24 +206,11 @@
 
         async function loadContacts() {
             try {
-                document.getElementById('loading-contacts').classList.remove('hidden');
-                document.getElementById('no-contacts-message').classList.add('hidden');
-                
                 allContacts = await disabilityCareData.getAllContacts();
-                filteredContacts = [...allContacts];
-                
-                displayContacts();
                 updateStatistics();
-                
-                document.getElementById('loading-contacts').classList.add('hidden');
-                
-                if (allContacts.length === 0) {
-                    document.getElementById('no-contacts-message').classList.remove('hidden');
-                }
             } catch (error) {
                 console.error('Error loading contacts:', error);
-                // showNotification('Error loading contact data.', 'error');
-                document.getElementById('loading-contacts').classList.add('hidden');
+                // Don't show notification for contacts as they might not exist
             }
         }
 
@@ -261,11 +248,11 @@
                 
                 return `
                     <tr class="patient-row border-b border-gray-200">
-                        <td class="px-4 py-3">${escapeHtml(appointment.fullName)}</td>
+                        <td class="px-4 py-3">${escapeHtml(appointment.fullName || 'Not specified')}</td>
                         <td class="px-4 py-3">${appointment.service || 'Not specified'}</td>
                         <td class="px-4 py-3">${appointment.preferredDate || 'Not specified'}</td>
                         <td class="px-4 py-3">${appointment.preferredTime || 'Not specified'}</td>
-                        <td class="px-4 py-3">${escapeHtml(appointment.phone)}</td>
+                        <td class="px-4 py-3">${escapeHtml(appointment.phone || 'Not provided')}</td>
                         <td class="px-4 py-3">
                             <span class="status-badge ${statusClass}">${statusText}</span>
                         </td>
@@ -292,64 +279,12 @@
             nextButton.disabled = currentAppointmentsPage === totalPages;
         }
 
-        function displayContacts() {
-            const contactsBody = document.getElementById('contacts-body');
-            const noContactsMessage = document.getElementById('no-contacts-message');
-            const paginationInfo = document.getElementById('contacts-pagination-info');
-            const prevButton = document.getElementById('prev-contacts-page');
-            const nextButton = document.getElementById('next-contacts-page');
-
-            if (filteredContacts.length === 0) {
-                contactsBody.innerHTML = '';
-                noContactsMessage.classList.remove('hidden');
-                paginationInfo.textContent = 'Showing 0 messages';
-                prevButton.disabled = true;
-                nextButton.disabled = true;
-                return;
-            }
-
-            noContactsMessage.classList.add('hidden');
-            
-            // Sort by date, newest first
-            filteredContacts.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-            
-            // Calculate pagination
-            const totalPages = Math.ceil(filteredContacts.length / pageSize);
-            const startIndex = (currentContactsPage - 1) * pageSize;
-            const endIndex = Math.min(startIndex + pageSize, filteredContacts.length);
-            const pageContacts = filteredContacts.slice(startIndex, endIndex);
-            
-            contactsBody.innerHTML = pageContacts.map(contact => `
-                <tr class="patient-row border-b border-gray-200">
-                    <td class="px-4 py-3">${escapeHtml(contact.firstName)} ${escapeHtml(contact.lastName)}</td>
-                    <td class="px-4 py-3">${escapeHtml(contact.email)}</td>
-                    <td class="px-4 py-3">${escapeHtml(contact.phone || 'Not provided')}</td>
-                    <td class="px-4 py-3">${contact.subject || 'General Inquiry'}</td>
-                    <td class="px-4 py-3 text-sm">${formatTimestamp(contact.createdAt)}</td>
-                    <td class="px-4 py-3">
-                        <button onclick="viewContactMessage('${contact.id}')" class="bg-blue-500 text-white px-2 py-1 rounded text-xs hover:bg-blue-600 mr-1" title="View Message">
-                            <i class="fas fa-eye"></i>
-                        </button>
-                        <button onclick="deleteContact('${contact.id}')" class="bg-red-500 text-white px-2 py-1 rounded text-xs hover:bg-red-600" title="Delete Message">
-                            <i class="fas fa-trash"></i>
-                        </button>
-                    </td>
-                </tr>
-            `).join('');
-            
-            // Update pagination info
-            paginationInfo.textContent = `Showing ${startIndex + 1}-${endIndex} of ${filteredContacts.length} messages`;
-            
-            // Update pagination buttons
-            prevButton.disabled = currentContactsPage === 1;
-            nextButton.disabled = currentContactsPage === totalPages;
-        }
-
         function updateStatistics() {
             const today = new Date().toDateString();
-            const todayAppointments = allAppointments.filter(appointment => 
-                new Date(appointment.createdAt).toDateString() === today
-            );
+            const todayAppointments = allAppointments.filter(appointment => {
+                const appointmentDate = appointment.preferredDate || appointment.createdAt;
+                return new Date(appointmentDate).toDateString() === today;
+            });
             
             const pendingAppointments = allAppointments.filter(appointment => 
                 !appointment.status || appointment.status === 'pending'
@@ -537,35 +472,6 @@
             }
         };
 
-        window.deleteContact = async function(contactId) {
-            if (confirm('Are you sure you want to delete this contact message?')) {
-                try {
-                    const result = await disabilityCareData.deleteContact(contactId);
-                    if (result.success) {
-                        showNotification('Contact message deleted successfully!', 'success');
-                        loadContacts();
-                    }
-                } catch (error) {
-                    showNotification('Error deleting contact message.', 'error');
-                }
-            }
-        };
-
-        window.viewContactMessage = function(contactId) {
-            const contact = allContacts.find(c => c.id === contactId);
-            if (contact) {
-                const message = `
-Name: ${contact.firstName} ${contact.lastName}
-Email: ${contact.email}
-Phone: ${contact.phone || 'Not provided'}
-Subject: ${contact.subject || 'General Inquiry'}
-Message: ${contact.message}
-Received: ${formatTimestamp(contact.createdAt)}
-                `;
-                alert(message);
-            }
-        };
-
         window.clearAllData = function() {
             if (confirm('Are you sure you want to clear ALL data? This action cannot be undone.')) {
                 showNotification('Data clearing functionality would be implemented here.', 'info');
@@ -578,25 +484,82 @@ Received: ${formatTimestamp(contact.createdAt)}
             // In a real implementation, you would generate a detailed report
         };
 
-        // Event Listeners
-        document.addEventListener('DOMContentLoaded', function() {
+        // Event Listeners and Initialization
+        document.addEventListener('DOMContentLoaded', async function() {
+            // Check authentication state first
+            auth.onAuthStateChanged(async (user) => {
+                if (!user) {
+                    // User is not logged in, redirect to login page
+                    console.log('No user found, redirecting to login...');
+                    showNotification('Please login to access the disability dashboard', 'error');
+                    
+                    setTimeout(() => {
+                        window.location.href = '/login.html';
+                    }, 2000);
+                    return;
+                }
+                
+                // User is logged in, hide loading overlay
+                document.getElementById('loadingOverlay').style.display = 'none';
+                
+                // Load data
+                await loadAppointments();
+                await loadContacts();
+                
+                // Setup event listeners
+                setupEventListeners();
+                
+                // Show welcome notification
+                showNotification(`Welcome, ${user.email}! Disability dashboard loaded.`, 'success');
+            });
+
+            // Fixed Logout functionality
+            document.getElementById('logoutBtn').addEventListener('click', async function(e) {
+                e.preventDefault();
+                
+                try {
+                    // Show loading state
+                    showNotification('Logging out...', 'success');
+                    
+                    // Sign out from Firebase
+                    await auth.signOut();
+                    console.log('User signed out successfully');
+                    
+                    // Clear any stored data
+                    localStorage.removeItem('userEmail');
+                    sessionStorage.clear();
+                    
+                    // Show success message
+                    showNotification('Logged out successfully! Redirecting to login...', 'success');
+                    
+                    // Redirect to login page after a short delay
+                    setTimeout(() => {
+                        window.location.href = '/login.html';
+                    }, 1500);
+                    
+                } catch (error) {
+                    console.error('Logout error:', error);
+                    showNotification('Error during logout. Please try again.', 'error');
+                    
+                    // Still redirect even if there's an error
+                    setTimeout(() => {
+                        window.location.href = '/login.html';
+                    }, 2000);
+                }
+            });
+        });
+
+        function setupEventListeners() {
             const refreshButton = document.getElementById('refresh-data');
-            const refreshContactsButton = document.getElementById('refresh-contacts');
             const searchAppointmentsInput = document.getElementById('search-appointments');
-            const searchContactsInput = document.getElementById('search-contacts');
             const prevAppointmentsButton = document.getElementById('prev-appointments-page');
             const nextAppointmentsButton = document.getElementById('next-appointments-page');
-            const prevContactsButton = document.getElementById('prev-contacts-page');
-            const nextContactsButton = document.getElementById('next-contacts-page');
             const mobileMenuButton = document.getElementById('mobile-menu-button');
             const mobileMenu = document.getElementById('mobile-menu');
 
             // Refresh buttons
             if (refreshButton) {
                 refreshButton.addEventListener('click', loadAppointments);
-            }
-            if (refreshContactsButton) {
-                refreshContactsButton.addEventListener('click', loadContacts);
             }
 
             // Search functionality
@@ -605,34 +568,16 @@ Received: ${formatTimestamp(contact.createdAt)}
                     const searchTerm = this.value.toLowerCase();
                     if (searchTerm) {
                         filteredAppointments = allAppointments.filter(appointment => 
-                            appointment.fullName?.toLowerCase().includes(searchTerm) ||
-                            appointment.service?.toLowerCase().includes(searchTerm) ||
-                            appointment.email?.toLowerCase().includes(searchTerm) ||
-                            appointment.phone?.toLowerCase().includes(searchTerm)
+                            (appointment.fullName && appointment.fullName.toLowerCase().includes(searchTerm)) ||
+                            (appointment.service && appointment.service.toLowerCase().includes(searchTerm)) ||
+                            (appointment.email && appointment.email.toLowerCase().includes(searchTerm)) ||
+                            (appointment.phone && appointment.phone.toLowerCase().includes(searchTerm))
                         );
                     } else {
                         filteredAppointments = [...allAppointments];
                     }
                     currentAppointmentsPage = 1;
                     displayAppointments();
-                });
-            }
-
-            if (searchContactsInput) {
-                searchContactsInput.addEventListener('input', function() {
-                    const searchTerm = this.value.toLowerCase();
-                    if (searchTerm) {
-                        filteredContacts = allContacts.filter(contact => 
-                            contact.firstName?.toLowerCase().includes(searchTerm) ||
-                            contact.lastName?.toLowerCase().includes(searchTerm) ||
-                            contact.email?.toLowerCase().includes(searchTerm) ||
-                            contact.subject?.toLowerCase().includes(searchTerm)
-                        );
-                    } else {
-                        filteredContacts = [...allContacts];
-                    }
-                    currentContactsPage = 1;
-                    displayContacts();
                 });
             }
 
@@ -656,25 +601,6 @@ Received: ${formatTimestamp(contact.createdAt)}
                 });
             }
 
-            if (prevContactsButton) {
-                prevContactsButton.addEventListener('click', function() {
-                    if (currentContactsPage > 1) {
-                        currentContactsPage--;
-                        displayContacts();
-                    }
-                });
-            }
-
-            if (nextContactsButton) {
-                nextContactsButton.addEventListener('click', function() {
-                    const totalPages = Math.ceil(filteredContacts.length / pageSize);
-                    if (currentContactsPage < totalPages) {
-                        currentContactsPage++;
-                        displayContacts();
-                    }
-                });
-            }
-
             // Mobile menu
             if (mobileMenuButton && mobileMenu) {
                 mobileMenuButton.addEventListener('click', function() {
@@ -682,10 +608,6 @@ Received: ${formatTimestamp(contact.createdAt)}
                 });
             }
 
-            // Initial load
-            loadAppointments();
-            loadContacts();
-            
             // Real-time updates
             disabilityCareData.onAppointmentsUpdate((appointments) => {
                 allAppointments = appointments;
@@ -696,9 +618,7 @@ Received: ${formatTimestamp(contact.createdAt)}
 
             disabilityCareData.onContactsUpdate((contacts) => {
                 allContacts = contacts;
-                filteredContacts = [...allContacts];
-                displayContacts();
                 updateStatistics();
             });
-        });
+        }
     
