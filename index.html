@@ -1,112 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title data-i18n="page-title">MahamaCare Hospital</title>
-  <!-- Tailwind CSS -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Font Awesome for icons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <!-- Firebase SDK -->
-  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
-  <script defer src="language.js"></script>
-  <style>
-    /* Custom styles for animations */
-    .service-card {
-      opacity: 0;
-      transform: translateY(40px);
-    }
-
-    /* Class added when card becomes visible */
-    .service-card.show {
-      animation: fadeUp 0.8s ease forwards;
-    }
-
-    /* Animation keyframes */
-    @keyframes fadeUp {
-      0% {
-        opacity: 0;
-        transform: translateY(40px);
-      }
-      100% {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    /* Smooth scrolling */
-    html {
-      scroll-behavior: smooth;
-    }
-
-    /* FAQ Modal Styles */
-    .modal-bg {
-      background: white;
-    }
-    
-    .tab-btn.active {
-      color: #2563eb;
-      border-bottom-color: #2563eb;
-    }
-    
-    .faq-answer {
-      max-height: 0;
-      overflow: hidden;
-      transition: max-height 0.3s ease;
-    }
-    
-    .faq-item.active .faq-answer {
-      max-height: 500px;
-    }
-    
-    .faq-question::after {
-      content: '+';
-      font-weight: normal;
-    }
-    
-    .faq-item.active .faq-question::after {
-      content: '-';
-    }
-    
-    /* Complaints Modal Custom Styles */
-    .complaint-modal {
-      animation: modalFadeIn 0.3s ease-out;
-    }
-    
-    @keyframes modalFadeIn {
-      from { opacity: 0; transform: translateY(-20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    
-    .complaint-success {
-      animation: successSlide 0.5s ease-out;
-    }
-    
-    @keyframes successSlide {
-      from { transform: translateX(-100%); opacity: 0; }
-      to { transform: translateX(0); opacity: 1; }
-    }
-    
-    .complaint-loading {
-      opacity: 0.7;
-      pointer-events: none;
-    }
-    
-    .status-dot {
-      display: inline-block;
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      margin-right: 8px;
-    }
-    
-    .status-received { background-color: #3b82f6; }
-    .status-in-progress { background-color: #f59e0b; }
-    .status-resolved { background-color: #10b981; }
-    .status-escalated { background-color: #ef4444; }
-  </style>
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MahamaCare Hospital</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>
+     
 </head>
 <body class="font-serif text-gray-800 select-none">
   <!-- NAVBAR -->
