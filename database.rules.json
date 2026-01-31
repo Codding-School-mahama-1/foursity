@@ -1,0 +1,70 @@
+{
+  "rules": {
+    ".read": "auth != null",
+    ".write": "auth != null",
+
+    "users": {
+      "$userId": {
+        ".read": "auth != null && (auth.uid == $userId || root.child('users').child(auth.uid).child('role').val() == 'admin')",
+        ".write": "auth != null && auth.uid == $userId",
+        ".validate": "newData.hasChildren(['email', 'role'])",
+        "role": {
+          ".validate": "newData.val() == 'patient' || newData.val() == 'doctor' || newData.val() == 'admin' || newData.val() == 'pharmacist'"
+        }
+      }
+    },
+
+    "appointments": {
+      "$appointmentId": {
+        ".read": "auth != null && (auth.uid == data.child('patientId').val() || auth.uid == data.child('doctorId').val() || root.child('users').child(auth.uid).child('role').val() == 'admin')",
+        ".write": "auth != null && (auth.uid == data.child('patientId').val() || auth.uid == data.child('doctorId').val() || root.child('users').child(auth.uid).child('role').val() in ['admin', 'doctor'])",
+        ".validate": "newData.hasChildren(['patientId', 'doctorId', 'date', 'status'])"
+      }
+    },
+
+    "medical_records": {
+      "$recordId": {
+        ".read": "auth != null && (auth.uid == data.child('patientId').val() || auth.uid == data.child('doctorId').val() || root.child('users').child(auth.uid).child('role').val() == 'admin')",
+        ".write": "auth != null && (auth.uid == data.child('doctorId').val() || root.child('users').child(auth.uid).child('role').val() in ['admin', 'doctor'])",
+        ".validate": "newData.hasChildren(['patientId', 'doctorId', 'date'])"
+      }
+    },
+
+    "emergency_contacts": {
+      ".read": true,
+      ".write": "auth != null",
+      "$contactId": {
+        ".validate": "newData.hasChildren(['name', 'phone', 'location'])"
+      }
+    },
+
+    "announcements": {
+      ".read": true,
+      ".write": "auth != null && root.child('users').child(auth.uid).child('role').val() in ['admin', 'doctor']",
+      "$announcementId": {
+        ".validate": "newData.hasChildren(['title', 'content', 'date'])"
+      }
+    },
+
+    "lab_results": {
+      "$resultId": {
+        ".read": "auth != null && (auth.uid == data.child('patientId').val() || auth.uid == data.child('doctorId').val())",
+        ".write": "auth != null && auth.uid == data.child('doctorId').val()",
+        ".validate": "newData.hasChildren(['patientId', 'doctorId', 'testType', 'results'])"
+      }
+    },
+
+    "pharmacy": {
+      "$recordId": {
+        ".read": "auth != null && (auth.uid == data.child('patientId').val() || root.child('users').child(auth.uid).child('role').val() in ['pharmacist', 'admin'])",
+        ".write": "auth != null && root.child('users').child(auth.uid).child('role').val() in ['pharmacist', 'admin']",
+        ".validate": "newData.hasChildren(['patientId', 'medication', 'dosage'])"
+      }
+    },
+
+    "system_logs": {
+      ".read": "auth != null && root.child('users').child(auth.uid).child('role').val() == 'admin'",
+      ".write": "auth != null && root.child('users').child(auth.uid).child('role').val() == 'admin'"
+    }
+  }
+}

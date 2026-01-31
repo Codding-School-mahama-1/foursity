@@ -1,0 +1,59 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Users can read and write their own profile
+    match /users/{userId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+
+    // Admin users can read all profiles
+    match /users/{userId} {
+      allow read: if request.auth != null &&
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
+    }
+
+    // Appointments - users can manage their own, doctors can manage assigned
+    match /appointments/{appointmentId} {
+      allow read, write: if request.auth != null &&
+        (request.auth.uid == resource.data.patientId ||
+         request.auth.uid == resource.data.doctorId ||
+         get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin');
+    }
+
+    // Medical records - only patient and assigned doctor can access
+    match /medical-records/{recordId} {
+      allow read, write: if request.auth != null &&
+        (request.auth.uid == resource.data.patientId ||
+         request.auth.uid == resource.data.doctorId ||
+         get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin');
+    }
+
+    // Emergency contacts - public read for emergency services
+    match /emergency-contacts/{contactId} {
+      allow read: if true;
+      allow write: if request.auth != null;
+    }
+
+    // Public health announcements - anyone can read
+    match /announcements/{announcementId} {
+      allow read: if true;
+      allow write: if request.auth != null &&
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role in ['admin', 'doctor'];
+    }
+
+    // Lab results - patient and doctor only
+    match /lab-results/{resultId} {
+      allow read, write: if request.auth != null &&
+        (request.auth.uid == resource.data.patientId ||
+         request.auth.uid == resource.data.doctorId);
+    }
+
+    // Pharmacy records - patient and pharmacist only
+    match /pharmacy/{recordId} {
+      allow read, write: if request.auth != null &&
+        (request.auth.uid == resource.data.patientId ||
+         get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'pharmacist' ||
+         get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin');
+    }
+  }
+}
