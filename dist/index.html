@@ -1,0 +1,1022 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MahamaCare Hospital</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
+    <script type="module" crossorigin src="/assets/index-DizMxPve.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-CmQDKWtI.css">
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
+</html>
+     
+</head>
+<body class="font-serif text-gray-800 select-none">
+  <!-- NAVBAR -->
+  <header class="bg-white shadow-md sticky top-0 z-50">
+    <div class="container mx-auto px-4">
+      <div class="flex justify-between items-center py-4">
+        <!-- Logo -->
+        <div class="flex items-center">
+          <span class="text-2xl font-bold text-blue-600"><a href="/index.html" data-i18n="logo-text">🏥 MCH</a></span>
+        </div>
+        
+        <!-- Mobile menu button -->
+        <button id="mobile-menu-button" class="md:hidden text-gray-600 focus:outline-none" data-i18n="mobile-menu-button">
+          <i class="fas fa-bars text-xl"></i>
+        </button>
+        
+        <!-- Navigation Links -->
+        <nav id="nav-links" class="hidden md:flex items-center space-x-6">
+          <a href="#home" class="text-gray-700 hover:text-blue-600 transition duration-300" data-i18n="home-nav">Home</a>
+          <a href="#about" class="text-gray-700 hover:text-blue-600 transition duration-300" data-i18n="about-nav">About</a>
+          
+          <!-- Services Dropdown -->
+          <div class="relative group">
+            <button class="flex items-center text-gray-700 hover:text-blue-600 transition duration-300" data-i18n="services-nav">
+              Services <i class="fas fa-chevron-down ml-1 text-xs"></i>
+            </button>
+            <div class="absolute left-0 mt-2 w-64 bg-white shadow-xl rounded-lg py-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50">
+              <a href="/Services/Maternity&Brith Services.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600" data-i18n="Maternity-nav">Maternity & Birth Services</a>
+              <a href="/Emergency.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600" data-i18n="emergency-nav">Emergency Care</a>
+              <a href="/Services/veccination.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600" data-i18n="vaccination-nav">Vaccination Programs</a>
+              <a href="/Services/mentalhealth.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600" data-i18n="mentalhealth-nav">Mental Health Support</a>
+              <a href="/Services/NCD.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600" data-i18n="chronic-disease-nav">Chronic Disease Care</a>
+              <a href="/Services/Health Education.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600" data-i18n="health-edu-nav">Health Awareness & Education</a>
+              <a href="/Services/Disability.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600" data-i18n="disability-nav">Disability Care</a>
+            </div>
+          </div>
+          
+          <a href="/doctors.html" class="text-gray-700 hover:text-blue-600 transition duration-300" data-i18n="doctors-nav">Doctors</a>
+          <a href="#contact" class="text-gray-700 hover:text-blue-600 transition duration-300" data-i18n="contact-nav">Contact</a>
+          <a href="#faq" id="faq-nav-link" class="text-gray-700 hover:text-blue-600 transition duration-300" data-i18n="faq-nav">FAQ</a>
+        </nav>
+        
+        <!-- Actions -->
+        <div class="hidden md:flex items-center space-x-4">
+          <select id="select-languages" class="border border-gray-300 rounded px-3 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" data-i18n="language-select">
+            <option value="en">English</option>
+            <option value="rw">Kinyarwanda</option>
+          </select>
+          <button id="desktop-signup-btn" class="bg-blue-600 text-white px-4 py-2 rounded... hidden" data-i18n="signup-btn">Sign Up</button>
+          <button id="desktop-login-btn" class="border border-blue-600 text-blue-600 px-4 py-2 rounded... hidden" data-i18n="login-btn">Log In</button>
+        </div>
+      </div>
+      
+      <!-- Mobile Menu -->
+      <div id="mobile-menu" class="hidden md:hidden py-4 border-t border-gray-200">
+        <div class="flex flex-col space-y-4">
+          <div class="flex space-x-2">
+            <button id="mobile-signup-btn" class="flex-1 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition duration-300 hidden" data-i18n="signup-btn">Sign Up</button>
+            <button id="mobile-login-btn" class="flex-1 border border-blue-600 text-blue-600 px-4 py-2 rounded hover:bg-blue-600 hover:text-white transition duration-300 hidden" data-i18n="login-btn">Log In</button>
+          </div>
+          <a href="#home" class="text-gray-700 hover:text-blue-600" data-i18n="home-nav">Home</a>
+          <a href="#about" class="text-gray-700 hover:text-blue-600" data-i18n="about-nav">About</a>
+          
+          <!-- Mobile Services Dropdown -->
+          <div class="relative">
+            <button id="mobile-services-toggle" class="flex items-center text-gray-700 hover:text-blue-600 w-full justify-between" data-i18n="services-nav">
+              Services <i class="fas fa-chevron-down"></i>
+            </button>
+            <div id="mobile-services-menu" class="hidden pl-4 mt-2 space-y-2">
+              <a href="/Services/Maternity&Brith Servecises.html" class="block text-gray-700 hover:text-blue-600" data-i18n="Maternity-nav">Maternity & Birth Services</a>
+              <a href="/Emergency.html" class="block text-gray-700 hover:text-blue-600" data-i18n="emergency-nav">Emergency Care</a>
+              <a href="/Services/veccination.html" class="block text-gray-700 hover:text-blue-600" data-i18n="vaccination-nav">Vaccination Programs</a>
+              <a href="/Services/mentalhealth.html" class="block text-gray-700 hover:text-blue-600" data-i18n="mentalhealth-nav">Mental Health Support</a>
+              <a href="/Services/NCD.html" class="block text-gray-700 hover:text-blue-600" data-i18n="chronic-disease-nav">Chronic Disease Care</a>
+              <a href="/Services/Health Education.html" class="block text-gray-700 hover:text-blue-600" data-i18n="health-edu-nav">Health Awareness & Education</a>
+              <a href="/Services/Disability.html" class="block text-gray-700 hover:text-blue-600" data-i18n="disability-nav">Disability Care</a>
+            </div>
+          </div>
+          
+          <a href="/doctors.html" class="text-gray-700 hover:text-blue-600" data-i18n="doctors-nav">Doctors</a>
+          <a href="#contact" class="text-gray-700 hover:text-blue-600" data-i18n="contact-nav">Contact</a>
+          <a href="#faq" id="mobile-faq-link" class="text-gray-700 hover:text-blue-600" data-i18n="faq-nav">FAQ</a>
+          
+          <div class="pt-4 border-t border-gray-200">
+            <select class="w-full border border-gray-300 rounded px-3 py-2 text-sm mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500" data-i18n="language-select">
+              <option value="en">English</option>
+              <option value="rw">Kinyarwanda</option>
+            </select>
+            <div class="flex space-x-2">
+              <button id="signup-btn" class="flex-1 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition duration-300" data-i18n="signup-btn">Sign Up</button>
+              <button id="login-btn" class="flex-1 border border-blue-600 text-blue-600 px-4 py-2 rounded hover:bg-blue-600 hover:text-white transition duration-300" data-i18n="login-btn">Log In</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- COMPLAINTS POPUP MODAL -->
+  <div id="complaint-modal" class="fixed inset-0 hidden items-center justify-center z-[60] p-4">
+    <div class="absolute inset-0 bg-black/50 backdrop-blur-sm"></div>
+    <div class="complaint-modal relative z-10 w-full max-w-2xl max-h-[90vh] overflow-y-auto bg-white rounded-2xl shadow-2xl">
+      <!-- Header Section -->
+      <div class="bg-gradient-to-r from-indigo-600 to-purple-600 p-6 text-white">
+        <div class="flex items-center justify-between">
+          <div>
+            <h1 class="text-2xl font-bold" data-i18n="complaint-title">Customer Complaints</h1>
+            <p class="text-indigo-100 mt-1" data-i18n="complaint-subtitle">We value your feedback to improve our services</p>
+          </div>
+          <div class="flex items-center space-x-2">
+            <button id="complaint-close" class="text-2xl hover:text-gray-200">&times;</button>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Navigation Tabs -->
+      <div class="flex border-b">
+        <button id="complaint-new-tab" class="tab-button flex-1 py-4 font-medium text-center bg-indigo-50 text-indigo-700 border-b-2 border-indigo-600" data-i18n="new-complaint-tab">
+          <i class="fas fa-plus-circle mr-2"></i>New Complaint
+        </button>
+        <button id="complaint-status-tab" class="tab-button flex-1 py-4 font-medium text-center text-gray-500 hover:text-gray-700" data-i18n="check-status-tab">
+          <i class="fas fa-search mr-2"></i>Check Status
+        </button>
+      </div>
+      
+      <!-- New Complaint Form Section -->
+      <div id="complaint-new-content" class="tab-content p-6">
+        <form id="complaint-form" class="space-y-5">
+          <div>
+            <label for="complaint-category" class="block text-sm font-medium text-gray-700 mb-1" data-i18n="complaint-category-label">Complaint Category *</label>
+            <select id="complaint-category" name="category" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" required>
+              <option value="" disabled selected data-i18n="select-category">Select a category</option>
+              <option value="service" data-i18n="poor-service">Poor Service</option>
+              <option value="staff" data-i18n="staff-behavior">Staff Behavior</option>
+              <option value="facility" data-i18n="facility-issues">Facility Issues</option>
+              <option value="billing" data-i18n="billing-issue">Billing Issue</option>
+              <option value="waiting" data-i18n="waiting-time">Long Waiting Time</option>
+              <option value="treatment" data-i18n="treatment-quality">Treatment Quality</option>
+              <option value="other" data-i18n="other-category">Other</option>
+            </select>
+          </div>
+          
+          <div>
+            <label for="complaint-subject" class="block text-sm font-medium text-gray-700 mb-1" data-i18n="complaint-subject-label">Subject *</label>
+            <input type="text" id="complaint-subject" name="subject" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" placeholder data-i18n="complaint-subject-placeholder" data-placeholder="Brief description of your complaint" required>
+          </div>
+          
+          <div>
+            <label for="complaint-description" class="block text-sm font-medium text-gray-700 mb-1" data-i18n="complaint-details-label">Complaint Details *</label>
+            <textarea id="complaint-description" name="description" rows="4" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" placeholder data-i18n="complaint-details-placeholder" data-placeholder="Please provide detailed information about your complaint..." required></textarea>
+          </div>
+          
+          <div class="flex items-center">
+            <input type="checkbox" id="complaint-urgent" name="urgent" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded">
+            <label for="complaint-urgent" class="ml-2 block text-sm text-gray-700" data-i18n="urgent-checkbox">Mark as urgent</label>
+          </div>
+          
+          <div class="flex justify-between pt-4">
+            <button type="reset" class="px-5 py-2.5 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors" data-i18n="reset-form-btn">
+              <i class="fas fa-redo mr-2"></i>Reset Form
+            </button>
+            <button type="submit" class="px-5 py-2.5 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors flex items-center" data-i18n="submit-complaint-btn">
+              <i class="fas fa-paper-plane mr-2"></i>Submit Complaint
+            </button>
+          </div>
+        </form>
+      </div>
+      
+      <!-- Check Status Section -->
+      <div id="complaint-status-content" class="tab-content p-6 hidden">
+        <div class="text-center mb-6">
+          <h2 class="text-xl font-semibold text-gray-800" data-i18n="check-status-title">Check Your Complaint Status</h2>
+          <p class="text-gray-600 mt-1" data-i18n="check-status-subtitle">Enter your complaint reference number</p>
+        </div>
+        
+        <div class="max-w-md mx-auto">
+          <div class="mb-4">
+            <label for="complaint-reference" class="block text-sm font-medium text-gray-700 mb-1" data-i18n="reference-number-label">Reference Number</label>
+            <input type="text" id="complaint-reference" name="reference" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" placeholder data-i18n="reference-placeholder" data-placeholder="e.g. COMP-2023-001">
+          </div>
+          
+          <button id="complaint-check-status" class="w-full py-2.5 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors flex items-center justify-center" data-i18n="check-status-btn">
+            <i class="fas fa-search mr-2"></i>Check Status
+          </button>
+          
+          <div id="complaint-status-result" class="mt-6 p-4 bg-gray-50 rounded-lg hidden">
+            <!-- Status result will be displayed here -->
+          </div>
+        </div>
+        
+        <div class="mt-8 border-t pt-6">
+          <h3 class="text-lg font-medium text-gray-800 mb-3" data-i18n="common-statuses-title">Common Complaint Statuses</h3>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="p-3 bg-blue-50 rounded-lg border border-blue-200">
+              <div class="flex items-center">
+                <span class="status-dot status-received"></span>
+                <span class="font-medium text-blue-800" data-i18n="status-received">Received</span>
+              </div>
+              <p class="text-sm text-blue-600 mt-1" data-i18n="status-received-desc">We've received your complaint and will review it shortly.</p>
+            </div>
+            <div class="p-3 bg-yellow-50 rounded-lg border border-yellow-200">
+              <div class="flex items-center">
+                <span class="status-dot status-in-progress"></span>
+                <span class="font-medium text-yellow-800" data-i18n="status-in-progress">In Progress</span>
+              </div>
+              <p class="text-sm text-yellow-600 mt-1" data-i18n="status-in-progress-desc">Your complaint is being investigated by our team.</p>
+            </div>
+            <div class="p-3 bg-green-50 rounded-lg border border-green-200">
+              <div class="flex items-center">
+                <span class="status-dot status-resolved"></span>
+                <span class="font-medium text-green-800" data-i18n="status-resolved">Resolved</span>
+              </div>
+              <p class="text-sm text-green-600 mt-1" data-i18n="status-resolved-desc">Your complaint has been resolved successfully.</p>
+            </div>
+            <div class="p-3 bg-red-50 rounded-lg border border-red-200">
+              <div class="flex items-center">
+                <span class="status-dot status-escalated"></span>
+                <span class="font-medium text-red-800" data-i18n="status-escalated">Escalated</span>
+              </div>
+              <p class="text-sm text-red-600 mt-1" data-i18n="status-escalated-desc">Your complaint has been escalated to a specialist.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Success Message Section -->
+      <div id="complaint-success-message" class="hidden p-6 bg-green-50 border-t border-green-200">
+        <div class="flex items-center">
+          <div class="flex-shrink-0">
+            <i class="fas fa-check-circle text-green-500 text-2xl"></i>
+          </div>
+          <div class="ml-4">
+            <h3 class="text-green-800 font-medium text-lg" data-i18n="complaint-success-title">Complaint submitted successfully!</h3>
+            <div class="mt-2 text-green-700">
+              <p data-i18n="complaint-success-ref">Your complaint reference number is: <span id="complaint-reference-number" class="font-bold text-xl">COMP-2023-001</span></p>
+              <p class="text-sm mt-2" data-i18n="complaint-success-save">Please save this reference number to check your complaint status.</p>
+              <p class="text-sm mt-1" data-i18n="complaint-success-time">We'll get back to you within 24-48 hours.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sign Up Modal -->
+  <div id="signup-modal" class="fixed inset-0 hidden items-center justify-center z-50">
+    <div class="absolute inset-0 bg-black/50"></div>
+    <div class="auth-modal relative z-10 w-11/12 sm:max-w-md mx-auto rounded-xl shadow-2xl overflow-hidden">
+      <div class="bg-white p-6 sm:p-8">
+        <!-- Header -->
+        <div class="flex justify-between items-center mb-6">
+          <h2 class="text-2xl font-bold text-blue-700" data-i18n="signup-title">Create Account</h2>
+          <button id="signup-close" class="text-gray-500 hover:text-gray-700 text-xl">&times;</button>
+        </div>
+
+        <!-- Form -->
+        <form id="signup-form" class="space-y-4">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label for="signup-firstname" class="block text-sm font-medium text-gray-700 mb-1" data-i18n="first-name-label">First Name</label>
+              <input type="text" id="signup-firstname" name="firstname" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" required>
+            </div>
+            <div>
+              <label for="signup-lastname" class="block text-sm font-medium text-gray-700 mb-1" data-i18n="last-name-label">Last Name</label>
+              <input type="text" id="signup-lastname" name="lastname" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" required>
+            </div>
+          </div>
+
+          <div>
+            <label for="signup-email" class="block text-sm font-medium text-gray-700 mb-1" data-i18n="email-label">Email Address</label>
+            <input type="email" id="signup-email" name="email" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" required>
+          </div>
+
+          <div>
+            <label for="signup-phone" class="block text-sm font-medium text-gray-700 mb-1" data-i18n="phone-label">Phone Number</label>
+            <input type="tel" id="signup-phone" name="phone" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+          </div>
+
+          <div>
+            <label for="signup-password" class="block text-sm font-medium text-gray-700 mb-1" data-i18n="password-label">Password</label>
+            <input type="password" id="signup-password" name="password" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" required>
+          </div>
+
+          <div>
+            <label for="signup-confirm-password" class="block text-sm font-medium text-gray-700 mb-1" data-i18n="confirm-password-label">Confirm Password</label>
+            <input type="password" id="signup-confirm-password" name="confirm-password" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" required>
+          </div>
+
+          <div class="flex items-center">
+            <input type="checkbox" id="signup-terms" name="terms" class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded" required>
+            <label for="signup-terms" class="ml-2 block text-sm text-gray-700" data-i18n="terms-agreement">
+              I agree to the <a href="#" class="text-blue-600 hover:text-blue-500" data-i18n="terms-link">Terms & Conditions</a>
+            </label>
+          </div>
+
+          <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-4 rounded-lg transition duration-300 transform hover:-translate-y-0.5" data-i18n="create-account-btn">
+            Create Account
+          </button>
+
+          <div class="text-center text-sm text-gray-600">
+            <span data-i18n="already-have-account">Already have an account?</span> 
+            <button type="button" id="switch-to-login" class="text-blue-600 hover:text-blue-500 font-semibold" data-i18n="login-link">Log In</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Login Modal -->
+  <div id="login-modal" class="fixed inset-0 hidden items-center justify-center z-50">
+    <div class="absolute inset-0 bg-black/50"></div>
+    <div class="auth-modal relative z-10 w-11/12 sm:max-w-md mx-auto rounded-xl shadow-2xl overflow-hidden">
+      <div class="bg-white p-6 sm:p-8">
+        <!-- Header -->
+        <div class="flex justify-between items-center mb-6">
+          <h2 class="text-2xl font-bold text-blue-700" data-i18n="login-title">Welcome Back</h2>
+          <button id="login-close" class="text-gray-500 hover:text-gray-700 text-xl">&times;</button>
+        </div>
+
+        <!-- Form -->
+        <form id="login-form" class="space-y-4">
+          <div>
+            <label for="login-email" class="block text-sm font-medium text-gray-700 mb-1" data-i18n="email-label">Email Address</label>
+            <input type="email" id="login-email" name="email" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" required>
+          </div>
+
+          <div>
+            <label for="login-password" class="block text-sm font-medium text-gray-700 mb-1" data-i18n="password-label">Password</label>
+            <input type="password" id="login-password" name="password" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" required>
+          </div>
+
+          <div class="flex items-center justify-between">
+            <div class="flex items-center">
+              <input type="checkbox" id="remember-me" name="remember" class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
+              <label for="remember-me" class="ml-2 block text-sm text-gray-700" data-i18n="remember-me">Remember me</label>
+            </div>
+            <a href="#" class="text-sm text-blue-600 hover:text-blue-500" data-i18n="forgot-password">Forgot password?</a>
+          </div>
+
+          <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-4 rounded-lg transition duration-300 transform hover:-translate-y-0.5" data-i18n="signin-btn">
+            Sign In
+          </button>
+
+          <div class="text-center text-sm text-gray-600">
+            <span data-i18n="no-account">Don't have an account?</span> 
+            <button type="button" id="switch-to-signup" class="text-blue-600 hover:text-blue-500 font-semibold" data-i18n="signup-link">Sign Up</button>
+          </div>
+
+          <!-- Social Login -->
+          <div class="mt-6">
+            <div class="relative">
+              <div class="absolute inset-0 flex items-center">
+                <div class="w-full border-t border-gray-300"></div>
+              </div>
+              <div class="relative flex justify-center text-sm">
+                <span class="px-2 bg-white text-gray-500" data-i18n="or-continue">Or continue with</span>
+              </div>
+            </div>
+
+            <div class="mt-4 grid grid-cols-2 gap-3">
+              <button type="button" class="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 transition duration-300" data-i18n="google-login">
+                <i class="fab fa-google text-red-500"></i>
+                <span class="ml-2">Google</span>
+              </button>
+              <button type="button" class="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 transition duration-300" data-i18n="facebook-login">
+                <i class="fab fa-facebook text-blue-600"></i>
+                <span class="ml-2">Facebook</span>
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- HERO SECTION -->
+  <section id="home" class="relative h-screen flex items-center justify-center overflow-hidden">
+    <!-- Video Background -->
+    <video class="absolute top-0 left-0 w-full h-full object-cover z-0" autoplay muted loop playsinline>
+      <source src="/assets/istockphoto-1632593384-640_adpp_is%20(1)-CpGSCmB4.mp4" type="video/mp4">
+      <span data-i18n="video-not-supported">Your browser does not support the video tag.</span>
+    </video>
+    
+    <!-- Fallback in case video doesn't load -->
+    <div class="absolute top-0 left-0 w-full h-full  z-10 flex items-center justify-center">
+      <div class="text-center text-white">
+        <p class="text-xl" data-i18n="video-fallback-text">Quality Healthcare for Everyone</p>
+      </div>
+    </div>
+    
+    <!-- Hero Content -->
+    <div class="relative z-20 text-center text-white px-4 max-w-4xl">
+      <h1 class="text-4xl md:text-5xl font-bold mb-6" data-i18n="hero-title">Welcome to MahamaCare Hospital</h1>
+      <p class="text-xl md:text-2xl mb-8" data-i18n="hero-subtitle">A practical digital platform for camp healthcare — book appointments, and keep chronic records.</p>
+      <div class="flex flex-col sm:flex-row justify-center gap-4 mb-8">
+        <button class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition duration-300 transform hover:-translate-y-1">
+          <a href="#services" data-i18n="learn-more-btn">Learn more</a>
+        </button>
+        <button id="complain-btn" class="border border-white hover:bg-white hover:text-blue-600 text-white px-6 py-3 rounded-lg font-semibold transition duration-300 transform hover:-translate-y-1 text-center" data-i18n="complain-btn">
+          Complain
+        </button>
+      </div>
+      <div class="bg-red-600/80 inline-block px-6 py-3 rounded-lg hover:bg-red-600 text-white font-bold rounded-xl shadow-lg transition-all duration-300 transform hover:scale-105 animate-emergency-pulse" data-i18n="emergency-call">
+         🚨 Emergency Call: 112 <strong class="text-xl"></strong>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT SECTION -->
+  <section id="about" class="py-16 bg-gray-50">
+    <div class="container mx-auto px-4">
+      <div class="flex flex-col lg:flex-row items-start justify-between gap-10">
+        <!-- Text Content -->
+        <div class="lg:w-1/2">
+          <h2 class="text-3xl md:text-4xl font-bold text-blue-600 mb-6" data-i18n="about-title">About MahamaCare Hospital</h2>
+          <p class="text-gray-700 mb-4 text-lg" data-i18n="about-paragraph-1">
+            <strong>MahamaCare Hospital</strong> is a comprehensive medical center offering healthcare services to global standards.  
+            We aim to provide exceptional care in a safe and compassionate environment, with a qualified medical team and modern equipment.  
+            Our goal is to improve patients' lives through specialized care and accurate treatment.
+          </p>
+          <p class="text-gray-700 text-lg" data-i18n="about-paragraph-2">
+            We believe that health is the most valuable asset, which is why we combine advanced medical technology and human expertise 
+            to deliver the best possible healthcare experience.
+          </p>
+        </div>
+        
+        <!-- Image Gallery -->
+        <div class="lg:w-1/2 grid grid-cols-2 gap-4">
+          <div class="overflow-hidden rounded-xl shadow-lg transition-transform duration-300 hover:-translate-y-2">
+            <img src="/assets/vecteezy_team-surgeon-at-work-in-operating-room-group-of-surgeons-in_33656243-B_E1HVDJ.webp" alt data-i18n="hospital-hall-alt" data-alt="hospital hall" class="w-full h-full object-cover">
+          </div>
+          <div class="overflow-hidden rounded-xl shadow-lg transition-transform duration-300 hover:-translate-y-2">
+            <img src="/assets/vecteezy_a-hospital-room-with-medical-equipment-and-lights_27932654-C8cDW4Zs.webp" alt data-i18n="medical-staff-alt" data-alt="medical staff" class="w-full h-full object-cover">
+          </div>
+          <div class="overflow-hidden rounded-xl shadow-lg transition-transform duration-300 hover:-translate-y-2">
+            <img src="/assets/vecteezy_nurse-performing-cpr-for-patient-with-heart-attack-on-bed_8017059-21b0J4-_.webp" alt data-i18n="modern-clinic-alt" data-alt="modern clinic" class="w-full h-full object-cover">
+          </div>
+          <div class="overflow-hidden rounded-xl shadow-lg transition-transform duration-300 hover:-translate-y-2">
+            <img src="/assets/vecteezy_doctor-is-guiding-the-paramedic-team-to-bring-patient-from_8016884-YHZ6B0M6.webp" alt data-i18n="patient-care-alt" data-alt="patient care" class="w-full h-full object-cover">
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ Modal -->
+  <div id="faq-modal" class="fixed inset-0 hidden items-center justify-center z-50">
+    <div class="absolute inset-0 bg-black/50"></div>
+    <div class="modal-bg relative z-10 w-11/12 sm:max-w-xl md:max-w-2xl lg:max-w-4xl mx-auto rounded-xl shadow-2xl overflow-hidden">
+
+      <!-- Header -->
+      <div class="flex justify-between items-center p-4 sm:p-6 border-b border-gray-300">
+        <h2 class="text-2xl font-bold text-blue-700" data-i18n="faq-title">Frequently Asked Questions</h2>
+        <button id="faq-close" class="text-gray-700 hover:text-gray-900 text-2xl">&times;</button>
+      </div>
+
+      <!-- Tabs -->
+      <div class="flex flex-wrap border-b border-gray-300 bg-white text-sm sm:text-base">
+        <button class="tab-btn px-4 py-2 font-medium text-blue-600 border-b-2 border-blue-600 focus:outline-none active" data-tab="general" data-i18n="faq-tab-general">General</button>
+        <button class="tab-btn px-4 py-2 font-medium text-gray-600 hover:text-blue-600 border-b-2 border-transparent" data-tab="emergency" data-i18n="faq-tab-emergency">Emergency</button>
+        <button class="tab-btn px-4 py-2 font-medium text-gray-600 hover:text-blue-600 border-b-2 border-transparent" data-tab="mental" data-i18n="faq-tab-mental">Mental Health</button>
+        <button class="tab-btn px-4 py-2 font-medium text-gray-600 hover:text-blue-600 border-b-2 border-transparent" data-tab="chronic" data-i18n="faq-tab-chronic">Chronic Diseases</button>
+        <button class="tab-btn px-4 py-2 font-medium text-gray-600 hover:text-blue-600 border-b-2 border-transparent" data-tab="disability" data-i18n="faq-tab-disability">Disability</button>
+        <button class="tab-btn px-4 py-2 font-medium text-gray-600 hover:text-blue-600 border-b-2 border-transparent" data-tab="doctors" data-i18n="faq-tab-doctors">Doctors</button>
+        <button class="tab-btn px-4 py-2 font-medium text-gray-600 hover:text-blue-600 border-b-2 border-transparent" data-tab="vaccination" data-i18n="faq-tab-vaccination">Vaccination</button>
+      </div>
+
+      <!-- Content -->
+      <div class="p-4 sm:p-6 max-h-[80vh] sm:max-h-[70vh] overflow-y-auto space-y-4">
+        <!-- General -->
+        <div class="tab-content" id="general">
+          <div class="faq-item">
+            <button class="faq-question w-full text-left py-2 font-semibold flex justify-between items-center" data-i18n="faq-general-1">
+              What are your working hours?
+            </button>
+            <div class="faq-answer pl-4 text-gray-700" data-i18n="faq-general-1-answer">
+              We are open 24/7 for emergencies and 8 AM - 8 PM for regular appointments.
+            </div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question w-full text-left py-2 font-semibold flex justify-between items-center" data-i18n="faq-general-2">
+              How can I book an appointment?
+            </button>
+            <div class="faq-answer pl-4 text-gray-700" data-i18n="faq-general-2-answer">
+              You can book via our website, by phone, or at the hospital reception.
+            </div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question w-full text-left py-2 font-semibold flex justify-between items-center" data-i18n="faq-general-3">
+              Do you accept insurance?
+            </button>
+            <div class="faq-answer pl-4 text-gray-700" data-i18n="faq-general-3-answer">
+              Yes, we accept most local and international insurance providers.
+            </div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question w-full text-left py-2 font-semibold flex justify-between items-center" data-i18n="faq-general-4">
+              Where is the hospital located?
+            </button>
+            <div class="faq-answer pl-4 text-gray-700" data-i18n="faq-general-4-answer">
+              Mahama Refugee Camp, Kirehe District, Rwanda. See map on the contact page for directions.
+            </div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question w-full text-left py-2 font-semibold flex justify-between items-center" data-i18n="faq-general-5">
+              Is parking available?
+            </button>
+            <div class="faq-answer pl-4 text-gray-700" data-i18n="faq-general-5-answer">
+              Yes, free parking is available for patients and visitors.
+            </div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question w-full text-left py-2 font-semibold flex justify-between items-center" data-i18n="faq-general-6">
+              What should I bring for my first visit?
+            </button>
+            <div class="faq-answer pl-4 text-gray-700" data-i18n="faq-general-6-answer">
+              Bring ID, insurance info, and any previous medical records.
+            </div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question w-full text-left py-2 font-semibold flex justify-between items-center" data-i18n="faq-general-7">
+              Do you offer home visits or telemedicine services?
+            </button>
+            <div class="faq-answer pl-4 text-gray-700" data-i18n="faq-general-7-answer">
+              Yes, we offer both home visits and telemedicine consultations where applicable.
+            </div>
+          </div>
+        </div>
+
+        <!-- Emergency -->
+        <div class="tab-content hidden" id="emergency">
+          <div class="faq-item">
+            <button class="faq-question w-full text-left py-2 font-semibold flex justify-between items-center" data-i18n="faq-emergency-1">
+              Is the emergency department open 24/7?
+            </button>
+            <div class="faq-answer pl-4 text-gray-700" data-i18n="faq-emergency-1-answer">
+              Yes, emergency services are available 24/7.
+            </div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question w-full text-left py-2 font-semibold flex justify-between items-center" data-i18n="faq-emergency-2">
+              What should I do in case of a medical emergency?
+            </button>
+            <div class="faq-answer pl-4 text-gray-700" data-i18n="faq-emergency-2-answer">
+              Call our emergency number or go directly to the emergency department.
+            </div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question w-full text-left py-2 font-semibold flex justify-between items-center" data-i18n="faq-emergency-3">
+              Do I need to book an appointment for the emergency department?
+            </button>
+            <div class="faq-answer pl-4 text-gray-700" data-i18n="faq-emergency-3-answer">
+              No, walk-ins are accepted at all times for emergencies.
+            </div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question w-full text-left py-2 font-semibold flex justify-between items-center" data-i18n="faq-emergency-4">
+              Are ambulances available for patient transport?
+            </button>
+            <div class="faq-answer pl-4 text-gray-700" data-i18n="faq-emergency-4-answer">
+              Yes, ambulances are available for urgent patient transport.
+            </div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question w-full text-left py-2 font-semibold flex justify-between items-center" data-i18n="faq-emergency-5">
+              How long is the average waiting time in the emergency room?
+            </button>
+            <div class="faq-answer pl-4 text-gray-700" data-i18n="faq-emergency-5-answer">
+              Average waiting time is 15-30 minutes depending on severity.
+            </div>
+          </div>
+        </div>
+
+        <!-- Mental Health -->
+        <div class="tab-content hidden" id="mental">
+          <div class="faq-item">
+            <button class="faq-question w-full text-left py-2 font-semibold flex justify-between items-center" data-i18n="faq-mental-1">
+              Do you provide counseling or therapy sessions?
+            </button>
+            <div class="faq-answer pl-4 text-gray-700" data-i18n="faq-mental-1-answer">
+              Yes, we offer individual and group counseling sessions.
+            </div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question w-full text-left py-2 font-semibold flex justify-between items-center" data-i18n="faq-mental-2">
+              Are mental health services confidential?
+            </button>
+            <div class="faq-answer pl-4 text-gray-700" data-i18n="faq-mental-2-answer">
+              Absolutely, all mental health consultations are strictly confidential.
+            </div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question w-full text-left py-2 font-semibold flex justify-between items-center" data-i18n="faq-mental-3">
+              Can I get support for stress, anxiety, or depression?
+            </button>
+            <div class="faq-answer pl-4 text-gray-700" data-i18n="faq-mental-3-answer">
+              Yes, our mental health professionals provide support for stress, anxiety, depression, and other conditions.
+            </div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question w-full text-left py-2 font-semibold flex justify-between items-center" data-i18n="faq-mental-4">
+              Do you offer mental health support for refugees and families?
+            </button>
+            <div class="faq-answer pl-4 text-gray-700" data-i18n="faq-mental-4-answer">
+              Yes, we provide dedicated mental health support for refugees and their families.
+            </div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question w-full text-left py-2 font-semibold flex justify-between items-center" data-i18n="faq-mental-5">
+              How can I refer someone who needs mental health care?
+            </button>
+            <div class="faq-answer pl-4 text-gray-700" data-i18n="faq-mental-5-answer">
+              You can refer someone by contacting our mental health department directly.
+            </div>
+          </div>
+        </div>
+
+        <!-- Chronic Diseases -->
+        <div class="tab-content hidden" id="chronic">
+          <div class="faq-item">
+            <button class="faq-question w-full text-left py-2 font-semibold flex justify-between items-center" data-i18n="faq-chronic-1">
+              What types of chronic diseases do you manage?
+            </button>
+            <div class="faq-answer pl-4 text-gray-700" data-i18n="faq-chronic-1-answer">
+              We manage diabetes, hypertension, asthma, cardiovascular diseases, and more.
+            </div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question w-full text-left py-2 font-semibold flex justify-between items-center" data-i18n="faq-chronic-2">
+              How often should chronic patients come for check-ups?
+            </button>
+            <div class="faq-answer pl-4 text-gray-700" data-i18n="faq-chronic-2-answer">
+              Check-ups are usually every 1-3 months, depending on the condition.
+            </div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question w-full text-left py-2 font-semibold flex justify-between items-center" data-i18n="faq-chronic-3">
+              Do you offer medication follow-up or refill services?
+            </button>
+            <div class="faq-answer pl-4 text-gray-700" data-i18n="faq-chronic-3-answer">
+              Yes, we provide regular medication follow-ups and refill services.
+            </div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question w-full text-left py-2 font-semibold flex justify-between items-center" data-i18n="faq-chronic-4">
+              Is there a support group for chronic patients?
+            </button>
+            <div class="faq-answer pl-4 text-gray-700" data-i18n="faq-chronic-4-answer">
+              Yes, we organize support groups for patients with chronic diseases.
+            </div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question w-full text-left py-2 font-semibold flex justify-between items-center" data-i18n="faq-chronic-5">
+              Can I access my medical history online?
+            </button>
+            <div class="faq-answer pl-4 text-gray-700" data-i18n="faq-chronic-5-answer">
+              Yes, patients can access their records through our secure online portal.
+            </div>
+          </div>
+        </div>
+
+        <!-- Disability -->
+        <div class="tab-content hidden" id="disability">
+          <div class="faq-item">
+            <button class="faq-question w-full text-left py-2 font-semibold flex justify-between items-center" data-i18n="faq-disability-1">
+              Do you provide physical therapy or rehabilitation?
+            </button>
+            <div class="faq-answer pl-4 text-gray-700" data-i18n="faq-disability-1-answer">
+              Yes, we have a full rehabilitation and physiotherapy department.
+            </div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question w-full text-left py-2 font-semibold flex justify-between items-center" data-i18n="faq-disability-2">
+              What services are available for people with disabilities?
+            </button>
+            <div class="faq-answer pl-4 text-gray-700" data-i18n="faq-disability-2-answer">
+              We provide rehabilitation, assistive devices, counseling, and specialized care.
+            </div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question w-full text-left py-2 font-semibold flex justify-between items-center" data-i18n="faq-disability-3">
+              Do you offer assistive devices (wheelchairs, crutches, etc.)?
+            </button>
+            <div class="faq-answer pl-4 text-gray-700" data-i18n="faq-disability-3-answer">
+              Yes, we provide necessary assistive devices for patients.
+            </div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question w-full text-left py-2 font-semibold flex justify-between items-center" data-i18n="faq-disability-4">
+              Is there a special unit for children with disabilities?
+            </button>
+            <div class="faq-answer pl-4 text-gray-700" data-i18n="faq-disability-4-answer">
+              Yes, we have a dedicated pediatric disability unit.
+            </div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question w-full text-left py-2 font-semibold flex justify-between items-center" data-i18n="faq-disability-5">
+              Are your facilities accessible for wheelchair users?
+            </button>
+            <div class="faq-answer pl-4 text-gray-700" data-i18n="faq-disability-5-answer">
+              Yes, all our facilities are fully accessible.
+            </div>
+          </div>
+        </div>
+
+        <!-- Doctors -->
+        <div class="tab-content hidden" id="doctors">
+          <div class="faq-item">
+            <button class="faq-question w-full text-left py-2 font-semibold flex justify-between items-center" data-i18n="faq-doctors-1">
+              How qualified are your doctors?
+            </button>
+            <div class="faq-answer pl-4 text-gray-700" data-i18n="faq-doctors-1-answer">
+              All our doctors are fully certified and experienced in their respective fields.
+            </div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question w-full text-left py-2 font-semibold flex justify-between items-center" data-i18n="faq-doctors-2">
+              Can I choose a specific doctor for my appointment?
+            </button>
+            <div class="faq-answer pl-4 text-gray-700" data-i18n="faq-doctors-2-answer">
+              Yes, patients can request a preferred doctor when booking appointments.
+            </div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question w-full text-left py-2 font-semibold flex justify-between items-center" data-i18n="faq-doctors-3">
+              Do your doctors speak multiple languages?
+            </button>
+            <div class="faq-answer pl-4 text-gray-700" data-i18n="faq-doctors-3-answer">
+              Yes, our staff can communicate in English, Arabic, Kinyarwanda, and other languages.
+            </div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question w-full text-left py-2 font-semibold flex justify-between items-center" data-i18n="faq-doctors-4">
+              How can I check a doctor's specialization?
+            </button>
+            <div class="faq-answer pl-4 text-gray-700" data-i18n="faq-doctors-4-answer">
+              Specializations are listed on our website and at reception.
+            </div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question w-full text-left py-2 font-semibold flex justify-between items-center" data-i18n="faq-doctors-5">
+              Are female doctors available for women's consultations?
+            </button>
+            <div class="faq-answer pl-4 text-gray-700" data-i18n="faq-doctors-5-answer">
+              Yes, female doctors are available for all women's consultations.
+            </div>
+          </div>
+        </div>
+
+        <!-- Vaccination -->
+        <div class="tab-content hidden" id="vaccination">
+          <div class="faq-item">
+            <button class="faq-question w-full text-left py-2 font-semibold flex justify-between items-center" data-i18n="faq-vaccination-1">
+              Are vaccines safe for children?
+            </button>
+            <div class="faq-answer pl-4 text-gray-700" data-i18n="faq-vaccination-1-answer">
+              Yes, all vaccines administered are safe and approved.
+            </div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question w-full text-left py-2 font-semibold flex justify-between items-center" data-i18n="faq-vaccination-2">
+              Why are vaccines important in refugee camps?
+            </button>
+            <div class="faq-answer pl-4 text-gray-700" data-i18n="faq-vaccination-2-answer">
+              Vaccines prevent outbreaks and protect vulnerable populations.
+            </div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question w-full text-left py-2 font-semibold flex justify-between items-center" data-i18n="faq-vaccination-3">
+              Do you offer vaccination for adults as well?
+            </button>
+            <div class="faq-answer pl-4 text-gray-700" data-i18n="faq-vaccination-3-answer">
+              Yes, we provide adult vaccinations according to health guidelines.
+            </div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question w-full text-left py-2 font-semibold flex justify-between items-center" data-i18n="faq-vaccination-4">
+              How can I get information about upcoming vaccination programs?
+            </button>
+            <div class="faq-answer pl-4 text-gray-700" data-i18n="faq-vaccination-4-answer">
+              Check our website, contact the hospital, or follow our social media for schedules.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SERVICES SECTION -->
+  <section id="services" class="py-16 bg-white">
+    <div class="container mx-auto px-4">
+      <h2 class="text-3xl md:text-4xl font-bold text-center text-blue-600 mb-12" data-i18n="services-title">
+        Our Services
+      </h2>
+
+      <!-- Cards created by JS -->
+      <div id="services-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT SECTION -->
+  <section id="contact" class="py-16 bg-gray-50">
+    <div class="container mx-auto px-4">
+      <div class="text-center mb-12">
+        <h2 class="text-3xl md:text-4xl font-bold text-blue-600 mb-4" data-i18n="contact-title">Get In Touch</h2>
+        <p class="text-gray-600 max-w-2xl mx-auto" data-i18n="contact-subtitle">We're here to help and answer any questions you might have. We look forward to hearing from you.</p>
+      </div>
+     
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+        <!-- Contact Form -->
+        <div class="bg-gray-200 rounded-xl shadow-lg p-8">
+          <h3 class="text-2xl font-bold text-gray-800 mb-6" data-i18n="contact-form-title">Send us a Message</h3>
+          <form id="contact-form" class="space-y-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <label for="first-name" class="block text-gray-700 mb-2" data-i18n="first-name-label">First Name</label>
+                <input type="text" id="first-name" name="first-name" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+              </div>
+              <div>
+                <label for="last-name" class=" text-gray-700 mb-2" data-i18n="last-name-label">Last Name</label>
+                <input type="text" id="last-name" name="last-name" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+              </div>
+            </div>
+           
+            <div>
+              <label for="email" class="block text-gray-700 mb-2" data-i18n="email-label">Email Address</label>
+              <input type="email" id="email" name="email" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+            </div>
+           
+            <div>
+              <label for="phone" class="block text-gray-700 mb-2" data-i18n="phone-label">Phone Number</label>
+              <input type="tel" id="phone" name="phone" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+           
+            <div>
+              <label for="subject" class="block text-gray-700 mb-2" data-i18n="subject-label">Subject</label>
+              <select id="subject" name="subject" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <option value="" data-i18n="select-subject">Select a subject</option>
+                <option value="appointment" data-i18n="appointment-option">Book an Appointment</option>
+                <option value="general" data-i18n="general-inquiry-option">General Inquiry</option>
+                <option value="feedback" data-i18n="feedback-option">Feedback</option>
+                <option value="emergency" data-i18n="emergency-option">Emergency</option>
+                <option value="other" data-i18n="other-option">Other</option>
+              </select>
+            </div>
+           
+            <div>
+              <label for="message" class="block text-gray-700 mb-2" data-i18n="message-label">Message</label>
+              <textarea id="message" name="message" rows="5" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required></textarea>
+            </div>
+           
+            <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition duration-300 transform hover:-translate-y-1" data-i18n="send-message-btn">
+              Send Message
+            </button>
+          </form>
+        </div>
+       
+        <!-- Contact Information & Map -->
+        <div class="space-y-8">
+          <!-- Contact Info Cards -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="bg-white rounded-xl shadow-lg p-6 flex items-start">
+              <div class="bg-blue-100 p-3 rounded-lg mr-4">
+                <i class="fas fa-map-marker-alt text-blue-600 text-xl"></i>
+              </div>
+              <div>
+                <h4 class="font-bold text-gray-800 mb-1" data-i18n="location-title">Our Location</h4>
+                <p class="text-gray-600" data-i18n="location-address">Mahama Refugee Camp, Kirehe District, Rwanda</p>
+              </div>
+            </div>
+           
+            <div class="bg-white rounded-xl shadow-lg p-6 flex items-start">
+              <div class="bg-blue-100 p-3 rounded-lg mr-4">
+                <i class="fas fa-phone text-blue-600 text-xl"></i>
+              </div>
+              <div>
+                <h4 class="font-bold text-gray-800 mb-1" data-i18n="phone-title">Phone Number</h4>
+                <p class="text-gray-600">+250 000 000</p>
+              </div>
+            </div>
+           
+            <div class="bg-white rounded-xl shadow-lg p-6 flex items-start">
+              <div class="bg-blue-100 p-3 rounded-lg mr-4">
+                <i class="fas fa-envelope text-blue-600 text-xl"></i>
+              </div>
+              <div>
+                <h4 class="font-bold text-gray-800 mb-1" data-i18n="email-title">Email Address</h4>
+                <p class="text-gray-600">unitycoders2025@gmail.com</p>
+              </div>
+            </div>
+           
+            <div class="bg-white rounded-xl shadow-lg p-6 flex items-start">
+              <div class="bg-blue-100 p-3 rounded-lg mr-4">
+                <i class="fas fa-clock text-blue-600 text-xl"></i>
+              </div>
+              <div>
+                <h4 class="font-bold text-gray-800 mb-1" data-i18n="hours-title">Working Hours</h4>
+                <p class="text-gray-600" data-i18n="emergency-hours">24/7 Emergency Services</p>
+                <p class="text-gray-600" data-i18n="regular-hours">Mon-Fri: 8am-6pm</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Google Map for Mahama Refugee Camp -->
+          <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+            <div class="h-96">
+              <iframe 
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1334.760614585555!2d30.642434783637935!3d-2.2630583877293016!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x19c4c500078c5f45%3A0xc3605c2533855d6b!2sMahama%20refugee%20camp!5e0!3m2!1sen!2sus!4v1762760708457!5m2!1sen!2sus" 
+                width="100%" 
+                height="100%" 
+                style="border:0;" 
+                allowfullscreen="" 
+                loading="lazy" 
+                referrerpolicy="no-referrer-when-downgrade"
+                title="Mahamacare Hospital Location at Mahama Refugee Camp">
+              </iframe>
+            </div>
+          </div>
+           
+          <!-- Emergency Notice -->
+          <div class="bg-red-50 border border-red-200 rounded-xl p-6">
+            <div class="flex items-start">
+              <i class="fas fa-exclamation-triangle text-red-500 text-xl mt-1 mr-4"></i>
+              <div>
+                <h4 class="font-bold text-red-700 mb-2" data-i18n="emergency-notice-title">Emergency Contact</h4>
+                <p class="text-red-600 mb-2" data-i18n="emergency-notice-text">For urgent medical assistance, please call our emergency line immediately.</p>
+                <a href="tel:+250000000" class="inline-block bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg transition duration-300" data-i18n="emergency-call-btn">
+                  Call Emergency: 112
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="bg-gray-900 text-white py-12">
+    <div class="container mx-auto px-4">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <!-- Column 1 -->
+        <div>
+          <h3 class="text-xl font-bold mb-4" data-i18n="footer-hospital-name">MahamaCare Hospital</h3>
+          <p class="text-gray-400" data-i18n="footer-tagline">Providing high quality healthcare for over 20 years.</p>
+        </div>
+        
+        <!-- Column 2 -->
+        <div>
+          <h4 class="text-lg font-semibold mb-4" data-i18n="quick-links-title">Quick Links</h4>
+          <ul class="space-y-2">
+            <li><a href="#home" class="text-gray-400 hover:text-white transition duration-300" data-i18n="home-nav">Home</a></li>
+            <li><a href="#about" class="text-gray-400 hover:text-white transition duration-300" data-i18n="about-nav">About</a></li>
+            <li><a href="#services" class="text-gray-400 hover:text-white transition duration-300" data-i18n="services-nav">Services</a></li>
+            <li><a href="#doctors" class="text-gray-400 hover:text-white transition duration-300" data-i18n="doctors-nav">Doctors</a></li>
+            <li><a href="#faq" id="footer-faq-link" class="text-gray-400 hover:text-white transition duration-300" data-i18n="faq-nav">FAQ</a></li>
+            <li><a href="#contact" class="text-gray-400 hover:text-white transition duration-300" data-i18n="contact-nav">Contact</a></li>
+          </ul>
+        </div>
+        
+        <!-- Column 3 -->
+        <div>
+          <h4 class="text-lg font-semibold mb-4" data-i18n="contact-info-title">Contact Info</h4>
+          <div class="space-y-2 text-gray-400">
+            <p><i class="fas fa-envelope mr-2"></i> unitycoders2025@gmail.com</p>
+            <p><i class="fas fa-phone mr-2"></i> +250 000 000</p>
+            <p><i class="fas fa-map-marker-alt mr-2"></i> <span data-i18n="location-address">Mahama Refugee Camp, Rwanda</span></p>
+          </div>
+        </div>
+        
+        <!-- Column 4 -->
+        <div>
+          <h4 class="text-lg font-semibold mb-4" data-i18n="follow-us-title">Follow Us</h4>
+          <div class="flex space-x-4">
+            <a href="https://www.facebook.com/profile.php?id=61583964942775&mibextid=rS40aB7S9Ucbxw6v" class="text-gray-400 hover:text-white transition duration-300">
+              <i class="fab fa-facebook-f text-xl"></i>
+            </a>
+            <a href="https://x.com/CodersUnit2026?t=ym3SPxmqVxW3QcuboUGcDg&s=03" class="text-gray-400 hover:text-white transition duration-300">
+              <i class="fab fa-twitter text-xl"></i>
+            </a>
+            <a href="https://www.instagram.com/unitycoders?utm_source=qr&igsh=aDFjdGUxNWxwNHR3" class="text-gray-400 hover:text-white transition duration-300">
+              <i class="fab fa-instagram text-xl"></i>
+            </a>
+            <a href="#" class="text-gray-400 hover:text-white transition duration-300">
+              <i class="fab fa-linkedin-in text-xl"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+      
+      <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-500">
+        <p data-i18n="copyright">&copy; 2025 MahamaCare Hospital. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+<script src="/JavaScript-Files/index.js"></script>
+</body>
+</html>

@@ -341,8 +341,6 @@ const translations = {
         
         // Signup/Login Modals
         "signup-title": "Fungura konti",
-        "first-name-label": "Izina ry'umubyeyi",
-        "last-name-label": "Izina ry'umuryango",
         "password-label": "Ijambobanga",
         "confirm-password-label": "Emeza ijambobanga",
         "terms-agreement": "Nemeranya na ",

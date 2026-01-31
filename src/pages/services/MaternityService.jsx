@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Header from '../components/Layout/Header';
-import Footer from '../components/Layout/Footer';
+import Header from '../../components/Layout/Header';
+import Footer from '../../components/Layout/Footer';
 
 const MaternityService = () => {
     const [language, setLanguage] = useState('en');

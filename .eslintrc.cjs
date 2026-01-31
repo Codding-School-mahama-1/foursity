@@ -1,4 +1,4 @@
-# ESLint Configuration for React Project
+// ESLint Configuration for React Project
 
 module.exports = {
   root: true,
