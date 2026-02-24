@@ -1,9 +1,8 @@
-
-
+   
         // Firebase Configuration
         const firebaseConfig = {
             apiKey: "AIzaSyDt4vs7S3nckO8xxfp1_axHZ76J0cz2qdg",
-            authDomain: "mahamahospital.firebaseapp.com",
+            authDomain: "mahamahospital.firebasestorage.app",
             databaseURL: "https://mahamahospital-default-rtdb.firebaseio.com",
             projectId: "mahamahospital",
             storageBucket: "mahamahospital.firebasestorage.app",
@@ -12,8 +11,9 @@
         };
 
         // Initialize Firebase
-        firebase.initializeApp(firebaseConfig);
+        const firebaseApp = firebase.initializeApp(firebaseConfig);
         const database = firebase.database();
+        const auth = firebase.auth();
 
         // Global variables
         let appointmentsData = [];
@@ -45,57 +45,111 @@
 
         // Initialize the dashboard
         document.addEventListener('DOMContentLoaded', function() {
-            // Set today's date
-            const today = new Date();
-            todayDateEl.textContent = today.toLocaleDateString('en-US', { 
-                weekday: 'long', 
-                year: 'numeric', 
-                month: 'long', 
-                day: 'numeric' 
+            // Check authentication state first
+            auth.onAuthStateChanged(async (user) => {
+                if (!user) {
+                    // User is not logged in, redirect to login page
+                    console.log('No user found, redirecting to login...');
+                    // showNotification('Please login to access the NCD dashboard', 'error');
+                    
+                    setTimeout(() => {
+                        window.location.href = '/login.html';
+                    }, 2000);
+                    return;
+                }
+                
+                // User is logged in, hide loading overlay
+                document.getElementById('loadingOverlay').style.display = 'none';
+                
+                // Set today's date
+                const today = new Date();
+                todayDateEl.textContent = today.toLocaleDateString('en-US', { 
+                    weekday: 'long', 
+                    year: 'numeric', 
+                    month: 'long', 
+                    day: 'numeric' 
+                });
+
+                // Load data
+                await loadAppointmentsData();
+                
+                // Setup event listeners
+                refreshDataBtn.addEventListener('click', loadAppointmentsData);
+                searchAppointmentsEl.addEventListener('input', filterAppointments);
+                prevAppointmentsPageBtn.addEventListener('click', goToPrevPage);
+                nextAppointmentsPageBtn.addEventListener('click', goToNextPage);
+                
+                // Mobile menu toggle
+                document.getElementById('mobile-menu-button').addEventListener('click', function() {
+                    document.getElementById('mobile-menu').classList.toggle('hidden');
+                });
+                
+                // Show welcome notification
+                // showNotification(`Welcome, ${user.email}! NCD dashboard loaded.`, 'success');
             });
 
-            // Load data
-            loadAppointmentsData();
-            
-            // Set up event listeners
-            refreshDataBtn.addEventListener('click', loadAppointmentsData);
-            searchAppointmentsEl.addEventListener('input', filterAppointments);
-            prevAppointmentsPageBtn.addEventListener('click', goToPrevPage);
-            nextAppointmentsPageBtn.addEventListener('click', goToNextPage);
-            
-            // Mobile menu toggle
-            document.getElementById('mobile-menu-button').addEventListener('click', function() {
-                document.getElementById('mobile-menu').classList.toggle('hidden');
+            // Fixed Logout functionality
+            document.getElementById('logoutBtn').addEventListener('click', async function(e) {
+                e.preventDefault();
+                
+                try {
+                    // Show loading state
+                    // showNotification('Logging out...', 'success');
+                    
+                    // Sign out from Firebase
+                    await auth.signOut();
+                    console.log('User signed out successfully');
+                    
+                    // Clear any stored data
+                    localStorage.removeItem('userEmail');
+                    sessionStorage.clear();
+                    
+                    // Show success message
+                    // showNotification('Logged out successfully! Redirecting to login...', 'success');
+                    
+                    // Redirect to login page after a short delay
+                    setTimeout(() => {
+                        window.location.href = '/login.html';
+                    }, 1500);
+                    
+                } catch (error) {
+                    console.error('Logout error:', error);
+                    showNotification('Error during logout. Please try again.', 'error');
+                    
+                    // Still redirect even if there's an error
+                    setTimeout(() => {
+                        window.location.href = '/login.html';
+                    }, 2000);
+                }
             });
         });
 
         // Load appointments data from Firebase
-        function loadAppointmentsData() {
+        async function loadAppointmentsData() {
             showLoading();
             
             const appointmentsRef = database.ref('appointments');
             
-            appointmentsRef.once('value')
-                .then((snapshot) => {
-                    const data = snapshot.val();
-                    appointmentsData = [];
-                    
-                    if (data) {
-                        Object.keys(data).forEach(key => {
-                            const appointment = data[key];
-                            appointment.id = key;
-                            appointmentsData.push(appointment);
-                        });
-                    }
-                    
-                    updateDashboard();
-                    hideLoading();
-                })
-                .catch((error) => {
-                    console.error('Error loading appointments:', error);
-                    hideLoading();
-                    showError('Failed to load appointment data');
-                });
+            try {
+                const snapshot = await appointmentsRef.once('value');
+                const data = snapshot.val();
+                appointmentsData = [];
+                
+                if (data) {
+                    Object.keys(data).forEach(key => {
+                        const appointment = data[key];
+                        appointment.id = key;
+                        appointmentsData.push(appointment);
+                    });
+                }
+                
+                updateDashboard();
+                hideLoading();
+            } catch (error) {
+                console.error('Error loading appointments:', error);
+                hideLoading();
+                showNotification('Failed to load appointment data', 'error');
+            }
         }
 
         // Update dashboard with current data
@@ -245,12 +299,28 @@
 
         // Update system information
         function updateSystemInfo() {
-            // For demonstration, using mock data
-            // In a real application, you would calculate these from your data
-            totalContactsEl.textContent = appointmentsData.length;
-            newContactsEl.textContent = Math.min(5, appointmentsData.length); // Mock: max 5 new contacts
-            responseRateEl.textContent = '75%'; // Mock response rate
-            popularConditionEl.textContent = getMostCommonCondition();
+            // Calculate from actual data
+            const totalContacts = appointmentsData.length;
+            
+            // Calculate new contacts from last 7 days
+            const sevenDaysAgo = new Date();
+            sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+            const newContacts = appointmentsData.filter(app => {
+                const appDate = new Date(app.appointmentDate || app.createdAt);
+                return appDate >= sevenDaysAgo;
+            }).length;
+            
+            // Calculate response rate (completed appointments / total appointments)
+            const completedAppointments = appointmentsData.filter(app => app.status === 'completed').length;
+            const responseRate = totalContacts > 0 ? Math.round((completedAppointments / totalContacts) * 100) : 0;
+            
+            // Get most common condition
+            const mostCommonCondition = getMostCommonCondition();
+            
+            totalContactsEl.textContent = totalContacts;
+            newContactsEl.textContent = newContacts;
+            responseRateEl.textContent = `${responseRate}%`;
+            popularConditionEl.textContent = mostCommonCondition;
         }
 
         // Get the most common condition
@@ -333,25 +403,25 @@
         }
 
         // Update appointment status
-        function updateAppointmentStatus(appointmentId, newStatus) {
-            database.ref('appointments/' + appointmentId).update({
-                status: newStatus,
-                updatedAt: new Date().toISOString()
-            })
-            .then(() => {
-                showSuccess(`Appointment status updated to ${newStatus}`);
-                loadAppointmentsData(); // Reload data to reflect changes
-            })
-            .catch((error) => {
+        async function updateAppointmentStatus(appointmentId, newStatus) {
+            try {
+                await database.ref('appointments/' + appointmentId).update({
+                    status: newStatus,
+                    updatedAt: new Date().toISOString()
+                });
+                
+                showNotification(`Appointment status updated to ${newStatus}`, 'success');
+                await loadAppointmentsData(); // Reload data to reflect changes
+            } catch (error) {
                 console.error('Error updating appointment:', error);
-                showError('Failed to update appointment status');
-            });
+                showNotification('Failed to update appointment status', 'error');
+            }
         }
 
         // Export data to CSV
         function exportToCSV() {
             if (appointmentsData.length === 0) {
-                showError('No data to export');
+                showNotification('No data to export', 'error');
                 return;
             }
             
@@ -379,27 +449,26 @@
             document.body.removeChild(a);
             URL.revokeObjectURL(url);
             
-            showSuccess('Data exported successfully');
+            showNotification('Data exported successfully', 'success');
         }
 
         // Clear all data (for demo purposes)
-        function clearAllData() {
+        async function clearAllData() {
             if (confirm('Are you sure you want to clear all appointment data? This action cannot be undone.')) {
-                database.ref('appointments').remove()
-                    .then(() => {
-                        showSuccess('All appointment data cleared');
-                        loadAppointmentsData();
-                    })
-                    .catch((error) => {
-                        console.error('Error clearing data:', error);
-                        showError('Failed to clear data');
-                    });
+                try {
+                    await database.ref('appointments').remove();
+                    showNotification('All appointment data cleared', 'success');
+                    await loadAppointmentsData();
+                } catch (error) {
+                    console.error('Error clearing data:', error);
+                    showNotification('Failed to clear data', 'error');
+                }
             }
         }
 
         // Generate report (placeholder function)
         function generateReport() {
-            showSuccess('Report generation feature coming soon');
+            showNotification('Report generation feature coming soon', 'success');
         }
 
         // Filter appointments based on search
@@ -483,14 +552,6 @@
             loadingAppointments.classList.add('hidden');
         }
 
-        function showSuccess(message) {
-            showNotification(message, 'success');
-        }
-
-        function showError(message) {
-            showNotification(message, 'error');
-        }
-
         function showNotification(message, type) {
             const notification = document.createElement('div');
             notification.className = `fixed top-4 right-4 z-50 px-6 py-3 rounded-lg shadow-lg text-white font-semibold ${
@@ -505,4 +566,4 @@
                 notification.remove();
             }, 3000);
         }
-  
+    

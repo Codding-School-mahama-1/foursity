@@ -1,8 +1,8 @@
-
+   
         // Firebase Configuration
         const firebaseConfig = {
             apiKey: "AIzaSyDt4vs7S3nckO8xxfp1_axHZ76J0cz2qdg",
-            authDomain: "mahamahospital.firebaseapp.com",
+            authDomain: "mahamahospital.firebasestorage.app",
             databaseURL: "https://mahamahospital-default-rtdb.firebaseio.com",
             projectId: "mahamahospital",
             storageBucket: "mahamahospital.firebasestorage.app",
@@ -11,8 +11,9 @@
         };
 
         // Initialize Firebase
-        firebase.initializeApp(firebaseConfig);
+        const firebaseApp = firebase.initializeApp(firebaseConfig);
         const database = firebase.database();
+        const auth = firebase.auth();
 
         // Vaccination Data Management
         class VaccinationData {
@@ -33,7 +34,8 @@
 
                     return Object.entries(registrations).map(([key, value]) => ({
                         id: key,
-                        ...value
+                        ...value,
+                        status: value.status || 'pending' // Default to pending if no status
                     }));
                 } catch (error) {
                     console.error('Error fetching registrations:', error);
@@ -51,7 +53,8 @@
 
                     const registrationsArray = Object.entries(registrations).map(([key, value]) => ({
                         id: key,
-                        ...value
+                        ...value,
+                        status: value.status || 'pending'
                     }));
 
                     callback(registrationsArray);
@@ -72,7 +75,8 @@
                 try {
                     await this.registrationsRef.child(registrationId).update({
                         status: status,
-                        updatedAt: new Date().toISOString()
+                        updatedAt: new Date().toISOString(),
+                        completedAt: status === 'completed' ? new Date().toISOString() : null
                     });
                     return { success: true };
                 } catch (error) {
@@ -106,6 +110,35 @@
             if (!dateString) return 'N/A';
             const date = new Date(dateString);
             return date.toLocaleDateString();
+        }
+
+        function getStatusBadge(status) {
+            const statusMap = {
+                'pending': {
+                    text: 'Pending',
+                    class: 'status-pending'
+                },
+                'completed': {
+                    text: 'Completed',
+                    class: 'status-completed'
+                },
+                'in-progress': {
+                    text: 'In Progress',
+                    class: 'status-in-progress'
+                }
+            };
+            
+            const statusInfo = statusMap[status] || { text: 'Unknown', class: 'status-pending' };
+            return `<span class="status-badge ${statusInfo.class}">${statusInfo.text}</span>`;
+        }
+
+        function getStatusColor(status) {
+            const colors = {
+                'pending': 'bg-yellow-100 text-yellow-800',
+                'completed': 'bg-green-100 text-green-800',
+                'in-progress': 'bg-blue-100 text-blue-800'
+            };
+            return colors[status] || 'bg-gray-100 text-gray-800';
         }
 
         function showNotification(message, type = 'info') {
@@ -176,7 +209,11 @@
             const endIndex = Math.min(startIndex + pageSize, filteredRegistrations.length);
             const pageRegistrations = filteredRegistrations.slice(startIndex, endIndex);
             
-            registrationsBody.innerHTML = pageRegistrations.map(reg => `
+            registrationsBody.innerHTML = pageRegistrations.map(reg => {
+                const status = reg.status || 'pending';
+                const isCompleted = status === 'completed';
+                
+                return `
                 <tr class="registration-row border-b border-gray-200">
                     <td class="px-4 py-3">${escapeHtml(reg.fullName)}</td>
                     <td class="px-4 py-3">${reg.age}</td>
@@ -190,15 +227,25 @@
                     <td class="px-4 py-3">${escapeHtml(reg.contact)}</td>
                     <td class="px-4 py-3 text-sm">${formatDate(reg.timestamp)}</td>
                     <td class="px-4 py-3">
+                        ${getStatusBadge(status)}
+                    </td>
+                    <td class="px-4 py-3">
+                        ${!isCompleted ? `
                         <button onclick="markAsCompleted('${reg.id}')" class="bg-green-500 text-white px-2 py-1 rounded text-xs hover:bg-green-600 mr-1">
                             Complete
                         </button>
+                        ` : `
+                        <span class="text-green-600 text-xs font-semibold">
+                            <i class="fas fa-check mr-1"></i>Completed
+                        </span>
+                        `}
                         <button onclick="deleteRegistration('${reg.id}')" class="bg-red-500 text-white px-2 py-1 rounded text-xs hover:bg-red-600">
                             Delete
                         </button>
                     </td>
                 </tr>
-            `).join('');
+                `;
+            }).join('');
             
             // Update pagination info
             paginationInfo.textContent = `Showing ${startIndex + 1}-${endIndex} of ${filteredRegistrations.length} registrations`;
@@ -214,24 +261,24 @@
                 new Date(reg.timestamp).toDateString() === today
             );
             
-            const children = registrations.filter(reg => parseInt(reg.age) < 18);
-            const adults = registrations.filter(reg => parseInt(reg.age) >= 18);
+            const completedRegistrations = registrations.filter(reg => reg.status === 'completed');
+            const pendingRegistrations = registrations.filter(reg => reg.status !== 'completed');
             
             const totalChange = todayRegistrations.length > 0 ? `+${todayRegistrations.length} today` : 'No new registrations today';
             
             document.getElementById('total-registrations').textContent = registrations.length;
             document.getElementById('today-registrations').textContent = todayRegistrations.length;
-            document.getElementById('children-count').textContent = children.length;
-            document.getElementById('adults-count').textContent = adults.length;
+            document.getElementById('completed-count').textContent = completedRegistrations.length;
+            document.getElementById('pending-count').textContent = pendingRegistrations.length;
             document.getElementById('total-change').textContent = totalChange;
             document.getElementById('today-date').textContent = new Date().toLocaleDateString();
             
             // Calculate percentages
-            const childrenPercent = registrations.length > 0 ? Math.round((children.length / registrations.length) * 100) : 0;
-            const adultsPercent = registrations.length > 0 ? Math.round((adults.length / registrations.length) * 100) : 0;
+            const completedPercent = registrations.length > 0 ? Math.round((completedRegistrations.length / registrations.length) * 100) : 0;
+            const pendingPercent = registrations.length > 0 ? Math.round((pendingRegistrations.length / registrations.length) * 100) : 0;
             
-            document.getElementById('children-percent').textContent = `${childrenPercent}% of total`;
-            document.getElementById('adults-percent').textContent = `${adultsPercent}% of total`;
+            document.getElementById('completed-percent').textContent = `${completedPercent}% of total`;
+            document.getElementById('pending-percent').textContent = `${pendingPercent}% of total`;
         }
 
         function updateCharts(registrations) {
@@ -333,7 +380,7 @@
                     return;
                 }
 
-                const headers = ['Name', 'Age', 'Gender', 'Location', 'Vaccine Interest', 'Contact', 'Registration Date'];
+                const headers = ['Name', 'Age', 'Gender', 'Location', 'Vaccine Interest', 'Contact', 'Status', 'Registration Date'];
                 const csvData = registrations.map(reg => [
                     reg.fullName,
                     reg.age,
@@ -341,6 +388,7 @@
                     reg.campSector,
                     reg.vaccineInterest,
                     reg.contact,
+                    reg.status || 'pending',
                     formatDate(reg.timestamp)
                 ]);
 
@@ -391,8 +439,71 @@
             }
         };
 
-        // Event Listeners
-        document.addEventListener('DOMContentLoaded', function() {
+        // Event Listeners and Initialization
+        document.addEventListener('DOMContentLoaded', async function() {
+            // Check authentication state first
+            auth.onAuthStateChanged(async (user) => {
+                if (!user) {
+                    // User is not logged in, redirect to login page
+                    console.log('No user found, redirecting to login...');
+                    // showNotification('Please login to access the vaccination dashboard', 'error');
+                    
+                    setTimeout(() => {
+                        window.location.href = '/login.html';
+                    }, 2000);
+                    return;
+                }
+                
+                // User is logged in, hide loading overlay
+                document.getElementById('loadingOverlay').style.display = 'none';
+                
+                // Load data
+                await loadRegistrations();
+                
+                // Setup event listeners
+                setupEventListeners();
+                
+                // Show welcome notification
+                // showNotification(`Welcome, ${user.email}! Vaccination dashboard loaded.`, 'success');
+            });
+
+            // Fixed Logout functionality
+            document.getElementById('logoutBtn').addEventListener('click', async function(e) {
+                e.preventDefault();
+                
+                try {
+                    // Show loading state
+                    // showNotification('Logging out...', 'success');
+                    
+                    // Sign out from Firebase
+                    await auth.signOut();
+                    console.log('User signed out successfully');
+                    
+                    // Clear any stored data
+                    localStorage.removeItem('userEmail');
+                    sessionStorage.clear();
+                    
+                    // Show success message
+                    // showNotification('Logged out successfully! Redirecting to login...', 'success');
+                    
+                    // Redirect to login page after a short delay
+                    setTimeout(() => {
+                        window.location.href = '/login.html';
+                    }, 1500);
+                    
+                } catch (error) {
+                    console.error('Logout error:', error);
+                    showNotification('Error during logout. Please try again.', 'error');
+                    
+                    // Still redirect even if there's an error
+                    setTimeout(() => {
+                        window.location.href = '/login.html';
+                    }, 2000);
+                }
+            });
+        });
+
+        function setupEventListeners() {
             const refreshButton = document.getElementById('refresh-data');
             const searchInput = document.getElementById('search-registrations');
             const prevButton = document.getElementById('prev-page');
@@ -414,7 +525,8 @@
                             reg.fullName?.toLowerCase().includes(searchTerm) ||
                             reg.campSector?.toLowerCase().includes(searchTerm) ||
                             reg.vaccineInterest?.toLowerCase().includes(searchTerm) ||
-                            reg.contact?.toLowerCase().includes(searchTerm)
+                            reg.contact?.toLowerCase().includes(searchTerm) ||
+                            reg.status?.toLowerCase().includes(searchTerm)
                         );
                     } else {
                         filteredRegistrations = [...allRegistrations];
@@ -451,9 +563,6 @@
                 });
             }
 
-            // Initial load
-            loadRegistrations();
-            
             // Real-time updates
             vaccinationData.onRegistrationsUpdate((registrations) => {
                 allRegistrations = registrations;
@@ -462,5 +571,4 @@
                 updateStatistics(registrations);
                 updateCharts(registrations);
             });
-        });
-    
+        }
